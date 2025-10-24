@@ -1,0 +1,53 @@
+.applicant-card {
+  border: 3px solid white;
+  border-radius: 30px;
+  padding: 20px;
+  width: 230px;
+  height: 310px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ✨ تأثير الهوفر */
+.applicant-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.applicant-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 10px;
+}
+
+.applicant-desc {
+  color: #3f3e3e;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}
+
+.details-btn {
+  background-color: #723dff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 30px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+h3.applicant-name {
+  margin: 0;
+  font-size: 18px;
+  color: #222222;
+}

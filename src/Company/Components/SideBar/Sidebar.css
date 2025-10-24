@@ -1,0 +1,180 @@
+/* ===== الحاوية العامة ===== */
+.sidebar {
+  position: sticky;
+  top: 0;
+  width: 288px;
+  height: 100vh;
+  background-color: #723dff;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 18px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: width 0.4s ease;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+  padding: 16px 10px;
+}
+
+.sidebar.collapsed .menu-item .menu-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  display: none;
+}
+
+.sidebar.collapsed .menu-item {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.sidebar.collapsed .footer-item {
+  justify-content: center;
+}
+
+.sidebar.collapsed .user-info {
+  justify-content: center;
+}
+
+/* ===== زر الطي ===== */
+.toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #cecece;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+}
+
+.toggle-btn:hover {
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* ===== المحتوى الداخلي ===== */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* ===== القائمة ===== */
+.sidebar-menu {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.menu-item .menu-text {
+  display: inline-block;
+  transition: opacity 0.3s ease;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.menu-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.menu-item:hover .menu-icon-img,
+.footer-item:hover .menu-icon-img {
+  transform: scale(1.1);
+}
+
+.menu-badge {
+  background: #ff5b5b;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 11px;
+  margin-left: 8px;
+}
+
+/* ===== الفوتر ===== */
+.sidebar-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.footer-item:hover {
+  opacity: 0.8;
+}
+
+/* ===== المستخدم ===== */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-details {
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.user-email {
+  color: #ddd;
+  font-size: 11px;
+}
+
+/* ===== التأثيرات العامة ===== */
+
+.sidebar * {
+  transition: all 0.3s ease;
+}
