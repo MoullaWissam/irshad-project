@@ -1,5 +1,5 @@
 import React from "react";
-import JobCard from "../Components/Card/JobCard/JobCard";
+import JobCard from "../../Components/Card/JobCard/JobCard";
 import "./AddJobPage.css";
 
 function AddJobPage() {

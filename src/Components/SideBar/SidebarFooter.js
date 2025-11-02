@@ -1,8 +1,8 @@
 import React from "react";
 import "./SidebarFooter.css";
 
-import iconSettings from "../../icons/settings.png";
-import iconLogout from "../../icons/logout.png";
+import iconSettings from "../icons/settings.png";
+import iconLogout from "../icons/logout.png";
 
 function SidebarFooter({ isCollapsed }) {
   const user = {

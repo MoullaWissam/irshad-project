@@ -51,3 +51,11 @@
   font-size: 14px;
   font-weight: 500;
 }
+.menu-text {
+  transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+.menu-item.collapsed .menu-text {
+  opacity: 0;
+  width: 0;
+}

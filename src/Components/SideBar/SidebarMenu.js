@@ -1,15 +1,13 @@
 import React from "react";
 import "./SidebarMenu.css";
 
-import iconApplications from "../../icons/applications.png"; // أيقونة التطبيقات
-
 function SidebarMenu({ isCollapsed }) {
   return (
     <nav className="sidebar-menu">
       <div className="menu-item">
         <div className={`menu-left ${isCollapsed ? "collapsed" : ""}`}>
           <img
-            src={iconApplications}
+            src={"/applications.png"}
             alt="Applications"
             className="menu-icon-img"
           />

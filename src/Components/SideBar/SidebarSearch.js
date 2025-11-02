@@ -1,7 +1,7 @@
 import React from "react";
 import "./SidebarSearch.css";
 
-import Search from "../../icons/search.png";
+import Search from "../icons/search.png";
 
 function SidebarSearch({ isCollapsed }) {
   return (
