@@ -1,3 +1,29 @@
+import React from "react";
+import Sidebar from "./Components/SideBar/Sidebar.js";
+import Addjob from "./Company/Company 1/AddJobPage.js";
+import ApplicantsGrid from "./Company/Company 2/ApplicantsGrid.js";
+import UploadResume from "./Job seeker/Main/UploadResume.js";
+
+function App() {
+  return (
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <Sidebar />
+      <main
+        style={{
+          flex: 1,
+          padding: 36,
+          background: "linear-gradient(#f7f7ff, #efe6ff)",
+        }}
+      >
+        {/* هنا تضع باقي المحتوى (العنوان + بطاقات) */}
+        <UploadResume />
+      </main>
+    </div>
+  );
+}
+
+export default App;
+
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import Sidebar from "./Components/SideBar/Sidebar";
 // import SettingsPage from "./Components/Settings/SettingsPage";
@@ -12,27 +38,3 @@
 // }
 
 // export default App;
-
-import React from "react";
-import Sidebar from "./Components/SideBar/Sidebar.js";
-import Addjob from "./Company/Company 1/AddJobPage.js";
-import ApplicantsGrid from "./Company/Company 2/ApplicantsGrid.js";
-function App() {
-  return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      <Sidebar />
-      <main
-        style={{
-          flex: 1,
-          padding: 36,
-          background: "linear-gradient(#f7f7ff, #efe6ff)",
-        }}
-      >
-        {/* هنا تضع باقي المحتوى (العنوان + بطاقات) */}
-        <ApplicantsGrid />
-      </main>
-    </div>
-  );
-}
-
-export default App;
