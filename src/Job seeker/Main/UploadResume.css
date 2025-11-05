@@ -1,45 +1,43 @@
-/* ===== الحاوية العامة ===== */
+/* =========================================================
+    UploadResume Page Styles
+   ========================================================= */
+
+/* ===== الحاوية العامة (الهيكل الأساسي) ===== */
 .upload-container {
-  /* background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  padding: 50px 60px;
-  margin: 40px auto; */
+  /* خصائص التخطيط والمسافات العامة */
   width: calc(100% - 280px); /* مراعاة وجود السايد بار */
   max-width: 1100px;
   font-family: "Poppins", sans-serif;
-  /* display: flex; */
+
+  /* تنظيم المكونات الداخلية */
   flex-direction: column;
   align-items: center;
   transition: width 0.3s ease;
 }
 
-/* إذا السايد بار مصغّر */
+/* في حال تصغير السايد بار */
 .sidebar-collapsed .upload-container {
   width: calc(100% - 80px);
 }
 
-/* ===== العنوان العام ===== */
+/* ===== العنوان العام أعلى الصفحة ===== */
 .main-header {
-  /* text-align: center; */
   margin-bottom: 40px;
 }
 
+/* نص الترحيب */
 .welcome-text {
   color: #733eff;
   font-family: Roboto;
   font-weight: 500;
-  font-style: Medium;
   font-size: 34px;
   line-height: 50px;
-  margin: 0px;
+  margin: 0;
 }
 
+/* الجملة التوضيحية تحت العنوان */
 .subtitle {
-  font-size: 18px;
   color: #2b1d6a;
-  /* line-height: 1.5; */
-  /* width: 80%; */
   font-family: Roboto;
   font-weight: 500;
   font-size: 30px;
@@ -47,44 +45,43 @@
   letter-spacing: 0%;
 }
 
-/* ===== الأقسام اليمني واليساري ===== */
+/* ===== تنظيم القسمين (يمين ويسار) ===== */
 .content-sections {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* يجعل القسمين منتصفين بالطول */
+  align-items: center; /* توسيط عمودي */
   gap: 60px;
   width: 100%;
 }
 
-/* ===== القسم الأيسر (النصائح) ===== */
+/* ===== القسم الأيسر: نصائح المستخدم ===== */
 .left-side {
   flex: 1;
 }
 
-/* ===== صندوق النصائح ===== */
+/* ===== صندوق النصائح (العنوان + القائمة) ===== */
 .tips-box {
   margin-top: 20px;
 }
 
+/* عنوان قسم النصائح */
 .tips-box h4 {
   color: #2b1d6a;
   text-align: center;
   align-content: center;
   width: 500px;
   height: 74px;
-  top: 270px;
-  left: 336px;
-  border-top-right-radius: 12px;
-  border-bottom-left-radius: 12px;
-  border-width: 3px;
-  border: 3px solid;
-  --border-angle: 90deg; /* غيّر القيمة لزوايا مختلفة (ex: 135deg, 45deg) */
+  border-radius: 12px;
   border: 3px solid transparent;
+
+  /* إطار متدرج حول العنوان */
+  --border-angle: 90deg;
   background: linear-gradient(#fff, #fff) padding-box,
     linear-gradient(var(--border-angle), #723efe 0%, #00cbff 100%) border-box;
   box-shadow: 0px 4px 4px 0px #00000040;
 }
 
+/* قائمة النصائح */
 .tips-box ul {
   display: flex;
   flex-direction: column;
@@ -92,7 +89,7 @@
   padding: 0;
 }
 
-/* ===== كل نص داخل مستطيل ملوّن بإطار متدرّج ===== */
+/* ===== كل نصيحة ضمن مستطيل بإطار متدرج ===== */
 .tip-card span {
   display: flex;
   justify-content: center;
@@ -101,41 +98,39 @@
   gap: 12px;
   padding: 12px 16px;
   border-radius: 12px;
-  font-size: 15px;
+
+  /* النص */
   color: #2b1d6a;
   font-family: Roboto;
   font-weight: 500;
   font-size: 16px;
+
+  /* المظهر */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 3px solid;
   border-image-source: linear-gradient(90deg, #723efe 0%, #00cbff 100%);
   border-image-slice: 1;
+
+  /* أنيميشن بسيط عند التفاعل */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* أيقونة بجانب النص */
 .tip-card img {
   width: 30px;
   height: 30px;
   object-fit: contain;
   margin-right: 10px;
-  /* border: 3px solid;
-  border: 3px solid transparent;
-  background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(var(--border-angle), #723efe 0%, #00cbff 100%) border-box; */
-  --border-angle: 90deg; /* غيّر القيمة لزوايا مختلفة (ex: 135deg, 45deg) */
+
+  /* إضافة إطار متدرج حول الأيقونة */
+  --border-angle: 90deg;
   border: 3px solid transparent;
   background: linear-gradient(#fff, #fff) padding-box,
     linear-gradient(var(--border-angle), #723efe 0%, #00cbff 100%) border-box;
   border-radius: 50px;
 }
 
-/* حركة عند المرور */
-/* .tip-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-} */
-
-/* ===== القسم الأيمن ===== */
+/* ===== القسم الأيمن: الرفع + الأزرار ===== */
 .right-side {
   flex: 1;
   display: flex;
@@ -143,9 +138,9 @@
   align-items: center;
 }
 
-/* زر المثال */
+/* زر "Show me an example" */
 .example-btn {
-  background: #5b31ff;
+  background: linear-gradient(90deg, #713efe 0%, #00b8e7 100%);
   color: #fff;
   border: none;
   border-radius: 25px;
@@ -154,15 +149,15 @@
   font-size: 15px;
   margin-bottom: 25px;
   transition: 0.3s;
-  background: linear-gradient(90deg, #713efe 0%, #00b8e7 100%);
 }
 
+/* تأثير عند المرور */
 .example-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 
-/* مستطيل رفع الملف */
+/* ===== مربع رفع الملف ===== */
 .upload-box {
   border: 2px dashed #5b31ff;
   border-radius: 10px;
@@ -176,14 +171,17 @@
   text-align: center;
   margin-bottom: 25px;
   transition: 0.3s;
+
+  /* خلفية مخصصة */
   background: url("/public/bg.png");
 }
 
+/* تأثير عند المرور */
 .upload-box:hover {
   background-color: #fff;
 }
 
-/* زر النتائج */
+/* ===== زر عرض النتائج ===== */
 .see-results-btn {
   background: #5b31ff;
   color: #fff;
@@ -199,8 +197,11 @@
   background: #6a42ff;
 }
 
-/* ===== رسالة الخطأ ===== */
+/* ===== رسالة الخطأ (ErrorMessage) ===== */
 .error-message {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   margin-top: 15px;
   background: #ffe5e5;
   color: #b10000;
@@ -213,11 +214,9 @@
   font-weight: 500;
   animation: fadeInError 0.3s ease-in-out;
   box-shadow: 0 2px 8px rgba(255, 0, 0, 0.1);
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
 }
 
+/* أنيميشن ظهور الخطأ */
 @keyframes fadeInError {
   from {
     opacity: 0;
@@ -229,7 +228,7 @@
   }
 }
 
-/* ===== النافذة العائمة ===== */
+/* ===== النافذة العائمة (Popup) ===== */
 .overlay {
   position: fixed;
   top: 0;
@@ -245,6 +244,7 @@
   animation: fadeIn 0.3s ease-in-out forwards;
 }
 
+/* محتوى النافذة */
 .popup {
   background: #ffffff;
   color: #333;
@@ -258,13 +258,13 @@
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* عند الإغلاق */
+/* أنيميشن إغلاق النافذة */
 .popup.fade-out {
   opacity: 0;
   transform: scale(0.95);
 }
 
-/* زر الإغلاق */
+/* زر إغلاق النافذة */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -282,7 +282,7 @@
   color: #000;
 }
 
-/* ===== أنيميشن ===== */
+/* ===== أنيميشن عام للظهور ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -292,6 +292,7 @@
   }
 }
 
+/* أنيميشن دخول النافذة من الأعلى */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -303,7 +304,7 @@
   }
 }
 
-/* ===== التصميم المتجاوب ===== */
+/* ===== التصميم المتجاوب (Responsive Design) ===== */
 @media (max-width: 1100px) {
   .upload-container {
     width: calc(100% - 200px);
