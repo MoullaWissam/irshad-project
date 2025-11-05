@@ -6,7 +6,7 @@
 import React from "react";
 import JobCard from "../../Components/Card/JobCard/JobCard";
 import RankedCardWrapper from "./RankedCardWrapper";
-import "./Home.css";
+import "./MatchesPage.css";
 
 // قائمة الوظائف (بيانات ثابتة مؤقتًا)
 const jobs = [
