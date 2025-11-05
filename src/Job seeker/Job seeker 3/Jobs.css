@@ -1,0 +1,43 @@
+/* حاوية مربع البحث */
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 40px;
+  justify-self: center;
+}
+
+/* حقل الإدخال */
+.search-input {
+  width: 600px;
+  padding: 14px 14px 14px 14px; /* مساحة يمين للأيقونة */
+  font-size: 16px;
+  border-radius: 12px;
+  border: 2px solid #7a5cff;
+  outline: none;
+  color: #2d1b5a;
+  /* خلفية بنفسجية لليسار فقط */
+  background: linear-gradient(to left, #7a5cff 12%, transparent 12%);
+  transition: box-shadow 0.3s;
+}
+
+.search-input::placeholder {
+  color: #7a5cff;
+}
+
+/* تأثير التركيز على حقل الإدخال */
+.search-input:focus {
+  box-shadow: 0 0 8px rgba(122, 92, 255, 0.6);
+}
+
+/* أيقونة البحث داخل المربع على اليمين */
+.search-icon-img {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  justify-self: right;
+}

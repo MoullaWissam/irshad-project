@@ -25,8 +25,8 @@ function Sidebar() {
         {/* رأس الشريط الجانبي */}
         <SidebarHeader isCollapsed={isCollapsed} />
 
-        {/* مربع البحث */}
-        <SidebarSearch isCollapsed={isCollapsed} />
+        {/* مربع البحث
+        <SidebarSearch isCollapsed={isCollapsed} /> */}
 
         {/* قائمة العناصر */}
         <SidebarMenu isCollapsed={isCollapsed} />

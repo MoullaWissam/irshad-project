@@ -4,6 +4,7 @@ import Addjob from "./Company/Company 1/AddJobPage.js";
 import ApplicantsGrid from "./Company/Company 2/ApplicantsGrid.js";
 import UploadResume from "./Job seeker/Main/UploadResume.js";
 import Home from "./Job seeker/Job seeker 2/MatchesPage.js";
+import Jobs from "./Job seeker/Job seeker 3/Jobs.js";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         }}
       >
         {/* هنا تضع باقي المحتوى (العنوان + بطاقات) */}
-        <Home />
+        <Jobs />
       </main>
     </div>
   );
