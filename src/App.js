@@ -1,26 +1,20 @@
 import React from "react";
-import Sidebar from "./Components/SideBar/Sidebar.js";
-import Addjob from "./Company/Company 1/AddJobPage.js";
-import ApplicantsGrid from "./Company/Company 2/ApplicantsGrid.js";
-import UploadResume from "./Job seeker/Main/UploadResume.js";
-import Home from "./Job seeker/Job seeker 2/MatchesPage.js";
-import Jobs from "./Job seeker/Job seeker 3/Jobs.js";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ForgotPassword from "./Components/Set new password/ForgotPassword";
+import CheckEmail from "./Components/Set new password/CheckEmail";
+import SetNewPassword from "./Components/Set new password/SetNewPassword";
+import Success from "./Components/Set new password/Success";
 
 function App() {
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      <Sidebar />
-      <main
-        style={{
-          flex: 1,
-          padding: 36,
-          background: "linear-gradient(#f7f7ff, #efe6ff)",
-        }}
-      >
-        {/* هنا تضع باقي المحتوى (العنوان + بطاقات) */}
-        <Jobs />
-      </main>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ForgotPassword />} />
+        <Route path="/check-email" element={<CheckEmail />} />
+        <Route path="/set-password" element={<SetNewPassword />} />
+        <Route path="/success" element={<Success />} />
+      </Routes>
+    </Router>
   );
 }
 
