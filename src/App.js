@@ -1,20 +1,21 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ForgotPassword from "./Components/Set new password/ForgotPassword";
-import CheckEmail from "./Components/Set new password/CheckEmail";
-import SetNewPassword from "./Components/Set new password/SetNewPassword";
-import Success from "./Components/Set new password/Success";
+import ForgotPassword from "./Components/SetNewPassword/ForgotPassword";
+import CheckEmail from "./Components/SetNewPassword/CheckEmail";
+import SetNewPassword from "./Components/SetNewPassword/SetNewPassword";
+import Success from "./Components/SetNewPassword/Success";
+import Home from "./HomePage/HomePage";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<ForgotPassword />} />
-        <Route path="/check-email" element={<CheckEmail />} />
-        <Route path="/set-password" element={<SetNewPassword />} />
-        <Route path="/success" element={<Success />} />
-      </Routes>
-    </Router>
+    <Home /> // <Router>
+    //   <Routes>
+    //     <Route path="/" element={<ForgotPassword />} />
+    //     <Route path="/check-email" element={<CheckEmail />} />
+    //     <Route path="/set-password" element={<SetNewPassword />} />
+    //     <Route path="/success" element={<Success />} />
+    //   </Routes>
+    // </Router>
   );
 }
 

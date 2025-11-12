@@ -42,7 +42,7 @@ function AuthCard({
         {/* زر الرجوع إذا مطلوب */}
         {showBackButton && (
           <button className="back-btn" onClick={handleBack}>
-            ←
+            «
           </button>
         )}
 

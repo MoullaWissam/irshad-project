@@ -1,0 +1,76 @@
+/* تصميم شريط التنقل الأساسي */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: transparent;
+  color: white;
+}
+
+/* ضبط حجم شعار Irshad */
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+/* تنسيق روابط التنقل مع تأثير hover */
+.nav-links a {
+  position: relative;
+  margin: 0 12px;
+  text-decoration: none;
+  color: #28205b;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+/* خط تحت الرابط يظهر عند المرور */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #28205b;
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* تغيير خلفية الشريط عند التمرير */
+.navbar.scrolled {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  transition: background 0.3s;
+}
+
+/* إزالة التسطير عند المرور على الرابط */
+.nav-links a:hover {
+  text-decoration: none;
+}
+
+/* تنسيق زر تسجيل الدخول */
+.login-btn {
+  width: 100px;
+  height: 34px;
+  opacity: 1;
+  border-radius: 8px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: none;
+  background: #00b8e7;
+  color: white;
+  font-family: Roboto;
+  font-size: 18px;
+  line-height: 100%;
+  text-align: center;
+}
+
+/* تأثير hover لزر تسجيل الدخول */
+.login-btn:hover {
+  background: white;
+  color: #4b3cff;
+}
