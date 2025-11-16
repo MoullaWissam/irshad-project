@@ -1,0 +1,91 @@
+/* الحاوية الرئيسية */
+.mainBox {
+  width: 400px;
+  height: 649px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: anchor-center;
+}
+
+/* الشعار + العنوان */
+.logoTitel {
+  width: 224px;
+  height: 117px;
+  margin-top: 40px;
+  justify-items: center;
+}
+
+.logoTitel img {
+  width: 224px;
+  height: 68px;
+}
+
+.logoTitel h2 {
+  color: #28205b;
+  font-family: Roboto, sans-serif;
+  font-size: 32px;
+  line-height: 100%;
+  margin-top: 10px;
+}
+
+/* صندوق الإدخال */
+.inputBox {
+  width: 400px;
+  padding: 40px 40px 10px 40px;
+  margin-top: 20px;
+  border-radius: 12px;
+  background: #fff;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* زر تسجيل الدخول */
+.submitButton {
+  margin-top: 20px;
+  width: 320px;
+  height: 49px;
+  background: #723efe;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: center;
+  transition: background 0.3s ease;
+}
+
+.submitButton:hover {
+  background: #5a2ed6;
+}
+
+/* حقول الإدخال */
+input {
+  width: 320px;
+  height: 45px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+/* أيقونة العين */
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+}
