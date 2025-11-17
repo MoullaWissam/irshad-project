@@ -16,7 +16,6 @@
 /* القسم الأيسر: النصوص والأزرار */
 .left-section {
   flex: 1;
-  width: 500px;
   margin-right: 10px;
 }
 
@@ -44,7 +43,7 @@ h2 {
 
 /* النص التوضيحي */
 p {
-  width: 450px;
+  max-width: 450px;
   font-weight: 500;
   font-size: 24px;
   line-height: 100%;
@@ -56,7 +55,8 @@ p {
 .buttons {
   display: flex;
   gap: 10px;
-  margin: 0 0 150px 36px;
+  margin: 0 0 150px 0;
+  justify-content: center;
 }
 
 .buttons button {
@@ -82,7 +82,8 @@ p {
 
 /* زر التسجيل */
 .signup-btn {
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   height: 50px;
   padding: 0 10px;
   border-radius: 8px;
@@ -90,17 +91,17 @@ p {
   border: none;
   color: #ffffff;
   cursor: pointer;
+  margin: 0 auto;
+  display: block;
 }
 
 /* رابط تسجيل الدخول */
 .signin {
   margin: 10px 0 0;
-  width: 180px;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
-  position: relative;
-  left: 30%;
+  text-align: center;
 }
 
 .signin a {
@@ -110,10 +111,9 @@ p {
 
 /* حاوية الفورم داخل القسم الأيمن */
 .formWrapper {
-  width: 480px;
-  height: 608px;
-  padding: 20px 40px;
-  gap: 24px;
+  width: 100%;
+  max-width: 480px;
+  padding: 20px;
   border-radius: 12px;
   background: linear-gradient(
       0deg,
@@ -123,47 +123,29 @@ p {
     linear-gradient(0deg, rgba(255, 255, 255, 0.29), rgba(255, 255, 255, 0.29));
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* كل فورم داخلي */
 .formContent {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  padding: 20px 40px;
-  /* transition: all 0.4s ease;
-  opacity: 0;
-  transform: translateX(100%); */
+  padding: 0;
 }
-
-/* الفورم الظاهر */
-/* .formContent.show {
-  opacity: 1;
-  transform: translateX(0);
-  z-index: 2;
-} */
-
-/* الفورم المخفي */
-/* .formContent.hide {
-  opacity: 0;
-  transform: translateX(-100%);
-  z-index: 1;
-} */
 
 /* حقول الإدخال */
 input {
-  width: 460px;
+  width: 100%;
   height: 45px;
   border-radius: 8px;
   border: none;
   margin: 4px 0;
   padding: 0 15px;
+  box-sizing: border-box;
 }
 
 /* زر رفع الصورة */
 .upload {
-  width: 460px;
+  width: 100%;
   height: 68px;
   padding: 0 15px;
   border-radius: 8px;
@@ -174,6 +156,10 @@ input {
   color: #00b8e7;
   font-weight: 500;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 /* نص توضيحي داخل الفورم */
@@ -183,11 +169,14 @@ h4.info-text {
   line-height: 100%;
   color: #ffffff;
   margin-top: 15px;
+  text-align: center;
 }
 
 /* خلفية الصفحة */
 body {
   min-height: 93.91vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* رسالة الخطأ العائمة */
@@ -229,5 +218,29 @@ body {
   to {
     opacity: 0;
     transform: translateY(6px);
+  }
+}
+
+/* تحسينات للاستجابة */
+@media (max-width: 768px) {
+  .register-container {
+    flex-direction: column;
+    width: 95%;
+    padding: 20px;
+    margin: 20px auto;
+  }
+  
+  .left-section, .right-section {
+    width: 100%;
+    margin-right: 0;
+  }
+  
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .formWrapper {
+    max-width: 100%;
   }
 }

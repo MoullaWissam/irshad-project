@@ -32,7 +32,6 @@ input {
   align-items: center;
 }
 
-/* الرسالة العائمة */
 .error-floating {
   position: absolute;
   top: -22px;

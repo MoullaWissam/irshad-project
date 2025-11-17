@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "./InputField.css";
+import "./InputField.css"; // تأكد من أن هذا الملف يحتوي على التنسيقات الصحيحة
 
 const InputField = ({ label, type, value, onChange, error }) => {
   const [show, setShow] = useState(false);
@@ -15,17 +15,9 @@ const InputField = ({ label, type, value, onChange, error }) => {
   }, [error]);
 
   return (
-    <div
-      style={{
-        marginBottom: "28px",
-        width: "320px",
-        placeSelf: "center",
-        position: "relative",
-      }}
-    >
-      <label
-        style={{ display: "block", marginBottom: "6px", fontWeight: "500" }}
-      >
+    // 1. إزالة الـ inline styles من الحاوية واستبدالها بـ className
+    <div className="input-field-container">
+      <label className="input-label">
         {label}
       </label>
 
@@ -34,12 +26,7 @@ const InputField = ({ label, type, value, onChange, error }) => {
           type={type === "password" && !show ? "password" : "text"}
           value={value}
           onChange={onChange}
-          style={{
-            width: "100%",
-            padding: "8px 35px 8px 8px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-          }}
+          className="custom-input" // 2. استخدام class بدلاً من style
         />
 
         {type === "password" && (

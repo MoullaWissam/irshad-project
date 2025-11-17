@@ -1,6 +1,9 @@
-import "./LoginStyle.css";
-import logo from "../../assets/images/logo.png";
 import React, { useState, useEffect } from "react";
+// 👇 1. إضافة استيراد Link
+import { Link } from "react-router-dom"; 
+import "./LoginStyle.css";
+// تأكد من أن مسار الشعار صحيح بالنسبة لمكان هذا الملف
+import logo from "../../assets/images/logo.png"; 
 import InputField from "./InputField";
 
 const LoginCard = () => {
@@ -43,8 +46,7 @@ const LoginCard = () => {
     event.preventDefault();
     if (validate()) {
       console.log("✅ Data is valid");
-      console.log("Email:", form.email);
-      console.log("Password:", form.password);
+      // هنا يمكنك إضافة منطق تسجيل الدخول الفعلي
       alert("Login successful (demo)");
     }
   };
@@ -88,14 +90,19 @@ const LoginCard = () => {
           </button>
 
           <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <a href="#" style={{ fontSize: "14px", color: "#00AEEF" }}>
+            
+            {/* 👇 2. التعديل هنا: ربطنا النص بصفحة نسيان كلمة المرور */}
+            <Link to="/forgot-password" style={{ fontSize: "14px", color: "#00AEEF", textDecoration: "none" }}>
               Forgot Password ?
-            </a>
+            </Link>
+
             <p style={{ marginTop: "65px", fontSize: "14px" }}>
               Don’t have an account?{" "}
-              <a href="#" style={{ color: "#00AEEF" }}>
+              
+              {/* 👇 3. وهذا أيضاً نربطه بصفحة التسجيل */}
+              <Link to="/register" style={{ color: "#00AEEF", textDecoration: "none" }}>
                 Sign Up
-              </a>
+              </Link>
             </p>
           </div>
         </div>

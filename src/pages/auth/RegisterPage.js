@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import "./RegisterPage.css";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo-signin.svg";
 import EmployeeForm from "./EmployeeForm";
 import CompanyForm from "./CompanyForm";
 import { handleSubmitLogic } from "./handleSubmit";
-
+import { Link } from "react-router-dom"; 
 const RegisterPage = () => {
-  // 🔹 نوع النموذج الحالي
   const [activeForm, setActiveForm] = useState("employee");
 
-  // 🔹 بيانات الموظف
   const [employeeData, setEmployeeData] = useState({
     firstName: "",
     lastName: "",
@@ -21,7 +19,6 @@ const RegisterPage = () => {
     photo: null,
   });
 
-  // 🔹 بيانات الشركة
   const [companyData, setCompanyData] = useState({
     companyName: "",
     companyPassword: "",
@@ -30,10 +27,8 @@ const RegisterPage = () => {
     photo: null,
   });
 
-  // 🔹 رسائل الخطأ
   const [errors, setErrors] = useState({});
 
-  // 🕒 إخفاء الأخطاء بعد 6 ثواني
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
       const timer = setTimeout(() => setErrors({}), 6000);
@@ -41,7 +36,6 @@ const RegisterPage = () => {
     }
   }, [errors]);
 
-  // ✏️ تحديث القيم
   const handleChange = (e) => {
     const { name, value } = e.target;
     const update = { [name]: value };
@@ -54,7 +48,6 @@ const RegisterPage = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  // 📸 رفع الصور
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (activeForm === "employee")
@@ -62,28 +55,24 @@ const RegisterPage = () => {
     else setCompanyData({ ...companyData, photo: file });
   };
 
-  // ✅ التحقق والإرسال
   const handleSubmit = () => {
     handleSubmitLogic(activeForm, employeeData, companyData, setErrors);
   };
 
-  // ⌨️ التعامل مع الضغط على Enter
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      handleSubmit(); // تستدعي نفس دالة الإرسال
+      handleSubmit(); 
     }
   };
 
   return (
     <div className="register-container">
-      {/* الجانب الأيسر */}
       <div className="left-section">
         <img className="logo" src={logo} alt="Irshad" />
         <h2>Start your journey</h2>
         <p>Register as an employee or a company, and let us guide you</p>
 
-        {/* أزرار التبديل */}
         <div className="buttons">
           <button
             className={activeForm === "employee" ? "active" : ""}
@@ -104,11 +93,9 @@ const RegisterPage = () => {
         </button>
 
         <p className="signin">
-          Already have an account? <a href="#">Sign In</a>
-        </p>
+            Already have an account? <Link to="/login">Sign In</Link></p>
       </div>
 
-      {/* الجانب الأيمن */}
       <div className="right-section" onKeyDown={handleKeyDown}>
         <div className="formWrapper">
           <AnimatePresence mode="wait">

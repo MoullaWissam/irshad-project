@@ -1,4 +1,3 @@
-// AddCompanyForm.js
 import React from "react";
 import "./AddCompanyForm.css";
 

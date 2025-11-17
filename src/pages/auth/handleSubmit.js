@@ -15,7 +15,6 @@ export const handleSubmitLogic = (
   let newErrors = {};
   let dataToSend = {};
 
-  // تحقق بيانات الموظف
   if (activeForm === "employee") {
     if (!employeeData.firstName) newErrors.firstName = "First name is required";
     if (!employeeData.lastName) newErrors.lastName = "Last name is required";
@@ -36,7 +35,6 @@ export const handleSubmitLogic = (
     dataToSend = { type: "job_seeker", ...employeeData };
   }
 
-  // تحقق بيانات الشركة
   else {
     if (!companyData.companyName)
       newErrors.companyName = "Company name is required";
@@ -57,12 +55,9 @@ export const handleSubmitLogic = (
     dataToSend = { type: "company", ...companyData };
   }
 
-  // تحديث الأخطاء
   setErrors(newErrors);
 
-  // في حال لا توجد أخطاء
   if (Object.keys(newErrors).length === 0) {
     console.log("✅ Submitted Data:", dataToSend);
-    // هنا ممكن تضيف النداء إلى الـ backend لاحقًا (fetch أو axios)
   }
 };
