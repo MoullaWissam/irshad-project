@@ -173,7 +173,7 @@
   transition: 0.3s;
 
   /* خلفية مخصصة */
-  background: url("/public/bg.png");
+  background: url("../../assets/images/bg.png");
 }
 
 /* تأثير عند المرور */

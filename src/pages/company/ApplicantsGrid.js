@@ -1,5 +1,5 @@
 import React from "react";
-import ApplicantCard from "../../Components/Card/ApplicantCard/ApplicantCard";
+import ApplicantCard from "../../components/Card/ApplicantCard/ApplicantCard";
 import "./ApplicantsGrid.css";
 
 function ApplicantsGrid() {

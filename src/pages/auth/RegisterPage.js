@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import "./RegisterPage.css";
-import logo from "../icons/logo.png";
+import logo from "../../assets/images/logo.png";
 import EmployeeForm from "./EmployeeForm";
 import CompanyForm from "./CompanyForm";
 import { handleSubmitLogic } from "./handleSubmit";

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import JobCard from "../../Components/Card/JobCard/JobCard";
+import JobCard from "../../components/Card/JobCard/JobCard";
 import RankedCardWrapper from "./RankedCardWrapper";
 import "./MatchesPage.css";
 

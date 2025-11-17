@@ -1,5 +1,5 @@
 import "./LoginStyle.css";
-import logo from "./logo.png";
+import logo from "../../assets/images/logo.png";
 import React, { useState, useEffect } from "react";
 import InputField from "./InputField";
 

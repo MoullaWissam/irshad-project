@@ -20,7 +20,7 @@
 .arrow-bg {
   width: 800px;
   height: 124px;
-  background: url("/public/arow.png") center no-repeat;
+  background: url("../../assets/images/arow.png") center no-repeat;
   background-size: contain;
   padding: 40px 0;
   justify-self: anchor-center;

@@ -10,7 +10,7 @@ import HowItWorks from "./HowItWorks.js";
 import FeaturedJobs from "./FeaturedJobs.js";
 import Footer from "./Footer.js";
 
-function homePage() {
+function HomePage() {
   return (
     <div>
       <Navbar />
@@ -22,4 +22,4 @@ function homePage() {
   );
 }
 
-export default homePage;
+export default HomePage;
