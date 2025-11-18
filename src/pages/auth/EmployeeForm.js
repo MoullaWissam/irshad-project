@@ -26,7 +26,6 @@ const EmployeeForm = ({ data, errors, onChange, onFileChange }) => {
         </div>
       ))}
 
-      {/* تحميل صورة الموظف */}
       <div className="upload" style={{ alignContent: "center" }}>
         <label htmlFor="employeePhoto" className="upload-label">
           <img
