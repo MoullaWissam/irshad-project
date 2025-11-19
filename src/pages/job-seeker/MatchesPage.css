@@ -1,0 +1,26 @@
+/* تنسيق الحاوية الرئيسية للصفحة */
+.home-container {
+  padding: 40px;
+}
+
+/* تنسيق عنوان الصفحة */
+.home-container h2 {
+  font-weight: 600;
+  font-style: normal;
+  font-size: 56px;
+  line-height: 32px;
+  margin: 0 0 100px 0;
+  color: #0b2b82;
+}
+
+/* تلوين كلمة "Jobs" داخل العنوان */
+.home-container h2 span {
+  color: #723dff;
+}
+
+/* شبكة عرض البطاقات */
+.job-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}

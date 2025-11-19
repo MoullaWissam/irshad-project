@@ -1,0 +1,126 @@
+/* حاوية القسم الأساسي */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 100px;
+  background: transparent;
+  color: #28205b;
+}
+
+/* الحاوية النصية */
+.hero-text {
+  max-width: 50%;
+  height: 656px;
+}
+
+/* العنوان مع حركة الظهور */
+.hero-text h1 {
+  font-size: 54px;
+  font-weight: bold;
+  line-height: 1.3;
+  color: #172e5d;
+  animation: fadeUp 1s ease forwards;
+}
+
+/* أنيميشن الظهور من الأسفل */
+@keyframes fadeUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* النص الوصفي مع حركة */
+.hero-text p {
+  margin-top: 30px;
+  margin-bottom: 200px;
+  font-size: 28px;
+  color: #28205bad;
+  animation: fadeUp 1.5s ease forwards;
+}
+
+/* الحاوية الخاصة بالأزرار */
+.hero-buttons {
+  margin-top: 30px;
+}
+
+/* زر عام (الخصائص المشتركة) */
+.btn {
+  width: 180px;
+}
+
+/* زر بنفسجي */
+.btn-purple {
+  background: #6c5ce7;
+}
+
+/* زر أزرق */
+.btn-blue {
+  background: #00b8e7;
+}
+
+/* صورة البطل مع حركة عائمة */
+.hero-img {
+  width: 654px;
+  height: auto;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* أنيميشن حركة عائمة */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* عنصر بديل مؤقت للصورة (placeholder) */
+.placeholder {
+  width: 250px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+}
+
+/* خصائص إضافية للأزرار مع تأثير hover */
+.btn {
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 45px;
+  opacity: 1;
+  top: 600px;
+  left: 121px;
+  border-radius: 8px;
+  margin-right: 15px;
+  margin-left: 15px;
+  gap: 10px;
+  font-family: Roboto;
+  font-size: 18px;
+  line-height: 100%;
+}
+
+/* عند تمرير الماوس على الزر */
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}

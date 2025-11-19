@@ -1,0 +1,96 @@
+/* القسم العام */
+.how {
+  text-align: center;
+  padding: 80px 20px;
+  color: white;
+}
+
+/* عنوان القسم مع تدرج لوني */
+.how-title {
+  font-family: "Roboto";
+  font-size: 38px;
+  margin-bottom: 40px;
+  line-height: 48px;
+  background: linear-gradient(155deg, #723dff, #00b8e7);
+  background-clip: text;
+  color: transparent;
+}
+
+/* خلفية السهم */
+.arrow-bg {
+  width: 800px;
+  height: 124px;
+  background: url("../../assets/images/arow.png") center no-repeat;
+  background-size: contain;
+  padding: 40px 0;
+  justify-self: anchor-center;
+  margin-bottom: 40px;
+}
+
+/* حاوية الخطوات */
+.how-steps {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* البطاقة (دائرة + نص) */
+.circle-card {
+  text-align: center;
+  width: 200px;
+  position: relative;
+}
+
+/* الدائرة البيضاء */
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.circle img {
+  width: 60px;
+  height: 60px;
+}
+
+/* تكبير الدائرة عند المرور */
+.circle:hover {
+  transform: scale(1.1);
+}
+
+/* النصوص أسفل الدائرة – مخفية بالبداية */
+.text {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s, transform 0.4s;
+  pointer-events: none;
+  min-height: 60px;
+}
+
+/* إظهار النص عند hover */
+.circle:hover + .text {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* عنوان كل خطوة */
+.text h3 {
+  font-size: 18px;
+  color: #a86eff;
+  margin-bottom: 8px;
+}
+
+/* وصف كل خطوة */
+.text p {
+  font-size: 14px;
+  color: #ddd;
+}

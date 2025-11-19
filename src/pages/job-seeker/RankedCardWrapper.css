@@ -1,0 +1,49 @@
+/* تغليف البطاقة لتحديد موقع الوسام */
+.job-card-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* تفعيل التموضع داخل البطاقة نفسها */
+.job-card-wrapper .job-card {
+  position: relative;
+}
+
+/* تنسيق الوسام للبطاقات ذات الرانك 1، 2، 3 */
+.job-card-wrapper.rank-1 .job-card::after,
+.job-card-wrapper.rank-2 .job-card::after,
+.job-card-wrapper.rank-3 .job-card::after {
+  content: attr(data-rank);
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* وسام الرانك الأول (ذهبي) */
+.job-card-wrapper.rank-1 .job-card::after {
+  background: linear-gradient(180deg, #ffd700 0%, #b0960b 100%);
+  content: "1";
+}
+
+/* وسام الرانك الثاني (فضي) */
+.job-card-wrapper.rank-2 .job-card::after {
+  background: linear-gradient(180deg, #c0c0c0 0%, #a0a0a0 100%);
+  content: "2";
+}
+
+/* وسام الرانك الثالث (برونزي) */
+.job-card-wrapper.rank-3 .job-card::after {
+  background: linear-gradient(180deg, #cd7f32 0%, #9f8469 100%);
+  content: "3";
+}

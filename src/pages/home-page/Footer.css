@@ -1,0 +1,146 @@
+/* القسم العام للتذييل */
+.footer {
+  width: auto;
+  height: auto;
+  angle: 0 deg;
+  opacity: 1;
+  padding-top: 50px;
+  padding-bottom: 10px;
+  gap: 128px;
+  background: #2b1d6a;
+  color: white;
+}
+
+/* الحاوية الداخلية */
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+/* شعار Irshad */
+.footer-logo {
+  width: 224px;
+  height: 68px;
+  opacity: 1;
+  border-radius: 8px;
+  background: #fbfbfb;
+}
+
+/* وصف العلامة التجارية */
+.footer-brand p {
+  width: 241px;
+  height: auto;
+  angle: 0 deg;
+  opacity: 1;
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 32px;
+}
+
+/* روابط المساعدة */
+.footer-links {
+  width: 181;
+  height: 165;
+  angle: 0 deg;
+  opacity: 1;
+  gap: 26px;
+}
+
+.footer-links h4 {
+  width: 119px;
+  height: 38px;
+  opacity: 1;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 38px;
+  letter-spacing: 0%;
+  margin: 0px;
+  margin-bottom: 14px;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  font-size: 18px;
+  line-height: 42px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  margin: 0px;
+}
+
+.footer-links a {
+  color: #eee;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* قسم التواصل الاجتماعي */
+.footer-social {
+  margin-bottom: 10px;
+  font-size: 16px;
+  width: auto;
+  height: 112px;
+  angle: 0 deg;
+  opacity: 1;
+  gap: 24px;
+}
+
+.footer-social h4 {
+  width: 106px;
+  height: auto;
+  opacity: 1;
+  font-size: 24px;
+  line-height: 38px;
+  margin: 0px;
+  margin-bottom: 24px;
+}
+
+/* أيقونات التواصل */
+.social-icons {
+  display: flex;
+  width: 230px;
+  height: 50px;
+  opacity: 1;
+  gap: 10px;
+}
+
+.social-icons img {
+  width: 40px;
+  height: 40px;
+  justify-content: space-between;
+  opacity: 1;
+  border-radius: 50px;
+  border-width: 1px;
+  transition: transform 0.3s;
+}
+
+.social-icons img:hover {
+  transform: scale(1.2);
+}
+
+/* صورة إضافية جانبية */
+.footer-extra img {
+  max-width: 190px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+/* حقوق النشر */
+.footer-bottom {
+  text-align: center;
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 13px;
+  color: #ccc;
+}

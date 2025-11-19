@@ -1,0 +1,72 @@
+/* AddCompanyForm.css */
+
+.page-title {
+  font-size: 56px;
+  font-weight: 500;
+  margin-top: 0px;
+  color: #2a1c69;
+  text-shadow: 6px 6px 12px #00000050;
+}
+
+.add-company-form {
+  background-color: #00b8e7;
+  padding: 40px;
+  border-radius: 12px;
+  margin: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+label {
+  font-size: 14px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+input {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+  outline: none;
+}
+
+input:focus {
+  border-color: #723dff;
+  box-shadow: 0 0 0 2px #723dff33;
+}
+
+.upload-label {
+  font-weight: 500;
+}
+
+.upload-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  color: #00b8e7;
+  background-color: #fff;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.upload-box:hover {
+  background-color: #f0f0ff;
+}
+
+.upload-box img {
+  width: 20px;
+  height: 20px;
+}
