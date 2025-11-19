@@ -18,5 +18,9 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
   background: linear-gradient(180deg, #f0f4ff 0%, #723efe 100%);
-  min-height: 100vh; /* يخلي الصفحة تاخذ الطول كامل */
+  min-height: 100vh;
+}
+
+html {
+  height: 100vh;
 }

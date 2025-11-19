@@ -4,7 +4,7 @@ import "./App.css";
 
 /* ===== استيراد الصفحات ===== */
 // 1. الصفحة الرئيسية
-import HomePage from "./pages/home-page/HomePage"; 
+import HomePage from "./pages/home-page/HomePage";
 
 // 2. صفحات المصادقة (Auth)
 import RegisterPage from "./pages/auth/RegisterPage";
@@ -22,11 +22,12 @@ import UploadResume from "./pages/job-seeker/UploadResume"; // صفحة رفع �
 
 // 4. الإعدادات
 import SettingsPage from "./pages/settings/SettingsPage";
-import { settingsByRole } from "./pages/settings/settingsConfig"; 
+import { settingsByRole } from "./pages/settings/settingsConfig";
+import { TbBackground } from "react-icons/tb";
 
 function App() {
   // ملاحظة: هذا المتغير يحدد أي إعدادات تظهر (مؤقتاً مثبت على company)
-  const userRole = "company"; 
+  const userRole = "company";
   const currentSettings = settingsByRole[userRole];
 
   return (
@@ -37,8 +38,15 @@ function App() {
 
         {/* === المصادقة === */}
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<div className="auth-container"><LoginCard /></div>} />
-        
+        <Route
+          path="/login"
+          element={
+            <div className="auth-container">
+              <LoginCard />
+            </div>
+          }
+        />
+
         {/* إعادة تعيين كلمة السر */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/check-email" element={<CheckEmail />} />
@@ -54,8 +62,10 @@ function App() {
         <Route path="/jobseeker/upload" element={<UploadResume />} />
 
         {/* === عام === */}
-        <Route path="/settings" element={<SettingsPage settings={currentSettings} />} />
-        
+        <Route
+          path="/settings"
+          element={<SettingsPage settings={currentSettings} />}
+        />
       </Routes>
     </BrowserRouter>
   );

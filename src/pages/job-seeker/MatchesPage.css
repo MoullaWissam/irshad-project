@@ -1,6 +1,9 @@
 /* تنسيق الحاوية الرئيسية للصفحة */
 .home-container {
-  padding: 40px;
+  padding: 0px 40px 0px 40px;
+  max-width: 100%;
+  min-height: 100vh;
+  background-color: whitesmoke;
 }
 
 /* تنسيق عنوان الصفحة */
@@ -9,7 +12,8 @@
   font-style: normal;
   font-size: 56px;
   line-height: 32px;
-  margin: 0 0 100px 0;
+  padding-top: 40px;
+  margin: 0px 0 100px 0;
   color: #0b2b82;
 }
 

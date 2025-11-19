@@ -1,0 +1,194 @@
+[
+    {
+        "id": 16,
+        "company": {
+            "id": 8,
+            "email": "Irshad1@gmail.com",
+            "password": "$2b$10$3j1DhbvhNX6RPlidfb0fA.kUVIza5vo6lAdiKTX9rQGisWlL9.e4K",
+            "companyName": "Irshad22",
+            "companyWebsite": "https://Irshad.com",
+            "companyLocation": "Damasucs",
+            "isVerified": true,
+            "companyLogo": "uploads/company-logos/1758628185257-ChatGPT Image Jun 6, 2025, 10_26_37 AM.png",
+            "role": "company",
+            "createdAt": "2025-09-23T01:49:45.656Z"
+        },
+        "title": "Ai",
+        "description": "Ai developer",
+        "requiredSkills": [
+            "Nlp",
+            "Machine learning",
+            "Deep Learning",
+            "LLM"
+        ],
+        "requiredExperience": 2,
+        "requiredEducation": [
+            "[\"Bachelor's in CS\"]"
+        ],
+        "location": "Damasucs",
+        "employmentType": "on-site",
+        "image": null,
+        "embedding": null,
+        "createdAt": "2025-10-04T02:24:09.549Z"
+    },
+    {
+        "id": 17,
+        "company": {
+            "id": 8,
+            "email": "Irshad1@gmail.com",
+            "password": "$2b$10$3j1DhbvhNX6RPlidfb0fA.kUVIza5vo6lAdiKTX9rQGisWlL9.e4K",
+            "companyName": "Irshad22",
+            "companyWebsite": "https://Irshad.com",
+            "companyLocation": "Damasucs",
+            "isVerified": true,
+            "companyLogo": "uploads/company-logos/1758628185257-ChatGPT Image Jun 6, 2025, 10_26_37 AM.png",
+            "role": "company",
+            "createdAt": "2025-09-23T01:49:45.656Z"
+        },
+        "title": "Ai Eng",
+        "description": "Ai developer",
+        "requiredSkills": [
+            "Computer vision",
+            "Machine learning",
+            "Deep Learning",
+            "LLMs"
+        ],
+        "requiredExperience": 2,
+        "requiredEducation": [
+            "[\"Bachelor's in CS\"]"
+        ],
+        "location": "Damasucs",
+        "employmentType": "on-site",
+        "image": null,
+        "embedding": null,
+        "createdAt": "2025-10-04T02:24:41.656Z"
+    },
+    {
+        "id": 21,
+        "company": {
+            "id": 8,
+            "email": "Irshad1@gmail.com",
+            "password": "$2b$10$3j1DhbvhNX6RPlidfb0fA.kUVIza5vo6lAdiKTX9rQGisWlL9.e4K",
+            "companyName": "Irshad22",
+            "companyWebsite": "https://Irshad.com",
+            "companyLocation": "Damasucs",
+            "isVerified": true,
+            "companyLogo": "uploads/company-logos/1758628185257-ChatGPT Image Jun 6, 2025, 10_26_37 AM.png",
+            "role": "company",
+            "createdAt": "2025-09-23T01:49:45.656Z"
+        },
+        "title": "AI ",
+        "description": "We are looking for a talented AI Developer with expertise in Natural Language Processing (NLP), Machine Learning (ML), and Large Language Models (LLMs). You will design, develop, and deploy intelligent AI solutions that leverage state-of-the-art LLMs to process, understand, and generate human-like text.",
+        "requiredSkills": [
+            "llm",
+            "machine learinig",
+            "Deep learinig",
+            "Tensorflow"
+        ],
+        "requiredExperience": 2,
+        "requiredEducation": [
+            "[\"Bachelor's in CS\"]"
+        ],
+        "location": "Damasucs",
+        "employmentType": "on-site",
+        "image": null,
+        "embedding": null,
+        "createdAt": "2025-11-02T00:10:49.690Z"
+    },
+    {
+        "id": 18,
+        "company": {
+            "id": 8,
+            "email": "Irshad1@gmail.com",
+            "password": "$2b$10$3j1DhbvhNX6RPlidfb0fA.kUVIza5vo6lAdiKTX9rQGisWlL9.e4K",
+            "companyName": "Irshad22",
+            "companyWebsite": "https://Irshad.com",
+            "companyLocation": "Damasucs",
+            "isVerified": true,
+            "companyLogo": "uploads/company-logos/1758628185257-ChatGPT Image Jun 6, 2025, 10_26_37 AM.png",
+            "role": "company",
+            "createdAt": "2025-09-23T01:49:45.656Z"
+        },
+        "title": "Backend",
+        "description": "Ai developer",
+        "requiredSkills": [
+            "Nest js",
+            "sql",
+            "javascript",
+            "html"
+        ],
+        "requiredExperience": 2,
+        "requiredEducation": [
+            "[\"Bachelor's in CS\"]"
+        ],
+        "location": "Damasucs",
+        "employmentType": "on-site",
+        "image": null,
+        "embedding": null,
+        "createdAt": "2025-10-04T02:25:17.417Z"
+    },
+    {
+        "id": 20,
+        "company": {
+            "id": 8,
+            "email": "Irshad1@gmail.com",
+            "password": "$2b$10$3j1DhbvhNX6RPlidfb0fA.kUVIza5vo6lAdiKTX9rQGisWlL9.e4K",
+            "companyName": "Irshad22",
+            "companyWebsite": "https://Irshad.com",
+            "companyLocation": "Damasucs",
+            "isVerified": true,
+            "companyLogo": "uploads/company-logos/1758628185257-ChatGPT Image Jun 6, 2025, 10_26_37 AM.png",
+            "role": "company",
+            "createdAt": "2025-09-23T01:49:45.656Z"
+        },
+        "title": "Backend",
+        "description": "Ai developer",
+        "requiredSkills": [
+            "Nest js",
+            "sql",
+            "javascript",
+            "html"
+        ],
+        "requiredExperience": 2,
+        "requiredEducation": [
+            "[\"Bachelor's in CS\"]"
+        ],
+        "location": "Damasucs",
+        "employmentType": "on-site",
+        "image": "http://localhost:3000/uploads/images/1759582407059-209408064.png",
+        "embedding": null,
+        "createdAt": "2025-10-04T02:53:27.086Z"
+    },
+    {
+        "id": 19,
+        "company": {
+            "id": 8,
+            "email": "Irshad1@gmail.com",
+            "password": "$2b$10$3j1DhbvhNX6RPlidfb0fA.kUVIza5vo6lAdiKTX9rQGisWlL9.e4K",
+            "companyName": "Irshad22",
+            "companyWebsite": "https://Irshad.com",
+            "companyLocation": "Damasucs",
+            "isVerified": true,
+            "companyLogo": "uploads/company-logos/1758628185257-ChatGPT Image Jun 6, 2025, 10_26_37 AM.png",
+            "role": "company",
+            "createdAt": "2025-09-23T01:49:45.656Z"
+        },
+        "title": "Backend",
+        "description": "Ai developer",
+        "requiredSkills": [
+            "Nest js",
+            "sql",
+            "javascript",
+            "html"
+        ],
+        "requiredExperience": 2,
+        "requiredEducation": [
+            "[\"Bachelor's in CS\"]"
+        ],
+        "location": "Damasucs",
+        "employmentType": "on-site",
+        "image": null,
+        "embedding": null,
+        "createdAt": "2025-10-04T02:48:58.629Z"
+    }
+]

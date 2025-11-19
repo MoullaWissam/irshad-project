@@ -3,52 +3,51 @@
  * مسؤول عن عرض الوظائف المطابقة للمستخدم مع ترتيبها حسب الرانك
  */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import JobCard from "../../components/Card/JobCard/JobCard";
 import RankedCardWrapper from "./RankedCardWrapper";
 import "./MatchesPage.css";
 
-// قائمة الوظائف (بيانات ثابتة مؤقتًا)
-const jobs = [
-  {
-    title: "Email Marketing",
-    type: "FULL TIME",
-    desc: "Join our team as an Email Marketing Specialist and lead our digital outreach efforts.",
-    icon: "/icons/email.png",
-  },
-  {
-    title: "Visual Designer",
-    type: "FULL TIME",
-    desc: "Join our team as an Email Marketing Specialist and lead our digital outreach efforts.",
-    icon: "/icons/design.png",
-  },
-  {
-    title: "Data Analyst",
-    type: "FULL TIME",
-    desc: "Join our team as an Email Marketing Specialist and lead our digital outreach efforts.",
-    icon: "/icons/data.png",
-  },
-  {
-    title: "Product Designer",
-    type: "FULL TIME",
-    desc: "Join our team as an Email Marketing Specialist and lead our digital outreach efforts.",
-    icon: "/icons/product.png",
-  },
-  {
-    title: "PHP/JS Developer",
-    type: "FULL TIME",
-    desc: "Join our team as an Email Marketing Specialist and lead our digital outreach efforts.",
-    icon: "/icons/code.png",
-  },
-  {
-    title: "Plugin Developer",
-    type: "FULL TIME",
-    desc: "Join our team as an Email Marketing Specialist and lead our digital outreach efforts.",
-    icon: "/icons/plugin.png",
-  },
-];
-
 function Home() {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch(
+          "http://192.168.1.109:3000/auth/recommended-jobs"
+        );
+
+        if (!response.ok) {
+          throw new Error("فشل في جلب البيانات");
+        }
+
+        const data = await response.json();
+
+        // 🔥 تعديل بسيط فقط: استخراج الحقول المطلوبة
+        const mapped = data.map((job) => ({
+          id: job.id,
+          title: job.title,
+          description: job.description,
+          employmentType: job.employmentType,
+          companyLogo: job.company?.companyLogo
+            ? `http://192.168.1.109:3000/${job.company.companyLogo}`
+            : "/icons/default-company.png",
+        }));
+
+        setJobs(mapped);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
   return (
     <div className="home-container">
       {/* عنوان الصفحة */}
@@ -56,24 +55,34 @@ function Home() {
         Best Matched <span>Jobs</span>
       </h2>
 
-      {/* شبكة عرض الوظائف */}
-      <div className="job-grid">
-        {jobs.map((job, index) => (
-          // تغليف البطاقة بوسام الترتيب حسب الرانك
-          <RankedCardWrapper key={job.id} rank={index + 1}>
-            {/* إضافة class للبطاقة حسب الرانك */}
-            <div className={`job-card-wrapper rank-${index + 1}`}>
-              {/* عرض بطاقة الوظيفة */}
-              <JobCard
-                icon={job.icon}
-                title={job.title}
-                desc={job.desc}
-                type={job.type}
-              />
-            </div>
-          </RankedCardWrapper>
-        ))}
-      </div>
+      {/* رسالة تحميل */}
+      {loading && <div className="loading-message">جاري تحميل الوظائف...</div>}
+
+      {/* رسالة خطأ */}
+      {error && <div className="error-message">⚠️ {error}</div>}
+
+      {/* إذا ما في بيانات بعد الانتهاء من التحميل */}
+      {!loading && !error && jobs.length === 0 && (
+        <div className="no-jobs-message">لا توجد وظائف متاحة حالياً</div>
+      )}
+
+      {/* شبكة عرض الوظائف - تعرض فقط إذا في بيانات */}
+      {!loading && !error && jobs.length > 0 && (
+        <div className="job-grid">
+          {jobs.map((job, index) => (
+            <RankedCardWrapper key={job.id} rank={index + 1}>
+              <div className={`job-card-wrapper rank-${index + 1}`}>
+                <JobCard
+                  icon={job.companyLogo}
+                  title={job.title}
+                  desc={job.description}
+                  type={job.employmentType}
+                />
+              </div>
+            </RankedCardWrapper>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
