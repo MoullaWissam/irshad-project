@@ -68,7 +68,7 @@ const RegisterPage = () => {
     let url = "";
 
     if (activeForm === "employee") {
-      url = "http://192.168.1.109:3000/auth/register";
+      url = "http://192.168.1.9:3000/auth/register";
       
       formData.append("firstName", employeeData.firstName);
       formData.append("lastName", employeeData.lastName);
@@ -81,7 +81,7 @@ const RegisterPage = () => {
       }
       
     } else {
-      url = "http://192.168.1.109:3000/company-management/company-register";
+      url = "http://192.168.1.9:3000/company-management/company-register";
       
       formData.append("companyName", companyData.companyName);
       formData.append("email", companyData.email);

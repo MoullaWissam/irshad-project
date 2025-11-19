@@ -55,7 +55,7 @@ const LoginCard = () => {
     setServerError("");
 
     try {
-      const response = await fetch("http://192.168.1.109:3000/auth/login", {
+      const response = await fetch("http://192.168.1.9:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const LoginCard = () => {
             localStorage.setItem("userRole", data.role); 
         }
 
-        navigate("/dashboard"); 
+        navigate("/"); 
       } else {
         setServerError(data.message || "Invalid email or password");
       }
