@@ -42,14 +42,11 @@ const RegisterPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-  
     if (activeForm === "employee") {
       setEmployeeData((prev) => ({ ...prev, [name]: value }));
     } else {
       setCompanyData((prev) => ({ ...prev, [name]: value }));
     }
-    
     setErrors({ ...errors, [name]: "" });
   };
 
@@ -69,26 +66,21 @@ const RegisterPage = () => {
 
     if (activeForm === "employee") {
       url = "http://localhost:3000/auth/register";
-      
       formData.append("firstName", employeeData.firstName);
       formData.append("lastName", employeeData.lastName);
       formData.append("email", employeeData.email);
       formData.append("password", employeeData.password);
       formData.append("birthDate", employeeData.birthDate || "2000-01-01"); 
-      
       if (employeeData.photo) {
         formData.append("profileImage", employeeData.photo);
       }
-      
     } else {
       url = "http://localhost:3000/company-management/company-register";
-      
       formData.append("companyName", companyData.companyName);
       formData.append("email", companyData.email);
       formData.append("password", companyData.companyPassword);
       formData.append("companyLocation", companyData.companyAddress);
       formData.append("companyWebsite", companyData.website);
-      
       if (companyData.photo) {
         formData.append("companyLogo", companyData.photo);
       }
@@ -131,7 +123,6 @@ const RegisterPage = () => {
         <img className="logo" src={logo} alt="Irshad" />
         <h2>Start your journey</h2>
         <p>Register as an employee or a company, and let us guide you</p>
-
 
         <div className="buttons">
           <button

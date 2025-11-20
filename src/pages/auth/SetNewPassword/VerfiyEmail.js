@@ -20,26 +20,37 @@ function VerfiyEmail() {
     const code = inputsRef.current.map((input) => input.value).join("");
 
     try {
-      const accessToken = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("accessToken="))
-        ?.split("=")[1];
-        console.log(accessToken);
-        
       const response = await fetch("http://localhost:3000/auth/verify-email", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ email, code }),
       });
 
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (err) {
+        console.warn("No JSON body returned");
+      }
+      console.log(data);
+      
       if (response.ok) {
-        console.log("Verification successful");
-        navigate("/set-password");
+        console.log("Verification successful:", data);
+
+        // نقرأ الدور من data.user.role
+        const role = data?.user?.role;
+        console.log(role);
+        
+        if (role === "company") {
+          navigate("/company/dashboard");
+        } else {
+          navigate("/jobseeker/upload");
+        }
       } else {
-        console.error("Verification failed");
+        console.error("Verification failed:", data);
       }
     } catch (error) {
       console.error("Error verifying email:", error);
@@ -49,12 +60,8 @@ function VerfiyEmail() {
   return (
     <AuthCard
       title="Verify your email"
-      subtitle={
-        <>
-          Enter your email and the 5-digit code sent to it.
-        </>
-      }
-      fields={[]} // لا نستخدم حقول الإدخال هنا
+      subtitle={<>Enter your email and the 5-digit code sent to it.</>}
+      fields={[]}
       buttonText="Verify Email"
       onSubmit={handleSubmit}
       showBackButton={true}
@@ -91,7 +98,6 @@ function VerfiyEmail() {
         ))}
       </div>
 
-      {/* رابط إعادة الإرسال */}
       <p className="resend-text">
         Haven’t got the email yet?{" "}
         <span className="resend-link">Resend email</span>
