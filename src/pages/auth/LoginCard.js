@@ -1,9 +1,9 @@
 // import React, { useState, useEffect } from "react";
 // // 👇 1. إضافة استيراد Link
-// import { Link } from "react-router-dom"; 
+// import { Link } from "react-router-dom";
 // import "./LoginStyle.css";
 // // تأكد من أن مسار الشعار صحيح بالنسبة لمكان هذا الملف
-// import logo from "../../assets/images/logo.png"; 
+// import logo from "../../assets/images/logo.png";
 // import InputField from "./InputField";
 
 // const LoginCard = () => {
@@ -90,7 +90,7 @@
 //           </button>
 
 //           <div style={{ textAlign: "center", marginTop: "20px" }}>
-            
+
 //             {/* 👇 2. التعديل هنا: ربطنا النص بصفحة نسيان كلمة المرور */}
 //             <Link to="/forgot-password" style={{ fontSize: "14px", color: "#00AEEF", textDecoration: "none" }}>
 //               Forgot Password ?
@@ -98,7 +98,7 @@
 
 //             <p style={{ marginTop: "65px", fontSize: "14px" }}>
 //               Don’t have an account?{" "}
-              
+
 //               {/* 👇 3. وهذا أيضاً نربطه بصفحة التسجيل */}
 //               <Link to="/register" style={{ color: "#00AEEF", textDecoration: "none" }}>
 //                 Sign Up
@@ -113,14 +113,14 @@
 
 // export default LoginCard;
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
 import logo from "../../assets/images/logo.png";
 import InputField from "./InputField";
 
 const LoginCard = () => {
   const navigate = useNavigate(); // 2. تعريف التوجيه
-  
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -164,7 +164,7 @@ const LoginCard = () => {
   // 👇 3. دالة تسجيل الدخول المحدثة لربط الـ API
   const handleLogin = async (event) => {
     event.preventDefault();
-    
+
     if (!validate()) return;
 
     setIsLoading(true);
@@ -172,7 +172,7 @@ const LoginCard = () => {
 
     try {
       // الاتصال بالرابط الموجود في ملف Postman
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch("http://192.168.1.9:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -187,12 +187,12 @@ const LoginCard = () => {
 
       if (response.ok) {
         console.log("✅ Login Successful:", data);
-        
+
         // تخزين التوكن لاستخدامه في الطلبات الأخرى (Bearer Token)
         // تأكد من اسم الحقل في الاستجابة (token أو accessToken)
         if (data.token || data.accessToken) {
-            localStorage.setItem("token", data.token || data.accessToken);
-            localStorage.setItem("userRole", data.role); // اختياري: تخزين الدور إذا كان موجوداً
+          localStorage.setItem("token", data.token || data.accessToken);
+          localStorage.setItem("userRole", data.role); // اختياري: تخزين الدور إذا كان موجوداً
         }
 
         // التوجيه إلى الصفحة الرئيسية أو لوحة التحكم
@@ -229,7 +229,14 @@ const LoginCard = () => {
         <div className="inputBox">
           {/* عرض رسالة خطأ السيرفر إن وجدت */}
           {serverError && (
-            <div style={{ color: "red", textAlign: "center", marginBottom: "10px", fontSize: "14px" }}>
+            <div
+              style={{
+                color: "red",
+                textAlign: "center",
+                marginBottom: "10px",
+                fontSize: "14px",
+              }}
+            >
               {serverError}
             </div>
           )}
@@ -250,23 +257,36 @@ const LoginCard = () => {
             error={form.errors.password}
           />
 
-          <button 
-            type="submit" 
-            className="submitButton" 
+          <button
+            type="submit"
+            className="submitButton"
             disabled={isLoading}
-            style={{ opacity: isLoading ? 0.7 : 1, cursor: isLoading ? "not-allowed" : "pointer" }}
+            style={{
+              opacity: isLoading ? 0.7 : 1,
+              cursor: isLoading ? "not-allowed" : "pointer",
+            }}
           >
             {isLoading ? "Logging in..." : "login"}
           </button>
 
           <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <Link to="/forgot-password" style={{ fontSize: "14px", color: "#00AEEF", textDecoration: "none" }}>
+            <Link
+              to="/forgot-password"
+              style={{
+                fontSize: "14px",
+                color: "#00AEEF",
+                textDecoration: "none",
+              }}
+            >
               Forgot Password ?
             </Link>
 
             <p style={{ marginTop: "65px", fontSize: "14px" }}>
               Don’t have an account?{" "}
-              <Link to="/register" style={{ color: "#00AEEF", textDecoration: "none" }}>
+              <Link
+                to="/register"
+                style={{ color: "#00AEEF", textDecoration: "none" }}
+              >
                 Sign Up
               </Link>
             </p>
