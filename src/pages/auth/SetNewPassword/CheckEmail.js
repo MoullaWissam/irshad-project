@@ -54,8 +54,8 @@ function CheckEmail() {
 
       {/* رابط إعادة الإرسال */}
       <p className="resend-text">
-        Haven’t got the email yet?{" "}
-        <span className="resend-link">Resend email</span>
+        Haven’t got the code yet?{" "}
+        <span className="resend-link">Resend code</span>
       </p>
     </AuthCard>
   );

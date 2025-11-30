@@ -26,7 +26,6 @@ function Home() {
 
         const data = await response.json();
 
-        // 🔥 تعديل بسيط فقط: استخراج الحقول المطلوبة
         const mapped = data.map((job) => ({
           id: job.id,
           title: job.title,
