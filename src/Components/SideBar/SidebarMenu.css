@@ -1,61 +1,79 @@
+/* ===== قائمة السايدبار ===== */
 .sidebar-menu {
   padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+/* ===== عنصر القائمة ===== */
 .menu-item {
-  padding: 10px 16px;
+  padding: 10px 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.3s ease;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+  text-decoration: none;
 }
 
+/* Hover لطيف دون تحريك الأيقونات */
 .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
-.menu-item.collapsed {
-  opacity: 0;
-  transform: translateX(-20px);
-  pointer-events: none;
-}
-
-/* .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-} */
-
+/* ===== محتوى اليسار (الأيقونة + النص) ===== */
 .menu-left {
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s ease;
+  width: 100%;
+  transition: gap 0.3s ease;
 }
 
+/* عند الطي — الأيقونات تبقى ثابتة والنص يختفي */
 .menu-left.collapsed {
-  justify-content: center;
   gap: 0;
+  justify-content: center;
 }
 
+/* ===== الأيقونة ===== */
 .menu-icon-img {
   width: 20px;
   height: 20px;
   object-fit: contain;
   opacity: 0.9;
+  flex-shrink: 0; /* <— يمنع الأيقونات من الحركة */
   transition: transform 0.3s ease;
 }
 
 .menu-item:hover .menu-icon-img {
-  transform: scale(1.1);
+  transform: scale(1.12);
 }
 
+/* ===== النص ===== */
 .menu-text {
   color: #fff;
   font-size: 14px;
   font-weight: 500;
-}
-.menu-text {
-  transition: opacity 0.3s ease, width 0.3s ease;
+  white-space: nowrap; /* يمنع التفاف النص */
+  overflow: hidden;
+  transition: opacity 0.25s ease, width 0.25s ease;
 }
 
+/* عند الطي — النص يختفي بشكل أنيق */
 .menu-item.collapsed .menu-text {
   opacity: 0;
   width: 0;
+}
+
+/* اختفاء العنصر بالكامل عند الطي */
+.menu-item.collapsed {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  text-decoration: none;
+}
+.menu-text {
+  text-decoration: none;
 }

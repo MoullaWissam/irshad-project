@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-
+import checkicon from "../../assets/icons/check.svg"
 const tips = [
   "Keep it updated and include your latest jobs and skills",
   "Add your details: Career Objective, Work Experience, Education, Skills, Certifications, Projects",
@@ -26,7 +26,7 @@ const TipsSection = () => {
             key={index}
             style={{ display: "inline-flex" }}
           >
-            <img src="/Vector.png" alt="icon" />
+            <img src={checkicon} alt="icon" />
             <span>{text}</span>
           </li>
         ))}

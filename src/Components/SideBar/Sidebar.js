@@ -1,38 +1,37 @@
 import React, { useState } from "react";
 import "./Sidebar.css";
 
-// استيراد المكونات الجزئية
 import SidebarHeader from "./SidebarHeader";
-import SidebarSearch from "./SidebarSearch";
 import SidebarMenu from "./SidebarMenu";
 import SidebarFooter from "./SidebarFooter";
 
-function Sidebar() {
-  // ✅ حالة الطي
+function Sidebar({ userRole = "jobSeeker" }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // ✅ دالة التبديل
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
 
   return (
-    <aside className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
-      {/* زر الطي */}
-      <button className="toggle-btn" onClick={toggleSidebar}>
-        {isCollapsed ? ">" : "<"}
-      </button>
-
-      <div className="sidebar-content">
-        {/* رأس الشريط الجانبي */}
+    <aside
+      className={`sidebar ${isCollapsed ? "collapsed" : ""}`}
+      
+      /*  
+        ملاحظة مهمة:
+        onClick يشتغل فقط لو المستخدم كبس في المنطقة الفاضية
+      */
+      onClick={toggleSidebar}
+    >
+      <div 
+        className="sidebar-content"
+        
+        /*  
+          منع انتقال الضغط للـ Sidebar
+          حتى لا ينفّذ toggle عند الضغط داخل العناصر
+        */
+        onClick={(e) => e.stopPropagation()}
+      >
         <SidebarHeader isCollapsed={isCollapsed} />
-
-        {/* مربع البحث
-        <SidebarSearch isCollapsed={isCollapsed} /> */}
-
-        {/* قائمة العناصر */}
-        <SidebarMenu isCollapsed={isCollapsed} />
-
-        {/* الفوتر */}
-        <SidebarFooter isCollapsed={isCollapsed} />
+        <SidebarMenu isCollapsed={isCollapsed} userRole={userRole} />
+        <SidebarFooter isCollapsed={isCollapsed} userRole={userRole} />
       </div>
     </aside>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import MainLayout from "./components/Layout/MainLayout";
 
 /* ===== استيراد الصفحات ===== */
 // 1. الصفحة الرئيسية
@@ -8,35 +9,36 @@ import HomePage from "./pages/home-page/HomePage";
 
 // 2. صفحات المصادقة (Auth)
 import RegisterPage from "./pages/auth/RegisterPage";
-import LoginCard from "./pages/auth/LoginCard"; // سنستخدم الكارد مباشرة كصفحة مؤقتاً
+import LoginCard from "./pages/auth/LoginCard";
 import ForgotPassword from "./pages/auth/SetNewPassword/ForgotPassword";
 import CheckEmail from "./pages/auth/SetNewPassword/CheckEmail";
 import SetNewPassword from "./pages/auth/SetNewPassword/SetNewPassword";
 import Success from "./pages/auth/SetNewPassword/Success";
 
-// 3. لوحات التحكم (Dashboards)
-import ApplicantsGrid from "./pages/company/ApplicantsGrid"; // لوحة تحكم الشركة
-import AddJobPage from "./pages/company/AddJobPage"; // إدارة الوظائف
-import MatchesPage from "./pages/job-seeker/MatchesPage"; // لوحة تحكم الباحث عن عمل
-import UploadResume from "./pages/job-seeker/UploadResume"; // صفحة رفع السيرة
+// 3. لوحات التحكم (Dashboards) - للباحث عن عمل
+import MatchesPage from "./pages/job-seeker/MatchesPage";
+import UploadResume from "./pages/job-seeker/UploadResume";
+import JobsPage from "./pages/job-seeker/JobsPage";
 
-// 4. الإعدادات
+// 4. لوحات التحكم (Dashboards) - للشركة (سيتم تفعيلها لاحقاً)
+// import ApplicantsGrid from "./pages/company/ApplicantsGrid";
+// import AddJobPage from "./pages/company/AddJobPage";
+
+// 5. الإعدادات
 import SettingsPage from "./pages/settings/SettingsPage";
 import { settingsByRole } from "./pages/settings/settingsConfig";
-import { TbBackground } from "react-icons/tb";
 
 function App() {
-  // ملاحظة: هذا المتغير يحدد أي إعدادات تظهر (مؤقتاً مثبت على company)
-  const userRole = "company";
-  const currentSettings = settingsByRole[userRole];
+  // ⚡ تحديد دور المستخدم - يمكن تغييره لاحقاً
+  const userRole = "jobSeeker"; // أو "company"
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* === الصفحة الرئيسية === */}
+        {/* === الصفحة الرئيسية (بدون Sidebar) === */}
         <Route path="/" element={<HomePage />} />
 
-        {/* === المصادقة === */}
+        {/* === صفحات المصادقة (بدون Sidebar) === */}
         <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/login"
@@ -46,26 +48,36 @@ function App() {
             </div>
           }
         />
-
-        {/* إعادة تعيين كلمة السر */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/check-email" element={<CheckEmail />} />
         <Route path="/set-password" element={<SetNewPassword />} />
         <Route path="/success" element={<Success />} />
 
-        {/* === مسارات الشركة === */}
-        <Route path="/company/dashboard" element={<ApplicantsGrid />} />
-        <Route path="/company/my-jobs" element={<AddJobPage />} />
+        {/* === جميع الصفحات الأخرى (مع Sidebar) === */}
+        <Route path="/*" element={
+          <MainLayout userRole={userRole}>
+            <Routes>
+              {/* مسارات الباحث عن عمل */}
+              <Route path="/matches" element={<MatchesPage />} />
+              <Route path="/upload" element={<UploadResume />} />
+              <Route path="/jobs" element={<JobsPage />} />
+              <Route path="/applications" element={<div>Applications Page - Coming Soon</div>} />
 
-        {/* === مسارات الباحث عن عمل === */}
-        <Route path="/jobseeker/matches" element={<MatchesPage />} />
-        <Route path="/jobseeker/upload" element={<UploadResume />} />
+              {/* مسارات الشركة - سيتم تفعيلها لاحقاً */}
+              {/* <Route path="/company/dashboard" element={<ApplicantsGrid />} />
+              <Route path="/company/my-jobs" element={<AddJobPage />} /> */}
 
-        {/* === عام === */}
-        <Route
-          path="/settings"
-          element={<SettingsPage settings={currentSettings} />}
-        />
+              {/* الإعدادات */}
+              <Route 
+                path="/settings" 
+                element={<SettingsPage settings={settingsByRole[userRole]} />} 
+              />
+
+              {/* الصفحة الافتراضية */}
+              <Route path="/" element={<MatchesPage />} />
+            </Routes>
+          </MainLayout>
+        } />
       </Routes>
     </BrowserRouter>
   );

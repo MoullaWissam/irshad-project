@@ -11,58 +11,42 @@
   padding: 25px 18px;
   box-sizing: border-box;
   overflow: hidden;
-  transition: width 0.4s ease;
+  transition: width 0.3s ease, padding 0.3s ease;
+  cursor: ew-resize;
 }
 
+/* ===== الطي ===== */
 .sidebar.collapsed {
   width: 60px;
   padding: 16px 10px;
 }
-لع .sidebar.collapsed .menu-item .menu-text {
+
+/* اخفاء النصوص فقط عند الطي */
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .user-details,
+.sidebar.collapsed .footer-text {
   opacity: 0;
   width: 0;
   overflow: hidden;
   display: none;
 }
 
-.sidebar.collapsed .menu-item {
-  justify-content: center;
-  padding: 12px 0;
+/* الicons تظل ثابتة */
+.menu-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
 }
 
-.sidebar.collapsed .footer-item {
-  justify-content: center;
-}
-
+/* الحفاظ على محاذاة العناصر عند الطي */
+.sidebar.collapsed .menu-item,
+.sidebar.collapsed .footer-item,
 .sidebar.collapsed .user-info {
   justify-content: center;
 }
 
-/* ===== زر الطي ===== */
-.toggle-btn {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  background: transparent;
-  color: #cecece;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
-  z-index: 10;
-}
-
-.toggle-btn:hover {
-  color: white;
-  transform: translateY(-50%) scale(1.1);
-}
-
-/* ===== المحتوى الداخلي ===== */
 .sidebar-content {
   display: flex;
   flex-direction: column;
@@ -84,32 +68,13 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 15px;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.2s ease;
   margin-bottom: 10px;
-}
-
-.menu-item .menu-text {
-  display: inline-block;
-  transition: opacity 0.3s ease;
 }
 
 .menu-item:hover,
 .menu-item.active {
   background: rgba(255, 255, 255, 0.15);
-  transform: translateX(4px);
-}
-
-.menu-icon-img {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  margin-right: 8px;
-  transition: transform 0.3s ease;
-}
-
-.menu-item:hover .menu-icon-img,
-.footer-item:hover .menu-icon-img {
-  transform: scale(1.1);
 }
 
 .menu-badge {
@@ -143,6 +108,10 @@
   opacity: 0.8;
 }
 
+.footer-text {
+  display: inline-block;
+}
+
 /* ===== المستخدم ===== */
 .user-info {
   display: flex;
@@ -173,7 +142,6 @@
 }
 
 /* ===== التأثيرات العامة ===== */
-
 .sidebar * {
   transition: all 0.3s ease;
 }
