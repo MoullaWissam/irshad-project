@@ -1,25 +1,69 @@
-/* القسم العامة */
 .featured {
-  padding: 80px 40px;
-  text-align: left;
+  padding: 60px 20px;
+  text-align: start;
   background: white;
   color: black;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* عنوان القسم */
 .featured-title {
-  font-size: 28px;
-  margin-bottom: 40px;
+  font-size: 32px;
+  margin: 0 0 40px 0;
+  font-weight: 700;
 }
 
-/* تمييز جزء من العنوان بلون بنفسجي */
 .featured-title span {
   color: #a86eff;
 }
 
-/* شبكة عرض الوظائف */
 .jobs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
+  margin-top: 30px;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 1024px) {
+  .featured {
+    padding: 50px 30px;
+  }
+  
+  .jobs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .featured {
+    padding: 40px 20px;
+  }
+  
+  .featured-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+  
+  .jobs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured {
+    padding: 30px 15px;
+  }
+  
+  .featured-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  
+  .jobs-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
 }

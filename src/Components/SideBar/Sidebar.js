@@ -1,40 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
-
-// استيراد المكونات الجزئية
 import SidebarHeader from "./SidebarHeader";
-import SidebarSearch from "./SidebarSearch";
 import SidebarMenu from "./SidebarMenu";
 import SidebarFooter from "./SidebarFooter";
 
-function Sidebar() {
-  // ✅ حالة الطي
+function Sidebar({ userRole = "jobSeeker" }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // ✅ دالة التبديل
-  const toggleSidebar = () => setIsCollapsed(!isCollapsed);
+  // كشف حجم الشاشة
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      
+      if (mobile) {
+        setIsCollapsed(false);
+        setIsMobileOpen(false);
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  const toggleSidebar = () => {
+    if (isMobile) {
+      setIsMobileOpen(!isMobileOpen);
+    } else {
+      setIsCollapsed(!isCollapsed);
+    }
+  };
+
+  const closeMobileSidebar = () => {
+    if (isMobile) {
+      setIsMobileOpen(false);
+    }
+  };
 
   return (
-    <aside className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
-      {/* زر الطي */}
-      <button className="toggle-btn" onClick={toggleSidebar}>
-        {isCollapsed ? ">" : "<"}
-      </button>
+    <>
+      {/* زر القائمة للموبايل */}
+      {isMobile && (
+        <button 
+          className="mobile-menu-toggle"
+          onClick={toggleSidebar}
+        >
+          ☰
+        </button>
+      )}
 
-      <div className="sidebar-content">
-        {/* رأس الشريط الجانبي */}
-        <SidebarHeader isCollapsed={isCollapsed} />
+      {/* Overlay للموبايل */}
+      {isMobile && isMobileOpen && (
+        <div 
+          className="sidebar-overlay"
+          onClick={closeMobileSidebar}
+        />
+      )}
 
-        {/* مربع البحث
-        <SidebarSearch isCollapsed={isCollapsed} /> */}
-
-        {/* قائمة العناصر */}
-        <SidebarMenu isCollapsed={isCollapsed} />
-
-        {/* الفوتر */}
-        <SidebarFooter isCollapsed={isCollapsed} />
-      </div>
-    </aside>
+      <aside 
+        className={`
+          sidebar 
+          ${isCollapsed && !isMobile ? "collapsed" : ""}
+          ${isMobile ? "mobile" : ""}
+          ${isMobileOpen ? "mobile-open" : ""}
+        `}
+      >
+        <div className="sidebar-content">
+          <SidebarHeader 
+            isCollapsed={isCollapsed} 
+            onToggle={isMobile ? closeMobileSidebar : toggleSidebar}
+          />
+          <SidebarMenu 
+            isCollapsed={isCollapsed} 
+            userRole={userRole}
+            onItemClick={closeMobileSidebar}
+          />
+          <SidebarFooter 
+            isCollapsed={isCollapsed} 
+            userRole={userRole}
+          />
+        </div>
+      </aside>
+    </>
   );
 }
 

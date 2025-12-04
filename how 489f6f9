@@ -1,0 +1,24 @@
+[33mcommit 489f6f94da3d3d2ca26493ee792a3132775f36fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 056358a e44b159
+Author: MoutazSaudi <Msaudi@darsoft.net>
+Date:   Sun Nov 30 12:59:12 2025 +0300
+
+    Mergc
+    branct 'main' of https://github.com/MoullaWissam/irshad-project
+
+ src/pages/auth/LoginCard.js                        |  58 [32m++++[m[31m--[m
+ src/pages/auth/SetNewPassword/CheckEmail.css       |   4 [32m+[m
+ src/pages/auth/SetNewPassword/CheckEmail.js        |   4 [32m+[m[31m-[m
+ src/pages/company/AddJob/AddJob.css                | 207 [32m+++++++++++++++++++[m
+ src/pages/company/AddJob/AddJobPage.js             | 200 [32m+++++++++++++++++++[m
+ src/pages/company/AddJob/InputField.css            |  73 [32m+++++++[m
+ src/pages/company/AddJob/InputField.js             |  59 [32m++++++[m
+ .../AddJob/ScreeningPopup/DurationSlider.js        |  35 [32m++++[m
+ .../company/AddJob/ScreeningPopup/QuestionForm.js  |  86 [32m++++++++[m
+ .../company/AddJob/ScreeningPopup/QuestionList.js  |  35 [32m++++[m
+ .../AddJob/ScreeningPopup/ScreeningPopup.css       | 153 [32m++++++++++++++[m
+ .../AddJob/ScreeningPopup/ScreeningPopup.js        | 219 [32m+++++++++++++++++++++[m
+ src/pages/company/AddJob/ScreeningPopup/Toast.js   |   8 [32m+[m
+ src/pages/job-seeker/MatchesPage.js                |   1 [31m-[m
+ src/pages/job-seeker/UploadResume.js               | 157 [32m+++++++++++[m[31m----[m
+ 15 files changed, 1238 insertions(+), 61 deletions(-)

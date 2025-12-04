@@ -1,0 +1,92 @@
+/* pages/job-seeker/JobsPage.css */
+.jobs-page-container {
+  padding: 30px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.page-header {
+  margin-bottom: 30px;
+}
+
+.page-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.page-header h2 span {
+  color: #007bff;
+}
+
+/* مربع البحث */
+.search-box {
+  position: relative;
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 15px 50px 15px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.search-icon-img {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+
+/* شبكة الوظائف */
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* التجاوب مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .jobs-page-container {
+    padding: 20px 15px;
+  }
+  
+  .page-header h2 {
+    font-size: 2rem;
+  }
+  
+  .job-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .search-box {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .jobs-page-container {
+    padding: 15px 10px;
+  }
+  
+  .page-header h2 {
+    font-size: 1.75rem;
+  }
+}

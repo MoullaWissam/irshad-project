@@ -1,61 +1,147 @@
+/* ===== قائمة السايدبار ===== */
 .sidebar-menu {
   padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+/* ===== عنصر القائمة ===== */
 .menu-item {
-  padding: 10px 16px;
+  padding: 10px 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.3s ease;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+  text-decoration: none;
 }
 
+/* Hover لطيف دون تحريك الأيقونات */
 .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
-.menu-item.collapsed {
-  opacity: 0;
-  transform: translateX(-20px);
-  pointer-events: none;
-}
-
-/* .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-} */
-
+/* ===== محتوى اليسار (الأيقونة + النص) ===== */
 .menu-left {
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s ease;
+  width: 100%;
+  transition: gap 0.3s ease;
 }
 
+/* عند الطي — الأيقونات تبقى ثابتة والنص يختفي */
 .menu-left.collapsed {
-  justify-content: center;
   gap: 0;
+  justify-content: center;
 }
 
+/* ===== الأيقونة ===== */
 .menu-icon-img {
   width: 20px;
   height: 20px;
   object-fit: contain;
   opacity: 0.9;
+  flex-shrink: 0; /* <— يمنع الأيقونات من الحركة */
   transition: transform 0.3s ease;
 }
 
 .menu-item:hover .menu-icon-img {
-  transform: scale(1.1);
+  transform: scale(1.12);
 }
 
+/* ===== النص ===== */
 .menu-text {
   color: #fff;
   font-size: 14px;
   font-weight: 500;
-}
-.menu-text {
-  transition: opacity 0.3s ease, width 0.3s ease;
+  white-space: nowrap; /* يمنع التفاف النص */
+  overflow: hidden;
+  transition: opacity 0.25s ease, width 0.25s ease;
+  text-decoration: none;
+  flex: 1;
 }
 
+/* عند الطي — النص يختفي بشكل أنيق */
 .menu-item.collapsed .menu-text {
   opacity: 0;
   width: 0;
+}
+
+/* اختفاء العنصر بالكامل عند الطي */
+.menu-item.collapsed {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+/* ===== القائمة المنسدلة ===== */
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+  filter: brightness(0) invert(1);
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: static;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin: 4px 0;
+  padding: 8px 0;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 16px 8px 44px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-item.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-left-color: #fff;
+  font-weight: 500;
+}
+
+/* تأثير الظهور */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* عند طي السايدبار - إخفاء القائمة المنسدلة */
+.sidebar.collapsed .dropdown-menu {
+  display: none;
 }

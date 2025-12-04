@@ -1,4 +1,5 @@
 import React from "react";
+import UploadIcon from "../../assets/icons/image- 1.png";
 
 const CompanyForm = ({ data, errors, onChange, onFileChange }) => {
   return (
@@ -10,7 +11,7 @@ const CompanyForm = ({ data, errors, onChange, onFileChange }) => {
         { label: "Website", name: "website" },
       ].map((field) => (
         <div key={field.name}>
-          <h4 className="info-text">{field.label}</h4>
+          <h4 className="info-text compact-label">{field.label}</h4>
           <div style={{ position: "relative" }}>
             <input
               name={field.name}
@@ -29,7 +30,7 @@ const CompanyForm = ({ data, errors, onChange, onFileChange }) => {
       <div className="upload" style={{ alignContent: "center" }}>
         <label htmlFor="companyPhoto" className="upload-label">
           <img
-            src="/image- 1.png"
+            src={UploadIcon}
             alt="Upload Icon"
             style={{ verticalAlign: "middle", marginRight: "6px" }}
           />

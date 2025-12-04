@@ -1,38 +1,64 @@
-/* تصميم شريط التنقل الأساسي */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
+  padding: 20px 98px;
   background: transparent;
-  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
-/* ضبط حجم شعار Irshad */
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 3px 98px;
+}
+
 .logo img {
-  height: 40px;
+  height: 45px;
   width: auto;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
 }
 
-/* تنسيق روابط التنقل مع تأثير hover */
+.navbar.scrolled .logo img {
+  height: 40px;
+}
+
+/* ========== الروابط الأساسية ========== */
+.nav-links {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
 .nav-links a {
   position: relative;
-  margin: 0 12px;
   text-decoration: none;
   color: #28205b;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 0;
   transition: color 0.3s;
 }
 
-/* خط تحت الرابط يظهر عند المرور */
+.navbar.scrolled .nav-links a {
+  color: #28205b;
+}
+
 .nav-links a::after {
   content: "";
   position: absolute;
-  bottom: -4px;
+  bottom: 0;
   left: 0;
-  width: 0%;
+  width: 0;
   height: 2px;
-  background: #28205b;
+  background: #00b8e7;
   transition: width 0.3s;
 }
 
@@ -40,37 +66,429 @@
   width: 100%;
 }
 
-/* تغيير خلفية الشريط عند التمرير */
-.navbar.scrolled {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
-  transition: background 0.3s;
-}
-
-/* إزالة التسطير عند المرور على الرابط */
 .nav-links a:hover {
+  color: #00b8e7;
   text-decoration: none;
 }
 
-/* تنسيق زر تسجيل الدخول */
-.login-btn {
-  width: 100px;
-  height: 34px;
-  opacity: 1;
+.nav-links a.active {
+  color: #00b8e7;
+}
+
+.nav-links a.active::after {
+  width: 100%;
+}
+
+.auth-links-group {
+  display: flex;
+  gap: 30px;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 2px solid rgba(40, 32, 91, 0.1);
+}
+
+/* ========== أزرار سطح المكتب (تظهر فقط على الشاشات الكبيرة) ========== */
+.desktop-utility-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ========== زر الترجمة المحسن ========== */
+.language-switcher-container {
+  margin-right: 20px;
+}
+
+.language-switcher-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 25px;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.language-switcher-btn:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  border-color: #00b8e7;
+  color: #00b8e7;
+}
+
+.language-switcher-btn:active {
+  transform: translateY(0);
+}
+
+.globe-icon {
+  font-size: 16px;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* ========== أزرار المصادقة ========== */
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* زر تسجيل الدخول */
+.login-link .login-btn {
+  width: 120px;
+  height: 40px;
   border-radius: 8px;
-  padding-top: 7px;
-  padding-bottom: 7px;
   border: none;
   background: #00b8e7;
   color: white;
-  font-family: Roboto;
-  font-size: 18px;
-  line-height: 100%;
-  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* تأثير hover لزر تسجيل الدخول */
-.login-btn:hover {
-  background: white;
-  color: #4b3cff;
+.login-link .login-btn:hover {
+  background: #0099cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 184, 231, 0.3);
+}
+
+/* قائمة المستخدم عند تسجيل الدخول */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-name-link {
+  text-decoration: none;
+  color: #28205b;
+  transition: color 0.3s ease;
+}
+
+.user-name-link:hover {
+  color: #00b8e7;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #28205b;
+}
+
+.logout-btn {
+  width: 120px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: #ff4757;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #ff2e43;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 71, 87, 0.3);
+}
+
+/* ========== أزرار الهاتف (داخل قائمة الهامبرجر) ========== */
+.mobile-language-switcher,
+.mobile-auth-buttons {
+  display: none;
+}
+
+/* ========== زر الهامبورجر ========== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: #28205b;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* ========== تصميم متجاوب للشاشات الصغيرة ========== */
+@media (max-width: 1200px) {
+  .navbar {
+    padding: 20px 50px;
+  }
+  
+  .navbar.scrolled {
+    padding: 3px 50px;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar {
+    padding: 20px 30px;
+  }
+  
+  .navbar.scrolled {
+    padding: 3px 30px;
+  }
+  
+  .nav-links {
+    gap: 20px;
+  }
+  
+  .auth-links-group {
+    margin-left: 15px;
+    padding-left: 15px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+
+  .navbar.scrolled {
+    padding: 10px 20px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  /* إخفاء أزرار سطح المكتب على الشاشات الصغيرة */
+  .desktop-utility-buttons {
+    display: none;
+  }
+
+  /* عرض قائمة الهامبرجر */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    max-width: 300px;
+    height: 100vh;
+    background: white;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 15px;
+    transition: right 0.4s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    padding: 100px 25px 30px;
+    overflow-y: auto;
+  }
+
+  .nav-links.open {
+    right: 0;
+  }
+
+  .nav-links a {
+    font-size: 18px;
+    padding: 12px 20px;
+    width: 100%;
+    text-align: right;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    background: rgba(0, 184, 231, 0.1);
+  }
+
+  .auth-links-group {
+    flex-direction: column;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    border-top: 2px solid rgba(40, 32, 91, 0.1);
+    padding-top: 20px;
+    margin-top: 10px;
+    width: 100%;
+    gap: 15px;
+  }
+
+  /* عرض أزرار الهاتف داخل قائمة الهامبرجر */
+  .mobile-language-switcher {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid rgba(40, 32, 91, 0.1);
+  }
+
+  .mobile-auth-buttons {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid rgba(40, 32, 91, 0.1);
+  }
+
+  /* زر اللغة للهاتف */
+  .language-switcher-btn.mobile {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  /* أزرار المصادقة للهاتف */
+  .mobile-user-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .mobile-user-name-link {
+    text-decoration: none;
+    color: #28205b;
+    width: 100%;
+  }
+
+  .mobile-user-name {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #28205b;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+
+  .mobile-login-link,
+  .mobile-logout-btn {
+    width: 100%;
+  }
+
+  .mobile-login-btn {
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    background: #00b8e7;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-login-btn:hover {
+    background: #0099cc;
+  }
+
+  .mobile-logout-btn {
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    background: #ff4757;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-logout-btn:hover {
+    background: #ff2e43;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    width: 85%;
+  }
+  
+  .nav-links a {
+    font-size: 16px;
+    padding: 10px 15px;
+  }
+  
+  .mobile-login-btn,
+  .mobile-logout-btn {
+    height: 42px;
+    font-size: 15px;
+  }
+}
+
+/* تحسينات إضافية للغة العربية */
+[dir="rtl"] .auth-links-group {
+  margin-right: 20px;
+  padding-right: 20px;
+  border-right: 2px solid rgba(40, 32, 91, 0.1);
+  border-left: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+[dir="rtl"] .nav-links a::after {
+  right: 0;
+  left: auto;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .nav-links {
+    right: auto;
+    left: -100%;
+  }
+  
+  .nav-links.open {
+    right: auto;
+    left: 0;
+  }
+  
+  [dir="rtl"] .nav-links a {
+    text-align: left;
+  }
+  
+  .auth-links-group {
+    border-right: none;
+    border-top: 2px solid rgba(40, 32, 91, 0.1);
+  }
 }

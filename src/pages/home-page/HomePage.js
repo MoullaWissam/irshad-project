@@ -12,7 +12,7 @@ import Footer from "./Footer.js";
 
 function HomePage() {
   return (
-    <div>
+    <div className="home-page-wrapper">
       <Navbar />
       <Hero />
       <HowItWorks />

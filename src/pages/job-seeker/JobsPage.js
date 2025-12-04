@@ -1,11 +1,7 @@
-/**
- * Jobs Page Component
- * مسؤول عن عرض الوظائف مع مربع بحث لتصفية النتائج
- */
-
+// pages/job-seeker/JobsPage.js
 import React, { useState } from "react";
-import JobCard from "../../Components/Card/JobCard";
-import "./Jobs.css";
+import JobCard from "../../components/Card/JobCard/JobCard";
+import "./JobsPage.css";
 
 // بيانات الوظائف (من API لاحقًا)
 const jobsData = [
@@ -47,7 +43,7 @@ const jobsData = [
   },
 ];
 
-function Jobs() {
+function JobsPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   // تصفية الوظائف حسب البحث
@@ -56,8 +52,13 @@ function Jobs() {
   );
 
   return (
-    <div className="jobs-container">
-      {/* مربع البحث مع الأيقونة بداخله */}
+    <div className="jobs-page-container">
+      {/* عنوان الصفحة */}
+      <div className="page-header">
+        <h2>Search for <span>Jobs</span></h2>
+      </div>
+
+      {/* مربع البحث */}
       <div className="search-box">
         <input
           type="text"
@@ -85,4 +86,4 @@ function Jobs() {
   );
 }
 
-export default Jobs;
+export default JobsPage;
