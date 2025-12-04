@@ -19,6 +19,7 @@ import ApplicantsGrid from "./pages/company/ApplicantsGrid"; // لوحة تحك�
 import AddJobPage from "./pages/company/AddJobPage"; // إدارة الوظائف
 import MatchesPage from "./pages/job-seeker/MatchesPage"; // لوحة تحكم الباحث عن عمل
 import UploadResume from "./pages/job-seeker/UploadResume"; // صفحة رفع السيرة
+import AddJob from "./pages/company/AddJob/AddJobPage";
 
 // 4. الإعدادات
 import SettingsPage from "./pages/settings/SettingsPage";
@@ -66,6 +67,8 @@ function App() {
           path="/settings"
           element={<SettingsPage settings={currentSettings} />}
         />
+
+        <Route path="/Addjob" element={<AddJob />} />
       </Routes>
     </BrowserRouter>
   );

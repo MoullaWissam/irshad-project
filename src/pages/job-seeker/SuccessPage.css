@@ -1,0 +1,109 @@
+.success-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background: #f5f8ff;
+  font-family: sans-serif;
+}
+
+.success-content {
+  flex: 1;
+  padding: 30px 80px;
+  position: relative;
+}
+
+.success-title {
+  font-size: 58px;
+  font-weight: 800;
+  color: #081b4b;
+  margin-bottom: 100px;
+}
+
+.success-icon {
+  display: flex;
+  justify-content: center;
+  margin: 25px 0;
+}
+
+.check-circle {
+  width: 180px;
+  height: 180px;
+  margin-bottom: 100px;
+  background: #32d471;
+  color: white;
+  font-size: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 70px rgba(50, 212, 113, 0.9);
+}
+
+.success-text {
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.success-text span {
+  font-weight: bold;
+}
+
+.success-subtext {
+  text-align: center;
+  margin-top: 8px;
+  color: #777;
+}
+
+.buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 35px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: #6a45ff;
+  color: white;
+  border: none;
+}
+
+.primary-btn:hover {
+  box-shadow: 0 0 10px hwb(247 42% 0%);
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 2px solid #6a45ff;
+  color: #6a45ff;
+}
+
+.secondary-btn:hover {
+  box-shadow: 0 0 10px rgba(124, 107, 255, 0.8);
+}
+
+.floating-card {
+  position: absolute;
+  right: 80px;
+  top: 260px;
+  background: white;
+  padding: 18px 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  text-align: center;
+}
+
+.card-icon {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
