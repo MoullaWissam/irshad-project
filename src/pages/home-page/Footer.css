@@ -1,121 +1,118 @@
-/* القسم العام للتذييل */
-.footer {
+/* إعادة تسمية الفئات لجعلها أكثر خصوصية */
+.irshad-footer {
   width: auto;
   height: auto;
-  angle: 0 deg;
+  angle: 0deg;
   opacity: 1;
-  padding-top: 50px;
-  padding-bottom: 10px;
-  gap: 128px;
+  padding-top: 30px;
+  padding-bottom: 5px;
+  gap: 80px;
   background: #2b1d6a;
   color: white;
 }
 
-/* الحاوية الداخلية */
-.footer-container {
+.irshad-footer-container {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   max-width: 1100px;
   margin: 0 auto;
-  gap: 40px;
+  gap: 30px;
+  padding-bottom: 20px;
 }
 
-/* شعار Irshad */
-.footer-logo {
+.irshad-footer-logo {
   width: 224px;
   height: 68px;
   opacity: 1;
   border-radius: 8px;
   background: #fbfbfb;
+  margin-bottom: 10px;
 }
 
-/* وصف العلامة التجارية */
-.footer-brand p {
+.irshad-footer-brand p {
   width: 241px;
   height: auto;
-  angle: 0 deg;
+  angle: 0deg;
   opacity: 1;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 32px;
+  font-size: 15px;
+  line-height: 28px;
+  margin-top: 5px;
 }
 
-/* روابط المساعدة */
-.footer-links {
-  width: 181;
-  height: 165;
-  angle: 0 deg;
+.irshad-footer-links {
+  width: 181px;
+  height: 165px;
+  angle: 0deg;
   opacity: 1;
-  gap: 26px;
+  gap: 20px;
 }
 
-.footer-links h4 {
+.irshad-footer-links h4 {
   width: 119px;
   height: 38px;
   opacity: 1;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 38px;
+  font-size: 20px;
+  line-height: 32px;
   letter-spacing: 0%;
-  margin: 0px;
-  margin-bottom: 14px;
+  margin: 0;
+  margin-bottom: 12px;
 }
 
-.footer-links ul {
+.irshad-footer-links ul {
   list-style: none;
   padding: 0;
-  font-size: 18px;
-  line-height: 42px;
+  font-size: 16px;
+  line-height: 36px;
   letter-spacing: 0%;
   vertical-align: middle;
-  margin: 0px;
+  margin: 0;
 }
 
-.footer-links a {
+.irshad-footer-links a {
   color: #eee;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
 }
 
-.footer-links a:hover {
+.irshad-footer-links a:hover {
   text-decoration: underline;
 }
 
-/* قسم التواصل الاجتماعي */
-.footer-social {
-  margin-bottom: 10px;
+.irshad-footer-social {
+  margin-bottom: 5px;
   font-size: 16px;
   width: auto;
-  height: 112px;
-  angle: 0 deg;
+  height: 100px;
+  angle: 0deg;
   opacity: 1;
-  gap: 24px;
+  gap: 20px;
 }
 
-.footer-social h4 {
+.irshad-footer-social h4 {
   width: 106px;
   height: auto;
   opacity: 1;
-  font-size: 24px;
-  line-height: 38px;
-  margin: 0px;
-  margin-bottom: 24px;
+  font-size: 20px;
+  line-height: 32px;
+  margin: 0;
+  margin-bottom: 18px;
 }
 
-/* أيقونات التواصل */
-.social-icons {
+.irshad-social-icons {
   display: flex;
-  width: 230px;
-  height: 50px;
+  width: 210px;
+  height: 45px;
   opacity: 1;
-  gap: 10px;
+  gap: 8px;
 }
 
-.social-icons img {
-  width: 40px;
-  height: 40px;
+.irshad-social-icons img {
+  width: 38px;
+  height: 38px;
   justify-content: space-between;
   opacity: 1;
   border-radius: 50px;
@@ -123,24 +120,153 @@
   transition: transform 0.3s;
 }
 
-.social-icons img:hover {
+.irshad-social-icons img:hover {
   transform: scale(1.2);
 }
 
-/* صورة إضافية جانبية */
-.footer-extra img {
-  max-width: 190px;
+.irshad-footer-extra img {
+  max-width: 180px;
   height: auto;
   object-fit: contain;
   border-radius: 12px;
-  object-fit: contain;
 }
 
-/* حقوق النشر */
-.footer-bottom {
+.irshad-footer-bottom {
   text-align: center;
-  margin-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 13px;
-  color: #ccc;
+  margin-top: 5px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 12px;
+  color: #aaa;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+}
+
+/* تصميم متجاوب للشاشات الصغيرة */
+@media (max-width: 1024px) {
+  .irshad-footer-container {
+    gap: 25px;
+    padding: 0 15px;
+  }
+  
+  .irshad-footer-logo {
+    width: 200px;
+    height: 60px;
+  }
+  
+  .irshad-footer-brand p {
+    width: 200px;
+    font-size: 14px;
+    line-height: 26px;
+  }
+  
+  .irshad-footer-social h4,
+  .irshad-footer-links h4 {
+    font-size: 18px;
+  }
+  
+  .irshad-social-icons {
+    width: 190px;
+  }
+  
+  .irshad-footer-extra img {
+    max-width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .irshad-footer {
+    padding-top: 25px;
+    gap: 40px;
+  }
+  
+  .irshad-footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 25px;
+  }
+  
+  .irshad-footer-brand,
+  .irshad-footer-links,
+  .irshad-footer-social,
+  .irshad-footer-extra {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+  
+  .irshad-footer-logo {
+    margin: 0 auto 8px auto;
+  }
+  
+  .irshad-footer-brand p {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .irshad-footer-links h4,
+  .irshad-footer-social h4 {
+    margin: 0 auto 10px auto;
+  }
+  
+  .irshad-social-icons {
+    justify-content: center;
+    margin: 0 auto;
+  }
+  
+  .irshad-footer-extra img {
+    max-width: 150px;
+  }
+  
+  .irshad-footer-bottom {
+    font-size: 11px;
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .irshad-footer {
+    padding-top: 20px;
+  }
+  
+  .irshad-footer-logo {
+    width: 180px;
+    height: 55px;
+  }
+  
+  .irshad-footer-brand p {
+    font-size: 13px;
+    line-height: 24px;
+  }
+  
+  .irshad-footer-links h4,
+  .irshad-footer-social h4 {
+    font-size: 17px;
+  }
+  
+  .irshad-footer-links a {
+    font-size: 12px;
+  }
+  
+  .irshad-social-icons {
+    width: auto;
+    height: auto;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .irshad-social-icons a {
+    margin: 0 5px;
+  }
+  
+  .irshad-footer-extra img {
+    max-width: 140px;
+  }
+  
+  .irshad-footer-bottom {
+    font-size: 10px;
+    padding-top: 8px;
+  }
 }

@@ -1,8 +1,103 @@
 .sidebar-header {
   padding: 16px 0px;
+  margin-bottom: 20px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  min-height: 32px; /* تقليل الارتفاع */
+}
+
+/* الشعار عندما يكون السايدبار مفتوحاً */
+.sidebar-logo {
+  transition: transform 0.3s ease;
+  flex: 1;
+  height: 28px; /* ارتفاع مناسب */
+  width: auto; /* الحفاظ على التناسب */
+  max-width: 140px; /* عرض أقصى مناسب */
+  object-fit: contain;
+}
+
+/* الشعار الصغير عندما يكون السايدبار مغلقاً */
+.sidebar-logo-small {
+  transition: transform 0.3s ease;
+  height: 24px; /* حجم أصغر */
+  width: 24px;
+  object-fit: contain;
 }
 
 .sidebar-logo:hover,
 .sidebar-logo-small:hover {
   transform: scale(1.05);
+}
+
+/* أيقونة التبديل - الأساسية */
+.toggle-button {
+  width: 28px; /* تصغير الحجم */
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0; /* منع التقلص */
+}
+
+.toggle-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.toggle-icon {
+  width: 14px; /* تصغير الأيقونة */
+  height: 14px;
+  filter: brightness(0) invert(1);
+}
+
+/* عندما يكون مفتوحاً - أيقونة التبديل ثابتة */
+.toggle-button.always-visible {
+  opacity: 1;
+  visibility: visible;
+  margin-left: 8px; /* مسافة بين الشعار والأيقونة */
+}
+
+/* عندما يكون مغلقاً - الشعار الافتراضي */
+.sidebar-logo-small.default-logo {
+  opacity: 1;
+  visibility: visible;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.3s ease;
+}
+
+/* عندما يكون مغلقاً - أيقونة التبديل (تظهر عند الhover فقط) */
+.toggle-button.hover-only {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.3s ease;
+}
+
+/* عند الhover على المنطقة عندما يكون مغلقاً */
+.header-content:hover .sidebar-logo-small.default-logo {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.header-content:hover .toggle-button.hover-only {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* جعل المحتوى أكثر تناسقاً مع بقية العناصر */
+.header-content {
+  gap: 8px;
 }

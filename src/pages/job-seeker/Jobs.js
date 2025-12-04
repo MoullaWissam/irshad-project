@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import JobCard from "../../Components/Card/JobCard/JobCard";
+import JobCard from "../../Components/Card/JobCard";
 import "./Jobs.css";
 
 // بيانات الوظائف (من API لاحقًا)

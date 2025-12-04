@@ -59,6 +59,8 @@
   white-space: nowrap; /* يمنع التفاف النص */
   overflow: hidden;
   transition: opacity 0.25s ease, width 0.25s ease;
+  text-decoration: none;
+  flex: 1;
 }
 
 /* عند الطي — النص يختفي بشكل أنيق */
@@ -74,6 +76,72 @@
   pointer-events: auto;
   text-decoration: none;
 }
-.menu-text {
+
+/* ===== القائمة المنسدلة ===== */
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+  filter: brightness(0) invert(1);
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: static;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin: 4px 0;
+  padding: 8px 0;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 16px 8px 44px;
+  color: #fff;
   text-decoration: none;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-item.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-left-color: #fff;
+  font-weight: 500;
+}
+
+/* تأثير الظهور */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* عند طي السايدبار - إخفاء القائمة المنسدلة */
+.sidebar.collapsed .dropdown-menu {
+  display: none;
 }

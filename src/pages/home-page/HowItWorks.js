@@ -1,4 +1,7 @@
+// HowItWorks.js - بعد التعديل
+
 import React from "react";
+import { useTranslation } from 'react-i18next'; // 👈 استيراد الخطاف
 import "./HowItWorks.css";
 
 // 👇 استيراد الأيقونات الثلاث
@@ -7,35 +10,40 @@ import aiIcon from "../../assets/images/AI.png";
 import getIcon from "../../assets/images/get.png";
 
 function HowItWorks() {
+  const { t } = useTranslation(); // 👈 استخدام الخطاف
+  
+  // استخدام مفاتيح الترجمة في كائن الخطوات
   const steps = [
     {
-      icon: uploadIcon, // 👈 استخدام المتغير
-      title: "Upload Your Resume",
-      desc: "Easily upload your CV in seconds.",
+      icon: uploadIcon,
+      title: t("Upload Your Resume Title"),
+      desc: t("Easily upload your CV in seconds."),
     },
     {
-      icon: aiIcon, // 👈 استخدام المتغير
-      title: "AI-Powered Watch",
-      desc: "Our AI scans your skills and matches you with the best opportunities.",
+      icon: aiIcon,
+      title: t("AI-Powered Watch"),
+      desc: t("Our AI scans your skills and matches you with the best opportunities."),
     },
     {
-      icon: getIcon, // 👈 استخدام المتغير
-      title: "Get Hired Faster",
-      desc: "Connect directly with top companies and land your dream job.",
+      icon: getIcon,
+      title: t("Get Hired Faster"),
+      desc: t("Connect directly with top companies and land your dream job."),
     },
   ];
 
   return (
     <section className="how">
+      {/* عنوان القسم */}
       <h2 className="how-title">
-        How It Works <br /> With Irshad
+        {t("How It Works With Irshad")}
       </h2>
       <div className="arrow-bg">
         <div className="how-steps">
           {steps.map((step, index) => (
             <div key={index} className="circle-card">
               <div className="circle">
-                <img src={step.icon} alt={step.title} />
+                {/* استخدام step.title المترجم لـ alt */}
+                <img src={step.icon} alt={step.title} /> 
               </div>
               <div className="text">
                 <h3>{step.title}</h3>
