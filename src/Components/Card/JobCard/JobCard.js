@@ -1,42 +1,39 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./JobCard.css";
 
-function JobCard({ icon, title, desc, type }) {
-  // صورة افتراضية في حالة عدم وجود أيقونة
+function JobCard({ id, icon, title, desc, type }) {
+  const navigate = useNavigate();
+  
   const defaultIcon = "https://cdn-icons-png.flaticon.com/512/3067/3067256.png";
   
   const handleCardClick = () => {
-    // هنا يمكنك إضافة منطق عند النقر على البطاقة
-    console.log(`Clicked on ${title}`);
-    // أو توجيه المستخدم لصفحة تفاصيل الوظيفة
-    // navigate(`/job/${jobId}`);
+    navigate(`/job/${id}`);
   };
   
   const handleDetailsClick = (e) => {
-    e.stopPropagation(); // منع تنفيذ حدث النقر على البطاقة
-    // هنا يمكنك إضافة منطق لزر "More Details"
-    alert(`More details about ${title}`);
+    e.stopPropagation();
+    navigate(`/job/${id}`);
   };
   
   const handleImageError = (e) => {
-    // إذا فشل تحميل الصورة، استبدلها بصورة افتراضية
     e.target.src = defaultIcon;
   };
 
   return (
-    <div className="job-card" onClick={handleCardClick}>
-      <div className="job-header">
+    <div className="job-card-wrapper" onClick={handleCardClick}>
+      <div className="job-card-header-wrapper">
         <img 
           src={icon || defaultIcon} 
           alt={title} 
-          className="job-icon" 
+          className="job-card-icon-wrapper" 
           onError={handleImageError}
         />
-        <span className="job-type">{type}</span>
+        <span className="job-card-type-tag">{type}</span>
       </div>
-      <h3 className="job-title">{title}</h3>
-      <p className="job-desc">{desc}</p>
-      <button className="job-link" onClick={handleDetailsClick}>
+      <h3 className="job-card-title-text">{title}</h3>
+      <p className="job-card-description">{desc}</p>
+      <button className="job-card-details-btn" onClick={handleDetailsClick}>
         More Details ↗
       </button>
     </div>
