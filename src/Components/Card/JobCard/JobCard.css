@@ -1,6 +1,6 @@
 /* JobCard Component Styles - Unique class names */
 .job-card-wrapper {
-  min-width: 330px;
+  min-width: 300px;
   background: white;
   color: #333;
   border-radius: 12px;
@@ -51,6 +51,7 @@
 }
 
 .job-card-description {
+  max-width: 300px;
   font-size: 14px;
   color: #666;
   margin-bottom: 15px;
