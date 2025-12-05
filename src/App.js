@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
 
 // Import MainLayout
@@ -23,7 +23,9 @@ import Success from "./pages/auth/SetNewPassword/Success";
 import MatchesPage from "./pages/job-seeker/MatchesPage";
 import UploadResume from "./pages/job-seeker/UploadResume";
 import JobsPage from "./pages/job-seeker/JobsPage";
-import JobDetails from "./pages/job-seeker/JobDetails"; // أضيف هذا الاستيراد
+import JobDetails from "./pages/job-seeker/JobDetails";
+import ApplicationForm from "./pages/job-seeker/ApplicationForm"; // مكون جديد
+import QuickTest from "./pages/job-seeker/QuickTest"; // مكون جديد
 
 // Company Pages
 import ApplicantsGrid from "./pages/company/ApplicantsGrid";
@@ -96,11 +98,39 @@ function App() {
     }, "test-token-123");
   };
 
+  // Success Page Component
+  const ApplicationSuccess = () => {
+    const navigate = useNavigate();
+    
+    return (
+      <div className="page-content">
+        <div className="success-page">
+          <div className="success-icon-large">✓</div>
+          <h1>✅ تم تقديم طلبك بنجاح</h1>
+          <p>شكراً لتقديمك على هذه الوظيفة. سنقوم بمراجعة طلبك وسنقوم بالاتصال بك في أقرب وقت.</p>
+          <div className="success-actions">
+            <button 
+              className="btn-primary"
+              onClick={() => navigate('/jobs')}
+            >
+              استعراض المزيد من الوظائف
+            </button>
+            <button 
+              className="btn-secondary"
+              onClick={() => navigate('/applications/pending')}
+            >
+              عرض طلباتي
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       <BrowserRouter>
-        {/* Test Control Panel - Floating on Left Side */}
+           {/* Test Control Panel - Floating on Left Side */}
         {showTestPanel && (
           <div className="test-control-panel">
             <div className="test-header">
@@ -207,7 +237,6 @@ function App() {
           </button>
         )}
 
-
         <Routes>
           {/* Public Pages - Without Layout */}
           <Route path="/" element={<HomePage isAuthenticated={isAuthenticated} user={user} logout={logout} />} />
@@ -227,11 +256,36 @@ function App() {
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="/success" element={<Success />} />
 
-          {/* Job Details Page - NEW ROUTE */}
+          {/* Job Details Page */}
           <Route path="/job/:jobId" element={
             <ProtectedRoute>
               <MainLayout userRole={userRole}>
                 <JobDetails />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Application Flow Pages */}
+          <Route path="/job/:jobId/apply" element={
+            <ProtectedRoute>
+              <MainLayout userRole={userRole}>
+                <ApplicationForm />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/job/:jobId/test" element={
+            <ProtectedRoute>
+              <MainLayout userRole={userRole}>
+                <QuickTest />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/job/:jobId/application-success" element={
+            <ProtectedRoute>
+              <MainLayout userRole={userRole}>
+                <ApplicationSuccess />
               </MainLayout>
             </ProtectedRoute>
           } />
@@ -308,7 +362,6 @@ function App() {
               </MainLayout>
             </ProtectedRoute>
           } />
-
 
           {/* Applications Sub-pages (Job Seeker) - With MainLayout */}
           <Route path="/applications/approved" element={

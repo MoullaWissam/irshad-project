@@ -1,158 +1,3 @@
-// import React from "react";
-// import "./JobDetails.css";
-
-// export default function JobDetails() {
-//   return (
-//     <div className="jobdetails-container">
-//       <div className="jobdetails-content">
-//         {/* Header */}
-//         <div className="job-header">
-//           <div>
-//             <h1 className="job-title">Email Marketing</h1>
-//             <p className="job-meta">
-//               FULL TIME <span> | </span> Location: Damascus
-//             </p>
-//           </div>
-
-//           <button className="apply-btn">Apply & Start Test</button>
-//         </div>
-
-//         {/* Company Section */}
-//         <div className="company-box">
-//           <div className="company-icon">
-//             {" "}
-//             <img src="" alt="company icon" />
-//           </div>
-//           <h3>Company Name</h3>
-//         </div>
-
-//         {/* Sections */}
-//         <div className="job-section">
-//           <h4>Job Description</h4>
-//           <p>
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//             ddddddddddddddddddddddddddddddddddddd
-//           </p>
-//         </div>
-
-//         <div className="job-section">
-//           <h4>Required Skills</h4>
-//           <p>
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//             ddddddddddddddddddddddddddddddddddddd
-//           </p>
-//         </div>
-
-//         <div className="job-section">
-//           <h4>Required Experience</h4>
-//           <p>
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//             ddddddddddddddddddddddddddddddddddddd
-//           </p>
-//         </div>
-
-//         <div className="job-section">
-//           <h4>Required Education</h4>
-//           <p>
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//             dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// // import React, { useEffect, useState } from "react";
-// // import { useParams } from "react-router-dom";
-// // import "./JobDetails.css";
-
-// // export default function JobDetails() {
-// //   const { jobId } = useParams(); // استلام ID الوظيفة من الرابط
-// //   const [job, setJob] = useState(null);
-// //   const [loading, setLoading] = useState(true);
-
-// //   // جلب البيانات من الباك
-// //   useEffect(() => {
-// //     const fetchJob = async () => {
-// //       try {
-// //         const response = await fetch(`https://your-api.com/jobs/${jobId}`);
-// //         const data = await response.json();
-// //         setJob(data);
-// //       } catch (error) {
-// //         console.error("Failed to load job:", error);
-// //       } finally {
-// //         setLoading(false);
-// //       }
-// //     };
-
-// //     fetchJob();
-// //   }, [jobId]);
-
-// //   if (loading) {
-// //     return <div className="loading">Loading job details...</div>;
-// //   }
-
-// //   if (!job) {
-// //     return <div className="error">Job not found.</div>;
-// //   }
-
-// //   return (
-// //     <div className="jobdetails-container">
-// //       <div className="jobdetails-content">
-// //         {/* Header */}
-// //         <div className="job-header">
-// //           <div>
-// //             <h1 className="job-title">{job.title}</h1>
-
-// //             <p className="job-meta">
-// //               {job.type?.toUpperCase()} <span> | </span> Location:{" "}
-// //               {job.location}
-// //             </p>
-// //           </div>
-
-// //           <button className="apply-btn">Apply & Start Test</button>
-// //         </div>
-
-// //         {/* Company Section */}
-// //         <div className="company-box">
-// //           <div className="company-icon">
-// //             {" "}
-// //             <img src="" alt="company icon" />
-// //           </div>
-// //           <h3>{job.companyName}</h3>
-// //         </div>
-
-// //         {/* Job Description */}
-// //         <div className="job-section">
-// //           <h4>Job Description</h4>
-// //           <p>{job.description}</p>
-// //         </div>
-
-// //         {/* Required Skills */}
-// //         <div className="job-section">
-// //           <h4>Required Skills</h4>
-// //           <p>{job.skills}</p>
-// //         </div>
-
-// //         {/* Experience */}
-// //         <div className="job-section">
-// //           <h4>Required Experience</h4>
-// //           <p>{job.experience}</p>
-// //         </div>
-
-// //         {/* Education */}
-// //         <div className="job-section">
-// //           <h4>Required Education</h4>
-// //           <p>{job.education}</p>
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // }
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./JobDetails.css";
@@ -162,6 +7,7 @@ export default function JobDetails() {
   const navigate = useNavigate();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hasTest, setHasTest] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -169,29 +15,35 @@ export default function JobDetails() {
         // بيانات تجريبية للاختبار - يمكنك إضافة API حقيقي هنا
         const mockJobs = {
           1: {
-            title: "Email Marketing",
+            id: 1,
+            title: "Email Marketing Specialist",
             type: "FULL TIME",
             location: "Damascus",
-            companyName: "Company Name",
-            description: "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-            skills: "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-            experience: "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-            education: "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            companyName: "Tech Solutions Inc.",
+            description: "We are seeking a skilled Email Marketing Specialist to join our dynamic marketing team. You will be responsible for creating and executing email marketing campaigns, analyzing performance metrics, and optimizing strategies for maximum engagement.",
+            skills: "Email Marketing, Copywriting, Analytics, CRM Tools, A/B Testing",
+            experience: "3+ years in digital marketing",
+            education: "Bachelor's degree in Marketing or related field",
+            hasTest: true, // هذه الوظيفة بها اختبار
+            testDuration: 5, // مدة الاختبار بالدقائق
           },
           2: {
+            id: 2,
             title: "Frontend Developer",
             type: "FULL TIME",
             location: "Remote",
             companyName: "WebTech Co.",
-            description: "Looking for a skilled frontend developer with React experience.",
-            skills: "React, JavaScript, HTML, CSS, Git",
-            experience: "3+ years in frontend development",
-            education: "Computer Science or equivalent"
+            description: "Looking for a skilled frontend developer with React experience. You will be responsible for building user interfaces, implementing responsive designs, and collaborating with backend developers.",
+            skills: "React, JavaScript, HTML5, CSS3, Git, Responsive Design",
+            experience: "2+ years in frontend development",
+            education: "Computer Science or equivalent",
+            hasTest: false // هذه الوظيفة بدون اختبار
           }
         };
         
         const data = mockJobs[jobId] || mockJobs[1];
         setJob(data);
+        setHasTest(data.hasTest || false);
       } catch (error) {
         console.error("Failed to load job:", error);
       } finally {
@@ -202,12 +54,37 @@ export default function JobDetails() {
     fetchJob();
   }, [jobId]);
 
+  const handleApply = () => {
+    if (hasTest) {
+      // إذا كان هناك اختبار، انتقل إلى صفحة الاختبار
+      navigate(`/job/${jobId}/test`, { state: { jobData: job } });
+    } else {
+      // إذا لم يكن هناك اختبار، انتقل مباشرة إلى نموذج التقديم
+      navigate(`/job/${jobId}/apply`, { state: { jobData: job } });
+    }
+  };
+
   if (loading) {
-    return <div className="loading">Loading job details...</div>;
+    return (
+      <div className="jobdetails-container">
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <p>Loading job details...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!job) {
-    return <div className="error">Job not found.</div>;
+    return (
+      <div className="jobdetails-container">
+        <div className="error-message">
+          <h2>Job Not Found</h2>
+          <p>The job you're looking for doesn't exist or has been removed.</p>
+          <button onClick={() => navigate('/jobs')}>Back to Jobs</button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -218,17 +95,19 @@ export default function JobDetails() {
           <div>
             <h1 className="job-title">{job.title}</h1>
             <p className="job-meta">
-              {job.type?.toUpperCase()} <span> | </span> Location: {job.location}
+              FULL TIME <span> | </span> Location: {job.location}
             </p>
           </div>
 
-          <button className="apply-btn">Apply & Start Test</button>
+          <button className="apply-btn" onClick={handleApply}>
+            {hasTest ? "Apply & Start Test" : "Apply Now"}
+          </button>
         </div>
 
         {/* Company Section */}
         <div className="company-box">
           <div className="company-icon">
-            <img src="" alt="company icon" />
+            <div className="company-avatar">{job.companyName.charAt(0)}</div>
           </div>
           <h3>{job.companyName}</h3>
         </div>

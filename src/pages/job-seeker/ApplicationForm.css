@@ -1,0 +1,365 @@
+.application-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #f7faff;
+  min-height: calc(100vh - 120px);
+}
+
+.application-content {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+}
+
+.application-header {
+  margin-bottom: 40px;
+  border-bottom: 2px solid #f0f4ff;
+  padding-bottom: 20px;
+}
+
+.application-title {
+  color: #0b2b82;
+  font-size: 32px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.job-info-banner {
+  background: #e9f4ff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.job-info-banner h3 {
+  color: #172e5d;
+  margin: 0 0 5px 0;
+  font-size: 20px;
+}
+
+.job-info-banner p {
+  color: #6e6e6e;
+  margin: 0;
+  font-size: 14px;
+}
+
+.test-completed-banner {
+  background: #e8f5e9;
+  padding: 15px 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.test-icon {
+  font-size: 24px;
+  color: #4CAF50;
+}
+
+.test-completed-banner p {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.test-completed-banner strong {
+  color: #2e7d32;
+}
+
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section h3 {
+  color: #172e5d;
+  font-size: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #172e5d;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.form-group .hint {
+  color: #6e6e6e;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #00b4d8;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #f44336;
+  background: #fff5f5;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 13px;
+  margin-top: 5px;
+  display: block;
+}
+
+.file-upload-container {
+  margin-top: 5px;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-upload-button {
+  background: #0b2b82;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+  white-space: nowrap;
+}
+
+.file-upload-button:hover {
+  background: #1a3a9c;
+}
+
+.file-name {
+  color: #666;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-hint {
+  color: #888;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #f0f4ff;
+}
+
+.cancel-button,
+.submit-button {
+  padding: 14px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.cancel-button {
+  background: #f5f5f5;
+  color: #666;
+  border: 2px solid #ddd;
+}
+
+.cancel-button:hover {
+  background: #eaeaea;
+  color: #333;
+}
+
+.submit-button {
+  background: #00b4d8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submit-button:hover {
+  background: #0099c3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.3);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.submit-error {
+  background: #ffebee;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: center;
+  border-left: 4px solid #f44336;
+}
+
+.success-message {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin: 0 auto 25px;
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.success-message h2 {
+  color: #2e7d32;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.success-message p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.back-to-job-btn {
+  background: #0b2b82;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.back-to-job-btn:hover {
+  background: #1a3a9c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .application-content {
+    padding: 25px;
+  }
+  
+  .application-title {
+    font-size: 26px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .application-container {
+    padding: 20px 10px;
+  }
+  
+  .application-content {
+    padding: 20px;
+  }
+  
+  .application-title {
+    font-size: 22px;
+  }
+  
+  .test-completed-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}

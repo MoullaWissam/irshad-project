@@ -319,6 +319,123 @@
   transition: all 0.3s ease;
   animation: pulse 2s infinite;
 }
+.success-page {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.success-icon-large {
+  width: 100px;
+  height: 100px;
+  background: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  margin: 0 auto 30px;
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.success-page h1 {
+  color: #2e7d32;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.success-page p {
+  color: #666;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: #00b4d8;
+  color: white;
+  padding: 14px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+}
+
+.btn-primary:hover {
+  background: #0096c7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.3);
+}
+
+.btn-secondary {
+  background: white;
+  color: #0b2b82;
+  padding: 14px 30px;
+  border: 2px solid #0b2b82;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+}
+
+.btn-secondary:hover {
+  background: #0b2b82;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(11, 43, 130, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .success-page {
+    padding: 40px 20px;
+  }
+  
+  .success-icon-large {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+  }
+  
+  .success-page h1 {
+    font-size: 26px;
+  }
+  
+  .success-page p {
+    font-size: 16px;
+  }
+  
+  .success-actions {
+    flex-direction: column;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
 
 @keyframes pulse {
   0% {
