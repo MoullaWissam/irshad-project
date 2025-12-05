@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import ApplicantCard from "../../Components/Card/ApplicantCard/ApplicantCard";
 import "./ApplicantsGrid.css";
 
 function ApplicantsGrid() {
+  const { jobId } = useParams(); // الحصول على jobId من الـ URL
   const location = useLocation();
   const [applicants, setApplicants] = useState([]);
-  const [selectedJob, setSelectedJob] = useState("");
+  const [selectedJobTitle, setSelectedJobTitle] = useState("");
 
-  // بيانات المتقدمين - يمكن جلبها من API لاحقاً
+  // بيانات الوظائف التجريبية (ستأتي من API لاحقاً)
+  const jobsData = [
+    { id: 1, title: "Frontend Developer", company: "Tech Corp" },
+    { id: 2, title: "Backend Developer", company: "Data Systems" },
+    { id: 3, title: "UI/UX Designer", company: "Creative Studio" },
+    { id: 4, title: "Project Manager", company: "Management Plus" },
+  ];
+
+  // بيانات المتقدمين التجريبية (ستأتي من API لاحقاً)
   const allApplicants = [
     {
       id: 1,
@@ -16,7 +25,8 @@ function ApplicantsGrid() {
       description: "3 years experience in React",
       avatar: "/avatars/ali.png",
       rank: 1,
-      job: "Frontend Developer",
+      jobId: 1,
+      jobTitle: "Frontend Developer",
       status: "new",
     },
     {
@@ -25,7 +35,8 @@ function ApplicantsGrid() {
       description: "Frontend specialist with Vue.js",
       avatar: "/avatars/sara.png",
       rank: 2,
-      job: "Frontend Developer",
+      jobId: 1,
+      jobTitle: "Frontend Developer",
       status: "reviewed",
     },
     {
@@ -34,7 +45,8 @@ function ApplicantsGrid() {
       description: "Backend developer with Node.js",
       avatar: "/avatars/omar.png",
       rank: 3,
-      job: "Backend Developer",
+      jobId: 2,
+      jobTitle: "Backend Developer",
       status: "new",
     },
     {
@@ -43,77 +55,91 @@ function ApplicantsGrid() {
       description: "UI/UX Designer with Figma expertise",
       avatar: "/avatars/lina.png",
       rank: 4,
-      job: "UI/UX Designer",
+      jobId: 3,
+      jobTitle: "UI/UX Designer",
       status: "reviewed",
     },
   ];
 
-  // بيانات الوظائف
-  const jobs = [
-    { id: 1, title: "Frontend Developer" },
-    { id: 2, title: "Backend Developer" },
-    { id: 3, title: "UI/UX Designer" },
-    { id: 4, title: "Project Manager" },
-  ];
-
   useEffect(() => {
-    // تصفية المتقدمين حسب المسار الحالي
+    // تحديد أي المتقدمين يعرض بناءً على jobId والمسار
     const path = location.pathname;
     
-    if (path.includes("/company/applicants/all")) {
-      setApplicants(allApplicants);
-    } else if (path.includes("/company/applicants/new")) {
-      setApplicants(allApplicants.filter(app => app.status === "new"));
-    } else if (path.includes("/company/applicants/reviewed")) {
-      setApplicants(allApplicants.filter(app => app.status === "reviewed"));
-    } else if (path.includes("/company/my-jobs")) {
-      // في صفحة My Jobs، نعرض جميع المتقدمين أو ننتظر اختيار وظيفة
-      setApplicants(allApplicants);
-      setSelectedJob(jobs[0]?.title || "");
+    if (jobId) {
+      // الحالة 1: هناك jobId في الـ URL - عرض المتقدمين لهذه الوظيفة فقط
+      const jobIdNum = parseInt(jobId);
+      const job = jobsData.find(j => j.id === jobIdNum);
+      
+      if (job) {
+        setSelectedJobTitle(job.title);
+        const filteredApplicants = allApplicants.filter(app => app.jobId === jobIdNum);
+        setApplicants(filteredApplicants);
+      } else {
+        // لم يتم العثور على الوظيفة
+        setSelectedJobTitle("");
+        setApplicants([]);
+      }
     } else {
-      setApplicants(allApplicants);
+      // الحالة 2: لا يوجد jobId - نعرض حسب المسار
+      setSelectedJobTitle("");
+      
+      if (path.includes("/company/applicants/all")) {
+        setApplicants(allApplicants);
+      } else if (path.includes("/company/applicants/new")) {
+        setApplicants(allApplicants.filter(app => app.status === "new"));
+      } else if (path.includes("/company/applicants/reviewed")) {
+        setApplicants(allApplicants.filter(app => app.status === "reviewed"));
+      } else if (path.includes("/company/applicants")) {
+        // إذا كان المسار /company/applicants بدون jobId
+        // نعرض جميع المتقدمين (يمكن تغييره لاحقاً)
+        setApplicants(allApplicants);
+      } else if (path.includes("/company/dashboard")) {
+        // لعرض في dashboard
+        setApplicants(allApplicants.slice(0, 4)); // أول 4 متقدمين فقط للdashboard
+      } else {
+        setApplicants(allApplicants);
+      }
     }
-  }, [location.pathname]);
+  }, [jobId, location.pathname]);
 
-  const handleJobChange = (jobTitle) => {
-    setSelectedJob(jobTitle);
-    if (jobTitle) {
-      setApplicants(allApplicants.filter(app => app.job === jobTitle));
-    } else {
-      setApplicants(allApplicants);
+  // تحديد عنوان الصفحة
+  const getPageTitle = () => {
+    if (selectedJobTitle) {
+      return `Applicants for ${selectedJobTitle}`;
     }
+    
+    const path = location.pathname;
+    if (path.includes("/company/applicants/new")) {
+      return "New Applicants";
+    } else if (path.includes("/company/applicants/reviewed")) {
+      return "Reviewed Applicants";
+    } else if (path.includes("/company/applicants/all")) {
+      return "All Applicants";
+    } else if (path.includes("/company/applicants")) {
+      return "Applicants";
+    } else if (path.includes("/company/dashboard")) {
+      return "Dashboard - Recent Applicants";
+    }
+    
+    return "Applicants";
   };
 
   return (
     <div className="applicants-grid-container">
-      {/* في صفحة My Jobs، نعرض dropdown لاختيار الوظيفة */}
-      {location.pathname.includes("/company/my-jobs") && (
-        <div className="job-selector-section">
-          <h3>Select Job to View Applicants</h3>
-          <select 
-            className="job-dropdown"
-            value={selectedJob}
-            onChange={(e) => handleJobChange(e.target.value)}
-          >
-            <option value="">All Jobs</option>
-            {jobs.map((job) => (
-              <option key={job.id} value={job.title}>
-                {job.title}
-              </option>
-            ))}
-          </select>
-          {selectedJob && (
-            <p className="selected-job-info">
-              Showing applicants for: <strong>{selectedJob}</strong>
-            </p>
-          )}
-        </div>
-      )}
+      {/* العنوان فقط - لن أغير أي شيء آخر في الـ UI */}
+      <h1>{getPageTitle()}</h1>
       
+      {/* سيتم عرض نفس الـ UI الموجود بدون تغيير */}
       <div className="applicants-grid">
         {applicants.length > 0 ? (
           applicants.map((applicant) => (
-            <ApplicantCard key={applicant.id} {...applicant} />
+            <ApplicantCard 
+              key={applicant.id}
+              name={applicant.name}
+              description={applicant.description}
+              avatar={applicant.avatar}
+              rank={applicant.rank}
+            />
           ))
         ) : (
           <div className="no-applicants">
