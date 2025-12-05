@@ -186,12 +186,7 @@ function JobManagementPage() {
 
   return (
     <div className="add-job-page">
-      <div className="page-header">
-        <h2 className="page-title">Job Management</h2>
-        <p className="page-subtitle">
-          Manage your job postings ({jobs.length} {jobs.length === 1 ? 'job' : 'jobs'} total)
-        </p>
-      </div>
+      <h2 className="page-title">Add new Job application</h2>
 
       <div className="job-grid">
         {/* بطاقة الإضافة */}

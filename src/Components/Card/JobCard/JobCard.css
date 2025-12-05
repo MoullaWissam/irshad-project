@@ -1,5 +1,6 @@
 /* JobCard Component Styles - Unique class names */
 .job-card-wrapper {
+  min-width: 330px;
   background: white;
   color: #333;
   border-radius: 12px;
