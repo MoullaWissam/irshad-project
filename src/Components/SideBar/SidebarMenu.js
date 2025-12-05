@@ -43,17 +43,17 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
       {
         path: "/matches",
         icon: matchesIcon,
-        text: "Matches"
+        text: "Matches",
       },
       {
         path: "/jobs",
         icon: searchIcon,
-        text: "Jobs"
+        text: "Jobs",
       },
       {
         path: "/upload",
         icon: mainIcon,
-        text: "Main"
+        text: "Main",
       },
       {
         type: "dropdown",
@@ -62,20 +62,15 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
         items: [
           { path: "/applications/approved", text: "Approved" },
           { path: "/applications/pending", text: "Pending" },
-          { path: "/applications/denied", text: "Denied" }
-        ]
-      }
+          { path: "/applications/denied", text: "Denied" },
+        ],
+      },
     ],
     company: [
       {
-        path: "/company/dashboard",
-        icon: dashboardIcon, // استخدم أيقونة Dashboard
-        text: "Dashboard"
-      },
-      {
         path: "/company/my-jobs",
         icon: addJobIcon,
-        text: "My Jobs"
+        text: "My Jobs",
       },
       {
         type: "dropdown",
@@ -84,10 +79,10 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
         items: [
           { path: "/company/applicants/all", text: "All Applicants" },
           { path: "/company/applicants/new", text: "New Applicants" },
-          { path: "/company/applicants/reviewed", text: "Reviewed" }
-        ]
-      }
-    ]
+          { path: "/company/applicants/reviewed", text: "Reviewed" },
+        ],
+      },
+    ],
   };
 
   const menuItems = menuConfig[userRole] || menuConfig.jobSeeker;
@@ -100,10 +95,16 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
             <div className="dropdown-container">
               <div
                 className={`menu-item dropdown-toggle ${
-                  (userRole === "jobSeeker" && isApplicationsOpen) || 
-                  (userRole === "company" && isApplicantsOpen) ? "active" : ""
+                  (userRole === "jobSeeker" && isApplicationsOpen) ||
+                  (userRole === "company" && isApplicantsOpen)
+                    ? "active"
+                    : ""
                 }`}
-                onClick={userRole === "jobSeeker" ? toggleApplications : toggleApplicants}
+                onClick={
+                  userRole === "jobSeeker"
+                    ? toggleApplications
+                    : toggleApplicants
+                }
               >
                 <div className={`menu-left ${isCollapsed ? "collapsed" : ""}`}>
                   <img
@@ -118,8 +119,10 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
                         src={dropdownIcon}
                         alt="Dropdown"
                         className={`dropdown-arrow ${
-                          (userRole === "jobSeeker" && isApplicationsOpen) || 
-                          (userRole === "company" && isApplicantsOpen) ? "open" : ""
+                          (userRole === "jobSeeker" && isApplicationsOpen) ||
+                          (userRole === "company" && isApplicantsOpen)
+                            ? "open"
+                            : ""
                         }`}
                       />
                     </>
@@ -127,29 +130,29 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
                 </div>
               </div>
 
-              {!isCollapsed && 
-                ((userRole === "jobSeeker" && isApplicationsOpen) || 
-                 (userRole === "company" && isApplicantsOpen)) && (
-                <div className="dropdown-menu">
-                  {item.items.map((subItem, subIndex) => (
-                    <NavLink
-                      key={subIndex}
-                      to={subItem.path}
-                      className={({ isActive }) => 
-                        `dropdown-item ${isActive ? "active" : ""}`
-                      }
-                      onClick={handleSubItemClick}
-                    >
-                      {subItem.text}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
+              {!isCollapsed &&
+                ((userRole === "jobSeeker" && isApplicationsOpen) ||
+                  (userRole === "company" && isApplicantsOpen)) && (
+                  <div className="dropdown-menu">
+                    {item.items.map((subItem, subIndex) => (
+                      <NavLink
+                        key={subIndex}
+                        to={subItem.path}
+                        className={({ isActive }) =>
+                          `dropdown-item ${isActive ? "active" : ""}`
+                        }
+                        onClick={handleSubItemClick}
+                      >
+                        {subItem.text}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
             </div>
           ) : (
             <NavLink
               to={item.path}
-              className={({ isActive }) => 
+              className={({ isActive }) =>
                 `menu-item ${isActive ? "active" : ""}`
               }
               onClick={handleItemClick}
