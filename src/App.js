@@ -24,8 +24,8 @@ import MatchesPage from "./pages/job-seeker/MatchesPage";
 import UploadResume from "./pages/job-seeker/UploadResume";
 import JobsPage from "./pages/job-seeker/JobsPage";
 import JobDetails from "./pages/job-seeker/JobDetails";
-import ApplicationForm from "./pages/job-seeker/ApplicationForm"; // مكون جديد
-import QuickTest from "./pages/job-seeker/QuickTest"; // مكون جديد
+import QuickTest from "./pages/job-seeker/QuickTest";
+import ApplicationSuccess from "./pages/job-seeker/ApplicationSuccess"; // مكون جديد
 
 // Company Pages
 import ApplicantsGrid from "./pages/company/ApplicantsGrid";
@@ -98,39 +98,10 @@ function App() {
     }, "test-token-123");
   };
 
-  // Success Page Component
-  const ApplicationSuccess = () => {
-    const navigate = useNavigate();
-    
-    return (
-      <div className="page-content">
-        <div className="success-page">
-          <div className="success-icon-large">✓</div>
-          <h1>✅ تم تقديم طلبك بنجاح</h1>
-          <p>شكراً لتقديمك على هذه الوظيفة. سنقوم بمراجعة طلبك وسنقوم بالاتصال بك في أقرب وقت.</p>
-          <div className="success-actions">
-            <button 
-              className="btn-primary"
-              onClick={() => navigate('/jobs')}
-            >
-              استعراض المزيد من الوظائف
-            </button>
-            <button 
-              className="btn-secondary"
-              onClick={() => navigate('/applications/pending')}
-            >
-              عرض طلباتي
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       <BrowserRouter>
-           {/* Test Control Panel - Floating on Left Side */}
+        {/* Test Control Panel - Floating on Left Side */}
         {showTestPanel && (
           <div className="test-control-panel">
             <div className="test-header">
@@ -265,15 +236,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Application Flow Pages */}
-          <Route path="/job/:jobId/apply" element={
-            <ProtectedRoute>
-              <MainLayout userRole={userRole}>
-                <ApplicationForm />
-              </MainLayout>
-            </ProtectedRoute>
-          } />
-
+          {/* Quick Test Page */}
           <Route path="/job/:jobId/test" element={
             <ProtectedRoute>
               <MainLayout userRole={userRole}>
@@ -282,6 +245,7 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* Application Success Page - NEW */}
           <Route path="/job/:jobId/application-success" element={
             <ProtectedRoute>
               <MainLayout userRole={userRole}>

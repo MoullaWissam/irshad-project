@@ -15,6 +15,7 @@ export default function QuickTest() {
   const [testStarted, setTestStarted] = useState(false);
   const [testCompleted, setTestCompleted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [allQuestionsAnswered, setAllQuestionsAnswered] = useState(false);
 
   useEffect(() => {
     // تحميل الأسئلة من البيانات التجريبية
@@ -57,6 +58,13 @@ export default function QuickTest() {
     
     loadQuestions();
   }, [jobData]);
+
+  useEffect(() => {
+    // التحقق إذا تمت الإجابة على جميع الأسئلة
+    const answeredAll = questions.length > 0 && 
+      questions.every(question => answers[question.id]);
+    setAllQuestionsAnswered(answeredAll);
+  }, [answers, questions]);
 
   useEffect(() => {
     let timer;
@@ -106,6 +114,12 @@ export default function QuickTest() {
   };
 
   const handleSubmitTest = async () => {
+    // التحقق من الإجابة على جميع الأسئلة أولاً
+    if (!allQuestionsAnswered) {
+      alert("Please answer all questions before submitting the test.");
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // حساب النتيجة (لإرسالها إلى السيرفر فقط - لا تظهر للمستخدم)
@@ -131,19 +145,20 @@ export default function QuickTest() {
       // محاكاة إرسال البيانات إلى API
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // الانتقال مباشرة إلى نموذج التقديم بعد إكمال الاختبار
-      navigate(`/job/${jobId}/apply`, {
+      // الانتقال مباشرة إلى صفحة النجاح بعد إكمال الاختبار
+      navigate(`/job/${jobId}/application-success`, {
         state: {
           testCompleted: true,
           jobData: jobData,
+          testScore: score,
           testDuration: jobData?.testDuration || 5
         }
       });
       
     } catch (error) {
       console.error("Error submitting test:", error);
-      // حتى لو حدث خطأ، انتقل إلى نموذج التقديم
-      navigate(`/job/${jobId}/apply`, {
+      // حتى لو حدث خطأ، انتقل إلى صفحة النجاح
+      navigate(`/job/${jobId}/application-success`, {
         state: {
           testCompleted: true,
           jobData: jobData
@@ -159,10 +174,11 @@ export default function QuickTest() {
   };
 
   const currentQuestion = questions[currentQuestionIndex];
+  // الاحتفاظ بالإجابات في أماكنها الثابتة (بدون ترتيب عشوائي)
   const allAnswers = currentQuestion ? [
     currentQuestion.correctAnswer,
     ...currentQuestion.wrongAnswers
-  ].sort(() => Math.random() - 0.5) : [];
+  ] : [];
 
   if (!testStarted) {
     return (
@@ -182,7 +198,7 @@ export default function QuickTest() {
             <ul>
               <li>✓ Number of questions: {questions.length} questions</li>
               <li>✓ Test duration: {jobData?.testDuration || 5} minutes</li>
-              <li>✓ Select the correct answer for each question</li>
+              <li>✓ You must answer all questions to submit the test</li>
               <li>✓ You cannot go back after time ends</li>
               <li>✓ Test results will be sent directly to the employer</li>
               <li>✓ <strong>You will not see your test score</strong></li>
@@ -191,7 +207,7 @@ export default function QuickTest() {
             
             <div className="test-tips">
               <strong>Important:</strong>
-              <p>This test can only be taken once. Make sure you're ready before starting.</p>
+              <p>Make sure to answer all questions before submitting. This test can only be taken once.</p>
             </div>
           </div>
           
@@ -203,13 +219,24 @@ export default function QuickTest() {
     );
   }
 
-  if (isSubmitting) {
+  if (testCompleted) {
     return (
       <div className="quick-test-container">
-        <div className="submitting-test">
-          <div className="submitting-spinner"></div>
-          <h2>Submitting your test...</h2>
-          <p>Please wait while we process your answers.</p>
+        <div className="test-completed-message">
+          <div className="success-icon-large">✓</div>
+          <h2>Test Submitted Successfully!</h2>
+          <p>Your test has been submitted. The results will be reviewed by the employer.</p>
+          <button 
+            className="continue-btn"
+            onClick={() => navigate(`/job/${jobId}/application-success`, {
+              state: {
+                testCompleted: true,
+                jobData: jobData
+              }
+            })}
+          >
+            Continue
+          </button>
         </div>
       </div>
     );
@@ -302,7 +329,7 @@ export default function QuickTest() {
           <button
             className="nav-btn submit-btn"
             onClick={handleSubmitTest}
-            disabled={isSubmitting}
+            disabled={!allQuestionsAnswered || isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Submit Test"}
           </button>
@@ -310,9 +337,17 @@ export default function QuickTest() {
       </div>
       
       <div className="test-footer">
-        <p className="hint">
-          💡 Select an answer for each question before moving to the next
-        </p>
+        <div className="answers-status">
+          <p className="hint">
+            💡 Answered: {Object.keys(answers).length} of {questions.length} questions
+          </p>
+          {!allQuestionsAnswered && (
+            <p className="warning-message">
+              ⚠️ Please answer all questions before submitting.
+            </p>
+          )}
+        </div>
+        
         <p className="test-warning">
           ⚠️ Warning: This test can only be taken once. Make sure to review your answers before submitting.
         </p>

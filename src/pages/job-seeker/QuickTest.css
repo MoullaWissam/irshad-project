@@ -340,6 +340,11 @@
   transform: none !important;
 }
 
+.submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
 .question-dots {
   display: flex;
   gap: 8px;
@@ -388,14 +393,31 @@
   font-size: 14px;
 }
 
+.answers-status {
+  margin-bottom: 15px;
+}
+
 .hint {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #fff8e1;
+  background: #e8f5e9;
   padding: 12px 20px;
   border-radius: 8px;
-  border-left: 4px solid #ffb300;
+  border-left: 4px solid #4CAF50;
+  margin-bottom: 10px;
+}
+
+.warning-message {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff3cd;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+  color: #856404;
+  font-weight: 500;
   margin-bottom: 10px;
 }
 
@@ -411,39 +433,65 @@
   font-weight: 500;
 }
 
-/* شاشة التحميل */
-.submitting-test {
+/* شاشة النجاح بعد الاختبار */
+.test-completed-message {
   background: white;
   border-radius: 15px;
   padding: 60px 40px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.submitting-spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #00b4d8;
+.success-icon-large {
+  width: 80px;
+  height: 80px;
+  background: #4CAF50;
+  color: white;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
   margin: 0 auto 30px;
+  animation: scaleIn 0.5s ease;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
 }
 
-.submitting-test h2 {
-  color: #0b2b82;
-  font-size: 24px;
-  margin-bottom: 15px;
+.test-completed-message h2 {
+  color: #2e7d32;
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-.submitting-test p {
+.test-completed-message p {
   color: #666;
   font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.test-completed-message .continue-btn {
+  background: #0b2b82;
+  color: white;
+  padding: 14px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.test-completed-message .continue-btn:hover {
+  background: #1a3a9c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(11, 43, 130, 0.3);
 }
 
 /* Responsive Design */

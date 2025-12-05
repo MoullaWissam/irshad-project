@@ -8,6 +8,7 @@ export default function JobDetails() {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [hasTest, setHasTest] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -59,9 +60,36 @@ export default function JobDetails() {
       // إذا كان هناك اختبار، انتقل إلى صفحة الاختبار
       navigate(`/job/${jobId}/test`, { state: { jobData: job } });
     } else {
-      // إذا لم يكن هناك اختبار، انتقل مباشرة إلى نموذج التقديم
-      navigate(`/job/${jobId}/apply`, { state: { jobData: job } });
+      // إذا لم يكن هناك اختبار، عرض تأكيد
+      setShowConfirmation(true);
     }
+  };
+
+  const confirmApplyWithoutTest = () => {
+    // محاكاة إرسال الطلب مباشرة للوظائف بدون اختبار
+    const applicationData = {
+      jobId,
+      jobDetails: job,
+      appliedAt: new Date().toISOString(),
+      status: "submitted"
+    };
+    
+    console.log("Submitting application (no test):", applicationData);
+    
+    // تخزين في localStorage لإظهار رسالة النجاح
+    localStorage.setItem(`application_submitted_${jobId}`, "true");
+    
+    // إعادة توجيه إلى صفحة النجاح
+    navigate(`/job/${jobId}/application-success`, { 
+      state: { 
+        jobData: job,
+        testCompleted: false
+      } 
+    });
+  };
+
+  const cancelApply = () => {
+    setShowConfirmation(false);
   };
 
   if (loading) {
@@ -133,6 +161,24 @@ export default function JobDetails() {
           <p>{job.education}</p>
         </div>
       </div>
+
+      {/* Confirmation Modal for jobs without test */}
+      {showConfirmation && (
+        <div className="confirmation-overlay">
+          <div className="confirmation-modal">
+            <h3>Confirm Application</h3>
+            <p>Are you sure you want to apply for this position?</p>
+            <div className="confirmation-buttons">
+              <button className="cancel-btn" onClick={cancelApply}>
+                Cancel
+              </button>
+              <button className="confirm-btn" onClick={confirmApplyWithoutTest}>
+                Yes, Apply Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
