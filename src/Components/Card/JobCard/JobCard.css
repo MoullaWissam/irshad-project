@@ -1,4 +1,5 @@
-.job-card {
+/* JobCard Component Styles - Unique class names */
+.job-card-wrapper {
   background: white;
   color: #333;
   border-radius: 12px;
@@ -14,24 +15,24 @@
   cursor: pointer;
 }
 
-.job-card:hover {
+.job-card-wrapper:hover {
   transform: translateY(-8px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.job-header {
+.job-card-header-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.job-icon {
+.job-card-icon-wrapper {
   width: 32px;
   height: 32px;
   object-fit: contain;
 }
 
-.job-type {
+.job-card-type-tag {
   font-size: 12px;
   color: #6c5ce7;
   font-weight: bold;
@@ -40,13 +41,15 @@
   border-radius: 4px;
 }
 
-.job-title {
-  font-size: 18px;
+/* حجم الخط أصبح أصغر كما في النسخة الأصلية */
+.job-card-title-text {
+  font-size: 16px; /* كان 18px وأصبح 16px */
   margin: 15px 0 10px;
   color: #2c2c54;
+  font-weight: 600;
 }
 
-.job-desc {
+.job-card-description {
   font-size: 14px;
   color: #666;
   margin-bottom: 15px;
@@ -54,7 +57,7 @@
   flex-grow: 1;
 }
 
-.job-link {
+.job-card-details-btn {
   font-size: 14px;
   color: #6c5ce7;
   text-decoration: none;
@@ -64,8 +67,10 @@
   cursor: pointer;
   text-align: left;
   padding: 0;
+  transition: color 0.3s;
 }
 
-.job-link:hover {
+.job-card-details-btn:hover {
   text-decoration: underline;
+  color: #5a4bd1;
 }
