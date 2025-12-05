@@ -78,18 +78,23 @@ const LoginCard = () => {
 
       const data = await response.json();
 
+      // في ملف Login.js - في الجزء handleSubmit بعد response.ok
       if (response.ok) {
         console.log("✅ Success:", data);
         
         // حفظ التوكن إذا كان موجودًا
-        if (data.token || data.accessToken) {
-          localStorage.setItem("token", data.token || data.accessToken);
-          localStorage.setItem("userRole", isCompanyMode ? "company" : "user");
+        localStorage.setItem("userRole", isCompanyMode ? "company" : "user");
+        
+
+        // إذا كان تسجيل دخول شركة، احفظ بيانات الشركة
+        if (isCompanyMode && data.user) {
+          localStorage.setItem("companyData", JSON.stringify(data.user));
+          console.log("Company data saved to localStorage:", data.user);
         }
 
         // توجيه بناءً على الوضع
         navigate(isCompanyMode ? "/company/dashboard" : "/dashboard");
-      } else {
+      }else {
         // عرض رسالة الخطأ من الخادم
         const errorMessage = data.message || 
                            data.error || 

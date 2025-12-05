@@ -1,13 +1,50 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AddJop.css";
 import InputField from "./InputField";
 
-export default function AddJob({ isAuthenticated, user, logout }) {
+export default function AddJob() {
+  const navigate = useNavigate();
   const [showQuestions, setShowQuestions] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [errors, setErrors] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [companyId, setCompanyId] = useState(null);
+  const [employmentType, setEmploymentType] = useState("on-site");
   const fileInputRef = useRef(null);
+
+  // جلب companyId من localStorage عند تحميل المكون
+  useEffect(() => {
+    const savedCompanyData = localStorage.getItem('companyData');
+    if (savedCompanyData) {
+      try {
+        const companyData = JSON.parse(savedCompanyData);
+        if (companyData.id) {
+          setCompanyId(companyData.id);
+          console.log("Company ID loaded from localStorage:", companyData.id);
+        }
+      } catch (error) {
+        console.error("Error parsing company data:", error);
+      }
+    }
+  }, []);
+
+  // التحقق من أن المستخدم هو شركة
+  useEffect(() => {
+    const userRole = localStorage.getItem('userRole');
+    if (userRole !== 'company') {
+      navigate('/login');
+      return;
+    }
+    
+    if (!companyId) {
+      setMessage({
+        type: "error",
+        text: "❌ Please login as a company to add jobs"
+      });
+    }
+  }, [companyId, navigate]);
 
   // إخفاء تلقائي بعد 3 ثواني
   useEffect(() => {
@@ -40,7 +77,6 @@ export default function AddJob({ isAuthenticated, user, logout }) {
   const validateForm = () => {
     const newErrors = {};
     
-    // الحقول الأساسية
     if (!jobData.title.trim()) newErrors.title = "Job Title is required";
     if (!jobData.skills.trim()) newErrors.skills = "Required Skills is required";
     if (!jobData.experience.trim()) newErrors.experience = "Required Experience is required";
@@ -48,7 +84,14 @@ export default function AddJob({ isAuthenticated, user, logout }) {
     if (!jobData.description.trim()) newErrors.description = "Job Description is required";
     if (!jobData.location.trim()) newErrors.location = "Location is required";
     
-    // التحقق من الأسئلة إذا كانت مُضافة
+    // التحقق من أن requiredExperience هو رقم
+    if (jobData.experience.trim()) {
+      const experienceNum = parseFloat(jobData.experience);
+      if (isNaN(experienceNum)) {
+        newErrors.experience = "Required Experience must be a number";
+      }
+    }
+    
     if (showQuestions) {
       jobData.questions.forEach((question, index) => {
         if (!question.text.trim()) {
@@ -57,7 +100,6 @@ export default function AddJob({ isAuthenticated, user, logout }) {
         if (!question.correctAnswer.trim()) {
           newErrors[`correct_${index}`] = `Correct answer for Question ${index + 1} is required`;
         }
-        // التحقق من إجابة خاطئة واحدة على الأقل
         const hasWrongAnswer = question.wrongAnswers.some(answer => answer.trim() !== "");
         if (!hasWrongAnswer) {
           newErrors[`wrong_${index}`] = `At least one wrong answer is required for Question ${index + 1}`;
@@ -69,6 +111,30 @@ export default function AddJob({ isAuthenticated, user, logout }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  // إعادة تعيين النموذج
+  const resetForm = () => {
+    setJobData({
+      title: "",
+      skills: "",
+      experience: "",
+      education: "",
+      description: "",
+      location: "",
+      logoPreview: null,
+      logoFile: null,
+      testDuration: 5,
+      questions: Array(4).fill().map(() => ({
+        text: "",
+        correctAnswer: "",
+        wrongAnswers: ["", "", ""]
+      }))
+    });
+    setEmploymentType("on-site");
+    setShowQuestions(false);
+    setCurrentQuestionIndex(0);
+    setErrors({});
+  };
+
   // معالجة رفع الملف
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -78,7 +144,7 @@ export default function AddJob({ isAuthenticated, user, logout }) {
         return;
       }
       
-      if (file.size > 5 * 1024 * 1024) { // 5MB
+      if (file.size > 5 * 1024 * 1024) {
         setMessage({ type: "error", text: "❌ File size should be less than 5MB" });
         return;
       }
@@ -111,10 +177,10 @@ export default function AddJob({ isAuthenticated, user, logout }) {
     
     setJobData({ ...jobData, questions: updatedQuestions });
     
-    // إزالة خطأ الحقل إذا تم تصحيحه
-    if (errors[`${field}_${index}`]) {
+    const errorKey = `${field}_${index}`;
+    if (errors[errorKey]) {
       const newErrors = { ...errors };
-      delete newErrors[`${field}_${index}`];
+      delete newErrors[errorKey];
       setErrors(newErrors);
     }
   };
@@ -138,7 +204,15 @@ export default function AddJob({ isAuthenticated, user, logout }) {
     setCurrentQuestionIndex(0);
   };
 
-  // إرسال النموذج
+  // دالة لتقسيم النص إلى مصفوفة
+  const splitToArray = (text) => {
+    return text
+      .split(',')
+      .map(item => item.trim())
+      .filter(item => item.length > 0);
+  };
+
+  // إرسال النموذج إلى الباك اند
   const handleSubmit = async () => {
     if (!validateForm()) {
       setMessage({
@@ -148,58 +222,132 @@ export default function AddJob({ isAuthenticated, user, logout }) {
       return;
     }
 
-    // بناء البيانات للإرسال
-    const payload = {
-      jobTitle: jobData.title,
-      skills: jobData.skills,
-      experience: jobData.experience,
-      education: jobData.education,
-      description: jobData.description,
-      location: jobData.location,
-      logoFile: jobData.logoFile ? jobData.logoFile.name : null,
-      testEnabled: showQuestions,
-      testDuration: jobData.testDuration,
-      questions: showQuestions ? jobData.questions.filter(q => q.text.trim() !== "") : []
-    };
+    // التحقق من وجود companyId
+    if (!companyId) {
+      setMessage({
+        type: "error",
+        text: "❌ Company information not found. Please login again as a company."
+      });
+      setTimeout(() => navigate('/login'), 2000);
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
-      // محاكاة الإرسال إلى API
-      console.log("Submitting job data:", payload);
+      // 1. إنشاء الوظيفة (Job)
+      const jobFormData = new FormData();
+      jobFormData.append('title', jobData.title);
       
-      // محاكاة استجابة API
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // تقسيم skills إلى مصفوفة
+      const skillsArray = splitToArray(jobData.skills);
+      jobFormData.append('requiredSkills', JSON.stringify(skillsArray));
       
-      setMessage({ type: "success", text: "✅ Job submitted successfully!" });
+      // تحويل experience إلى رقم
+      const experienceNum = parseFloat(jobData.experience) || 0;
+      jobFormData.append('requiredExperience', experienceNum.toString());
+      
+      // تقسيم education إلى مصفوفة
+      const educationArray = splitToArray(jobData.education);
+      jobFormData.append('requiredEducation', JSON.stringify(educationArray));
+      
+      jobFormData.append('description', jobData.description);
+      jobFormData.append('location', jobData.location);
+      jobFormData.append('employmentType', employmentType);
+      
+      // إضافة الصورة باسم "image" بدلاً من "logo"
+      if (jobData.logoFile) {
+        jobFormData.append('img', jobData.logoFile);
+      }
+
+      // إرسال طلب إنشاء الوظيفة - مع الكوكيز
+      const createJobResponse = await fetch(`http://localhost:3000/jobs/${companyId}`, {
+        method: 'POST',
+        credentials: 'include',
+        body: jobFormData,
+      });
+
+      if (!createJobResponse.ok) {
+        const errorText = await createJobResponse.text();
+        console.error('Create job error response:', errorText);
+        
+        // محاولة قراءة JSON إذا كان ذلك ممكناً
+        try {
+          const errorData = JSON.parse(errorText);
+          throw new Error(errorData.message || 'Failed to create job');
+        } catch {
+          throw new Error('Failed to create job. Please try again.');
+        }
+      }
+
+      const jobResult = await createJobResponse.json();
+      console.log('Job creation response:', jobResult);
+      
+      const jobId = jobResult.id || jobResult.jobId;
+
+      if (!jobId) {
+        throw new Error('Job ID not received from server');
+      }
+
+      // 2. إضافة الأسئلة إذا كانت موجودة
+      if (showQuestions) {
+        const questions = jobData.questions.filter(q => q.text.trim() !== "");
+        
+        for (const [index, question] of questions.entries()) {
+          const questionPayload = {
+            questionText: question.text,
+            options: [
+              {
+                text: question.correctAnswer,
+                isCorrect: true
+              },
+              ...question.wrongAnswers
+                .filter(w => w.trim() !== "")
+                .map(w => ({
+                  text: w,
+                  isCorrect: false
+                }))
+            ]
+          };
+
+          // إرسال طلب إضافة السؤال
+          const addQuestionResponse = await fetch(`http://localhost:3000/jobs/${jobId}/questions`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(questionPayload),
+          });
+
+          if (!addQuestionResponse.ok) {
+            const errorText = await addQuestionResponse.text();
+            console.error(`Failed to add question ${index + 1}:`, errorText);
+            throw new Error(`Failed to add question ${index + 1}`);
+          }
+          
+          console.log(`Question ${index + 1} added successfully`);
+        }
+      }
+
+      setMessage({ 
+        type: "success", 
+        text: "✅ Job and questions submitted successfully!" 
+      });
       
       // إعادة تعيين النموذج بعد 2 ثانية
       setTimeout(() => {
-        setJobData({
-          title: "",
-          skills: "",
-          experience: "",
-          education: "",
-          description: "",
-          location: "",
-          logoPreview: null,
-          logoFile: null,
-          testDuration: 5,
-          questions: Array(4).fill().map(() => ({
-            text: "",
-            correctAnswer: "",
-            wrongAnswers: ["", "", ""]
-          }))
-        });
-        setShowQuestions(false);
-        setCurrentQuestionIndex(0);
-        setErrors({});
+        resetForm();
+        setIsSubmitting(false);
       }, 2000);
       
     } catch (err) {
-      console.error(err);
+      console.error('Submission error:', err);
       setMessage({
         type: "error",
-        text: "❌ Failed to submit. Please try again."
+        text: `❌ ${err.message || 'Failed to submit. Please try again.'}`
       });
+      setIsSubmitting(false);
     }
   };
 
@@ -232,20 +380,21 @@ export default function AddJob({ isAuthenticated, user, logout }) {
               if (errors.skills) setErrors({ ...errors, skills: null });
             }}
             error={errors.skills}
-            placeholder="Enter required skills"
+            placeholder="Enter required skills separated by commas (e.g., JavaScript, React, Node.js)"
             required
           />
           
           <InputField
-            label="Required Experience"
-            type="text"
+            label="Required Experience (years)"
+            type="number"
+            step="0.5"
             value={jobData.experience}
             onChange={(e) => {
               setJobData({ ...jobData, experience: e.target.value });
               if (errors.experience) setErrors({ ...errors, experience: null });
             }}
             error={errors.experience}
-            placeholder="Enter required experience"
+            placeholder="Enter required experience in years (e.g., 2.5)"
             required
           />
           
@@ -258,7 +407,7 @@ export default function AddJob({ isAuthenticated, user, logout }) {
               if (errors.education) setErrors({ ...errors, education: null });
             }}
             error={errors.education}
-            placeholder="Enter required education"
+            placeholder="Enter required education separated by commas (e.g., Bachelor Degree, Master Degree)"
             required
           />
           
@@ -288,12 +437,67 @@ export default function AddJob({ isAuthenticated, user, logout }) {
             required
           />
 
+          {/* Employment Type Selection */}
+          <div className="ajp-employment-section">
+            <label className="ajp-employment-label">Employment Type</label>
+            <div className="ajp-employment-options">
+              <label className="ajp-employment-option">
+                <input
+                  type="radio"
+                  name="employmentType"
+                  value="part-time"
+                  checked={employmentType === "part-time"}
+                  onChange={(e) => setEmploymentType(e.target.value)}
+                  className="ajp-employment-radio"
+                />
+                <span className="ajp-employment-text">Part-time</span>
+              </label>
+              
+              <label className="ajp-employment-option">
+                <input
+                  type="radio"
+                  name="employmentType"
+                  value="full-time"
+                  checked={employmentType === "full-time"}
+                  onChange={(e) => setEmploymentType(e.target.value)}
+                  className="ajp-employment-radio"
+                />
+                <span className="ajp-employment-text">Full-time</span>
+              </label>
+              
+              <label className="ajp-employment-option">
+                <input
+                  type="radio"
+                  name="employmentType"
+                  value="on-site"
+                  checked={employmentType === "on-site"}
+                  onChange={(e) => setEmploymentType(e.target.value)}
+                  className="ajp-employment-radio"
+                />
+                <span className="ajp-employment-text">On-site</span>
+              </label>
+              
+              <label className="ajp-employment-option">
+                <input
+                  type="radio"
+                  name="employmentType"
+                  value="remote"
+                  checked={employmentType === "remote"}
+                  onChange={(e) => setEmploymentType(e.target.value)}
+                  className="ajp-employment-radio"
+                />
+                <span className="ajp-employment-text">Remote</span>
+              </label>
+            </div>
+          </div>
+
           {/* Upload Company Logo */}
           <div className="ajp-upload-section">
-            <label className="ajp-upload-label">Upload Company Logo</label>
+            <label className="ajp-upload-label">Upload Company Logo/Image</label>
             <div 
               className="ajp-upload-box"
               onClick={() => fileInputRef.current.click()}
+              style={{ cursor: 'pointer' }}
             >
               {jobData.logoPreview ? (
                 <div className="ajp-logo-preview">
@@ -302,7 +506,7 @@ export default function AddJob({ isAuthenticated, user, logout }) {
                     alt="Company logo preview" 
                     className="ajp-logo-image"
                   />
-                  <span className="ajp-change-text">Change logo</span>
+                  <span className="ajp-change-text">Change image</span>
                 </div>
               ) : (
                 <>
@@ -332,6 +536,7 @@ export default function AddJob({ isAuthenticated, user, logout }) {
             <div 
               className="ajp-add-test-box"
               onClick={handleAddQuestion}
+              style={{ cursor: 'pointer' }}
             >
               <span className="ajp-plus-icon">+</span>
               <p className="ajp-add-test-text">Add Screening Test</p>
@@ -467,9 +672,26 @@ export default function AddJob({ isAuthenticated, user, logout }) {
               </div>
             )}
 
-            <button className="ajp-submit-btn" onClick={handleSubmit}>
-              Submit Job
+            <button 
+              className="ajp-submit-btn" 
+              onClick={handleSubmit}
+              disabled={isSubmitting || !companyId}
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="ajp-spinner"></span>
+                  Submitting...
+                </>
+              ) : (
+                'Submit Job'
+              )}
             </button>
+            
+            {!companyId && (
+              <p className="ajp-warning-text">
+                ⚠️ Please login as a company to submit jobs
+              </p>
+            )}
           </div>
         </div>
       </div>
