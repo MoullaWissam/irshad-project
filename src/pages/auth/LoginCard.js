@@ -7,6 +7,7 @@ import InputField from "./InputField";
 const LoginCard = () => {
   const navigate = useNavigate();
 
+  const [isCompanyMode, setIsCompanyMode] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -46,7 +47,7 @@ const LoginCard = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleLogin = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!validate()) return;
@@ -55,37 +56,62 @@ const LoginCard = () => {
     setServerError("");
 
     try {
-      const response = await fetch("http://192.168.1.9:3000/auth/login", {
+      // تحديد الـ API بناءً على الوضع - استخدام نفس الخصائص لكليهما
+      const endpoint = isCompanyMode 
+        ? "http://localhost:3000/company-management/company-login"
+        : "http://localhost:3000/auth/login";
+
+      // استخدام نفس request body لكليهما (email و password فقط)
+      const requestBody = {
+        email: form.email,
+        password: form.password,
+      };
+          
+      const response = await fetch(endpoint, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        console.log("✅ Login Successful:", data);
-
+        console.log("✅ Success:", data);
+        
+        // حفظ التوكن إذا كان موجودًا
         if (data.token || data.accessToken) {
           localStorage.setItem("token", data.token || data.accessToken);
-          localStorage.setItem("userRole", data.role);
+          localStorage.setItem("userRole", isCompanyMode ? "company" : "user");
         }
 
-        navigate("/dashboard");
+        // توجيه بناءً على الوضع
+        navigate(isCompanyMode ? "/company/dashboard" : "/dashboard");
       } else {
-        setServerError(data.message || "Invalid email or password");
+        // عرض رسالة الخطأ من الخادم
+        const errorMessage = data.message || 
+                           data.error || 
+                           `Invalid ${isCompanyMode ? 'company credentials' : 'email or password'}`;
+        setServerError(errorMessage);
       }
     } catch (error) {
-      console.error("Login Error:", error);
+      console.error("Error:", error);
       setServerError("Network error. Please try again later.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const toggleCompanyMode = () => {
+    setIsCompanyMode(!isCompanyMode);
+    setForm({
+      email: "",
+      password: "",
+      errors: {},
+    });
+    setServerError("");
   };
 
   useEffect(() => {
@@ -97,26 +123,38 @@ const LoginCard = () => {
     }
   }, [form.errors]);
 
-  // التعديل هنا: إضافة div خارجي مع className="login-page-bg"
   return (
-    <div className="login-page-bg"> {/* ✅ هذا هو التعديل */}
-      <div className="mainBox">
+    <div className="login-page-bg">
+      <div className={`mainBox ${isCompanyMode ? 'company-mode' : ''}`}>
         <div className="logoTitel">
           <img src={logo} alt="Irshad" />
-          <h2>Login</h2>
+          <h2>{isCompanyMode ? 'Company Login' : 'User Login'}</h2>
         </div>
 
-        <form onSubmit={handleLogin}>
+        {/* زر التبديل بين الوضعين - تصميم محسن */}
+        <div className="mode-toggle-container">
+          <div className="mode-toggle-wrapper">
+            <button
+              type="button"
+              className={`mode-toggle-btn user-mode ${!isCompanyMode ? 'active' : ''}`}
+              onClick={() => setIsCompanyMode(false)}
+            >
+              User
+            </button>
+            <button
+              type="button"
+              className={`mode-toggle-btn company-mode ${isCompanyMode ? 'active' : ''}`}
+              onClick={() => setIsCompanyMode(true)}
+            >
+              Company
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit}>
           <div className="inputBox">
             {serverError && (
-              <div
-                style={{
-                  color: "red",
-                  textAlign: "center",
-                  marginBottom: "10px",
-                  fontSize: "14px",
-                }}
-              >
+              <div className="server-error">
                 {serverError}
               </div>
             )}
@@ -127,6 +165,7 @@ const LoginCard = () => {
               value={form.email}
               onChange={(e) => handleChange("email", e.target.value)}
               error={form.errors.email}
+              placeholder={isCompanyMode ? "company@example.com" : "user@example.com"}
             />
 
             <InputField
@@ -135,42 +174,52 @@ const LoginCard = () => {
               value={form.password}
               onChange={(e) => handleChange("password", e.target.value)}
               error={form.errors.password}
+              placeholder="Enter your password"
             />
 
             <button
               type="submit"
-              className="submitButton"
+              className={`submitButton ${isCompanyMode ? 'company-submit' : 'user-submit'}`}
               disabled={isLoading}
-              style={{
-                opacity: isLoading ? 0.7 : 1,
-                cursor: isLoading ? "not-allowed" : "pointer",
-              }}
             >
-              {isLoading ? "Logging in..." : "login"}
+              {isLoading ? (
+                <span className="loading-text">
+                  <span className="spinner"></span>
+                  {isCompanyMode ? "Company Logging in..." : "User Logging in..."}
+                </span>
+              ) : (
+                isCompanyMode ? "Login as Company" : "Login as User"
+              )}
             </button>
 
-            <div style={{ textAlign: "center", marginTop: "20px" }}>
-              <Link
-                to="/forgot-password"
-                style={{
-                  fontSize: "14px",
-                  color: "#00AEEF",
-                  textDecoration: "none",
-                }}
-              >
-                Forgot Password ?
-              </Link>
-
-              <p style={{ marginTop: "65px", fontSize: "14px" }}>
-                Don't have an account?{" "}
-                <Link
-                  to="/register"
-                  style={{ color: "#00AEEF", textDecoration: "none" }}
-                >
-                  Sign Up
+            {!isCompanyMode && (
+              <div className="auth-links">
+                <Link to="/forgot-password" className="forgot-password-link">
+                  Forgot Password?
                 </Link>
-              </p>
-            </div>
+
+                <p className="signup-text">
+                  Don't have an account?{" "}
+                  <Link to="/register" className="signup-link">
+                    Sign Up
+                  </Link>
+                </p>
+              </div>
+            )}
+
+            {isCompanyMode && (
+              <div className="company-auth-links">
+                <Link to="/company/forgot-password" className="forgot-password-link">
+                  Forgot Company Password?
+                </Link>
+                <p className="signup-text">
+                  New Company?{" "}
+                  <Link to="/company/register" className="signup-link">
+                    Register Company
+                  </Link>
+                </p>
+              </div>
+            )}
           </div>
         </form>
       </div>

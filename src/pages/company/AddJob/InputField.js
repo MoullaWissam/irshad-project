@@ -1,9 +1,15 @@
-import { useState, useEffect } from "react";
-// import { FaEye, FaEyeSlash } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
 import "./InputField.css";
 
-const InputField = ({ label, type, value, onChange, error }) => {
-  const [show, setShow] = useState(false);
+const InputField = ({ 
+  label, 
+  type, 
+  value, 
+  onChange, 
+  error, 
+  placeholder, 
+  required 
+}) => {
   const [showFloating, setShowFloating] = useState(false);
 
   useEffect(() => {
@@ -15,41 +21,26 @@ const InputField = ({ label, type, value, onChange, error }) => {
   }, [error]);
 
   return (
-    <div
-      style={{
-        marginBottom: "28px",
-        width: "100%",
-        placeSelf: "center",
-        position: "relative",
-      }}
-    >
-      <label
-        style={{ display: "block", marginBottom: "6px", fontWeight: "500" }}
-      >
-        {label}
+    <div className="ajp-input-field-container">
+      <label className="ajp-input-label">
+        {label} {required && <span className="ajp-required-star">*</span>}
       </label>
 
-      <div style={{ position: "relative" }}>
+      <div className="ajp-input-wrapper">
         <input
-          type={type === "password" && !show ? "password" : "text"}
+          type={type || "text"}
           value={value}
           onChange={onChange}
-          style={{
-            width: "100%",
-            padding: "8px 35px 8px 8px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-          }}
+          className={`ajp-input ${error ? 'ajp-input-error' : ''}`}
+          placeholder={placeholder}
         />
 
-        {type === "password" && (
-          <span className="eyeIcon" onClick={() => setShow(!show)}>
-            {show ? "💔" : "❤️"}
-          </span>
-        )}
-
         {error && showFloating && (
-          <span className="error-floating">{error}</span>
+          <span className="ajp-error-floating">{error}</span>
+        )}
+        
+        {error && (
+          <div className="ajp-error-message">{error}</div>
         )}
       </div>
     </div>

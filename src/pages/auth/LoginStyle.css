@@ -1,112 +1,448 @@
-/* خلفية صفحة تسجيل الدخول فقط */
+/* LoginStyle.css - تنسيقات البطاقة الرئيسية */
+
+/* خلفية صفحة تسجيل الدخول */
 .login-page-bg {
   background: linear-gradient(180deg, #f0f4ff 0%, #723efe 100%);
-  position: fixed; /* التغيير هنا */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto; /* لإمكانية التمرير إذا كان المحتوى طويلاً */
-  z-index: 1000; /* للتأكد من أنه فوق أي محتوى آخر */
+  overflow: auto;
+  z-index: 1000;
 }
+
 /* الحاوية الرئيسية */
 .mainBox {
   width: 400px;
-  height: 649px;
+  height: 550px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 40px 20px;
+  border-radius: 20px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 40px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-self: anchor-center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
 }
 
-/* الشعار + العنوان */
-.logoTitel {
-  width: 224px;
-  height: 117px;
-  margin-top: 40px;
-  justify-items: center;
+.mainBox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: #723efe;
+  transition: background 0.3s ease;
 }
 
-.logoTitel img {
-  width: 224px;
-  height: 68px;
+/* وضع الشركة - لون أزرق سماوي */
+.mainBox.company-mode {
+  background: linear-gradient(135deg, #723efe 0%, #00b4d8 100%);
 }
 
-.logoTitel h2 {
-  color: #28205b;
-  font-family: Roboto, sans-serif;
-  font-size: 32px;
-  line-height: 100%;
-  margin-top: 10px;
+.mainBox.company-mode::before {
+  background: #00b4d8;
 }
 
-/* صندوق الإدخال */
-.inputBox {
-  width: 400px;
-  padding: 40px 40px 10px 40px;
-  margin-top: 20px;
-  border-radius: 12px;
-  background: #fff;
-  align-items: center;
-  box-sizing: border-box;
+.mainBox.company-mode .logoTitel h2 {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* زر التبديل بين الوضعين - تصميم جديد */
+.mode-toggle-container {
+  margin: 20px 0 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mode-toggle-wrapper {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.mainBox.company-mode .mode-toggle-wrapper {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.mode-toggle-btn {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  color: #666;
+  min-width: 120px;
+  text-align: center;
+}
+
+.mode-toggle-btn.user-mode.active {
+  background: #723efe;
+  color: white;
+  box-shadow: 0 4px 12px rgba(114, 62, 254, 0.3);
+}
+
+.mode-toggle-btn.company-mode.active {
+  background: #00b4d8;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.3);
+}
+
+.mode-toggle-btn:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.mainBox.company-mode .mode-toggle-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
 }
 
 /* زر تسجيل الدخول */
 .submitButton {
-  margin-top: 20px;
-  width: 320px;
-  height: 49px;
-  background: #723efe;
-  color: #fff;
+  margin-top: 25px;
+  width: 100%;
+  height: 50px;
   border: none;
-  border-radius: 8px;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  align-self: center;
-  transition: background 0.3s ease;
-}
-
-.submitButton:hover {
-  background: #5a2ed6;
-}
-
-/* حقول الإدخال */
-input {
-  width: 320px;
-  height: 45px;
+  border-radius: 12px;
   padding: 0 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  outline: none;
-  box-sizing: border-box;
-  margin-top: 10px;
-}
-
-/* أيقونة العين */
-.eyeIcon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
   font-size: 16px;
-  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
+.submitButton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
 
+.submitButton:hover::after {
+  left: 100%;
+}
 
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
+.submitButton:disabled::after {
+  display: none;
+}
+
+/* زر المستخدم - أرجواني */
+.user-submit {
+  background: linear-gradient(135deg, #723efe 0%, #5a2ed6 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(114, 62, 254, 0.4);
+}
+
+.user-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a2ed6 0%, #4a24b5 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(114, 62, 254, 0.5);
+}
+
+.user-submit:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(114, 62, 254, 0.4);
+}
+
+/* زر الشركة - أزرق سماوي */
+.company-submit {
+  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.4);
+}
+
+.company-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.5);
+}
+
+.company-submit:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+}
+
+/* سبينر للتحميل */
+.loading-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* تعديلات إضافية للشركة */
+.company-auth-links {
+  text-align: center;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.company-note {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.company-note p {
+  margin: 0;
+}
+
+/* الشعار + العنوان */
+.logoTitel {
+  width: 200px;
+  height: 110px;
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoTitel img {
+  width: 180px;
+  height: 60px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.mainBox.company-mode .logoTitel img {
+  filter: brightness(1.2) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.logoTitel h2 {
+  color: #28205b;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-size: 28px;
+  line-height: 100%;
+  margin-top: 15px;
+  font-weight: 700;
+  transition: color 0.3s ease;
+  letter-spacing: -0.5px;
+}
+
+/* صندوق الإدخال */
+.inputBox {
+  width: 100%;
+  padding: 20px 0;
+  margin-top: 10px;
+  background: transparent;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* رسائل الخطأ من الخادم */
+.server-error {
+  color: #dc3545;
+  background-color: rgba(248, 215, 218, 0.95);
+  border: 1px solid #f5c6cb;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 5px;
+  width: 100%;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mainBox.company-mode .server-error {
+  color: #ff6b6b;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* الروابط */
+.auth-links {
+  text-align: center;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.forgot-password-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #723efe;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+.forgot-password-link:hover {
+  color: #5a2ed6;
+  text-decoration: underline;
+  background: rgba(114, 62, 254, 0.1);
+}
+
+.mainBox.company-mode .forgot-password-link {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mainBox.company-mode .forgot-password-link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.signup-text {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.mainBox.company-mode .signup-text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.signup-link {
+  color: #723efe;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.signup-link:hover {
+  color: #5a2ed6;
+  text-decoration: underline;
+  background: rgba(114, 62, 254, 0.1);
+}
+
+.mainBox.company-mode .signup-link {
+  color: white;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.mainBox.company-mode .signup-link:hover {
+  color: #e0f7ff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* تصميم متجاوب */
+@media (max-width: 480px) {
+  .mainBox {
+    width: 80vw;
+    min-height: 520px;
+    padding: 30px 20px;
+    border-radius: 16px;
+  }
+  
+  .logoTitel {
+    width: 160px;
+    height: 90px;
+  }
+  
+  .logoTitel img {
+    width: 150px;
+    height: 50px;
+  }
+  
+  .logoTitel h2 {
+    font-size: 24px;
+  }
+  
+  .inputBox {
+    padding: 15px 0;
+  }
+  
+  .mode-toggle-btn {
+    padding: 8px 20px;
+    min-width: 100px;
+    font-size: 13px;
+  }
+  
+  .submitButton {
+    height: 48px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .mainBox {
+    width: 95vw;
+    min-height: 500px;
+    padding: 25px 15px;
+  }
+  
+  .logoTitel h2 {
+    font-size: 22px;
+  }
+  
+  .mode-toggle-btn {
+    padding: 8px 15px;
+    min-width: 90px;
+    font-size: 12px;
+  }
+}

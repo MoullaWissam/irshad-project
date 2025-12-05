@@ -1,14 +1,11 @@
-/**
- * Home Page Component
- * مسؤول عن عرض الوظائف المطابقة للمستخدم مع ترتيبها حسب الرانك
- */
+
 
 import React, { useState, useEffect } from "react";
-import JobCard from "../../components/Card/JobCard/JobCard";
+import JobCard from "../../Components/Card/JobCard/JobCard";
 import RankedCardWrapper from "./RankedCardWrapper";
 import "./MatchesPage.css";
 
-function Home() {
+function MatchesPage() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,22 +14,27 @@ function Home() {
     const fetchJobs = async () => {
       try {
         const response = await fetch(
-          "http://192.168.1.109:3000/auth/recommended-jobs"
-        );
+          "http://localhost:3000/auth/recommended-jobs"
+        ,{
+          method:"GET",
+          credentials:"include"
+        });
 
         if (!response.ok) {
           throw new Error("فشل في جلب البيانات");
         }
+        
 
         const data = await response.json();
 
+        // 🔥 تعديل بسيط فقط: استخراج الحقول المطلوبة
         const mapped = data.map((job) => ({
           id: job.id,
           title: job.title,
           description: job.description,
           employmentType: job.employmentType,
           companyLogo: job.company?.companyLogo
-            ? `http://192.168.1.109:3000/${job.company.companyLogo}`
+            ? `http://localhost:3000/${job.company.companyLogo}`
             : "/icons/default-company.png",
         }));
 
@@ -86,4 +88,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default MatchesPage;

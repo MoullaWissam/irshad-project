@@ -146,7 +146,7 @@ const UploadResume = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      await fetch("http://192.168.1.9:3000/resumes/upload", {
+      await fetch("http://localhost:3000/resumes/upload", {
         method: "POST",
         body: formData,
         credentials: "include", // يرسل accessToken من الكوكي تلقائيًا

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "./InputField.css"; // تأكد من أن هذا الملف يحتوي على التنسيقات الصحيحة
+import "./InputField.css";
 
-const InputField = ({ label, type, value, onChange, error }) => {
+const InputField = ({ label, type, value, onChange, error, placeholder }) => {
   const [show, setShow] = useState(false);
   const [showFloating, setShowFloating] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -14,19 +15,24 @@ const InputField = ({ label, type, value, onChange, error }) => {
     }
   }, [error]);
 
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+
   return (
-    // 1. إزالة الـ inline styles من الحاوية واستبدالها بـ className
     <div className="input-field-container">
       <label className="input-label">
         {label}
       </label>
 
-      <div style={{ position: "relative" }}>
+      <div className="input-wrapper">
         <input
           type={type === "password" && !show ? "password" : "text"}
           value={value}
           onChange={onChange}
-          className="custom-input" // 2. استخدام class بدلاً من style
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className={`custom-input ${isFocused ? 'focused' : ''} ${error ? 'error' : ''}`}
+          placeholder={placeholder}
         />
 
         {type === "password" && (

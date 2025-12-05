@@ -1,58 +1,127 @@
-/* تنسيق الحقل */
-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #28205b;
-  margin-bottom: 6px;
-  display: block;
+/* InputField.css - يحتوي على كل تنسيقات حقول الإدخال */
+
+/* الحاوية الرئيسية للحقل */
+.input-field-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-input {
+.input-wrapper {
+  position: relative;
   width: 100%;
-  height: 45px;
-  padding: 8px 35px 8px 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+}
+
+/* تسمية الحقل */
+.input-label {
   font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+  text-align: left;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+
+/* حقل الإدخال */
+.custom-input {
+  width: 350px;
+  height: 52px;
+  padding: 14px 45px 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 15px;
   outline: none;
   box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.custom-input::placeholder {
+  color: #999;
+  font-size: 14px;
+}
+
+.custom-input:hover {
+  border-color: #bdbdbd;
+  background-color: #fff;
+}
+
+.custom-input.focused {
+  border-color: #723efe;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(114, 62, 254, 0.1);
+}
+
+.custom-input.error {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.custom-input.error.focused {
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
 }
 
 /* أيقونة العين */
 .eyeIcon {
-  padding-top: 14px;
   position: absolute;
-  right: 10px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
-  color: #555;
+  color: #666;
   user-select: none;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  height: 52px;
+  width: 30px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  z-index: 10;
+  transition: color 0.3s ease;
 }
 
+.eyeIcon:hover {
+  color: #723efe;
+}
+
+.custom-input.error + .eyeIcon {
+  color: #dc3545;
+}
+
+/* رسالة الخطأ العائمة */
 .error-floating {
   position: absolute;
-  top: -22px;
+  top: -28px;
   right: 10px;
-  background: rgba(244, 67, 54, 0.9);
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   color: white;
-  font-size: 11px;
-  padding: 4px 9px;
-  border-radius: 6px;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
   pointer-events: none;
-  z-index: 10;
+  z-index: 100;
   opacity: 0;
-  transform: translateY(6px);
+  transform: translateY(10px);
   animation: fadeInFloat 0.3s forwards, fadeOutFloat 0.6s 5.5s forwards;
-  box-shadow: 0 0 6px rgba(244, 67, 54, 0.36), 0 0 12px rgba(244, 67, 54, 0.36);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  white-space: nowrap;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
 }
 
 @keyframes fadeInFloat {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -67,6 +136,72 @@ input {
   }
   to {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(10px);
+  }
+}
+
+/* تحسينات لوضع الشركة */
+.company-mode .input-label {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.company-mode .custom-input {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #333;
+}
+
+.company-mode .custom-input::placeholder {
+  color: #666;
+}
+
+.company-mode .custom-input:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: white;
+}
+
+.company-mode .custom-input.focused {
+  border-color: #00b4d8;
+  box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.2);
+}
+
+.company-mode .custom-input.error {
+  border-color: #ff6b6b;
+  background-color: #fff5f5;
+}
+
+.company-mode .eyeIcon {
+  color: #666;
+}
+
+.company-mode .eyeIcon:hover {
+  color: #00b4d8;
+}
+
+.company-mode .error-floating {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+/* تصميم متجاوب */
+@media (max-width: 480px) {
+  .custom-input {
+    height: 48px;
+    padding: 12px 40px 12px 14px;
+    font-size: 14px;
+  }
+  
+  .eyeIcon {
+    height: 48px;
+    width: 26px;
+    right: 14px;
+    font-size: 16px;
+  }
+  
+  .error-floating {
+    font-size: 11px;
+    padding: 5px 10px;
+    top: -24px;
   }
 }

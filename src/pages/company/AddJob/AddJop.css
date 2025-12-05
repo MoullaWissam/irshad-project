@@ -1,0 +1,620 @@
+/* AddJobPage.css - بأسماء فريدة مع slider وتحسينات */
+
+/* الحاوية الرئيسية */
+.ajp-container {
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* عنوان الصفحة */
+.ajp-page-title {
+  color: #352769;
+  font-weight: bold;
+  font-size: 2.4rem;
+  margin-bottom: 30px;
+  text-shadow: 0px 2px 4px rgba(151, 138, 232, 0.3);
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(115, 62, 255, 0.1);
+}
+
+/* مغلف النموذج */
+.ajp-form-wrapper {
+  display: flex;
+  gap: 30px;
+  background: linear-gradient(135deg, #733eff 0%, #8c61e6 100%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(115, 62, 255, 0.2);
+  min-height: 600px;
+}
+
+/* القسم الأيسر */
+.ajp-left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 20px;
+}
+
+/* القسم الأيمن */
+.ajp-right-section {
+  flex: 1;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 20px;
+}
+
+/* عنوان القسم الأيمن */
+.ajp-section-title {
+  color: #fff;
+  font-weight: 600;
+  margin: 0;
+  font-size: 1.3em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ajp-optional-text {
+  opacity: 0.7;
+  font-weight: normal;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* قسم رفع الصورة */
+.ajp-upload-section {
+  margin-top: 10px;
+}
+
+.ajp-upload-label {
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+  font-size: 1em;
+}
+
+.ajp-upload-box {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  border: 2px dashed #8c61e6;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+}
+
+.ajp-upload-box:hover {
+  border: 2px solid #6f47af;
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(111, 71, 175, 0.2);
+}
+
+.ajp-upload-icon {
+  font-size: 2.5rem;
+  color: #6f47af;
+  margin-bottom: 10px;
+}
+
+.ajp-upload-text {
+  color: #6f47af;
+  font-weight: 500;
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+.ajp-upload-hint {
+  color: #8c61e6;
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.ajp-logo-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ajp-logo-image {
+  max-width: 80px;
+  max-height: 50px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.ajp-change-text {
+  color: #6f47af;
+  font-size: 0.9em;
+  text-decoration: underline;
+}
+
+/* صندوق إضافة الاختبار */
+.ajp-add-test-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background: rgba(124, 71, 238, 0.15);
+  border-radius: 14px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px dashed rgba(140, 97, 230, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.ajp-add-test-box:hover {
+  background: rgba(139, 97, 233, 0.25);
+  border: 2px solid #8b61e9;
+  box-shadow: 0 8px 25px rgba(57, 39, 105, 0.3);
+  transform: translateY(-3px);
+}
+
+.ajp-plus-icon {
+  font-size: 4rem;
+  color: #e6e2ff;
+  font-weight: 300;
+}
+
+/* Questions Slider */
+.ajp-questions-slider {
+  background: rgba(28, 45, 92, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  min-height: 320px;
+}
+
+.ajp-question-indicator {
+  color: #00b4ff;
+  font-weight: 600;
+  font-size: 0.9em;
+  margin-bottom: 15px;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ajp-question-slide {
+  animation: ajp-slideIn 0.3s ease-out;
+}
+
+@keyframes ajp-slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ajp-question-block {
+  padding: 15px 0;
+}
+
+
+.ajp-question-title {
+  color: #fff;
+  margin: 0 0 10px 0;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.ajp-question-hint {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 15px 0;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.ajp-question-input {
+  margin-bottom: 20px;
+}
+
+.ajp-question-input input,
+.ajp-answer-input input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 1em;
+  color: #333;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.ajp-question-input input:focus,
+.ajp-answer-input input:focus {
+  outline: none;
+  border-color: #3b7bff;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 123, 255, 0.2);
+}
+
+.ajp-question-input input::placeholder,
+.ajp-answer-input input::placeholder {
+  color: rgba(53, 39, 105, 0.5);
+}
+
+/* قسم الاختيارات */
+.ajp-choices-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ajp-choices-label {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 10px 0;
+  font-weight: 500;
+  font-size: 1em;
+}
+
+.ajp-answer-input {
+  position: relative;
+}
+
+/* حقل الإجابة الصحيحة - تحسين الحدود الخضراء */
+.ajp-correct-answer input {
+  border: 2px solid #2ecc71 !important;
+  border-left-width: 4px !important;
+}
+
+.ajp-correct-answer input:focus {
+  border-color: #27ae60 !important;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2) !important;
+}
+
+.ajp-correct-answer::before {
+  content: "✓ Correct Answer";
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  background: #2ecc71;
+  color: white;
+  font-size: 0.7em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  z-index: 1;
+}
+
+/* Slider Controls */
+.ajp-slider-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ajp-slider-btn {
+  background: rgba(59, 123, 255, 0.2);
+  color: #fff;
+  border: 1px solid rgba(59, 123, 255, 0.5);
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.ajp-slider-btn:hover:not(:disabled) {
+  background: rgba(59, 123, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.ajp-slider-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.ajp-slider-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.ajp-slider-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+}
+
+.ajp-slider-dot:hover {
+  background: rgba(59, 123, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.ajp-slider-dot-active {
+  background: #3b7bff;
+  border-color: #3b7bff;
+  color: white;
+  font-weight: bold;
+  transform: scale(1.1);
+}
+
+/* اختيار الوقت - مع تصغير الـ Radio */
+.ajp-time-selection {
+  background: rgba(28, 45, 92, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.ajp-time-label {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 15px 0;
+  font-weight: 500;
+  font-size: 1em;
+}
+
+.ajp-time-options {
+  display: flex;
+  gap: 20px;
+}
+
+.ajp-time-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  flex: 1;
+}
+
+.ajp-time-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ajp-time-radio {
+  width: 14px !important;
+  height: 14px !important;
+  accent-color: #3b7bff;
+  cursor: pointer;
+  margin: 0;
+  transform: scale(0.8);
+}
+
+.ajp-time-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95em;
+}
+
+/* قسم الإرسال */
+.ajp-submit-section {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+
+.ajp-submit-btn {
+  background: linear-gradient(135deg, #312978 0%, #4e389d 100%);
+  color: #fff;
+  font-weight: bold;
+  padding: 16px 40px;
+  font-size: 1.1em;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: stretch;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(49, 41, 120, 0.3);
+}
+
+.ajp-submit-btn:hover {
+  background: linear-gradient(135deg, #4e389d 0%, #5d47bb 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(49, 41, 120, 0.4);
+}
+
+.ajp-submit-btn:active {
+  transform: translateY(1px);
+}
+
+/* الإشعارات */
+.ajp-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  min-width: 280px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.ajp-toast-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ajp-toast-success {
+  background: rgba(230, 255, 237, 0.95);
+  color: #2e7d32;
+  border: 2px solid #2e7d32;
+}
+
+.ajp-toast-error {
+  background: rgba(255, 235, 238, 0.95);
+  color: #c62828;
+  border: 2px solid #c62828;
+}
+
+.ajp-toast::before {
+  font-size: 1.2em;
+}
+
+.ajp-toast-success::before {
+  content: '✅';
+}
+
+.ajp-toast-error::before {
+  content: '❌';
+}
+
+/* رسائل الخطأ */
+.ajp-field-error {
+  color: #ff6b6b;
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block;
+}
+
+.ajp-input-error {
+  border-color: #ff6b6b !important;
+  background: rgba(255, 107, 107, 0.1) !important;
+}
+
+.ajp-wrong-error {
+  margin-top: 10px;
+}
+
+.ajp-required-star {
+  color: #ff6b6b;
+  margin-left: 4px;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 1024px) {
+  .ajp-form-wrapper {
+    flex-direction: column;
+  }
+  
+  .ajp-left-section, .ajp-right-section {
+    min-width: 100%;
+  }
+  
+  .ajp-page-title {
+    font-size: 2rem;
+  }
+  
+  .ajp-time-options {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ajp-container {
+    padding: 20px;
+  }
+  
+  .ajp-form-wrapper {
+    padding: 20px;
+  }
+  
+  .ajp-left-section, .ajp-right-section {
+    padding: 0px;
+  }
+  
+  .ajp-submit-btn {
+    width: 100%;
+  }
+  
+  .ajp-slider-controls {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .ajp-slider-btn {
+    min-width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ajp-page-title {
+    font-size: 1.6rem;
+  }
+  
+  .ajp-form-wrapper {
+    padding: 15px;
+  }
+  
+  .ajp-add-test-box {
+    height: 150px;
+  }
+  
+  .ajp-plus-icon {
+    font-size: 3.2rem;
+  }
+  
+  .ajp-slider-dots {
+    gap: 5px;
+  }
+  
+  .ajp-slider-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8em;
+  }
+}
+
+/* تأثيرات للعناصر */
+@keyframes ajp-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ajp-form-wrapper {
+  animation: ajp-fadeInUp 0.6s ease-out;
+}

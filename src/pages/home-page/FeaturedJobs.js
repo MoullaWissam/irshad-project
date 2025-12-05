@@ -1,7 +1,7 @@
 // FeaturedJobs.js - بعد التعديل
 
 import React from "react";
-import JobCard from "../../components/Card/JobCard/JobCard";
+import JobCard from "../../Components/Card/JobCard/JobCard";
 import { useTranslation } from 'react-i18next'; // 👈 استيراد الخطاف
 import "./FeaturedJobs.css";
 

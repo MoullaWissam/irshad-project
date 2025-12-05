@@ -8,6 +8,7 @@ const CompanyForm = ({ data, errors, onChange, onFileChange }) => {
         { label: "Company Name", name: "companyName" },
         { label: "Password", name: "companyPassword", type: "password" },
         { label: "Company Address", name: "companyAddress" },
+        { label: "email", name: "email" },
         { label: "Website", name: "website" },
       ].map((field) => (
         <div key={field.name}>

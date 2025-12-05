@@ -1,8 +1,10 @@
 import React from "react";
-import JobCard from "../../components/Card/JobCard/JobCard";
-import "./AddJobPage.css";
+import JobCard from "../../Components/Card/JobCard/JobCard.js";
+import "./JobManagementPage.css";
+import { useNavigate } from "react-router-dom";
+function JobManagementPage() {
+  const navigate = useNavigate();
 
-function AddJobPage() {
   const jobs = [
     {
       icon: "/icon/Telegram.png",
@@ -56,7 +58,7 @@ function AddJobPage() {
   ];
 
   const handleAddClick = () => {
-    console.log("Open Add Job Form");
+    navigate('/company/AddJob')
     // ممكن تفتح مودال أو تنتقل لصفحة جديدة
   };
 
@@ -86,4 +88,4 @@ function AddJobPage() {
   );
 }
 
-export default AddJobPage;
+export default JobManagementPage;

@@ -1,92 +1,171 @@
-/* pages/job-seeker/JobsPage.css */
+/* JobsPage.css - النسخة المحدثة */
+
+/* تنسيق الحاوية الرئيسية للصفحة */
 .jobs-page-container {
-  padding: 30px;
-  background: #f8f9fa;
+  padding: 0px 40px 40px 40px;
+  max-width: 100%;
   min-height: 100vh;
+  background-color: whitesmoke;
 }
 
-.page-header {
-  margin-bottom: 30px;
+/* تنسيق عنوان الصفحة */
+.jobs-page-title {
+  font-weight: 600;
+  font-style: normal;
+  font-size: 56px;
+  line-height: 32px;
+  padding-top: 40px;
+  margin: 0px 0 60px 0;
+  color: #0b2b82;
 }
 
-.page-header h2 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin: 0;
-}
-
-.page-header h2 span {
-  color: #007bff;
+/* تلوين كلمة "Jobs" داخل العنوان */
+.jobs-page-title-span {
+  color: #723dff;
 }
 
 /* مربع البحث */
-.search-box {
+.jobs-page-search-box {
   position: relative;
-  max-width: 500px;
-  margin-bottom: 30px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 80px auto;
 }
 
-.search-input {
-  width: 100%;
-  padding: 15px 50px 15px 20px;
-  border: 2px solid #e2e8f0;
+.jobs-page-search-input {
+  width: 80%;
+  padding: 18px 24px;
+  padding-right: 60px;
+  border: 1px solid #ddd;
   border-radius: 12px;
   font-size: 16px;
-  background: white;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
-.search-input:focus {
+.jobs-page-search-input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  border-color: #723dff;
+  box-shadow: 0 4px 16px rgba(114, 61, 255, 0.25);
 }
 
-.search-icon-img {
+.jobs-page-search-button {
   position: absolute;
-  right: 20px;
+  right: 10%;
   top: 50%;
   transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.jobs-page-search-button:hover {
+  opacity: 0.8;
+}
+
+.jobs-page-search-button:active {
   opacity: 0.6;
 }
 
-/* شبكة الوظائف */
-.job-grid {
+.jobs-page-search-icon-img {
+  width: 22px;
+  height: 22px;
+  opacity: 0.6;
+}
+
+/* شبكة عرض البطاقات - التعديل الرئيسي هنا */
+.jobs-page-job-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(3, 1fr); /* 3 أعمدة */
+  gap: 30px;
   margin-top: 20px;
 }
 
-/* التجاوب مع الشاشات الصغيرة */
+/* تنسيق بطاقة الوظيفة لتلائم الشبكة */
+.jobs-page-job-grid > * {
+  height: 100%;
+}
+
+/* رسائل التحميل والخطأ */
+.jobs-page-loading-message,
+.jobs-page-error-message,
+.jobs-page-no-jobs-message {
+  text-align: center;
+  padding: 60px;
+  font-size: 20px;
+  color: #666;
+  background-color: white;
+  border-radius: 12px;
+  margin: 40px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  grid-column: 1 / -1; /* يشغل كل الأعمدة */
+}
+
+.jobs-page-error-message {
+  color: #e74c3c;
+  background-color: #fdf0ef;
+  border-left: 4px solid #e74c3c;
+}
+
+.jobs-page-no-jobs-message {
+  color: #666;
+  background-color: #f8f9fa;
+  border-left: 4px solid #723dff;
+}
+
+/* تصميم متجاوب للشاشات المختلفة */
+@media (max-width: 1200px) {
+  .jobs-page-job-grid {
+    grid-template-columns: repeat(2, 1fr); /* عمودان للشاشات المتوسطة */
+  }
+}
+
 @media (max-width: 768px) {
   .jobs-page-container {
-    padding: 20px 15px;
+    padding: 0px 20px 30px 20px;
   }
   
-  .page-header h2 {
-    font-size: 2rem;
+  .jobs-page-title {
+    font-size: 40px;
+    margin-bottom: 40px;
+    text-align: center;
   }
   
-  .job-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .jobs-page-search-box {
+    margin-bottom: 60px;
   }
   
-  .search-box {
-    max-width: 100%;
+  .jobs-page-job-grid {
+    grid-template-columns: 1fr; /* عمود واحد للشاشات الصغيرة */
+    gap: 25px;
+  }
+  
+  .jobs-page-search-input {
+    padding: 16px 20px;
+    padding-right: 50px;
   }
 }
 
 @media (max-width: 480px) {
-  .jobs-page-container {
-    padding: 15px 10px;
+  .jobs-page-title {
+    font-size: 32px;
+    margin-bottom: 30px;
   }
   
-  .page-header h2 {
-    font-size: 1.75rem;
+  .jobs-page-search-box {
+    max-width: 100%;
+  }
+  
+  .jobs-page-loading-message,
+  .jobs-page-error-message,
+  .jobs-page-no-jobs-message {
+    padding: 40px 20px;
+    font-size: 18px;
   }
 }

@@ -1,59 +1,92 @@
-/* تنسيق الحقل */
-label {
-  font-size: 14px;
+/* InputField.css - بأسماء فريدة وأحجام أصغر */
+
+.ajp-input-field-container {
+  margin-bottom: 15px;
+  width: 100%;
+  position: relative;
+}
+
+.ajp-input-label {
+  font-size: 0.85em;
   font-weight: 500;
-  color: #28205b;
-  margin-bottom: 6px;
+  color: #fff;
+  margin-bottom: 4px;
   display: block;
 }
 
-input {
+.ajp-input-wrapper {
+  position: relative;
+}
+
+.ajp-input {
   width: 100%;
-  height: 45px;
-  padding: 8px 35px 8px 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
+  height: 36px;
+  padding: 6px 30px 6px 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  font-size: 0.85em;
   outline: none;
   box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.ajp-input:focus {
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.ajp-input::placeholder {
+  color: rgba(53, 39, 105, 0.5);
+  font-size: 0.85em;
 }
 
 /* أيقونة العين */
-.eyeIcon {
-  padding-top: 14px;
+.ajp-eye-icon {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   color: #555;
   user-select: none;
+  display: flex;
   align-items: center;
+  height: 100%;
 }
 
-/* الرسالة العائمة */
-.error-floating {
+/* الرسالة العائمة للخطأ */
+.ajp-error-floating {
   position: absolute;
-  top: -22px;
-  right: 10px;
+  top: -18px;
+  right: 8px;
   background: rgba(244, 67, 54, 0.9);
   color: white;
-  font-size: 11px;
-  padding: 4px 9px;
-  border-radius: 6px;
+  font-size: 0.75em;
+  padding: 3px 7px;
+  border-radius: 4px;
   pointer-events: none;
   z-index: 10;
   opacity: 0;
-  transform: translateY(6px);
-  animation: fadeInFloat 0.3s forwards, fadeOutFloat 0.6s 5.5s forwards;
-  box-shadow: 0 0 6px rgba(244, 67, 54, 0.36), 0 0 12px rgba(244, 67, 54, 0.36);
+  transform: translateY(4px);
+  animation: ajp-fadeInFloat 0.3s forwards, ajp-fadeOutFloat 0.6s 5.5s forwards;
+  box-shadow: 0 0 4px rgba(244, 67, 54, 0.36);
 }
 
-@keyframes fadeInFloat {
+.ajp-error-message {
+  color: #ff6b6b;
+  font-size: 0.75em;
+  margin-top: 4px;
+  display: block;
+}
+
+@keyframes ajp-fadeInFloat {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -61,13 +94,34 @@ input {
   }
 }
 
-@keyframes fadeOutFloat {
+@keyframes ajp-fadeOutFloat {
   from {
     opacity: 1;
     transform: translateY(0);
   }
   to {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
+  }
+}
+
+/* Responsive للـ InputField */
+@media (max-width: 768px) {
+  .ajp-input {
+    height: 34px;
+    padding: 5px 28px 5px 10px;
+    font-size: 0.8em;
+  }
+  
+  .ajp-input-label {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .ajp-input {
+    height: 32px;
+    padding: 4px 26px 4px 8px;
+    font-size: 0.75em;
   }
 }
