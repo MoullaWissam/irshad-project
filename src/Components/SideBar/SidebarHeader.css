@@ -56,7 +56,7 @@
 .toggle-icon {
   width: 14px; /* تصغير الأيقونة */
   height: 14px;
-  filter: brightness(0) invert(1);
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(190deg) brightness(98%) contrast(105%);
 }
 
 /* عندما يكون مفتوحاً - أيقونة التبديل ثابتة */

@@ -1,7 +1,7 @@
 .featured {
   padding: 60px 20px;
   text-align: start;
-  background: white;
+  background: #fbfbfb;
   color: black;
   max-width: 1200px;
   margin: 0 auto;
@@ -38,7 +38,7 @@
 
 @media (max-width: 768px) {
   .featured {
-    padding: 40px 20px;
+    padding: 50px 30px;
   }
   
   .featured-title {

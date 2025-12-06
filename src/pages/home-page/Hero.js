@@ -1,46 +1,41 @@
 // Hero.js - بعد التعديل
-
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next'; // 👈 استيراد الخطاف
+import { useTranslation } from 'react-i18next';
 import "./Hero.css";
 import heroImage from "../../assets/images/mainHomeImage.png";
 
 function Hero() {
-  const { t } = useTranslation(); // 👈 استخدام الخطاف
+  const { t } = useTranslation();
 
   return (
-    <section className="hero">
-      <div className="hero-text">
-        <h1>
-          {/* النص الرئيسي */}
-          {t("Find Your Future with Irshad")} 
+    <section className="hero-section">
+      <div className="hero-section-text">
+        <h1 className="hero-section-title">
+          {t("Find Your Future with Irshad")}
         </h1>
-        <p>
-          {/* الوصف */}
+        <p className="hero-section-description">
           {t("An AI-driven pathway to professional excellence, connecting talented employees with great companies.")}
         </p>
-        <div className="hero-buttons">
+        <div className="hero-section-buttons">
           <Link to="/register?userType=employee">
-            <button className="btn btn-purple">
-              {/* زر الباحث عن عمل */}
+            <button className="hero-btn hero-btn-purple">
               {t("I am a job seeker")}
             </button>
           </Link>
           <Link to="/register?userType=company">
-            <button className="btn btn-blue">
-              {/* زر الشركة */}
+            <button className="hero-btn hero-btn-blue">
               {t("I am a company")}
             </button>
           </Link>
         </div>
       </div>
 
-      <div className="hero-image">
+      <div className="hero-section-image">
         <img
           src={heroImage}
           alt="Hero illustration"
-          className="hero-img"
+          className="hero-section-img"
         />
       </div>
     </section>

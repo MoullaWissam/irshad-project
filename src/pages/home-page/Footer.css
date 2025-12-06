@@ -26,7 +26,6 @@
   height: 68px;
   opacity: 1;
   border-radius: 8px;
-  background: #fbfbfb;
   margin-bottom: 10px;
 }
 
@@ -149,27 +148,27 @@
     gap: 25px;
     padding: 0 15px;
   }
-  
+
   .irshad-footer-logo {
     width: 200px;
     height: 60px;
   }
-  
+
   .irshad-footer-brand p {
     width: 200px;
     font-size: 14px;
     line-height: 26px;
   }
-  
+
   .irshad-footer-social h4,
   .irshad-footer-links h4 {
     font-size: 18px;
   }
-  
+
   .irshad-social-icons {
     width: 190px;
   }
-  
+
   .irshad-footer-extra img {
     max-width: 160px;
   }
@@ -180,14 +179,14 @@
     padding-top: 25px;
     gap: 40px;
   }
-  
+
   .irshad-footer-container {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 25px;
   }
-  
+
   .irshad-footer-brand,
   .irshad-footer-links,
   .irshad-footer-social,
@@ -196,30 +195,31 @@
     max-width: 300px;
     margin-bottom: 20px;
   }
-  
+
   .irshad-footer-logo {
     margin: 0 auto 8px auto;
+    display: none;
   }
-  
+
   .irshad-footer-brand p {
     width: 100%;
     margin: 0 auto;
   }
-  
+
   .irshad-footer-links h4,
   .irshad-footer-social h4 {
     margin: 0 auto 10px auto;
   }
-  
+
   .irshad-social-icons {
     justify-content: center;
     margin: 0 auto;
   }
-  
+
   .irshad-footer-extra img {
     max-width: 150px;
   }
-  
+
   .irshad-footer-bottom {
     font-size: 11px;
     padding-top: 10px;
@@ -230,41 +230,41 @@
   .irshad-footer {
     padding-top: 20px;
   }
-  
+
   .irshad-footer-logo {
     width: 180px;
     height: 55px;
   }
-  
+
   .irshad-footer-brand p {
     font-size: 13px;
     line-height: 24px;
   }
-  
+
   .irshad-footer-links h4,
   .irshad-footer-social h4 {
     font-size: 17px;
   }
-  
+
   .irshad-footer-links a {
     font-size: 12px;
   }
-  
+
   .irshad-social-icons {
     width: auto;
     height: auto;
     justify-content: center;
     flex-wrap: wrap;
   }
-  
+
   .irshad-social-icons a {
     margin: 0 5px;
   }
-  
+
   .irshad-footer-extra img {
     max-width: 140px;
   }
-  
+
   .irshad-footer-bottom {
     font-size: 10px;
     padding-top: 8px;

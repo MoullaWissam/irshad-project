@@ -121,7 +121,6 @@
 
 /* شاشة الاختبار النشط */
 .test-header {
-  background: white;
   border-radius: 15px 15px 0 0;
   padding: 25px 30px;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
