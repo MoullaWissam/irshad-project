@@ -2,7 +2,6 @@
 .hiw-section {
   background-color: #fbfbfb;
   text-align: center;
-  padding: 100px 20px;
   color: white;
   position: relative;
   overflow: hidden;
@@ -206,10 +205,7 @@
 
 /* تحسينات الريسبونسيف للشاشات الكبيرة جداً */
 @media (min-width: 1921px) {
-  .hiw-section {
-    padding: 120px 40px;
-  }
-  
+
   .hiw-title {
     font-size: 3.5rem;
   }
@@ -243,9 +239,7 @@
 }
 
 @media (max-width: 1920px) and (min-width: 1441px) {
-  .hiw-section {
-    padding: 100px 30px;
-  }
+
   
   .hiw-title {
     font-size: 3rem;
@@ -259,16 +253,13 @@
 
 /* شاشات متوسطة كبيرة */
 @media (max-width: 1440px) {
-  .hiw-section {
-    padding: 90px 25px;
-  }
-  
+
   .hiw-title {
     font-size: 2.5rem;
   }
   
   .hiw-arrow-bg {
-    width: 700px;
+    width: 800px;
     height: 110px;
   }
   
@@ -296,17 +287,14 @@
 }
 
 @media (max-width: 1200px) {
-  .hiw-section {
-    padding: 80px 20px;
-  }
-  
+
   .hiw-title {
     font-size: 2.25rem;
     margin-bottom: 50px;
   }
   
   .hiw-arrow-bg {
-    width: 600px;
+    width: 800px;
     height: 95px;
     margin-bottom: 50px;
   }
@@ -317,9 +305,7 @@
 }
 
 @media (max-width: 1024px) {
-  .hiw-section {
-    padding: 70px 15px;
-  }
+
   
   .hiw-title {
     font-size: 2rem;
@@ -327,7 +313,7 @@
   }
   
   .hiw-arrow-bg {
-    width: 550px;
+    width: 800px;
     height: 87px;
   }
   
@@ -361,7 +347,7 @@
 @media (max-width: 900px) {
   .hiw-arrow-bg {
     width: 90%;
-    max-width: 500px;
+    max-width: 800px;
     height: 80px;
   }
   
@@ -387,7 +373,6 @@
 /* شاشات أفقية للهواتف */
 @media (max-width: 768px) and (orientation: landscape) {
   .hiw-section {
-    padding: 60px 15px;
     min-height: 300vh;
   }
   
@@ -420,8 +405,7 @@
 
 @media (max-width: 768px) {
   .hiw-section {
-    padding: 60px 15px;
-    min-height: 145vh;
+    min-height: 300vh;
   }
   
   .hiw-title {
@@ -530,15 +514,15 @@
 
 @media (max-width: 480px) {
   .hiw-section {
-    padding: 60px 10px;
-    min-height: 110vh;
+    padding: 25px 10px 50px; /* أقل من الأعلى، أكثر من الأسفل */
+    min-height: 55vh;
     justify-content: flex-start;
   }
   
   .hiw-title {
     font-size: 1.5rem;
     margin-bottom: 30px;
-    margin-top: 20px;
+    margin-top: 15px;
   }
   
   .hiw-arrow-bg {
@@ -605,7 +589,7 @@
 
 @media (max-width: 360px) {
   .hiw-section {
-    padding: 50px 8px;
+    padding: 20px 8px 40px; /* أقل من الأعلى، أكثر من الأسفل */
     min-height: 500px;
   }
   

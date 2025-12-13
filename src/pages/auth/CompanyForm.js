@@ -35,7 +35,7 @@ const CompanyForm = ({ data, errors, onChange, onFileChange }) => {
             alt="Upload Icon"
             style={{ verticalAlign: "middle", marginRight: "6px" }}
           />
-          <span>{data.photo ? data.photo.name : "Upload Company Logo"}</span>
+          {/* <span>{data.photo ? data.photo.name : "Upload Company Logo"}</span> */}
         </label>
         <input
           id="companyPhoto"

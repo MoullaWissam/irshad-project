@@ -34,7 +34,7 @@ const EmployeeForm = ({ data, errors, onChange, onFileChange }) => {
             alt="Upload Icon"
             style={{ verticalAlign: "middle", marginRight: "6px" }}
           />
-          <span>{data.photo ? data.photo.name : "Upload Profile Photo"}</span>
+          {/* <span>{data.photo ? data.photo.name : "Upload Profile Photo"}</span> */}
         </label>
         <input
           id="employeePhoto"

@@ -1,7 +1,7 @@
-/* LoginStyle.css - تنسيقات البطاقة الرئيسية */
+/* LoginCardStyle.css - تنسيقات خاصة لمكون بطاقة تسجيل الدخول (مصغر) */
 
-/* خلفية صفحة تسجيل الدخول */
-.login-page-bg {
+/* الحاوية الرئيسية */
+.login-card-container {
   background: linear-gradient(180deg, #f0f4ff 0%, #723efe 100%);
   position: fixed;
   top: 0;
@@ -18,114 +18,211 @@
   z-index: 1000;
 }
 
-/* الحاوية الرئيسية */
-.mainBox {
-  width: 400px;
-  height: 550px;
+/* البطاقة الرئيسية - حجم مصغر (حوالي 25% من الشاشة) */
+.login-card-main {
+  width: 90%;
+  max-width: 320px; /* تصغير العرض الأقصى */
+  min-height: 420px; /* تصغير الارتفاع الأدنى */
   background: #fff;
-  border-radius: 20px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
-  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 25px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
+  margin: 20px;
 }
 
-.mainBox::before {
+.login-card-main::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 5px;
+  height: 4px;
   background: #723efe;
   transition: background 0.3s ease;
 }
 
-/* وضع الشركة - لون أزرق سماوي */
-.mainBox.company-mode {
-  background: linear-gradient(135deg, #723efe 0%, #00b4d8 100%);
+/* وضع الشركة - استعادة اللون الأزرق السماوي */
+.login-card-company-mode {
+  background: #fbfbfb;
 }
 
-.mainBox.company-mode::before {
-  background: #00b4d8;
+.login-card-company-mode::before {
+  background: linear-gradient(90deg, #00b4d8, #0077b6);
 }
 
-.mainBox.company-mode .logoTitel h2 {
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+/* الشعار والعنوان (مصغر) */
+.login-card-logo-title {
+  width: 100%;
+  max-width: 160px; /* تصغير */
+  height: 85px; /* تصغير */
+  margin-top: 5px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* زر التبديل بين الوضعين - تصميم جديد */
-.mode-toggle-container {
-  margin: 20px 0 30px;
+.login-card-logo {
+  width: 100%;
+  max-width: 140px; /* تصغير */
+  height: 45px; /* تصغير */
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+}
+
+.login-card-company-mode .login-card-logo {
+  filter: brightness(1.1) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.login-card-title {
+  color: #28205b;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(20px, 4vw, 22px); /* تصغير */
+  line-height: 100%;
+  margin-top: 10px; /* تصغير */
+  font-weight: 700;
+  transition: color 0.3s ease;
+  letter-spacing: -0.3px; /* تصغير */
+  text-align: center;
+}
+
+.login-card-company-mode .login-card-title {
+  color: #28205b;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* زر التبديل بين الوضعين - استعادة الألوان الأصلية (مصغر) */
+.login-card-mode-toggle-container {
+  margin: 15px 0 20px; /* تصغير */
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.mode-toggle-wrapper {
+.login-card-mode-toggle-wrapper {
   display: flex;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 30px;
-  padding: 5px;
+  border-radius: 24px; /* تصغير */
+  padding: 4px; /* تصغير */
   border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 220px; /* تصغير */
 }
 
-.mainBox.company-mode .mode-toggle-wrapper {
+.login-card-company-mode .login-card-mode-toggle-wrapper {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.mode-toggle-btn {
-  padding: 10px 25px;
+.login-card-mode-btn {
+  padding: 8px 12px; /* تصغير */
   border: none;
-  border-radius: 25px;
-  font-size: 14px;
+  border-radius: 20px; /* تصغير */
+  font-size: clamp(12px, 2.5vw, 13px); /* تصغير */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: transparent;
-  color: #666;
-  min-width: 120px;
+  color: #c7c6c6;
+  flex: 1;
+  min-width: 0;
   text-align: center;
+  white-space: nowrap;
 }
 
-.mode-toggle-btn.user-mode.active {
+/* زر الوضع العادي (User) - لون أرجواني */
+.login-card-user-mode.login-card-active {
   background: #723efe;
   color: white;
-  box-shadow: 0 4px 12px rgba(114, 62, 254, 0.3);
+  box-shadow: 0 3px 8px rgba(114, 62, 254, 0.25);
 }
 
-.mode-toggle-btn.company-mode.active {
+/* زر وضع الشركة - استعادة اللون الأزرق السماوي */
+.login-card-company-mode.login-card-active {
   background: #00b4d8;
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 3px 8px rgba(0, 180, 216, 0.25);
 }
 
-.mode-toggle-btn:hover:not(.active) {
+.login-card-mode-btn:hover:not(.login-card-active) {
   background: rgba(0, 0, 0, 0.05);
   color: #333;
 }
 
-.mainBox.company-mode .mode-toggle-btn:hover:not(.active) {
+.login-card-company-mode .login-card-mode-btn:hover:not(.login-card-active) {
   background: rgba(255, 255, 255, 0.15);
-  color: white;
+  color: #333;
 }
 
-/* زر تسجيل الدخول */
-.submitButton {
-  margin-top: 25px;
+/* النموذج */
+.login-card-form {
   width: 100%;
-  height: 50px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-card-inputs {
+  width: 100%;
+  padding: 12px 0; /* تصغير */
+  margin-top: 8px; /* تصغير */
+  background: transparent;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* تصغير */
+  flex: 1;
+}
+
+/* رسائل خطأ الخادم - التصميم القديم */
+.login-card-server-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  color: #721c24;
+  padding: 10px 12px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+  animation: login-card-slide-in 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.login-card-company-mode .login-card-server-error {
+  background-color: rgba(248, 215, 218, 0.95);
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+@keyframes login-card-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* زر تسجيل الدخول (مصغر) */
+.login-card-submit-btn {
+  margin-top: auto;
+  width: 100%;
+  height: 44px; /* تصغير */
   border: none;
-  border-radius: 12px;
+  border-radius: 10px; /* تصغير */
   padding: 0 10px;
-  font-size: 16px;
+  font-size: clamp(14px, 3.5vw, 15px); /* تصغير */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -136,7 +233,7 @@
   overflow: hidden;
 }
 
-.submitButton::after {
+.login-card-submit-btn::after {
   content: '';
   position: absolute;
   top: 0;
@@ -147,302 +244,390 @@
   transition: left 0.5s;
 }
 
-.submitButton:hover::after {
+.login-card-submit-btn:hover::after {
   left: 100%;
 }
 
-.submitButton:disabled {
+.login-card-submit-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.submitButton:disabled::after {
+.login-card-submit-btn:disabled::after {
   display: none;
 }
 
 /* زر المستخدم - أرجواني */
-.user-submit {
+.login-card-user-submit {
   background: linear-gradient(135deg, #723efe 0%, #5a2ed6 100%);
   color: white;
-  box-shadow: 0 6px 20px rgba(114, 62, 254, 0.4);
+  box-shadow: 0 4px 12px rgba(114, 62, 254, 0.35);
 }
 
-.user-submit:hover:not(:disabled) {
+.login-card-user-submit:hover:not(:disabled) {
   background: linear-gradient(135deg, #5a2ed6 0%, #4a24b5 100%);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(114, 62, 254, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(114, 62, 254, 0.4);
 }
 
-.user-submit:active:not(:disabled) {
+.login-card-user-submit:active:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(114, 62, 254, 0.4);
+  box-shadow: 0 3px 10px rgba(114, 62, 254, 0.35);
 }
 
-/* زر الشركة - أزرق سماوي */
-.company-submit {
-  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+/* زر الشركة - استعادة اللون الأزرق السماوي */
+.login-card-company-submit {
+  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
   color: white;
-  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.35);
 }
 
-.company-submit:hover:not(:disabled) {
+.login-card-company-submit:hover:not(:disabled) {
   background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 180, 216, 0.4);
 }
 
-.company-submit:active:not(:disabled) {
+.login-card-company-submit:active:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 3px 10px rgba(0, 180, 216, 0.35);
 }
 
-/* سبينر للتحميل */
-.loading-text {
+/* سبينر للتحميل (مصغر) */
+.login-card-loading {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px; /* تصغير */
 }
 
-.spinner {
-  width: 16px;
-  height: 16px;
+.login-card-spinner {
+  width: 14px; /* تصغير */
+  height: 14px; /* تصغير */
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top-color: white;
-  animation: spin 0.8s linear infinite;
+  animation: login-card-spin 0.8s linear infinite;
 }
 
-@keyframes spin {
+@keyframes login-card-spin {
   to { transform: rotate(360deg); }
 }
 
-/* تعديلات إضافية للشركة */
-.company-auth-links {
+/* الروابط (مصغرة) */
+.login-card-links,
+.login-card-company-links {
   text-align: center;
-  margin-top: 25px;
+  margin-top: 20px; /* تصغير */
   width: 100%;
 }
 
-.company-note {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.4;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-}
-
-.company-note p {
-  margin: 0;
-}
-
-/* الشعار + العنوان */
-.logoTitel {
-  width: 200px;
-  height: 110px;
-  margin-top: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logoTitel img {
-  width: 180px;
-  height: 60px;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.mainBox.company-mode .logoTitel img {
-  filter: brightness(1.2) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-.logoTitel h2 {
-  color: #28205b;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  font-size: 28px;
-  line-height: 100%;
-  margin-top: 15px;
-  font-weight: 700;
-  transition: color 0.3s ease;
-  letter-spacing: -0.5px;
-}
-
-/* صندوق الإدخال */
-.inputBox {
-  width: 100%;
-  padding: 20px 0;
-  margin-top: 10px;
-  background: transparent;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* رسائل الخطأ من الخادم */
-.server-error {
-  color: #dc3545;
-  background-color: rgba(248, 215, 218, 0.95);
-  border: 1px solid #f5c6cb;
-  border-radius: 10px;
-  padding: 12px 15px;
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 5px;
-  width: 100%;
-  animation: slideIn 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.mainBox.company-mode .server-error {
-  color: #ff6b6b;
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 107, 107, 0.3);
-  backdrop-filter: blur(10px);
-}
-
-/* الروابط */
-.auth-links {
-  text-align: center;
-  margin-top: 25px;
-  width: 100%;
-}
-
-.forgot-password-link {
+.login-card-forgot-link {
   display: block;
   text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
+  margin-top: 16px; /* تصغير */
+  font-size: clamp(12px, 2.5vw, 13px); /* تصغير */
   color: #723efe;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
-  padding: 5px;
-  border-radius: 6px;
+  padding: 4px; /* تصغير */
+  border-radius: 5px; /* تصغير */
 }
 
-.forgot-password-link:hover {
+.login-card-forgot-link:hover {
   color: #5a2ed6;
   text-decoration: underline;
   background: rgba(114, 62, 254, 0.1);
 }
 
-.mainBox.company-mode .forgot-password-link {
-  color: rgba(255, 255, 255, 0.9);
+.login-card-company-mode .login-card-forgot-link {
+  color: #00b4d8;
 }
 
-.mainBox.company-mode .forgot-password-link:hover {
-  color: white;
-  background: rgba(255, 255, 255, 0.15);
+.login-card-company-mode .login-card-forgot-link:hover {
+  color: #0077b6;
+  background: rgba(0, 180, 216, 0.1);
 }
 
-.signup-text {
-  margin-top: 25px;
-  font-size: 14px;
+.login-card-signup-text {
+  margin-top: 20px; /* تصغير */
+  font-size: clamp(12px, 2.5vw, 13px); /* تصغير */
   color: #666;
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.5; /* تصغير */
 }
 
-.mainBox.company-mode .signup-text {
-  color: rgba(255, 255, 255, 0.9);
+.login-card-company-mode .login-card-signup-text {
+  color: #555;
 }
 
-.signup-link {
+.login-card-signup-link {
   color: #723efe;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: 1px 3px; /* تصغير */
+  border-radius: 3px; /* تصغير */
 }
 
-.signup-link:hover {
+.login-card-signup-link:hover {
   color: #5a2ed6;
   text-decoration: underline;
   background: rgba(114, 62, 254, 0.1);
 }
 
-.mainBox.company-mode .signup-link {
-  color: white;
-  text-decoration: underline;
+.login-card-company-mode .login-card-signup-link {
+  color: #00b4d8;
   font-weight: 700;
 }
 
-.mainBox.company-mode .signup-link:hover {
-  color: #e0f7ff;
-  background: rgba(255, 255, 255, 0.15);
+.login-card-company-mode .login-card-signup-link:hover {
+  color: #0077b6;
+  background: rgba(0, 180, 216, 0.1);
 }
 
-/* تصميم متجاوب */
+/* تصميم متجاوب للأجهزة الصغيرة */
+@media (max-width: 768px) {
+  .login-card-main {
+    width: 85%;
+    min-height: 400px; /* تصغير */
+    padding: 22px 18px; /* تصغير */
+    border-radius: 14px; /* تصغير */
+    margin: 15px;
+  }
+  
+  .login-card-logo-title {
+    height: 75px; /* تصغير */
+  }
+  
+  .login-card-logo {
+    max-width: 120px; /* تصغير */
+    height: 40px; /* تصغير */
+  }
+  
+  .login-card-title {
+    font-size: 20px; /* تصغير */
+  }
+  
+  .login-card-inputs {
+    padding: 10px 0; /* تصغير */
+    gap: 14px; /* تصغير */
+  }
+  
+  .login-card-server-error {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 480px) {
-  .mainBox {
-    width: 80vw;
-    min-height: 520px;
-    padding: 30px 20px;
-    border-radius: 16px;
+  .login-card-main {
+    width: 88%;
+    min-height: 380px; /* تصغير */
+    padding: 20px 16px; /* تصغير */
+    border-radius: 12px; /* تصغير */
+    margin: 10px;
   }
   
-  .logoTitel {
-    width: 160px;
-    height: 90px;
+  .login-card-logo-title {
+    height: 65px; /* تصغير */
+    margin-top: 2px; /* تصغير */
   }
   
-  .logoTitel img {
-    width: 150px;
-    height: 50px;
+  .login-card-logo {
+    max-width: 110px; /* تصغير */
+    height: 35px; /* تصغير */
   }
   
-  .logoTitel h2 {
+  .login-card-title {
+    font-size: 18px; /* تصغير */
+    margin-top: 8px; /* تصغير */
+  }
+  
+  .login-card-mode-toggle-container {
+    margin: 12px 0 16px; /* تصغير */
+  }
+  
+  .login-card-mode-toggle-wrapper {
+    max-width: 180px; /* تصغير */
+  }
+  
+  .login-card-mode-btn {
+    padding: 6px 10px; /* تصغير */
+    font-size: 11px; /* تصغير */
+  }
+  
+  .login-card-submit-btn {
+    height: 42px; /* تصغير */
+    font-size: 13px; /* تصغير */
+  }
+  
+  .login-card-inputs {
+    gap: 12px; /* تصغير */
+  }
+  
+  .login-card-server-error {
+    padding: 7px 9px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .login-card-main {
+    width: 90%;
+    min-height: 360px; /* تصغير */
+    padding: 16px 14px; /* تصغير */
+    border-radius: 12px; /* تصغير */
+  }
+  
+  .login-card-logo-title {
+    height: 60px; /* تصغير */
+  }
+  
+  .login-card-logo {
+    max-width: 100px; /* تصغير */
+    height: 30px; /* تصغير */
+  }
+  
+  .login-card-title {
+    font-size: 17px; /* تصغير */
+  }
+  
+  .login-card-mode-toggle-wrapper {
+    max-width: 160px; /* تصغير */
+  }
+  
+  .login-card-mode-btn {
+    padding: 5px 8px; /* تصغير */
+    font-size: 10px; /* تصغير */
+  }
+  
+  .login-card-submit-btn {
+    height: 40px; /* تصغير */
+    font-size: 12px; /* تصغير */
+  }
+  
+  .login-card-links,
+  .login-card-company-links {
+    margin-top: 16px; /* تصغير */
+  }
+  
+  .login-card-server-error {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+}
+
+/* دعم الشاشات الكبيرة جداً (حجم 25% من الشاشة) */
+@media (min-width: 1200px) {
+  .login-card-main {
+    max-width: 350px; /* تصغير (حوالي 25% من 1440px) */
+    min-height: 430px; /* تصغير متناسب */
+    padding: 28px 22px; /* تصغير */
+  }
+  
+  .login-card-title {
+    font-size: 22px; /* تصغير */
+  }
+  
+  .login-card-mode-toggle-wrapper {
+    max-width: 240px; /* تصغير متناسب */
+  }
+  
+  .login-card-mode-btn {
+    padding: 9px 14px; /* تصغير */
+    font-size: 13px; /* تصغير */
+  }
+  
+  .login-card-submit-btn {
+    height: 46px; /* تصغير */
+    font-size: 15px; /* تصغير */
+  }
+}
+
+@media (min-width: 1600px) {
+  .login-card-main {
+    max-width: 380px; /* (حوالي 25% من 1920px) */
+    min-height: 460px;
+    padding: 30px 25px;
+  }
+  
+  .login-card-title {
     font-size: 24px;
   }
-  
-  .inputBox {
+}
+
+/* تحسينات الوصول */
+.login-card-submit-btn:focus-visible,
+.login-card-mode-btn:focus-visible,
+.login-card-forgot-link:focus-visible,
+.login-card-signup-link:focus-visible {
+  outline: 2px solid #723efe;
+  outline-offset: 2px;
+}
+
+.login-card-company-mode .login-card-submit-btn:focus-visible,
+.login-card-company-mode .login-card-mode-btn:focus-visible,
+.login-card-company-mode .login-card-forgot-link:focus-visible,
+.login-card-company-mode .login-card-signup-link:focus-visible {
+  outline: 2px solid #00b4d8;
+}
+
+/* تحسين عرض الهواتف في الوضع الأفقي */
+@media (max-height: 600px) and (orientation: landscape) {
+  .login-card-container {
+    align-items: flex-start;
     padding: 15px 0;
   }
   
-  .mode-toggle-btn {
-    padding: 8px 20px;
-    min-width: 100px;
-    font-size: 13px;
+  .login-card-main {
+    min-height: auto;
+    max-height: 85vh;
+    overflow-y: auto;
+    margin-top: 10px;
   }
   
-  .submitButton {
-    height: 48px;
-    font-size: 15px;
+  .login-card-logo-title {
+    height: 55px;
+    margin-top: 0;
+  }
+  
+  .login-card-logo {
+    max-width: 100px;
+    height: 35px;
+  }
+  
+  .login-card-title {
+    font-size: 18px;
+    margin-top: 5px;
+  }
+  
+  .login-card-inputs {
+    gap: 10px;
+  }
+  
+  .login-card-submit-btn {
+    height: 40px;
+  }
+  
+  .login-card-server-error {
+    padding: 6px 8px;
+    font-size: 12px;
   }
 }
 
-@media (max-width: 360px) {
-  .mainBox {
-    width: 95vw;
-    min-height: 500px;
-    padding: 25px 15px;
+/* لمسات نهائية للتنسيق المصغر */
+.login-card-main {
+  animation: login-card-fade-in 0.5s ease-out;
+}
+
+@keyframes login-card-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
   }
-  
-  .logoTitel h2 {
-    font-size: 22px;
-  }
-  
-  .mode-toggle-btn {
-    padding: 8px 15px;
-    min-width: 90px;
-    font-size: 12px;
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }

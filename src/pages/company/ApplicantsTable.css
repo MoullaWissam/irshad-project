@@ -1,0 +1,396 @@
+/* ApplicantsTable.css */
+.applicants-table-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 20px 12px 45px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s;
+  background: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 16px;
+}
+
+.results-count {
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  background: #f0f0f0;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+/* Table Styles */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.applicants-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.applicants-table th {
+  padding: 18px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.applicants-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.applicant-row {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.applicant-row:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Ranking Badges */
+.ranking-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ranking-gold {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #333;
+  border: 2px solid #FFC107;
+}
+
+.ranking-silver {
+  background: linear-gradient(135deg, #C0C0C0, #909090);
+  color: #333;
+  border: 2px solid #B0B0B0;
+}
+
+.ranking-bronze {
+  background: linear-gradient(135deg, #CD7F32, #8B4513);
+  color: white;
+  border: 2px solid #A0522D;
+}
+
+.ranking-icon {
+  font-size: 16px;
+}
+
+.ranking-label {
+  font-size: 12px;
+}
+
+/* Applicant Information */
+.applicant-name strong {
+  display: block;
+  color: #2c3e50;
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.applicant-experience {
+  color: #666;
+  font-size: 13px;
+  background: #f0f0f0;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.applicant-contact .contact-email {
+  color: #3498db;
+  margin-bottom: 5px;
+  word-break: break-all;
+  font-size: 14px;
+}
+
+.applicant-contact .contact-phone {
+  color: #666;
+  font-size: 13px;
+}
+
+/* Skills Tags */
+.applicant-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-tag {
+  padding: 5px 10px;
+  background: #e3f2fd;
+  color: #1976d2;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.skill-tag:hover {
+  background: #bbdefb;
+  transform: translateY(-1px);
+}
+
+.skill-more {
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+  align-self: center;
+  padding: 0 5px;
+}
+
+/* Test Score Badges */
+.test-score {
+  display: inline-block;
+}
+
+.score-badge {
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+  display: inline-block;
+}
+
+.score-high {
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+}
+
+.score-medium {
+  background: linear-gradient(135deg, #FF9800, #EF6C00);
+  box-shadow: 0 2px 4px rgba(255, 152, 0, 0.2);
+}
+
+.score-low {
+  background: linear-gradient(135deg, #F44336, #C62828);
+  box-shadow: 0 2px 4px rgba(244, 67, 54, 0.2);
+}
+
+.score-na {
+  color: #999;
+  font-style: italic;
+  font-size: 13px;
+  background: #f0f0f0;
+  padding: 6px 12px;
+  border-radius: 15px;
+}
+
+/* Interview Status Badges */
+.interview-status-badge {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  min-width: 120px;
+}
+
+.status-none {
+  background: #f0f0f0;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.status-sent {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.status-scheduled {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.status-rejected {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+/* Actions */
+.applicant-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.btn-action {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-action:before {
+  font-size: 14px;
+}
+
+.btn-interview-request {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+}
+
+.btn-interview-request:hover {
+  background: linear-gradient(135deg, #2980b9, #2471a3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-schedule {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  box-shadow: 0 2px 4px rgba(46, 204, 113, 0.2);
+}
+
+.btn-schedule:hover {
+  background: linear-gradient(135deg, #27ae60, #219653);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+}
+
+.btn-reject {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
+}
+
+.btn-reject:hover {
+  background: linear-gradient(135deg, #c0392b, #a93226);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+.btn-undo {
+  background: linear-gradient(135deg, #f39c12, #d35400);
+  color: white;
+  box-shadow: 0 2px 4px rgba(243, 156, 18, 0.2);
+}
+
+.btn-undo:hover {
+  background: linear-gradient(135deg, #d35400, #ba4a00);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+}
+
+.interview-scheduled-info,
+.rejected-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.interview-date {
+  color: #2e7d32;
+  font-size: 13px;
+  font-weight: 500;
+  background: #e8f5e9;
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.rejection-reason {
+  color: #666;
+  font-size: 13px;
+  font-style: italic;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  border-left: 3px solid #e74c3c;
+}
+
+/* Responsive Table */
+@media (max-width: 1024px) {
+  .applicants-table-container {
+    margin: 0 -15px;
+    border-radius: 0;
+  }
+  
+  .table-controls {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    max-width: 100%;
+  }
+  
+  .results-count {
+    align-self: flex-start;
+  }
+}

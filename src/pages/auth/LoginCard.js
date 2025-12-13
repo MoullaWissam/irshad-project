@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./LoginStyle.css";
 import logo from "../../assets/images/logo.png";
 import InputField from "./InputField";
@@ -15,7 +17,7 @@ const LoginCard = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState(""); // إضافة serverError
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,26 +27,31 @@ const LoginCard = () => {
       [field]: value,
       errors: { ...prev.errors, [field]: "" },
     }));
-    setServerError("");
+    setServerError(""); // مسح خطأ الخادم عند التغيير
   };
 
   const validate = () => {
     const errors = {};
+    let hasError = false;
 
     if (!form.email) {
       errors.email = "Email is required";
+      hasError = true;
     } else if (!emailRegex.test(form.email)) {
       errors.email = "Invalid email format";
+      hasError = true;
     }
 
     if (!form.password) {
       errors.password = "Password is required";
+      hasError = true;
     } else if (form.password.length < 6) {
       errors.password = "Password must be at least 6 characters";
+      hasError = true;
     }
 
     setForm((prev) => ({ ...prev, errors }));
-    return Object.keys(errors).length === 0;
+    return !hasError;
   };
 
   const handleSubmit = async (event) => {
@@ -53,15 +60,13 @@ const LoginCard = () => {
     if (!validate()) return;
 
     setIsLoading(true);
-    setServerError("");
+    setServerError(""); // مسح أخطاء الخادم القديمة
 
     try {
-      // تحديد الـ API بناءً على الوضع - استخدام نفس الخصائص لكليهما
       const endpoint = isCompanyMode 
         ? "http://localhost:3000/company-management/company-login"
         : "http://localhost:3000/auth/login";
 
-      // استخدام نفس request body لكليهما (email و password فقط)
       const requestBody = {
         email: form.email,
         password: form.password,
@@ -78,39 +83,66 @@ const LoginCard = () => {
 
       const data = await response.json();
 
-      // في ملف Login.js - في الجزء handleSubmit بعد response.ok
       if (response.ok) {
-        console.log("✅ Success:", data);
+        toast.success(
+          `🎉 Welcome back! ${isCompanyMode ? 'Company' : 'User'} login successful`,
+          {
+            position: "top-center",
+            autoClose: 2000,
+          }
+        );
         
-        // حفظ التوكن إذا كان موجودًا
         localStorage.setItem("userRole", isCompanyMode ? "company" : "user");
         
-
-        // إذا كان تسجيل دخول شركة، احفظ بيانات الشركة
         if (isCompanyMode && data.user) {
           localStorage.setItem("companyData", JSON.stringify(data.user));
-          console.log("Company data saved to localStorage:", data.user);
         }
 
-        // توجيه بناءً على الوضع
-        navigate(isCompanyMode ? "/company/dashboard" : "/dashboard");
-      }else {
-        // عرض رسالة الخطأ من الخادم
+        setTimeout(() => {
+          navigate(isCompanyMode ? "/company/dashboard" : "/dashboard");
+        }, 1500);
+      } else {
         const errorMessage = data.message || 
                            data.error || 
                            `Invalid ${isCompanyMode ? 'company credentials' : 'email or password'}`;
+        
+        // عرض خطأ الخادم في المكان المخصص
         setServerError(errorMessage);
+        
+        // إزالة toast لخطأ الخادم
+        // toast.error(`${isCompanyMode ? 'Company' : 'User'} Login Failed`, {
+        //   description: errorMessage,
+        //   position: "top-center",
+        //   autoClose: 5000,
+        // });
       }
     } catch (error) {
       console.error("Error:", error);
+      
       setServerError("Network error. Please try again later.");
+      
+      // عرض toast فقط لأخطاء الشبكة
+      toast.error("Network Error", {
+        description: "Unable to connect to server. Please check your internet connection.",
+        position: "top-center",
+        autoClose: 5000,
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const toggleCompanyMode = () => {
-    setIsCompanyMode(!isCompanyMode);
+  const toggleCompanyMode = (newMode) => {
+    setIsCompanyMode(newMode);
+    
+    toast.info(
+      `Switched to ${newMode ? 'Company' : 'User'} login mode`,
+      {
+        position: "top-center",
+        autoClose: 2000,
+      }
+    );
+    
     setForm({
       email: "",
       password: "",
@@ -119,47 +151,54 @@ const LoginCard = () => {
     setServerError("");
   };
 
-  useEffect(() => {
-    if (Object.keys(form.errors).length > 0) {
-      const timer = setTimeout(() => {
-        setForm((prev) => ({ ...prev, errors: {} }));
-      }, 6000);
-      return () => clearTimeout(timer);
-    }
-  }, [form.errors]);
-
   return (
-    <div className="login-page-bg">
-      <div className={`mainBox ${isCompanyMode ? 'company-mode' : ''}`}>
-        <div className="logoTitel">
-          <img src={logo} alt="Irshad" />
-          <h2>{isCompanyMode ? 'Company Login' : 'User Login'}</h2>
+    <div className="login-card-container">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      
+      <div className={`login-card-main ${isCompanyMode ? 'login-card-company-mode' : ''}`}>
+        <div className="login-card-logo-title">
+          <img src={logo} alt="Irshad" className="login-card-logo" />
+          <h2 className="login-card-title">{isCompanyMode ? 'Company Login' : 'User Login'}</h2>
         </div>
 
-        {/* زر التبديل بين الوضعين - تصميم محسن */}
-        <div className="mode-toggle-container">
-          <div className="mode-toggle-wrapper">
+        {/* زر التبديل بين الوضعين */}
+        <div className="login-card-mode-toggle-container">
+          <div className="login-card-mode-toggle-wrapper">
             <button
               type="button"
-              className={`mode-toggle-btn user-mode ${!isCompanyMode ? 'active' : ''}`}
-              onClick={() => setIsCompanyMode(false)}
+              className={`login-card-mode-btn login-card-user-mode ${!isCompanyMode ? 'login-card-active' : ''}`}
+              onClick={() => toggleCompanyMode(false)}
+              aria-pressed={!isCompanyMode}
             >
               User
             </button>
             <button
               type="button"
-              className={`mode-toggle-btn company-mode ${isCompanyMode ? 'active' : ''}`}
-              onClick={() => setIsCompanyMode(true)}
+              className={`login-card-mode-btn login-card-company-mode ${isCompanyMode ? 'login-card-active' : ''}`}
+              onClick={() => toggleCompanyMode(true)}
+              aria-pressed={isCompanyMode}
             >
               Company
             </button>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="inputBox">
+        <form onSubmit={handleSubmit} className="login-card-form">
+          <div className="login-card-inputs">
+            {/* عرض خطأ الخادم في الأعلى */}
             {serverError && (
-              <div className="server-error">
+              <div className="login-card-server-error">
                 {serverError}
               </div>
             )}
@@ -171,6 +210,7 @@ const LoginCard = () => {
               onChange={(e) => handleChange("email", e.target.value)}
               error={form.errors.email}
               placeholder={isCompanyMode ? "company@example.com" : "user@example.com"}
+              isCompanyMode={isCompanyMode}
             />
 
             <InputField
@@ -180,17 +220,19 @@ const LoginCard = () => {
               onChange={(e) => handleChange("password", e.target.value)}
               error={form.errors.password}
               placeholder="Enter your password"
+              isCompanyMode={isCompanyMode}
             />
 
             <button
               type="submit"
-              className={`submitButton ${isCompanyMode ? 'company-submit' : 'user-submit'}`}
+              className={`login-card-submit-btn ${isLoading ? 'login-card-loading-state' : ''} ${isCompanyMode ? 'login-card-company-submit' : 'login-card-user-submit'}`}
               disabled={isLoading}
+              aria-busy={isLoading}
             >
               {isLoading ? (
-                <span className="loading-text">
-                  <span className="spinner"></span>
-                  {isCompanyMode ? "Company Logging in..." : "User Logging in..."}
+                <span className="login-card-loading">
+                  <span className="login-card-spinner"></span>
+                  {isCompanyMode ? "Logging in..." : "Logging in..."}
                 </span>
               ) : (
                 isCompanyMode ? "Login as Company" : "Login as User"
@@ -198,14 +240,14 @@ const LoginCard = () => {
             </button>
 
             {!isCompanyMode && (
-              <div className="auth-links">
-                <Link to="/forgot-password" className="forgot-password-link">
+              <div className="login-card-links">
+                <Link to="/forgot-password" className="login-card-forgot-link">
                   Forgot Password?
                 </Link>
 
-                <p className="signup-text">
+                <p className="login-card-signup-text">
                   Don't have an account?{" "}
-                  <Link to="/register" className="signup-link">
+                  <Link to="/register" className="login-card-signup-link">
                     Sign Up
                   </Link>
                 </p>
@@ -213,13 +255,13 @@ const LoginCard = () => {
             )}
 
             {isCompanyMode && (
-              <div className="company-auth-links">
-                <Link to="/company/forgot-password" className="forgot-password-link">
+              <div className="login-card-company-links">
+                <Link to="/company/forgot-password" className="login-card-forgot-link">
                   Forgot Company Password?
                 </Link>
-                <p className="signup-text">
+                <p className="login-card-signup-text">
                   New Company?{" "}
-                  <Link to="/company/register" className="signup-link">
+                  <Link to="/company/register" className="login-card-signup-link">
                     Register Company
                   </Link>
                 </p>
