@@ -17,26 +17,28 @@ function JobsPage() {
     fetchJobs();
   }, []);
 
-  // جلب البيانات من API
+  // Fetch data from API
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/jobs");
+      const response = await fetch("http://localhost:3000/jobs", {
+        credentials: "include"
+      });
       
       if (!response.ok) {
-        throw new Error(`فشل في جلب البيانات: ${response.status}`);
+        throw new Error(`Failed to fetch data: ${response.status}`);
       }
       
       const data = await response.json();
       
-      // تحويل البيانات لتناسب JobCard
+      // Format data to match JobCard
       const formattedJobs = data.map(job => ({
-        id: job.id,
-        title: job.title,
+        id: job.id || Date.now() + Math.random(), // Ensure id exists
+        title: job.title || "Untitled Job",
         type: job.employmentType ? job.employmentType.toUpperCase() : "FULL TIME",
-        desc: job.description,
+        desc: job.description || "No description available",
         icon: job.image || "https://cdn-icons-png.flaticon.com/512/3067/3067256.png",
-        // تخزين البيانات الأصلية للبحث
+        // Store original data for search
         originalJob: job
       }));
       
@@ -46,17 +48,17 @@ function JobsPage() {
       
     } catch (err) {
       console.error("Error fetching jobs:", err);
-      setError("فشل في جلب بيانات الوظائف");
+      setError("Failed to load jobs data");
       setLoading(false);
       
-      toast.error("❌ فشل في جلب بيانات الوظائف", {
+      toast.error("❌ Failed to load jobs data", {
         position: "top-right",
         autoClose: 3000,
       });
     }
   };
 
-  // البحث المحلي
+  // Local search
   const handleLocalSearch = () => {
     if (searchTerm.trim() === "") {
       setFilteredJobs(jobs);
@@ -65,9 +67,9 @@ function JobsPage() {
         (job) =>
           job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           job.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (job.originalJob.company?.companyName?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (job.originalJob.location?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (job.originalJob.requiredSkills?.some(skill => 
+          (job.originalJob?.company?.companyName?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (job.originalJob?.location?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (job.originalJob?.requiredSkills?.some(skill => 
             skill.toLowerCase().includes(searchTerm.toLowerCase())
           ))
       );
@@ -75,7 +77,7 @@ function JobsPage() {
     }
   };
 
-  // البحث من API
+  // API search
   const handleApiSearch = async () => {
     if (searchTerm.trim() === "") {
       setFilteredJobs(jobs);
@@ -84,23 +86,24 @@ function JobsPage() {
 
     try {
       setLoading(true);
-      // البحث بواسطة العنوان أولاً
+      // Search by title first
       const response = await fetch(
-        `http://localhost:3000/jobs/search?title=${encodeURIComponent(searchTerm)}`
+        `http://localhost:3000/jobs/search?title=${encodeURIComponent(searchTerm)}`,
+        { credentials: "include" }
       );
       
       if (!response.ok) {
-        throw new Error(`فشل في البحث: ${response.status}`);
+        throw new Error(`Search failed: ${response.status}`);
       }
       
       const data = await response.json();
       
-      // تحويل البيانات للشكل المناسب
+      // Format data for display
       const formattedJobs = data.map(job => ({
-        id: job.id,
-        title: job.title,
+        id: job.id || Date.now() + Math.random(),
+        title: job.title || "Untitled Job",
         type: job.employmentType ? job.employmentType.toUpperCase() : "FULL TIME",
-        desc: job.description,
+        desc: job.description || "No description available",
         icon: job.image || "https://cdn-icons-png.flaticon.com/512/3067/3067256.png",
         originalJob: job
       }));
@@ -109,12 +112,12 @@ function JobsPage() {
       setLoading(false);
       
       if (formattedJobs.length === 0) {
-        toast.info("🔍 لم يتم العثور على نتائج مطابقة", {
+        toast.info("🔍 No matching results found", {
           position: "top-right",
           autoClose: 3000,
         });
       } else {
-        toast.success(`✅ تم العثور على ${formattedJobs.length} نتيجة`, {
+        toast.success(`✅ Found ${formattedJobs.length} result(s)`, {
           position: "top-right",
           autoClose: 2000,
         });
@@ -123,8 +126,8 @@ function JobsPage() {
     } catch (err) {
       console.error("Search API error:", err);
       
-      // استخدام البحث المحلي إذا فشل API
-      toast.warning("⚠️ فشل البحث من الخادم، جاري البحث محلياً", {
+      // Use local search if API fails
+      toast.warning("⚠️ Server search failed, using local search", {
         position: "top-right",
         autoClose: 3000,
       });
@@ -134,7 +137,7 @@ function JobsPage() {
     }
   };
 
-  // دالة البحث الرئيسية
+  // Main search function
   const handleSearch = () => {
     if (searchTerm.trim() === "") {
       handleLocalSearch();
@@ -143,18 +146,18 @@ function JobsPage() {
     }
   };
 
-  // تفعيل البحث عند الضغط على Enter
+  // Search on Enter key press
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
-  // إعادة تحميل البيانات
+  // Reload data
   const handleReload = () => {
     fetchJobs();
     setSearchTerm("");
-    toast.info("🔄 جاري تحديث البيانات...", {
+    toast.info("🔄 Refreshing data...", {
       position: "top-right",
       autoClose: 1500,
     });
@@ -164,15 +167,14 @@ function JobsPage() {
     <div className="jobs-page-container">
       <ToastContainer />
       
-      {/* عنوان الصفحة */}
+      {/* Page header */}
       <div className="jobs-page-header">
         <h2 className="jobs-page-title">
           Search for <span className="jobs-page-title-span">Jobs</span>
         </h2>
-        
       </div>
 
-      {/* مربع البحث */}
+      {/* Search box */}
       <div className="jobs-page-search-box">
         <input
           type="text"
@@ -197,41 +199,41 @@ function JobsPage() {
         </button>
       </div>
 
-      {/* معلومات البحث */}
+      {/* Search info */}
       {searchTerm && !loading && (
         <div className="jobs-page-search-info">
-          <span className="search-term">البحث عن: "{searchTerm}"</span>
-          <span className="results-count">({filteredJobs.length} نتيجة)</span>
+          <span className="search-term">Search for: "{searchTerm}"</span>
+          <span className="results-count">({filteredJobs.length} results)</span>
         </div>
       )}
 
-      {/* رسالة تحميل */}
+      {/* Loading message */}
       {loading && (
         <div className="jobs-page-loading">
           <div className="loading-spinner-large"></div>
-          <p>جاري تحميل الوظائف...</p>
+          <p>Loading jobs...</p>
         </div>
       )}
 
-      {/* رسالة خطأ */}
+      {/* Error message */}
       {error && !loading && (
         <div className="jobs-page-error">
           <div className="error-icon">⚠️</div>
           <p className="error-text">{error}</p>
           <button className="retry-btn" onClick={fetchJobs}>
-            حاول مرة أخرى
+            Try Again
           </button>
         </div>
       )}
 
-      {/* إذا ما في بيانات بعد الانتهاء من التحميل */}
+      {/* No data message */}
       {!loading && !error && filteredJobs.length === 0 && (
         <div className="jobs-page-no-jobs">
           <div className="no-jobs-icon">📭</div>
           <p className="no-jobs-text">
             {searchTerm 
-              ? "لم يتم العثور على وظائف تطابق بحثك" 
-              : "لا توجد وظائف متاحة حالياً"}
+              ? "No jobs found matching your search" 
+              : "No jobs available at the moment"}
           </p>
           {searchTerm && (
             <button 
@@ -241,30 +243,40 @@ function JobsPage() {
                 setFilteredJobs(jobs);
               }}
             >
-              مسح البحث وعرض جميع الوظائف
+              Clear search and show all jobs
             </button>
           )}
         </div>
       )}
 
-      {/* شبكة عرض الوظائف */}
+      {/* Jobs grid */}
       {!loading && !error && filteredJobs.length > 0 && (
         <>
           <div className="jobs-page-job-grid">
-            {filteredJobs.map((job) => (
-              <JobCard
-                key={job.id}
-                icon={job.icon}
-                title={job.title}
-                desc={job.desc}
-                type={job.type}
-              />
-            ))}
+            {filteredJobs.map((job) => {
+              console.log(job);
+              
+              // Add validation to ensure job has id
+              if (!job || !job.id) {
+                console.warn("Invalid job data:", job);
+                return null;
+              }
+              
+              return (
+                <JobCard
+                  id={job.id}
+                  icon={job.icon}
+                  title={job.title}
+                  desc={job.desc}
+                  type={job.type}
+                />
+              );
+            })}
           </div>
           
-          {/* رسالة عدد النتائج في الأسفل */}
+          {/* Results footer */}
           <div className="jobs-page-results-footer">
-            <p>عرض {filteredJobs.length} من أصل {jobs.length} وظيفة</p>
+            <p>Showing {filteredJobs.length} of {jobs.length} jobs</p>
           </div>
         </>
       )}

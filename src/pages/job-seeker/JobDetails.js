@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./JobDetails.css";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function JobDetails() {
   const { jobId } = useParams();
@@ -10,10 +12,38 @@ export default function JobDetails() {
   const [hasTest, setHasTest] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchJob = async () => {
       try {
-        // بيانات تجريبية للاختبار - يمكنك إضافة API حقيقي هنا
+        setLoading(true);
+        
+        // جلب البيانات من API الحقيقي مع credentials
+        const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
+          method: 'GET',
+          credentials: 'include', // إرسال الكوكيز
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch job: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setJob(data);
+        setHasTest(data.hasTest || false);
+        
+      } catch (error) {
+        console.error("Failed to load job:", error);
+        
+        toast.error("❌ Failed to load job details", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        
+        // استخدام بيانات تجريبية في حالة فشل API
         const mockJobs = {
           1: {
             id: 1,
@@ -25,8 +55,8 @@ export default function JobDetails() {
             skills: "Email Marketing, Copywriting, Analytics, CRM Tools, A/B Testing",
             experience: "3+ years in digital marketing",
             education: "Bachelor's degree in Marketing or related field",
-            hasTest: true, // هذه الوظيفة بها اختبار
-            testDuration: 5, // مدة الاختبار بالدقائق
+            hasTest: true,
+            testDuration: 5,
           },
           2: {
             id: 2,
@@ -38,15 +68,14 @@ export default function JobDetails() {
             skills: "React, JavaScript, HTML5, CSS3, Git, Responsive Design",
             experience: "2+ years in frontend development",
             education: "Computer Science or equivalent",
-            hasTest: false // هذه الوظيفة بدون اختبار
+            hasTest: false
           }
         };
         
-        const data = mockJobs[jobId] || mockJobs[1];
-        setJob(data);
-        setHasTest(data.hasTest || false);
-      } catch (error) {
-        console.error("Failed to load job:", error);
+        const mockData = mockJobs[jobId] || mockJobs[1];
+        setJob(mockData);
+        setHasTest(mockData.hasTest || false);
+        
       } finally {
         setLoading(false);
       }
@@ -57,16 +86,16 @@ export default function JobDetails() {
 
   const handleApply = () => {
     if (hasTest) {
-      // إذا كان هناك اختبار، انتقل إلى صفحة الاختبار
+      // If there's a test, go to test page
       navigate(`/job/${jobId}/test`, { state: { jobData: job } });
     } else {
-      // إذا لم يكن هناك اختبار، عرض تأكيد
+      // If no test, show confirmation
       setShowConfirmation(true);
     }
   };
 
   const confirmApplyWithoutTest = () => {
-    // محاكاة إرسال الطلب مباشرة للوظائف بدون اختبار
+    // Send application data (no test)
     const applicationData = {
       jobId,
       jobDetails: job,
@@ -76,10 +105,10 @@ export default function JobDetails() {
     
     console.log("Submitting application (no test):", applicationData);
     
-    // تخزين في localStorage لإظهار رسالة النجاح
+    // Store in localStorage for success message
     localStorage.setItem(`application_submitted_${jobId}`, "true");
     
-    // إعادة توجيه إلى صفحة النجاح
+    // Redirect to success page
     navigate(`/job/${jobId}/application-success`, { 
       state: { 
         jobData: job,
@@ -95,6 +124,7 @@ export default function JobDetails() {
   if (loading) {
     return (
       <div className="jobdetails-container">
+        <ToastContainer />
         <div className="loading-spinner">
           <div className="spinner"></div>
           <p>Loading job details...</p>
@@ -106,6 +136,7 @@ export default function JobDetails() {
   if (!job) {
     return (
       <div className="jobdetails-container">
+        <ToastContainer />
         <div className="error-message">
           <h2>Job Not Found</h2>
           <p>The job you're looking for doesn't exist or has been removed.</p>
@@ -117,13 +148,15 @@ export default function JobDetails() {
 
   return (
     <div className="jobdetails-container">
+      <ToastContainer />
+      
       <div className="jobdetails-content">
         {/* Header */}
         <div className="job-header">
           <div>
-            <h1 className="job-title">{job.title}</h1>
+            <h1 className="job-title">{job.title || "Untitled Job"}</h1>
             <p className="job-meta">
-              FULL TIME <span> | </span> Location: {job.location}
+              {job.type || "FULL TIME"} <span> | </span> Location: {job.location || "Not specified"}
             </p>
           </div>
 
@@ -135,31 +168,75 @@ export default function JobDetails() {
         {/* Company Section */}
         <div className="company-box">
           <div className="company-icon">
-            <div className="company-avatar">{job.companyName.charAt(0)}</div>
+            <div className="company-avatar">
+              {job.companyName ? job.companyName.charAt(0).toUpperCase() : 'C'}
+            </div>
           </div>
-          <h3>{job.companyName}</h3>
+          <h3>{job.companyName || "Unknown Company"}</h3>
         </div>
+
+        {/* Job Image if available */}
+        {job.image && (
+          <div className="job-image-section">
+            <img 
+              src={job.image} 
+              alt={job.title}
+              className="job-image"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
 
         {/* Sections */}
         <div className="job-section">
           <h4>Job Description</h4>
-          <p>{job.description}</p>
+          <p>{job.description || "No description available"}</p>
         </div>
 
         <div className="job-section">
           <h4>Required Skills</h4>
-          <p>{job.skills}</p>
+          <p>{job.skills || "Not specified"}</p>
         </div>
 
         <div className="job-section">
           <h4>Required Experience</h4>
-          <p>{job.experience}</p>
+          <p>{job.experience || "Not specified"}</p>
         </div>
 
         <div className="job-section">
           <h4>Required Education</h4>
-          <p>{job.education}</p>
+          <p>{job.education || "Not specified"}</p>
         </div>
+
+        {/* Additional Information */}
+        {job.employmentType && (
+          <div className="job-section">
+            <h4>Employment Type</h4>
+            <p>{job.employmentType}</p>
+          </div>
+        )}
+
+        {job.createdAt && (
+          <div className="job-section">
+            <h4>Posted Date</h4>
+            <p>{new Date(job.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}</p>
+          </div>
+        )}
+
+        {/* Test Information if available */}
+        {job.questions && job.questions.length > 0 && (
+          <div className="job-section test-info">
+            <h4>📝 Test Information</h4>
+            <p>This job requires a test with {job.questions.length} question(s).</p>
+            <p>Estimated time: {job.testDuration || job.questions.length * 5} minutes</p>
+          </div>
+        )}
       </div>
 
       {/* Confirmation Modal for jobs without test */}
