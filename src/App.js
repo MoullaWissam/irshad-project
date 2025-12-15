@@ -18,7 +18,7 @@ import ForgotPassword from "./pages/auth/SetNewPassword/ForgotPassword";
 import CheckEmail from "./pages/auth/SetNewPassword/CheckEmail";
 import SetNewPassword from "./pages/auth/SetNewPassword/SetNewPassword";
 import Success from "./pages/auth/SetNewPassword/Success";
-
+import VerfiyEmail from "./pages/auth/SetNewPassword/VerfiyEmail"
 // Job Seeker Pages
 import MatchesPage from "./pages/job-seeker/MatchesPage";
 import UploadResume from "./pages/job-seeker/UploadResume";
@@ -225,6 +225,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/set-password" element={<SetNewPassword />} />
+          <Route path="/verfiy-email" element={<VerfiyEmail />} />
           <Route path="/success" element={<Success />} />
 
           {/* Job Details Page */}

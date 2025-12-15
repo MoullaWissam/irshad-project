@@ -1,0 +1,87 @@
+import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthCard from "./AuthCard";
+import "./CheckEmail.css";
+
+function CheckEmail() {
+  const navigate = useNavigate();
+  const inputsRef = useRef([]);
+
+  // البريد الأصلي (يمكنك تمريره من الـ props أو من الـ backend)
+  const email = "alpha123@gmail.com";
+  const maskedEmail = email.split("@")[0]; // إزالة لاحقة البريد
+
+  const handleChange = (e, index) => {
+    const value = e.target.value;
+    if (value.length === 1 && index < 4) {
+      inputsRef.current[index + 1].focus();
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const code = inputsRef.current.map((input) => input.value).join("");
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/verify-otp-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ otp: code }),
+      });
+
+      if (response.ok) {
+        // نجاح التحقق
+        navigate("/upload");
+      } else {
+        // فشل التحقق
+        alert("Invalid OTP code");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      alert("Server error, please try again");
+    }
+  };
+
+  return (
+    <AuthCard
+      title="Check your email"
+      subtitle={
+        <>
+          We have sent a password recovery link to{" "}
+          <strong>{maskedEmail}</strong>
+          <br />
+          Enter 5 digit code that mentioned in the email
+        </>
+      }
+      fields={[]} // لا نستخدم حقول الإدخال هنا
+      buttonText="Open Email App"
+      onSubmit={handleSubmit}
+      showBackButton={true}
+    >
+      {/* حقول إدخال الرمز */}
+      <div className="otp-inputs">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <input
+            key={i}
+            type="text"
+            maxLength="1"
+            className="otp-box"
+            ref={(el) => (inputsRef.current[i] = el)}
+            onChange={(e) => handleChange(e, i)}
+            required
+          />
+        ))}
+      </div>
+
+      {/* رابط إعادة الإرسال */}
+      <p className="resend-text">
+        Haven’t got the code yet?{" "}
+        <span className="resend-link">Resend code</span>
+      </p>
+    </AuthCard>
+  );
+}
+
+export default CheckEmail;

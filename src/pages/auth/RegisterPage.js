@@ -115,8 +115,11 @@ const RegisterPage = () => {
 
       if (response.ok) {
         console.log("Registration Successful:", data);
-        alert("Registration Successful! Please Login.");
-        navigate("/login");
+        if (activeForm === "company") {
+          navigate("/login");
+        }else{
+          navigate("/verfiy-email");
+        }
       } else {
         console.error("Registration Failed:", data);
         setErrors({ general: data.message || "Registration failed. Please try again." });

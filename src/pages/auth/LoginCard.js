@@ -17,7 +17,7 @@ const LoginCard = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState(""); // إضافة serverError
+  const [serverError, setServerError] = useState("");
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -27,7 +27,7 @@ const LoginCard = () => {
       [field]: value,
       errors: { ...prev.errors, [field]: "" },
     }));
-    setServerError(""); // مسح خطأ الخادم عند التغيير
+    setServerError("");
   };
 
   const validate = () => {
@@ -60,7 +60,7 @@ const LoginCard = () => {
     if (!validate()) return;
 
     setIsLoading(true);
-    setServerError(""); // مسح أخطاء الخادم القديمة
+    setServerError("");
 
     try {
       const endpoint = isCompanyMode 
@@ -84,44 +84,61 @@ const LoginCard = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // Determine role and user data
+        let userRole, userData, accessToken;
+        
+        if (isCompanyMode && data.company) {
+          userRole = data.company.role || "company";
+          userData = data.company;
+          localStorage.setItem("companyData", JSON.stringify(data.company));
+        } else if (data.user) {
+          userRole = data.user.role || "job_seeker";
+          userData = data.user;
+          localStorage.setItem("userData", JSON.stringify(data.user));
+          
+          // Store access token if available
+          if (data.accessToken) {
+            localStorage.setItem("accessToken", data.accessToken);
+          }
+        }
+
+        // Store role in localStorage
+        localStorage.setItem("userRole", userRole);
+
         toast.success(
-          `🎉 Welcome back! ${isCompanyMode ? 'Company' : 'User'} login successful`,
+          `🎉 Welcome back! ${userRole === "company" ? 'Company' : 'User'} login successful`,
           {
             position: "top-center",
             autoClose: 2000,
           }
         );
         
-        localStorage.setItem("userRole", isCompanyMode ? "company" : "user");
-        
-        if (isCompanyMode && data.user) {
-          localStorage.setItem("companyData", JSON.stringify(data.user));
+        // Determine redirect path based on role
+        let redirectPath;
+        if (userRole === "job_seeker") {
+          redirectPath = "/matches";
+        } else if (userRole === "company") {
+          redirectPath = "/company/my-jobs";
+        } else {
+          // Fallback for other roles
+          redirectPath = isCompanyMode ? "/company/dashboard" : "/dashboard";
         }
 
         setTimeout(() => {
-          navigate(isCompanyMode ? "/company/dashboard" : "/dashboard");
+          navigate(redirectPath);
         }, 1500);
       } else {
         const errorMessage = data.message || 
                            data.error || 
                            `Invalid ${isCompanyMode ? 'company credentials' : 'email or password'}`;
         
-        // عرض خطأ الخادم في المكان المخصص
         setServerError(errorMessage);
-        
-        // إزالة toast لخطأ الخادم
-        // toast.error(`${isCompanyMode ? 'Company' : 'User'} Login Failed`, {
-        //   description: errorMessage,
-        //   position: "top-center",
-        //   autoClose: 5000,
-        // });
       }
     } catch (error) {
       console.error("Error:", error);
       
       setServerError("Network error. Please try again later.");
       
-      // عرض toast فقط لأخطاء الشبكة
       toast.error("Network Error", {
         description: "Unable to connect to server. Please check your internet connection.",
         position: "top-center",
@@ -172,7 +189,7 @@ const LoginCard = () => {
           <h2 className="login-card-title">{isCompanyMode ? 'Company Login' : 'User Login'}</h2>
         </div>
 
-        {/* زر التبديل بين الوضعين */}
+        {/* Switch button between modes */}
         <div className="login-card-mode-toggle-container">
           <div className="login-card-mode-toggle-wrapper">
             <button
@@ -196,7 +213,7 @@ const LoginCard = () => {
 
         <form onSubmit={handleSubmit} className="login-card-form">
           <div className="login-card-inputs">
-            {/* عرض خطأ الخادم في الأعلى */}
+            {/* Display server error at the top */}
             {serverError && (
               <div className="login-card-server-error">
                 {serverError}
