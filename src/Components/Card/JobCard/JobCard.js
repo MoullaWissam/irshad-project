@@ -7,6 +7,9 @@ function JobCard({ id, icon, title, desc, type }) {
   
   const defaultIcon = "https://cdn-icons-png.flaticon.com/512/3067/3067256.png";
   
+  console.log("id : ",id);
+  
+
   const handleCardClick = () => {
     navigate(`/job/${id}`);
   };
