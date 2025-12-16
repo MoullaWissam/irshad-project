@@ -54,9 +54,19 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
           <div className="applicant-info">
             <h3>{applicant.firstName} {applicant.lastName}</h3>
             <p>Position: {applicant.jobTitle}</p>
-            <p className="warning-text">
-              ⚠️ This action will send a rejection email to the applicant.
-            </p>
+            <div className="warning-box">
+              <div className="warning-icon">⚠️</div>
+              <div className="warning-content">
+                <p className="warning-title">Important Notice</p>
+                <p className="warning-text">This action will:</p>
+                <ul className="action-list">
+                  <li>Change applicant status to "Rejected"</li>
+                  <li><strong>Send a rejection email to the applicant</strong></li>
+                  <li>Remove them from active candidate lists</li>
+                  <li>Cancel any scheduled interviews</li>
+                </ul>
+              </div>
+            </div>
           </div>
           
           <form onSubmit={handleSubmit}>

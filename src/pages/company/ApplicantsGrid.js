@@ -1,160 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import { useParams, useLocation } from "react-router-dom";
-// import ApplicantCard from "../../Components/Card/ApplicantCard/ApplicantCard";
-// import "./ApplicantsGrid.css";
-
-// function ApplicantsGrid() {
-//   const { jobId } = useParams(); // الحصول على jobId من الـ URL
-//   const location = useLocation();
-//   const [applicants, setApplicants] = useState([]);
-//   const [selectedJobTitle, setSelectedJobTitle] = useState("");
-
-//   // بيانات الوظائف التجريبية (ستأتي من API لاحقاً)
-//   const jobsData = [
-//     { id: 1, title: "Frontend Developer", company: "Tech Corp" },
-//     { id: 2, title: "Backend Developer", company: "Data Systems" },
-//     { id: 3, title: "UI/UX Designer", company: "Creative Studio" },
-//     { id: 4, title: "Project Manager", company: "Management Plus" },
-//   ];
-
-//   // بيانات المتقدمين التجريبية (ستأتي من API لاحقاً)
-//   const allApplicants = [
-//     {
-//       id: 1,
-//       name: "Ali",
-//       description: "3 years experience in React",
-//       avatar: "/avatars/ali.png",
-//       rank: 1,
-//       jobId: 1,
-//       jobTitle: "Frontend Developer",
-//       status: "new",
-//     },
-//     {
-//       id: 2,
-//       name: "Sara",
-//       description: "Frontend specialist with Vue.js",
-//       avatar: "/avatars/sara.png",
-//       rank: 2,
-//       jobId: 1,
-//       jobTitle: "Frontend Developer",
-//       status: "reviewed",
-//     },
-//     {
-//       id: 3,
-//       name: "Omar",
-//       description: "Backend developer with Node.js",
-//       avatar: "/avatars/omar.png",
-//       rank: 3,
-//       jobId: 2,
-//       jobTitle: "Backend Developer",
-//       status: "new",
-//     },
-//     {
-//       id: 4,
-//       name: "Lina",
-//       description: "UI/UX Designer with Figma expertise",
-//       avatar: "/avatars/lina.png",
-//       rank: 4,
-//       jobId: 3,
-//       jobTitle: "UI/UX Designer",
-//       status: "reviewed",
-//     },
-//   ];
-
-//   useEffect(() => {
-//     // تحديد أي المتقدمين يعرض بناءً على jobId والمسار
-//     const path = location.pathname;
-    
-//     if (jobId) {
-//       // الحالة 1: هناك jobId في الـ URL - عرض المتقدمين لهذه الوظيفة فقط
-//       const jobIdNum = parseInt(jobId);
-//       const job = jobsData.find(j => j.id === jobIdNum);
-      
-//       if (job) {
-//         setSelectedJobTitle(job.title);
-//         const filteredApplicants = allApplicants.filter(app => app.jobId === jobIdNum);
-//         setApplicants(filteredApplicants);
-//       } else {
-//         // لم يتم العثور على الوظيفة
-//         setSelectedJobTitle("");
-//         setApplicants([]);
-//       }
-//     } else {
-//       // الحالة 2: لا يوجد jobId - نعرض حسب المسار
-//       setSelectedJobTitle("");
-      
-//       if (path.includes("/company/applicants/all")) {
-//         setApplicants(allApplicants);
-//       } else if (path.includes("/company/applicants/new")) {
-//         setApplicants(allApplicants.filter(app => app.status === "new"));
-//       } else if (path.includes("/company/applicants/reviewed")) {
-//         setApplicants(allApplicants.filter(app => app.status === "reviewed"));
-//       } else if (path.includes("/company/applicants")) {
-//         // إذا كان المسار /company/applicants بدون jobId
-//         // نعرض جميع المتقدمين (يمكن تغييره لاحقاً)
-//         setApplicants(allApplicants);
-//       } else if (path.includes("/company/dashboard")) {
-//         // لعرض في dashboard
-//         setApplicants(allApplicants.slice(0, 4)); // أول 4 متقدمين فقط للdashboard
-//       } else {
-//         setApplicants(allApplicants);
-//       }
-//     }
-//   }, [jobId, location.pathname]);
-
-//   // تحديد عنوان الصفحة
-//   const getPageTitle = () => {
-//     if (selectedJobTitle) {
-//       return `Applicants for ${selectedJobTitle}`;
-//     }
-    
-//     const path = location.pathname;
-//     if (path.includes("/company/applicants/new")) {
-//       return "New Applicants";
-//     } else if (path.includes("/company/applicants/reviewed")) {
-//       return "Reviewed Applicants";
-//     } else if (path.includes("/company/applicants/all")) {
-//       return "All Applicants";
-//     } else if (path.includes("/company/applicants")) {
-//       return "Applicants";
-//     } else if (path.includes("/company/dashboard")) {
-//       return "Dashboard - Recent Applicants";
-//     }
-    
-//     return "Applicants";
-//   };
-
-//   return (
-//     <div className="applicants-grid-container">
-//       {/* العنوان فقط - لن أغير أي شيء آخر في الـ UI */}
-//       <h1>{getPageTitle()}</h1>
-      
-//       {/* سيتم عرض نفس الـ UI الموجود بدون تغيير */}
-//       <div className="applicants-grid">
-//         {applicants.length > 0 ? (
-//           applicants.map((applicant) => (
-//             <ApplicantCard 
-//               key={applicant.id}
-//               name={applicant.name}
-//               description={applicant.description}
-//               avatar={applicant.avatar}
-//               rank={applicant.rank}
-//             />
-//           ))
-//         ) : (
-//           <div className="no-applicants">
-//             <p>No applicants found</p>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ApplicantsGrid;
-
-
-
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import "./ApplicantsGrid.css";
@@ -162,6 +5,7 @@ import ApplicantsTable from "./ApplicantsTable";
 import InterviewModal from "./InterviewModal";
 import RejectionModal from "./RejectionModal";
 import ConfirmationModal from "./ConfirmationModal";
+import ApplicantDetailsModal from "./ApplicantDetailsModal";
 
 function ApplicantsGrid() {
   const { jobId } = useParams();
@@ -173,8 +17,10 @@ function ApplicantsGrid() {
   const [showInterviewModal, setShowInterviewModal] = useState(false);
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [confirmationData, setConfirmationData] = useState(null);
   const [jobs, setJobs] = useState([]);
+  const [allApplicants, setAllApplicants] = useState([]); // جميع المتقدمين بدون تصفية
 
   // بيانات الوظائف التجريبية
   const mockJobs = [
@@ -307,6 +153,10 @@ function ApplicantsGrid() {
         
         // تحديد أي المتقدمين يعرض بناءً على jobId والمسار
         const path = location.pathname;
+        console.log("Current path:", path);
+        console.log("Job ID from URL:", jobId);
+        
+        let filteredApplicants = [...mockApplicants];
         
         if (jobId) {
           // الحالة 1: هناك jobId في الـ URL
@@ -315,45 +165,52 @@ function ApplicantsGrid() {
           
           if (job) {
             setSelectedJobTitle(job.title);
-            const filteredApplicants = mockApplicants.filter(app => app.jobId === jobIdNum);
-            // ترتيب حسب التصنيف: ذهبي ← فضي ← برونزي
-            const sortedApplicants = filteredApplicants.sort((a, b) => {
-              const rankingOrder = { gold: 1, silver: 2, bronze: 3 };
-              return rankingOrder[a.ranking] - rankingOrder[b.ranking];
-            });
-            setApplicants(sortedApplicants);
+            filteredApplicants = mockApplicants.filter(app => app.jobId === jobIdNum);
+            console.log(`Filtered by job ID ${jobIdNum}:`, filteredApplicants.length);
           } else {
             setSelectedJobTitle("");
-            setApplicants([]);
+            console.log("Job not found");
           }
         } else {
-          // الحالة 2: لا يوجد jobId
           setSelectedJobTitle("");
-          
-          // ترتيب جميع المتقدمين حسب التصنيف
-          const sortedAllApplicants = mockApplicants.sort((a, b) => {
-            const rankingOrder = { gold: 1, silver: 2, bronze: 3 };
-            return rankingOrder[a.ranking] - rankingOrder[b.ranking];
-          });
-          
-          if (path.includes("/company/applicants/all")) {
-            setApplicants(sortedAllApplicants);
-          } else if (path.includes("/company/applicants/none")) {
-            setApplicants(sortedAllApplicants.filter(app => app.interviewStatus === "none"));
-          } else if (path.includes("/company/applicants/sent")) {
-            setApplicants(sortedAllApplicants.filter(app => app.interviewStatus === "sent"));
-          } else if (path.includes("/company/applicants/rejected")) {
-            setApplicants(sortedAllApplicants.filter(app => app.interviewStatus === "rejected"));
-          } else if (path.includes("/company/applicants")) {
-            setApplicants(sortedAllApplicants);
-          } else if (path.includes("/company/dashboard")) {
-            setApplicants(sortedAllApplicants.slice(0, 4));
-          } else {
-            setApplicants(sortedAllApplicants);
-          }
+          console.log("No job ID in URL");
         }
+        
+        // حفظ جميع المتقدمين (قبل التصفية حسب الحالة)
+        setAllApplicants(filteredApplicants);
+        
+        // ترتيب حسب التصنيف: ذهبي ← فضي ← برونزي
+        const sortedApplicants = filteredApplicants.sort((a, b) => {
+          const rankingOrder = { gold: 1, silver: 2, bronze: 3 };
+          return (rankingOrder[a.ranking] || 4) - (rankingOrder[b.ranking] || 4);
+        });
+        
+        // الآن تصفية حسب المسار (حالة المقابلة)
+        let finalApplicants = sortedApplicants;
+        
+        if (path.includes("/none")) {
+          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "none");
+          console.log("Filtered by status 'none':", finalApplicants.length);
+        } else if (path.includes("/sent")) {
+          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "sent");
+          console.log("Filtered by status 'sent':", finalApplicants.length);
+        } else if (path.includes("/rejected")) {
+          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "rejected");
+          console.log("Filtered by status 'rejected':", finalApplicants.length);
+        } else if (path.includes("/scheduled")) {
+          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "scheduled");
+          console.log("Filtered by status 'scheduled':", finalApplicants.length);
+        }
+        // إذا كان المسار /all أو بدون تصفية، نعرض الجميع
+        
+        console.log("Final applicants to display:", finalApplicants.length);
+        setApplicants(finalApplicants);
+        
       } catch (error) {
         console.error("Error fetching applicants:", error);
+        // عرض بعض البيانات في حالة الخطأ للاختبار
+        setAllApplicants(mockApplicants);
+        setApplicants(mockApplicants.slice(0, 2));
       } finally {
         setLoading(false);
       }
@@ -376,10 +233,17 @@ function ApplicantsGrid() {
             : a
         ));
         
+        // تحديث allApplicants أيضًا
+        setAllApplicants(prev => prev.map(a => 
+          a.id === applicant.id 
+            ? { ...a, interviewStatus: "sent" }
+            : a
+        ));
+        
         // محاكاة إرسال طلب المقابلة إلى السيرفر
         console.log(`Sending interview request to ${applicant.email}`);
         
-        // هنا سيتم استدعاء API حقيقي
+        // محاكاة API call
         // await sendInterviewRequestAPI(applicant.id);
       }
     });
@@ -411,12 +275,24 @@ function ApplicantsGrid() {
         : a
     ));
     
+    // تحديث allApplicants أيضًا
+    setAllApplicants(prev => prev.map(a => 
+      a.id === selectedApplicant.id 
+        ? { 
+            ...a, 
+            interviewStatus: "scheduled",
+            interviewDate: dateTime,
+            interviewNotes: notes
+          }
+        : a
+    ));
+    
     // محاكاة إرسال الإيميل إلى المتقدم
     console.log(`Interview scheduled for ${selectedApplicant.email} at ${dateTime}`);
     console.log(`Email sent to: ${selectedApplicant.email}`);
     console.log(`Interview details: ${notes}`);
     
-    // هنا سيتم استدعاء API حقيقي لإرسال الإيميل
+    // محاكاة API call
     // await scheduleInterviewAPI(selectedApplicant.id, dateTime, notes);
     
     setShowInterviewModal(false);
@@ -431,15 +307,32 @@ function ApplicantsGrid() {
         ? { 
             ...a, 
             interviewStatus: "rejected",
-            rejectionReason: reason
+            rejectionReason: reason,
+            interviewDate: null // إزالة تاريخ المقابلة إذا كان موجوداً
+          }
+        : a
+    ));
+    
+    // تحديث allApplicants أيضًا
+    setAllApplicants(prev => prev.map(a => 
+      a.id === selectedApplicant.id 
+        ? { 
+            ...a, 
+            interviewStatus: "rejected",
+            rejectionReason: reason,
+            interviewDate: null
           }
         : a
     ));
     
     // محاكاة إرسال الإيميل إلى المتقدم
-    console.log(`Applicant ${selectedApplicant.email} rejected. Reason: ${reason}`);
+    console.log(`=== REJECTION EMAIL SENT ===`);
+    console.log(`To: ${selectedApplicant.email}`);
+    console.log(`Subject: Update on Your Application for ${selectedApplicant.jobTitle}`);
+    console.log(`Reason: ${reason}`);
+    console.log(`===========================`);
     
-    // هنا سيتم استدعاء API حقيقي لإرسال الإيميل
+    // محاكاة API call
     // await rejectApplicantAPI(selectedApplicant.id, reason);
     
     setShowRejectionModal(false);
@@ -447,22 +340,127 @@ function ApplicantsGrid() {
 
   const handleUndoRejection = (applicant) => {
     setSelectedApplicant(applicant);
+    
+    // تحديد الحالة الجديدة
+    let newStatus = "none";
+    let statusText = "No Interview Sent";
+    
+    if (applicant.interviewDate) {
+      const interviewDate = new Date(applicant.interviewDate);
+      const now = new Date();
+      if (interviewDate > now) {
+        newStatus = "scheduled";
+        statusText = "Interview Scheduled";
+      }
+    }
+    
     setConfirmationData({
       title: "Undo Rejection",
-      message: `Are you sure you want to undo the rejection for ${applicant.firstName} ${applicant.lastName}?`,
-      confirmText: "Undo Rejection",
-      onConfirm: () => {
-        // إعادة الحالة إلى "none"
-        setApplicants(prev => prev.map(a => 
-          a.id === applicant.id 
-            ? { ...a, interviewStatus: "none", rejectionReason: "" }
-            : a
-        ));
-        
-        console.log(`Undo rejection for ${applicant.email}`);
+      message: `Are you sure you want to undo the rejection for ${applicant.firstName} ${applicant.lastName}?
+      
+This will:
+• Change their status to: "${statusText}"
+• Send a notification email to: ${applicant.email}
+• Add them back to the active candidates list
+${newStatus === "scheduled" ? "• Re-instate their scheduled interview" : ""}
+
+An email will be sent to notify them that their application is being reconsidered.`,
+      confirmText: "Undo Rejection & Send Email",
+      onConfirm: async () => {
+        try {
+          // 1. تحديث الحالة
+          setApplicants(prev => prev.map(a => 
+            a.id === applicant.id 
+              ? { 
+                  ...a, 
+                  interviewStatus: newStatus,
+                  rejectionReason: ""
+                }
+              : a
+          ));
+          
+          setAllApplicants(prev => prev.map(a => 
+            a.id === applicant.id 
+              ? { 
+                  ...a, 
+                  interviewStatus: newStatus,
+                  rejectionReason: ""
+                }
+              : a
+          ));
+          
+          // 2. إرسال إيميل التراجع
+          await sendUndoRejectionNotification(applicant, newStatus);
+          
+          console.log(`Success: Undo rejection for ${applicant.email}`);
+          
+        } catch (error) {
+          console.error("Failed to undo rejection:", error);
+        }
       }
     });
     setShowConfirmationModal(true);
+  };
+
+  // دالة محاكاة إرسال إيميل التراجع
+  const sendUndoRejectionNotification = async (applicant, newStatus) => {
+    // محاكاة API call
+    console.log(`Sending undo rejection email to ${applicant.email}...`);
+    
+    // تحديد نوع الإيميل
+    let emailSubject = "";
+    let emailBody = "";
+    
+    if (newStatus === "scheduled") {
+      emailSubject = `Update: Your Interview for ${applicant.jobTitle} Has Been Reinstated`;
+      emailBody = `Dear ${applicant.firstName},
+
+We are writing to inform you that we are reconsidering your application for the ${applicant.jobTitle} position.
+
+Your previously scheduled interview has been reinstated:
+
+Date: ${new Date(applicant.interviewDate).toLocaleDateString()}
+Time: ${new Date(applicant.interviewDate).toLocaleTimeString()}
+
+Please let us know if this time still works for you.
+
+We apologize for any confusion and look forward to speaking with you.
+
+Best regards,
+The Hiring Team`;
+    } else {
+      emailSubject = `Update: Your Application for ${applicant.jobTitle} Is Being Reconsidered`;
+      emailBody = `Dear ${applicant.firstName},
+
+Thank you for your patience.
+
+We are writing to inform you that we are reconsidering your application for the ${applicant.jobTitle} position at our company.
+
+After further review, we would like to continue the recruitment process with you. We will be in touch shortly with next steps.
+
+We appreciate your continued interest and look forward to reconnecting.
+
+Best regards,
+The Hiring Team`;
+    }
+    
+    // محاكاة إرسال الإيميل
+    console.log(`=== UNDO REJECTION EMAIL SENT ===`);
+    console.log(`To: ${applicant.email}`);
+    console.log(`Subject: ${emailSubject}`);
+    console.log(`Body: ${emailBody}`);
+    console.log(`=================================`);
+    
+    // محاكاة انتظار الإرسال
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log(`Email sent successfully to ${applicant.email}`);
+    return true;
+  };
+
+  const handleViewApplicantDetails = (applicant) => {
+    setSelectedApplicant(applicant);
+    setShowDetailsModal(true);
   };
 
   const getPageTitle = () => {
@@ -471,13 +469,15 @@ function ApplicantsGrid() {
     }
     
     const path = location.pathname;
-    if (path.includes("/company/applicants/none")) {
+    if (path.includes("/none")) {
       return "Applicants - No Interview Sent";
-    } else if (path.includes("/company/applicants/sent")) {
+    } else if (path.includes("/sent")) {
       return "Applicants - Interview Request Sent";
-    } else if (path.includes("/company/applicants/rejected")) {
+    } else if (path.includes("/rejected")) {
       return "Applicants - Rejected";
-    } else if (path.includes("/company/applicants/all")) {
+    } else if (path.includes("/scheduled")) {
+      return "Applicants - Scheduled";
+    } else if (path.includes("/all")) {
       return "All Applicants";
     } else if (path.includes("/company/applicants")) {
       return "Applicants";
@@ -489,14 +489,16 @@ function ApplicantsGrid() {
   };
 
   const getApplicantsCountByStatus = () => {
+    // استخدام allApplicants لحساب العدد الإجمالي لكل حالة
     const counts = {
-      all: applicants.length,
-      none: applicants.filter(a => a.interviewStatus === "none").length,
-      sent: applicants.filter(a => a.interviewStatus === "sent").length,
-      rejected: applicants.filter(a => a.interviewStatus === "rejected").length,
-      scheduled: applicants.filter(a => a.interviewStatus === "scheduled").length
+      all: allApplicants.length,
+      none: allApplicants.filter(a => a.interviewStatus === "none").length,
+      sent: allApplicants.filter(a => a.interviewStatus === "sent").length,
+      rejected: allApplicants.filter(a => a.interviewStatus === "rejected").length,
+      scheduled: allApplicants.filter(a => a.interviewStatus === "scheduled").length
     };
     
+    console.log("Applicant counts by status:", counts);
     return counts;
   };
 
@@ -507,38 +509,46 @@ function ApplicantsGrid() {
         {selectedJobTitle && (
           <div className="job-info-badge">
             <span>Job: {selectedJobTitle}</span>
-            <span className="applicants-count">{applicants.length} applicants</span>
+            <span className="applicants-count">{allApplicants.length} applicants</span>
           </div>
         )}
       </div>
       
       {/* Status Filters */}
-      <div className="status-filters">
-        <a 
-          href="/company/applicants/all" 
-          className={`status-filter-btn ${location.pathname.includes('/all') || (!location.pathname.includes('/none') && !location.pathname.includes('/sent') && !location.pathname.includes('/rejected')) ? 'active' : ''}`}
-        >
-          All ({getApplicantsCountByStatus().all})
-        </a>
-        <a 
-          href="/company/applicants/none" 
-          className={`status-filter-btn ${location.pathname.includes('/none') ? 'active' : ''}`}
-        >
-          No Interview Sent ({getApplicantsCountByStatus().none})
-        </a>
-        <a 
-          href="/company/applicants/sent" 
-          className={`status-filter-btn ${location.pathname.includes('/sent') ? 'active' : ''}`}
-        >
-          Interview Request Sent ({getApplicantsCountByStatus().sent})
-        </a>
-        <a 
-          href="/company/applicants/rejected" 
-          className={`status-filter-btn ${location.pathname.includes('/rejected') ? 'active' : ''}`}
-        >
-          Rejected ({getApplicantsCountByStatus().rejected})
-        </a>
-      </div>
+      {!loading && (
+        <div className="status-filters">
+          <a 
+            href={jobId ? `/company/applicants/all?jobId=${jobId}` : "/company/applicants/all"} 
+            className={`status-filter-btn ${!location.pathname.includes('/none') && !location.pathname.includes('/sent') && !location.pathname.includes('/rejected') && !location.pathname.includes('/scheduled') ? 'active' : ''}`}
+          >
+            All ({getApplicantsCountByStatus().all})
+          </a>
+          <a 
+            href={jobId ? `/company/applicants/none?jobId=${jobId}` : "/company/applicants/none"} 
+            className={`status-filter-btn ${location.pathname.includes('/none') ? 'active' : ''}`}
+          >
+            No Interview Sent ({getApplicantsCountByStatus().none})
+          </a>
+          <a 
+            href={jobId ? `/company/applicants/sent?jobId=${jobId}` : "/company/applicants/sent"} 
+            className={`status-filter-btn ${location.pathname.includes('/sent') ? 'active' : ''}`}
+          >
+            Interview Request Sent ({getApplicantsCountByStatus().sent})
+          </a>
+          <a 
+            href={jobId ? `/company/applicants/rejected?jobId=${jobId}` : "/company/applicants/rejected"} 
+            className={`status-filter-btn ${location.pathname.includes('/rejected') ? 'active' : ''}`}
+          >
+            Rejected ({getApplicantsCountByStatus().rejected})
+          </a>
+          <a 
+            href={jobId ? `/company/applicants/scheduled?jobId=${jobId}` : "/company/applicants/scheduled"} 
+            className={`status-filter-btn ${location.pathname.includes('/scheduled') ? 'active' : ''}`}
+          >
+            Scheduled ({getApplicantsCountByStatus().scheduled})
+          </a>
+        </div>
+      )}
       
       {loading ? (
         <div className="loading-indicator">
@@ -552,6 +562,7 @@ function ApplicantsGrid() {
           onScheduleInterview={handleScheduleInterview}
           onRejectApplicant={handleRejectApplicant}
           onUndoRejection={handleUndoRejection}
+          onViewDetails={handleViewApplicantDetails}
         />
       ) : (
         <div className="no-applicants">
@@ -559,6 +570,14 @@ function ApplicantsGrid() {
             <div className="empty-icon">📋</div>
             <h3>No applicants found</h3>
             <p>There are no applicants for this selection.</p>
+            <div className="empty-actions">
+              <a 
+                href={jobId ? `/company/applicants/all?jobId=${jobId}` : "/company/applicants/all"} 
+                className="btn-view-all"
+              >
+                View All Applicants
+              </a>
+            </div>
           </div>
         </div>
       )}
@@ -578,6 +597,16 @@ function ApplicantsGrid() {
             onClose={() => setShowRejectionModal(false)}
             applicant={selectedApplicant}
             onReject={handleRejectionConfirmed}
+          />
+          
+          <ApplicantDetailsModal
+            isOpen={showDetailsModal}
+            onClose={() => setShowDetailsModal(false)}
+            applicant={selectedApplicant}
+            onSendInterviewRequest={handleSendInterviewRequest}
+            onScheduleInterview={handleScheduleInterview}
+            onRejectApplicant={handleRejectApplicant}
+            onUndoRejection={handleUndoRejection}
           />
         </>
       )}

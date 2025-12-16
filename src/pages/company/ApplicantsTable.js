@@ -6,20 +6,27 @@ function ApplicantsTable({
   onSendInterviewRequest, 
   onScheduleInterview, 
   onRejectApplicant,
-  onUndoRejection 
+  onUndoRejection,
+  onViewDetails 
 }) {
   const [searchTerm, setSearchTerm] = useState("");
 
+  // تطبيق البحث
   const filteredApplicants = applicants.filter(applicant => {
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
+      const firstName = applicant.firstName || "";
+      const lastName = applicant.lastName || "";
+      const email = applicant.email || "";
+      const jobTitle = applicant.jobTitle || "";
+      const skills = applicant.resume?.extracted_skills || [];
+      
       return (
-        applicant.firstName.toLowerCase().includes(searchLower) ||
-        applicant.lastName.toLowerCase().includes(searchLower) ||
-        applicant.email.toLowerCase().includes(searchLower) ||
-        (applicant.resume?.extracted_skills?.some(skill => 
-          skill.toLowerCase().includes(searchLower)
-        ) || false)
+        firstName.toLowerCase().includes(searchLower) ||
+        lastName.toLowerCase().includes(searchLower) ||
+        email.toLowerCase().includes(searchLower) ||
+        jobTitle.toLowerCase().includes(searchLower) ||
+        skills.some(skill => skill.toLowerCase().includes(searchLower))
       );
     }
     return true;
@@ -32,7 +39,7 @@ function ApplicantsTable({
       bronze: { label: "Bronze", className: "ranking-bronze", icon: "🥉" }
     };
     
-    const rank = config[ranking] || { label: ranking, className: "ranking-unknown", icon: "" };
+    const rank = config[ranking] || { label: ranking || "Unranked", className: "ranking-unknown", icon: "" };
     
     return (
       <div className={`ranking-badge ${rank.className}`}>
@@ -53,27 +60,32 @@ function ApplicantsTable({
       rejected: { label: "Rejected", className: "status-rejected" }
     };
     
-    const statusConfig = config[status] || { label: status, className: "status-unknown" };
+    const statusConfig = config[status] || { label: status || "Unknown", className: "status-unknown" };
     
     return <span className={`interview-status-badge ${statusConfig.className}`}>{statusConfig.label}</span>;
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+    if (!dateString) return "N/A";
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    } catch (error) {
+      return "Invalid Date";
+    }
   };
 
   const getActionsForApplicant = (applicant) => {
     switch (applicant.interviewStatus) {
       case "none":
         return (
-          <>
+          <div className="action-buttons">
             <button 
               className="btn-action btn-interview-request"
               onClick={() => onSendInterviewRequest(applicant)}
               title="Send interview request"
             >
-              Send Interview Request
+              Send Request
             </button>
             <button 
               className="btn-action btn-reject"
@@ -82,18 +94,18 @@ function ApplicantsTable({
             >
               Reject
             </button>
-          </>
+          </div>
         );
       
       case "sent":
         return (
-          <>
+          <div className="action-buttons">
             <button 
               className="btn-action btn-schedule"
               onClick={() => onScheduleInterview(applicant)}
               title="Schedule interview"
             >
-              Schedule Interview
+              Schedule
             </button>
             <button 
               className="btn-action btn-reject"
@@ -102,44 +114,115 @@ function ApplicantsTable({
             >
               Reject
             </button>
-          </>
+          </div>
         );
       
       case "scheduled":
         return (
-          <div className="interview-scheduled-info">
-            <span className="interview-date">
-              {applicant.interviewDate ? new Date(applicant.interviewDate).toLocaleString() : "Date not set"}
-            </span>
-            <button 
-              className="btn-action btn-reject"
-              onClick={() => onRejectApplicant(applicant)}
-              title="Reject applicant"
-            >
-              Reject
-            </button>
+          <div className="scheduled-actions">
+            <div className="action-buttons">
+              <button 
+                className="btn-action btn-reject"
+                onClick={() => onRejectApplicant(applicant)}
+                title="Reject applicant"
+              >
+                Reject
+              </button>
+            </div>
+            <div className="interview-date-info">
+              <small>Scheduled: {applicant.interviewDate ? new Date(applicant.interviewDate).toLocaleDateString() : "Date not set"}</small>
+            </div>
           </div>
         );
       
       case "rejected":
         return (
-          <div className="rejected-info">
-            <span className="rejection-reason">
-              {applicant.rejectionReason || "No reason provided"}
-            </span>
-            <button 
-              className="btn-action btn-undo"
-              onClick={() => onUndoRejection(applicant)}
-              title="Undo rejection"
-            >
-              Undo Rejection
-            </button>
+          <div className="rejected-actions">
+            <div className="action-buttons">
+              <button 
+                className="btn-action btn-undo"
+                onClick={() => onUndoRejection(applicant)}
+                title="Undo rejection"
+              >
+                Undo Rejection
+              </button>
+            </div>
+            <div className="rejection-reason-info">
+              <small>Reason: {applicant.rejectionReason || "No reason provided"}</small>
+            </div>
           </div>
         );
       
       default:
-        return null;
+        return (
+          <div className="action-buttons">
+            <button 
+              className="btn-action btn-interview-request"
+              onClick={() => onSendInterviewRequest(applicant)}
+              title="Send interview request"
+            >
+              Send Request
+            </button>
+            <button 
+              className="btn-action btn-reject"
+              onClick={() => onRejectApplicant(applicant)}
+              title="Reject applicant"
+            >
+              Reject
+            </button>
+          </div>
+        );
     }
+  };
+
+  // الحصول على المهارات للعرض في الجدول
+  const getSkillsDisplay = (applicant) => {
+    const skills = applicant.resume?.extracted_skills;
+    
+    if (!skills || skills.length === 0) {
+      return (
+        <div className="applicant-skills">
+          <span className="no-skills">No skills</span>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="applicant-skills">
+        {skills.slice(0, 2).map((skill, index) => (
+          <span key={index} className="skill-tag">{skill}</span>
+        ))}
+        {skills.length > 2 && (
+          <span 
+            className="skill-more" 
+            title={skills.slice(2).join(", ")}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onViewDetails) onViewDetails(applicant);
+            }}
+          >
+            +{skills.length - 2} more
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  // الحصول على عرض درجة الاختبار
+  const getTestScoreDisplay = (testScore) => {
+    if (testScore === null || testScore === undefined) {
+      return <span className="score-na">N/A</span>;
+    }
+    
+    let scoreClass = 'score-medium';
+    if (testScore >= 80) scoreClass = 'score-high';
+    else if (testScore < 60) scoreClass = 'score-low';
+    
+    return (
+      <span className={`score-badge ${scoreClass}`}>
+        {testScore}%
+      </span>
+    );
   };
 
   return (
@@ -148,7 +231,7 @@ function ApplicantsTable({
         <div className="search-box">
           <input
             type="text"
-            placeholder="Search by name, email, or skills..."
+            placeholder="Search by name, email, job title, or skills..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
@@ -157,83 +240,113 @@ function ApplicantsTable({
         </div>
         
         <div className="results-count">
-          Showing {filteredApplicants.length} of {applicants.length} applicants
+          <span className="count-number">{filteredApplicants.length}</span> of <span className="count-number">{applicants.length}</span> applicants
         </div>
       </div>
       
-      <div className="table-responsive">
-        <table className="applicants-table">
-          <thead>
-            <tr>
-              <th>Ranking</th>
-              <th>Name</th>
-              <th>Contact</th>
-              <th>Skills</th>
-              <th>Applied</th>
-              <th>Test Score</th>
-              <th>Interview Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredApplicants.map(applicant => (
-              <tr key={applicant.id} className="applicant-row">
-                <td>
-                  {getRankingBadge(applicant.ranking)}
-                </td>
-                <td>
-                  <div className="applicant-name">
-                    <strong>{applicant.firstName} {applicant.lastName}</strong>
-                    <div className="applicant-experience">
-                      {applicant.resume?.experience_years || 0} years experience
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div className="applicant-contact">
-                    <div className="contact-email">{applicant.email}</div>
-                    <div className="contact-phone">{applicant.phone}</div>
-                  </div>
-                </td>
-                <td>
-                  <div className="applicant-skills">
-                    {applicant.resume?.extracted_skills?.slice(0, 3).map((skill, index) => (
-                      <span key={index} className="skill-tag">{skill}</span>
-                    )) || "No skills listed"}
-                    {applicant.resume?.extracted_skills?.length > 3 && (
-                      <span className="skill-more">+{applicant.resume.extracted_skills.length - 3} more</span>
-                    )}
-                  </div>
-                </td>
-                <td>
-                  <div className="applicant-date">
-                    {formatDate(applicant.appliedAt)}
-                  </div>
-                </td>
-                <td>
-                  <div className="test-score">
-                    {applicant.testScore ? (
-                      <span className={`score-badge ${applicant.testScore >= 80 ? 'score-high' : applicant.testScore >= 60 ? 'score-medium' : 'score-low'}`}>
-                        {applicant.testScore}%
-                      </span>
-                    ) : (
-                      <span className="score-na">N/A</span>
-                    )}
-                  </div>
-                </td>
-                <td>
-                  {getInterviewStatusBadge(applicant.interviewStatus, applicant.interviewDate)}
-                </td>
-                <td>
-                  <div className="applicant-actions">
-                    {getActionsForApplicant(applicant)}
-                  </div>
-                </td>
+      {filteredApplicants.length === 0 ? (
+        <div className="no-results">
+          <div className="empty-state">
+            <div className="empty-icon">🔍</div>
+            <h4>No applicants found</h4>
+            <p>Try adjusting your search or filter criteria</p>
+          </div>
+        </div>
+      ) : (
+        <div className="table-responsive">
+          <table className="applicants-table">
+            <thead>
+              <tr>
+                <th className="col-ranking">Ranking</th>
+                <th className="col-name">Name & Position</th>
+                <th className="col-skills">Skills</th>
+                <th className="col-applied">Applied</th>
+                <th className="col-test">Test Score</th>
+                <th className="col-status">Status</th>
+                <th className="col-actions">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredApplicants.map(applicant => (
+                <tr key={applicant.id} className="applicant-row">
+                  <td className="cell-ranking">
+                    <div 
+                      className="ranking-cell-content"
+                      onClick={() => onViewDetails && onViewDetails(applicant)}
+                      title="Click to view details"
+                    >
+                      {getRankingBadge(applicant.ranking)}
+                    </div>
+                  </td>
+                  <td className="cell-name">
+                    <div 
+                      className="name-cell-content clickable"
+                      onClick={() => onViewDetails && onViewDetails(applicant)}
+                    >
+                      <div className="applicant-name">
+                        <strong className="applicant-fullname">
+                          {applicant.firstName} {applicant.lastName}
+                        </strong>
+                        <div className="applicant-meta">
+                          <span className="applicant-experience">
+                            {applicant.resume?.experience_years || 0} years exp
+                          </span>
+                          <span className="applicant-position">
+                            {applicant.jobTitle || "No position"}
+                          </span>
+                        </div>
+                        <div className="applicant-contact-info">
+                          <span className="applicant-email" title={applicant.email}>
+                            {applicant.email}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="cell-skills">
+                    <div 
+                      className="skills-cell-content"
+                      onClick={() => onViewDetails && onViewDetails(applicant)}
+                      title="Click to view all skills"
+                    >
+                      {getSkillsDisplay(applicant)}
+                    </div>
+                  </td>
+                  <td className="cell-applied">
+                    <div className="date-cell-content">
+                      {formatDate(applicant.appliedAt)}
+                    </div>
+                  </td>
+                  <td className="cell-test">
+                    <div className="test-cell-content">
+                      {getTestScoreDisplay(applicant.testScore)}
+                    </div>
+                  </td>
+                  <td className="cell-status">
+                    <div className="status-cell-content">
+                      {getInterviewStatusBadge(applicant.interviewStatus, applicant.interviewDate)}
+                    </div>
+                  </td>
+                  <td className="cell-actions">
+                    <div className="actions-cell-content">
+                      <div className="table-actions">
+                        <button 
+                          className="btn-action btn-view-details"
+                          onClick={() => onViewDetails && onViewDetails(applicant)}
+                          title="View full details"
+                        >
+                          View Details
+                        </button>
+                        {getActionsForApplicant(applicant)}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
