@@ -11,6 +11,7 @@ export default function JobDetails() {
   const [loading, setLoading] = useState(true);
   const [hasTest, setHasTest] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
 
   useEffect(() => { 
     const fetchJob = async () => {
@@ -20,7 +21,7 @@ export default function JobDetails() {
         // جلب البيانات من API الحقيقي مع credentials
         const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
           method: 'GET',
-          credentials: 'include', // إرسال الكوكيز
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -85,37 +86,58 @@ export default function JobDetails() {
   }, [jobId]);
 
   const handleApply = () => {
-    if (hasTest) {
-      // If there's a test, go to test page
-      navigate(`/job/${jobId}/test`, { state: { jobData: job } });
-    } else {
-      // If no test, show confirmation
-      setShowConfirmation(true);
-    }
-  };
+  if (hasTest) {
+    // إذا كان هناك اختبار، انتقل مباشرة إلى صفحة الاختبار
+    navigate(`/job/${jobId}/test`, { state: { jobData: job } });
+  } else {
+    // إذا لم يكن هناك اختبار، اعرض نافذة التأكيد
+    setShowConfirmation(true);
+  }
+};
 
-  const confirmApplyWithoutTest = () => {
-    // Send application data (no test)
-    const applicationData = {
-      jobId,
-      jobDetails: job,
-      appliedAt: new Date().toISOString(),
-      status: "submitted"
-    };
+const confirmApplyWithoutTest = async () => {
+  setIsApplying(true);
+  try {
+    const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     
-    console.log("Submitting application (no test):", applicationData);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     
-    // Store in localStorage for success message
-    localStorage.setItem(`application_submitted_${jobId}`, "true");
+    const result = await response.json();
+    console.log("Application submitted:", result);
     
-    // Redirect to success page
+    toast.success("✅ Application submitted successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+    });
+    
     navigate(`/job/${jobId}/application-success`, { 
       state: { 
         jobData: job,
+        applicationResult: result,
         testCompleted: false
       } 
     });
-  };
+    
+  } catch (error) {
+    console.error("Error submitting application:", error);
+    toast.error("❌ Failed to submit application", {
+      position: "top-right",
+      autoClose: 3000,
+    });
+  } finally {
+    setIsApplying(false);
+    setShowConfirmation(false);
+  }
+};
+
 
   const cancelApply = () => {
     setShowConfirmation(false);
@@ -160,8 +182,12 @@ export default function JobDetails() {
             </p>
           </div>
 
-          <button className="apply-btn" onClick={handleApply}>
-            {hasTest ? "Apply & Start Test" : "Apply Now"}
+          <button 
+            className="apply-btn" 
+            onClick={handleApply}
+            disabled={isApplying}
+          >
+            {isApplying ? "Applying..." : (hasTest ? "Apply & Start Test" : "Apply Now")}
           </button>
         </div>
 
@@ -230,11 +256,11 @@ export default function JobDetails() {
         )}
 
         {/* Test Information if available */}
-        {job.questions && job.questions.length > 0 && (
+        {hasTest && (
           <div className="job-section test-info">
             <h4>📝 Test Information</h4>
-            <p>This job requires a test with {job.questions.length} question(s).</p>
-            <p>Estimated time: {job.testDuration || job.questions.length * 5} minutes</p>
+            <p>This job requires a screening test.</p>
+            <p>Estimated time: {job.testDuration || 5} minutes</p>
           </div>
         )}
       </div>
@@ -249,8 +275,12 @@ export default function JobDetails() {
               <button className="cancel-btn" onClick={cancelApply}>
                 Cancel
               </button>
-              <button className="confirm-btn" onClick={confirmApplyWithoutTest}>
-                Yes, Apply Now
+              <button 
+                className="confirm-btn" 
+                onClick={confirmApplyWithoutTest}
+                disabled={isApplying}
+              >
+                {isApplying ? "Applying..." : "Yes, Apply Now"}
               </button>
             </div>
           </div>

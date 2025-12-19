@@ -107,3 +107,131 @@
   font-size: 18px;
   margin-bottom: 10px;
 }
+
+/* SuccessPage.css - إضافة هذه الأنماط */
+
+.test-notice {
+  background-color: #e8f5e9;
+  border-left: 4px solid #4caf50;
+  padding: 12px 16px;
+  margin: 20px 0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.test-notice p {
+  color: #2e7d32;
+  font-weight: 500;
+  margin: 0;
+}
+
+.result-details {
+  margin: 25px 0;
+  width: 100%;
+  max-width: 500px;
+}
+
+.result-card {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.result-card h4 {
+  color: #333;
+  margin-bottom: 16px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.status-message {
+  color: #4caf50;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 8px;
+  background-color: #f1f8e9;
+  border-radius: 6px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+@media (min-width: 500px) {
+  .result-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.result-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.result-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2196f3;
+}
+
+.company-avatar-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.floating-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  padding: 12px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-card p {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 50px;
+  color: #f44336;
+}

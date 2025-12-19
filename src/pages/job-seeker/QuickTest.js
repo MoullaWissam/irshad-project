@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./QuickTest.css";
+import { toast } from 'react-toastify';
 
 export default function QuickTest() {
   const { jobId } = useParams();
@@ -11,58 +12,21 @@ export default function QuickTest() {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(300); // 5 دقائق افتراضياً
+  const [timeLeft, setTimeLeft] = useState(300);
   const [testStarted, setTestStarted] = useState(false);
   const [testCompleted, setTestCompleted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [allQuestionsAnswered, setAllQuestionsAnswered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [applicationResult, setApplicationResult] = useState(null);
+  const [isSubmittingApplication, setIsSubmittingApplication] = useState(false);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
+  const [testDuration, setTestDuration] = useState(5); // إضافة حالة جديدة
 
   useEffect(() => {
-    // تحميل الأسئلة من البيانات التجريبية
-    const loadQuestions = () => {
-      // بيانات تجريبية - يمكن استبدالها بـ API
-      const mockQuestions = [
-        {
-          id: 1,
-          text: "What is the primary purpose of Email Marketing in digital marketing?",
-          correctAnswer: "Effective tool for direct communication with customers",
-          wrongAnswers: ["Expensive and gives no results", "Suitable only for large companies", "Traditional method that is outdated"]
-        },
-        {
-          id: 2,
-          text: "What are best practices for writing email marketing subject lines?",
-          correctAnswer: "Attractive, short, and clear",
-          wrongAnswers: ["Long and detailed", "Using complex technical terms", "Without any subject"]
-        },
-        {
-          id: 3,
-          text: "How do you measure the success of an Email Marketing campaign?",
-          correctAnswer: "Open rate, click rate, conversion rate",
-          wrongAnswers: ["Number of subscribers only", "Email design", "Sending time"]
-        },
-        {
-          id: 4,
-          text: "What is a good open rate for email marketing?",
-          correctAnswer: "15-25%",
-          wrongAnswers: ["5-10%", "30-40%", "50-60%"]
-        }
-      ];
-      
-      setQuestions(mockQuestions);
-      
-      // ضبط الوقت بناءً على مدة الاختبار إذا كانت متوفرة
-      if (jobData?.testDuration) {
-        setTimeLeft(jobData.testDuration * 60);
-      }
-    };
-    
-    loadQuestions();
-  }, [jobData]);
-
-  useEffect(() => {
-    // التحقق إذا تمت الإجابة على جميع الأسئلة
     const answeredAll = questions.length > 0 && 
-      questions.every(question => answers[question.id]);
+      questions.every(question => answers[question.id] !== undefined);
     setAllQuestionsAnswered(answeredAll);
   }, [answers, questions]);
 
@@ -79,14 +43,118 @@ export default function QuickTest() {
     return () => clearInterval(timer);
   }, [testStarted, timeLeft, testCompleted]);
 
-  const handleStartTest = () => {
-    setTestStarted(true);
+  const handleStartTest = async () => {
+    // الخطوة 1: إرسال طلب التوظيف
+    setIsSubmittingApplication(true);
+    try {
+      const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log("Application submitted:", result);
+      
+      // حفظ نتيجة الطلب
+      setApplicationResult(result);
+      
+      toast.success("✅ Job application submitted successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      
+      // الخطوة 2: تحميل الأسئلة بعد نجاح طلب التوظيف
+      await loadQuestions();
+      
+      // الخطوة 3: بدء الاختبار
+      setTestStarted(true);
+      
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      toast.error(`❌ ${error.message}`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      setError(error.message);
+    } finally {
+      setIsSubmittingApplication(false);
+    }
   };
 
-  const handleAnswerSelect = (questionId, answer) => {
+  const loadQuestions = async () => {
+    // تحميل الأسئلة من API
+    setQuestionsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch(`http://localhost:3000/jobs/${jobId}/shuffled-questions`, {
+        method: "GET",
+        credentials: "include"
+      });
+      
+      console.log("Questions response:", response);
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log("Loaded questions and duration:", data);
+      
+      // الآن البيانات تأتي على شكل { testDuration, questions }
+      // التحقق من أن البيانات تحتوي على الأسئلة المطلوبة
+      if (!data.questions || !Array.isArray(data.questions) || data.questions.length === 0) {
+        throw new Error("No questions available for this test.");
+      }
+      
+      const formattedQuestions = data.questions.map(q => ({
+        id: q.id,
+        text: q.questionText,
+        options: q.options.map(opt => ({
+          id: opt.id,
+          text: opt.text
+        }))
+      }));
+      
+      setQuestions(formattedQuestions);
+      
+      // ضبط مدة الاختبار من الـ API
+      const duration = data.testDuration || 5;
+      setTestDuration(duration);
+      setTimeLeft(duration * 60); // تحويل الدقائق إلى ثواني
+      
+    } catch (error) {
+      console.error("Error loading questions:", error);
+      setError(error.message);
+      
+      // عرض رسالة toast للمستخدم
+      toast.error(`❌ ${error.message}`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      
+      // إعادة تعيين الحالة للسماح للمستخدم بالمحاولة مرة أخرى
+      setTestStarted(false);
+      setQuestionsLoading(false);
+      throw error;
+    } finally {
+      setQuestionsLoading(false);
+    }
+  };
+
+  const handleAnswerSelect = (questionId, optionId) => {
     setAnswers(prev => ({
       ...prev,
-      [questionId]: answer
+      [questionId]: optionId
     }));
   };
 
@@ -102,68 +170,81 @@ export default function QuickTest() {
     }
   };
 
-  const calculateScore = () => {
-    let correctCount = 0;
-    questions.forEach(question => {
-      if (answers[question.id] === question.correctAnswer) {
-        correctCount++;
-      }
-    });
-    
-    return (correctCount / questions.length) * 100;
-  };
-
   const handleSubmitTest = async () => {
-    // التحقق من الإجابة على جميع الأسئلة أولاً
     if (!allQuestionsAnswered) {
-      alert("Please answer all questions before submitting the test.");
+      toast.error("Please answer all questions before submitting the test.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
       return;
     }
     
     setIsSubmitting(true);
     
-    // حساب النتيجة (لإرسالها إلى السيرفر فقط - لا تظهر للمستخدم)
-    const score = calculateScore();
-    
-    // تخزين النتيجة مؤقتاً (لإرسالها مع الطلب)
-    localStorage.setItem(`test_score_${jobId}`, score.toString());
-    localStorage.setItem(`test_answers_${jobId}`, JSON.stringify(answers));
-    
-    // محاكاة إرسال النتيجة إلى السيرفر
     try {
-      // بيانات الاختبار للإرسال
+      const answersArray = Object.keys(answers).map(questionId => ({
+        questionId: parseInt(questionId),
+        selectedOptionId: answers[questionId]
+      }));
+      
       const testData = {
-        jobId,
-        score,
-        answers,
+        answers: answersArray,
         completedAt: new Date().toISOString(),
-        duration: jobData?.testDuration || 5
+        duration: testDuration // استخدام testDuration من الـ API
       };
       
-      console.log("Test data for server:", testData);
+      console.log("Submitting test data:", testData);
       
-      // محاكاة إرسال البيانات إلى API
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch(`http://localhost:3000/jobapply/${jobId}/test/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: "include",
+        body: JSON.stringify(testData),
+      });
       
-      // الانتقال مباشرة إلى صفحة النجاح بعد إكمال الاختبار
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+      
+      const testResult = await response.json();
+      console.log("Test submission result:", testResult);
+      
+      toast.success("✅ Test submitted successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      
       navigate(`/job/${jobId}/application-success`, {
         state: {
           testCompleted: true,
           jobData: jobData,
-          testScore: score,
-          testDuration: jobData?.testDuration || 5
+          applicationResult: applicationResult,
+          testResult: testResult,
+          testDuration: testDuration, // استخدام testDuration من الـ API
+          testSubmitted: true
         }
       });
       
     } catch (error) {
       console.error("Error submitting test:", error);
-      // حتى لو حدث خطأ، انتقل إلى صفحة النجاح
+      toast.error(`❌ ${error.message}`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      
       navigate(`/job/${jobId}/application-success`, {
         state: {
           testCompleted: true,
-          jobData: jobData
+          jobData: jobData,
+          applicationResult: applicationResult,
+          testError: error.message
         }
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -174,11 +255,6 @@ export default function QuickTest() {
   };
 
   const currentQuestion = questions[currentQuestionIndex];
-  // الاحتفاظ بالإجابات في أماكنها الثابتة (بدون ترتيب عشوائي)
-  const allAnswers = currentQuestion ? [
-    currentQuestion.correctAnswer,
-    ...currentQuestion.wrongAnswers
-  ] : [];
 
   if (!testStarted) {
     return (
@@ -196,8 +272,9 @@ export default function QuickTest() {
           <div className="instructions-card">
             <h3>Test Instructions</h3>
             <ul>
-              <li>✓ Number of questions: {questions.length} questions</li>
-              <li>✓ Test duration: {jobData?.testDuration || 5} minutes</li>
+              {/* عرض مدة الاختبار التي سيتم تحميلها من الـ API */}
+              <li>✓ Test duration: {testDuration} minutes</li>
+              <li>✓ Number of questions: Will be loaded from server</li>
               <li>✓ You must answer all questions to submit the test</li>
               <li>✓ You cannot go back after time ends</li>
               <li>✓ Test results will be sent directly to the employer</li>
@@ -207,13 +284,50 @@ export default function QuickTest() {
             
             <div className="test-tips">
               <strong>Important:</strong>
-              <p>Make sure to answer all questions before submitting. This test can only be taken once.</p>
+              <p>Clicking "Start Test" will:</p>
+              <ol>
+                <li>Submit your job application</li>
+                <li>Load test questions and duration from server</li>
+                <li>Start the test timer</li>
+              </ol>
+              <p>This action cannot be undone.</p>
+              
+              {questionsLoading && (
+                <div className="loading-indicator">
+                  <div className="small-spinner"></div>
+                  <p>Loading questions and test duration...</p>
+                </div>
+              )}
+              
+              {error && (
+                <div className="error-alert">
+                  <p>⚠️ {error}</p>
+                  <p>Please try again or contact support.</p>
+                </div>
+              )}
             </div>
           </div>
           
-          <button className="start-test-btn" onClick={handleStartTest}>
-            Start Test
+          <button 
+            className="start-test-btn" 
+            onClick={handleStartTest}
+            disabled={isSubmittingApplication || questionsLoading}
+          >
+            {isSubmittingApplication ? "Submitting Application..." : 
+             questionsLoading ? "Loading Questions..." : "Start Test"}
           </button>
+          
+          {error && (
+            <button 
+              className="retry-btn"
+              onClick={() => {
+                setError(null);
+                handleStartTest();
+              }}
+            >
+              Retry
+            </button>
+          )}
         </div>
       </div>
     );
@@ -231,7 +345,9 @@ export default function QuickTest() {
             onClick={() => navigate(`/job/${jobId}/application-success`, {
               state: {
                 testCompleted: true,
-                jobData: jobData
+                jobData: jobData,
+                applicationResult: applicationResult,
+                testDuration: testDuration
               }
             })}
           >
@@ -269,7 +385,7 @@ export default function QuickTest() {
       <div className="question-card">
         <div className="question-header">
           <span className="question-number">Question {currentQuestionIndex + 1}</span>
-          {answers[currentQuestion?.id] && (
+          {answers[currentQuestion?.id] !== undefined && (
             <span className="answered-indicator">✓ Answered</span>
           )}
         </div>
@@ -277,18 +393,18 @@ export default function QuickTest() {
         <h3 className="question-text">{currentQuestion?.text}</h3>
         
         <div className="answers-list">
-          {allAnswers.map((answer, index) => (
+          {currentQuestion?.options.map((option, index) => (
             <div
-              key={index}
+              key={option.id}
               className={`answer-option ${
-                answers[currentQuestion?.id] === answer ? 'selected' : ''
+                answers[currentQuestion?.id] === option.id ? 'selected' : ''
               }`}
-              onClick={() => handleAnswerSelect(currentQuestion.id, answer)}
+              onClick={() => handleAnswerSelect(currentQuestion.id, option.id)}
             >
               <span className="option-letter">
                 {String.fromCharCode(65 + index)}
               </span>
-              <span className="option-text">{answer}</span>
+              <span className="option-text">{option.text}</span>
             </div>
           ))}
         </div>
@@ -309,7 +425,7 @@ export default function QuickTest() {
               key={index}
               className={`question-dot ${
                 index === currentQuestionIndex ? 'active' : ''
-              } ${answers[questions[index]?.id] ? 'answered' : ''}`}
+              } ${answers[questions[index]?.id] !== undefined ? 'answered' : ''}`}
               onClick={() => setCurrentQuestionIndex(index)}
             >
               {index + 1}
@@ -321,7 +437,7 @@ export default function QuickTest() {
           <button
             className="nav-btn next-btn"
             onClick={handleNextQuestion}
-            disabled={!answers[currentQuestion?.id]}
+            disabled={answers[currentQuestion?.id] === undefined}
           >
             Next
           </button>
@@ -348,9 +464,12 @@ export default function QuickTest() {
           )}
         </div>
         
-        <p className="test-warning">
-          ⚠️ Warning: This test can only be taken once. Make sure to review your answers before submitting.
-        </p>
+        <div className="test-info-footer">
+          <p>⏱️ Test Duration: {testDuration} minutes</p>
+          <p className="test-warning">
+            ⚠️ Warning: This test can only be taken once. Make sure to review your answers before submitting.
+          </p>
+        </div>
       </div>
     </div>
   );

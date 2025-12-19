@@ -56,7 +56,7 @@ function CheckEmail() {
       });
 
       if (response.ok) {
-        alert("OTP code has been resent to your email!");
+        console.log("OTP code has been resent to your email!");
       } else {
         console.log("Failed to resend OTP code",response);
       }
