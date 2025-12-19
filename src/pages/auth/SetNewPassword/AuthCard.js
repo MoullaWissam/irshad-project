@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AuthCard.css";
@@ -33,8 +31,8 @@ function AuthCard({
     <div className="auth-container">
       <div className={`auth-card ${animate ? "fade-slide-in" : ""}`}>
         {showBackButton && (
-          <button className="back-btn" onClick={handleBack}>
-            «
+          <button className="back-btn" onClick={handleBack} type="button">
+            « Back
           </button>
         )}
 
@@ -50,7 +48,10 @@ function AuthCard({
                 <input
                   type={field.type}
                   placeholder={field.placeholder}
+                  value={field.value || ""}
+                  onChange={field.onChange}
                   required
+                  disabled={field.disabled}
                 />
               </div>
             ))}

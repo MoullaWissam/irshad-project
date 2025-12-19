@@ -86,10 +86,12 @@ const RegisterPage = () => {
       formData.append("password", employeeData.password);
       formData.append("birthDate", employeeData.birthDate || "2000-01-01");
       
+      
       if (employeeData.photo) {
         formData.append("profileImage", employeeData.photo);
       }
-      
+      console.log(employeeData.photo);
+      console.log(formData.get('profileImage'));
     } else {
       url = "http://localhost:3000/company-management/company-register";
       
@@ -105,6 +107,7 @@ const RegisterPage = () => {
     }
 
     try {
+      
       const response = await fetch(url, {
         method: "POST",
         body: formData,
@@ -114,6 +117,7 @@ const RegisterPage = () => {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem("setEmail",employeeData.email)
         console.log("Registration Successful:", data);
         if (activeForm === "company") {
           navigate("/login");

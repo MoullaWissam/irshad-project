@@ -254,7 +254,6 @@ function JobsPage() {
         <>
           <div className="jobs-page-job-grid">
             {filteredJobs.map((job) => {
-              console.log(job);
               
               // Add validation to ensure job has id
               if (!job || !job.id) {

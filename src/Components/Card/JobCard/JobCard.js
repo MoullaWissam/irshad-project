@@ -5,10 +5,7 @@ import "./JobCard.css";
 function JobCard({ id, icon, title, desc, type }) {
   const navigate = useNavigate();
   
-  const defaultIcon = "https://cdn-icons-png.flaticon.com/512/3067/3067256.png";
-  
-  console.log("id : ",id);
-  
+  const defaultIcon = "https://cdn-icons-png.flaticon.com/512/3067/3067256.png";  
 
   const handleCardClick = () => {
     navigate(`/job/${id}`);

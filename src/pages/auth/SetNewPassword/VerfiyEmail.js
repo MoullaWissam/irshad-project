@@ -8,7 +8,7 @@ function CheckEmail() {
   const inputsRef = useRef([]);
 
   // البريد الأصلي (يمكنك تمريره من الـ props أو من الـ backend)
-  const email = "alpha123@gmail.com";
+  const email = localStorage.getItem("setEmail")
   const maskedEmail = email.split("@")[0]; // إزالة لاحقة البريد
 
   const handleChange = (e, index) => {
@@ -44,9 +44,31 @@ function CheckEmail() {
     }
   };
 
+  const handleResendOTP = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/auth/resend-email-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials:"include",
+        body: JSON.stringify({ email: email }),
+      });
+
+      if (response.ok) {
+        alert("OTP code has been resent to your email!");
+      } else {
+        console.log("Failed to resend OTP code",response);
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      alert("Server error, please try again");
+    }
+  };
+
   return (
     <AuthCard
-      title="Check your email"
+      title="Verfiy your email"
       subtitle={
         <>
           We have sent a password recovery link to{" "}
@@ -77,8 +99,14 @@ function CheckEmail() {
 
       {/* رابط إعادة الإرسال */}
       <p className="resend-text">
-        Haven’t got the code yet?{" "}
-        <span className="resend-link">Resend code</span>
+        Haven't got the code yet?{" "}
+        <span 
+          className="resend-link" 
+          onClick={handleResendOTP}
+          style={{ cursor: "pointer", color: "#007bff" }}
+        >
+          Resend code
+        </span>
       </p>
     </AuthCard>
   );

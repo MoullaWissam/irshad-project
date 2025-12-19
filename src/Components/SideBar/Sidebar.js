@@ -4,12 +4,13 @@ import SidebarHeader from "./SidebarHeader";
 import SidebarMenu from "./SidebarMenu";
 import SidebarFooter from "./SidebarFooter";
 
-function Sidebar({ userRole = "jobSeeker" }) {
+function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [userRole, setUserRole] = useState("jobSeeker"); // قيمة افتراضية
 
-  // كشف حجم الشاشة
+  // كشف حجم الشاشة وجلب userRole من localStorage
   useEffect(() => {
     const checkScreenSize = () => {
       const mobile = window.innerWidth <= 768;
@@ -21,10 +22,30 @@ function Sidebar({ userRole = "jobSeeker" }) {
       }
     };
 
+    // جلب userRole من localStorage
+    const storedUserRole = localStorage.getItem("userRole");
+    if (storedUserRole) {
+      setUserRole(storedUserRole);
+    }
+
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     
     return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // استماع لتغييرات localStorage (اختياري - إذا كنت تريد التحديث عند التغيير)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedUserRole = localStorage.getItem("userRole");
+      if (storedUserRole) {
+        setUserRole(storedUserRole);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const toggleSidebar = () => {
