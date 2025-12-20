@@ -6,17 +6,17 @@ import toggleIcon from "../../assets/icons/sidebar.svg";
 
 function SidebarHeader({ isCollapsed, onToggle }) {
   return (
-    <div className="sidebar-header">
-      <div className="header-content">
+    <div className="sidebar-header-custom">
+      <div className="sidebar-header-content">
         {!isCollapsed ? (
           <>
             {/* عندما يكون مفتوحاً - الشعار + أيقونة التبديل ثابتة */}
-            <img src={whitelogo} alt="Logo" className="sidebar-logo" />
+            <img src={whitelogo} alt="Logo" className="sidebar-logo-main" />
             <div 
-              className="toggle-button always-visible"
+              className="sidebar-toggle-btn sidebar-toggle-visible"
               onClick={onToggle}
             >
-              <img src={toggleIcon} alt="Toggle Menu" className="toggle-icon" />
+              <img src={toggleIcon} alt="Toggle Menu" className="sidebar-toggle-icon" />
             </div>
           </>
         ) : (
@@ -25,14 +25,14 @@ function SidebarHeader({ isCollapsed, onToggle }) {
             <img
               src={arrowlogo}
               alt="Small Logo"
-              className="sidebar-logo-small default-logo"
+              className="sidebar-logo-collapsed sidebar-logo-default"
             />
             {/* وعند الhover تظهر أيقونة التبديل بدلاً منه */}
             <div 
-              className="toggle-button hover-only"
+              className="sidebar-toggle-btn sidebar-toggle-hover"
               onClick={onToggle}
             >
-              <img src={toggleIcon} alt="Toggle Menu" className="toggle-icon" />
+              <img src={toggleIcon} alt="Toggle Menu" className="sidebar-toggle-icon" />
             </div>
           </>
         )}

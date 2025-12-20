@@ -1,6 +1,5 @@
 /* ===== الحاوية العامة (الهيكل الأساسي) ===== */
-.upload-container {
-  /* خصائص التخطيط والمسافات العامة */
+.upload-resume-container {
   max-width: 100%;
   min-height: 100vh;
   padding: 0px 20px 0px 20px;
@@ -10,19 +9,14 @@
   overflow-x: hidden;
 }
 
-/* في حال تصغير السايد بار */
-/* .sidebar-collapsed .upload-container {
-  width: calc(100% - 80px);
-} */
-
 /* ===== العنوان العام أعلى الصفحة ===== */
-.main-header {
+.upload-resume-main-header {
   margin-bottom: 40px;
   margin-top: 40px;
 }
 
 /* نص الترحيب */
-.welcome-text {
+.upload-resume-welcome-text {
   color: #733eff;
   font-family: Roboto;
   font-weight: 500;
@@ -32,7 +26,7 @@
 }
 
 /* الجملة التوضيحية تحت العنوان */
-.subtitle {
+.upload-resume-subtitle {
   color: #2b1d6a;
   font-family: Roboto;
   font-weight: 500;
@@ -42,26 +36,26 @@
 }
 
 /* ===== تنظيم القسمين (يمين ويسار) ===== */
-.content-sections {
+.upload-resume-content-sections {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* توسيط عمودي */
-  gap: 60px;
+  align-items: center;
+  gap: 10px;
   width: 100%;
 }
 
 /* ===== القسم الأيسر: نصائح المستخدم ===== */
-.left-side {
+.upload-resume-left-side {
   flex: 1;
 }
 
 /* ===== صندوق النصائح (العنوان + القائمة) ===== */
-.tips-box {
+.upload-resume-tips-box {
   margin-top: 20px;
 }
 
 /* عنوان قسم النصائح */
-.tips-box h4 {
+.upload-resume-tips-box h4 {
   color: #2b1d6a;
   text-align: center;
   align-content: center;
@@ -69,8 +63,6 @@
   height: 74px;
   border-radius: 12px;
   border: 3px solid transparent;
-
-  /* إطار متدرج حول العنوان */
   --border-angle: 90deg;
   background: linear-gradient(#fff, #fff) padding-box,
     linear-gradient(var(--border-angle), #723efe 0%, #00cbff 100%) border-box;
@@ -78,7 +70,7 @@
 }
 
 /* قائمة النصائح */
-.tips-box ul {
+.upload-resume-tips-box ul {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -86,7 +78,7 @@
 }
 
 /* ===== كل نصيحة ضمن مستطيل بإطار متدرج ===== */
-.tip-card span {
+.upload-resume-tip-card span {
   display: flex;
   justify-content: center;
   width: 400px;
@@ -94,31 +86,23 @@
   gap: 12px;
   padding: 12px 16px;
   border-radius: 12px;
-
-  /* النص */
   color: #2b1d6a;
   font-family: Roboto;
   font-weight: 500;
   font-size: 16px;
-
-  /* المظهر */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 3px solid;
   border-image-source: linear-gradient(90deg, #723efe 0%, #00cbff 100%);
   border-image-slice: 1;
-
-  /* أنيميشن بسيط عند التفاعل */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* أيقونة بجانب النص */
-.tip-card img {
+.upload-resume-tip-card img {
   width: 30px;
   height: 30px;
   object-fit: contain;
   margin-right: 10px;
-
-  /* إضافة إطار متدرج حول الأيقونة */
   --border-angle: 90deg;
   border: 3px solid transparent;
   background: linear-gradient(#fff, #fff) padding-box,
@@ -127,7 +111,7 @@
 }
 
 /* ===== القسم الأيمن: الرفع + الأزرار ===== */
-.right-side {
+.upload-resume-right-side {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -135,7 +119,7 @@
 }
 
 /* زر "Show me an example" */
-.example-btn {
+.upload-resume-example-btn {
   background: linear-gradient(90deg, #713efe 0%, #00b8e7 100%);
   color: #fff;
   border: none;
@@ -148,13 +132,13 @@
 }
 
 /* تأثير عند المرور */
-.example-btn:hover {
+.upload-resume-example-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 
 /* ===== مربع رفع الملف ===== */
-.upload-box {
+.upload-resume-upload-box {
   border: 2px dashed #5b31ff;
   border-radius: 10px;
   width: 250px;
@@ -167,18 +151,15 @@
   text-align: center;
   margin-bottom: 25px;
   transition: 0.3s;
-
-  /* خلفية مخصصة */
-  background: url("../../assets/images/bg.png");
 }
 
 /* تأثير عند المرور */
-.upload-box:hover {
+.upload-resume-upload-box:hover {
   background-color: #fff;
 }
 
 /* ===== زر عرض النتائج ===== */
-.see-results-btn {
+.upload-resume-see-results-btn {
   background: #5b31ff;
   color: #fff;
   border: none;
@@ -189,12 +170,12 @@
   transition: 0.3s;
 }
 
-.see-results-btn:hover {
+.upload-resume-see-results-btn:hover {
   background: #6a42ff;
 }
 
 /* ===== رسالة الخطأ (ErrorMessage) ===== */
-.error-message {
+.upload-resume-error-message {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -225,7 +206,7 @@
 }
 
 /* ===== النافذة العائمة (Popup) ===== */
-.overlay {
+.upload-resume-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -241,7 +222,7 @@
 }
 
 /* محتوى النافذة */
-.popup {
+.upload-resume-popup {
   background: #ffffff;
   color: #333;
   padding: 25px 45px;
@@ -255,13 +236,13 @@
 }
 
 /* أنيميشن إغلاق النافذة */
-.popup.fade-out {
+.upload-resume-popup.fade-out {
   opacity: 0;
   transform: scale(0.95);
 }
 
 /* زر إغلاق النافذة */
-.close-btn {
+.upload-resume-close-btn {
   position: absolute;
   top: 10px;
   right: 12px;
@@ -273,7 +254,7 @@
   transition: 0.2s;
 }
 
-.close-btn:hover {
+.upload-resume-close-btn:hover {
   transform: scale(1.1);
   color: #000;
 }
@@ -302,28 +283,848 @@
 
 /* ===== التصميم المتجاوب (Responsive Design) ===== */
 @media (max-width: 1100px) {
-  .upload-container {
+  .upload-resume-container {
     padding: 0px 20px 0px 20px;
   }
 }
 
 @media (max-width: 900px) {
-  .upload-container {
+  .upload-resume-container {
     width: calc(100% - 40px);
     padding: 30px 20px;
   }
 
-  .content-sections {
+  .upload-resume-content-sections {
     flex-direction: column;
     align-items: center;
     gap: 40px;
   }
 
-  .subtitle {
+  .upload-resume-subtitle {
     width: 100%;
   }
 
-  .tip-card {
+  .upload-resume-tip-card {
     text-align: center;
+  }
+}
+
+/* ===== الروبوت الثابت في الأعلى ===== */
+.robot-head.static {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  transition: all 0.5s ease;
+}
+
+/* حجم الروبوت الأساسي (أكبر 5% من السابق) */
+.robot-head.static img {
+  width: 73.5px; /* 70px + 5% */
+  height: 73.5px; /* 70px + 5% */
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow: 
+    0 6px 20px rgba(108, 99, 255, 0.2),
+    0 0 0 4px rgba(108, 99, 255, 0.1);
+  object-fit: cover;
+  background: linear-gradient(135deg, #f8f9ff, #eef1ff);
+  transition: all 0.5s ease;
+}
+
+/* أثناء المسح - تصغير الروبوت ورفعه للأعلى */
+.ai-box.scanning .robot-head.static {
+  top: 10px;
+}
+
+.ai-box.scanning .robot-head.static img {
+  width: 56px; /* أصغر بنسبة ~25% */
+  height: 56px;
+  transform: translateX(-50%) scale(0.8);
+}
+
+/* تأثير خفيف عند التحويم */
+.upload-resume-upload-box:hover .robot-head.static img {
+  transform: scale(1.05);
+  box-shadow: 
+    0 8px 25px rgba(108, 99, 255, 0.3),
+    0 0 0 4px rgba(108, 99, 255, 0.15);
+}
+
+/* ===== أيقونة العدسة بدون دائرة ===== */
+.magnifier-icon-animated {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.ai-box.scanning .magnifier-icon-animated {
+  opacity: 1;
+  animation: magnifier-icon-appear 0.5s ease-out forwards;
+}
+
+/* تصميم أيقونة العدسة النقية */
+.magnifier-icon-inner {
+  color: #5b31ff;
+  filter: 
+    drop-shadow(0 2px 4px rgba(91, 49, 255, 0.3))
+    drop-shadow(0 4px 8px rgba(108, 99, 255, 0.2));
+  width: 60px;
+  height: 60px;
+  animation: icon-float 3s ease-in-out infinite;
+}
+
+/* شعاع الضوء من الأيقونة */
+.icon-beam {
+  position: absolute;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    rgba(108, 99, 255, 0) 0%, 
+    rgba(108, 99, 255, 0.8) 50%, 
+    rgba(108, 99, 255, 0) 100%);
+  border-radius: 2px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  animation: beam-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes beam-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateX(-50%) translateY(10px) scaleX(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) translateY(10px) scaleX(1.3);
+  }
+}
+
+@keyframes icon-glow {
+  0%, 100% {
+    filter: 
+      drop-shadow(0 2px 4px rgba(91, 49, 255, 0.3))
+      drop-shadow(0 4px 8px rgba(108, 99, 255, 0.2));
+  }
+  50% {
+    filter: 
+      drop-shadow(0 2px 6px rgba(91, 49, 255, 0.5))
+      drop-shadow(0 6px 12px rgba(108, 99, 255, 0.3))
+      drop-shadow(0 0 15px rgba(108, 99, 255, 0.2));
+  }
+}
+
+@keyframes magnifier-icon-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes icon-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+/* ===== مسار مسح السيرة الذاتية ===== */
+.scan-path {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scan-point {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 3px solid rgba(108, 99, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 0 3px rgba(108, 99, 255, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(0);
+  z-index: 2;
+}
+
+.ai-box.scanning .scan-point {
+  animation: scan-point-pulse 0.6s ease-out forwards;
+}
+
+/* نقاط المسح الرئيسية - معدلة لأيقونة الملف الكبيرة */
+.scan-point:nth-child(1) { top: 45%; left: 30%; animation-delay: 0.5s; }
+.scan-point:nth-child(2) { top: 35%; left: 55%; animation-delay: 1s; }
+.scan-point:nth-child(3) { top: 55%; left: 80%; animation-delay: 1.5s; }
+.scan-point:nth-child(4) { top: 75%; left: 45%; animation-delay: 2s; }
+.scan-point:nth-child(5) { top: 65%; left: 25%; animation-delay: 2.5s; }
+.scan-point:nth-child(6) { top: 50%; left: 65%; animation-delay: 3s; }
+
+@keyframes scan-point-pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* ===== أنيميشن مسح الأيقونة ===== */
+@keyframes magnifier-icon-scan {
+  0% {
+    top: 45%;
+    left: 30%;
+    transform: scale(1) rotate(0deg);
+  }
+  16% {
+    top: 35%;
+    left: 55%;
+    transform: scale(1.1) rotate(-5deg);
+  }
+  32% {
+    top: 55%;
+    left: 80%;
+    transform: scale(1) rotate(5deg);
+  }
+  48% {
+    top: 75%;
+    left: 45%;
+    transform: scale(1.1) rotate(-3deg);
+  }
+  64% {
+    top: 65%;
+    left: 25%;
+    transform: scale(1) rotate(3deg);
+  }
+  80% {
+    top: 50%;
+    left: 65%;
+    transform: scale(1.1) rotate(-2deg);
+  }
+  100% {
+    top: 45%;
+    left: 30%;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* الحركة الدائرية للأيقونة */
+.ai-box.scanning .magnifier-icon-animated {
+  animation: 
+    magnifier-icon-scan 6s ease-in-out infinite,
+    magnifier-icon-float 3s ease-in-out infinite;
+}
+
+@keyframes magnifier-icon-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+/* ===== خطوط المسح النشطة ===== */
+.active-scan-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.active-scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(108, 99, 255, 0.3) 20%,
+    rgba(108, 99, 255, 0.8) 50%,
+    rgba(108, 99, 255, 0.3) 80%,
+    transparent 100%
+  );
+  opacity: 0;
+}
+
+.ai-box.scanning .active-scan-line {
+  animation: active-line-scan 2s linear infinite;
+}
+
+.active-scan-line:nth-child(1) {
+  top: 45%;
+  animation-delay: 0s;
+}
+
+.active-scan-line:nth-child(2) {
+  top: 35%;
+  animation-delay: 0.4s;
+}
+
+.active-scan-line:nth-child(3) {
+  top: 55%;
+  animation-delay: 0.8s;
+}
+
+.active-scan-line:nth-child(4) {
+  top: 75%;
+  animation-delay: 1.2s;
+}
+
+@keyframes active-line-scan {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* ===== تأثير التقريب (Zoom Effect) ===== */
+.zoom-effect {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(108, 99, 255, 0.1) 0%,
+    rgba(108, 99, 255, 0.05) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.ai-box.scanning .zoom-effect {
+  opacity: 0.7;
+  animation: zoom-pulse 2s ease-in-out infinite;
+}
+
+@keyframes zoom-pulse {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* ===== تأثير قراءة النصوص ===== */
+.text-reading-effect {
+  position: absolute;
+  width: 200px;
+  height: 40px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(108, 99, 255, 0.1) 20%,
+    rgba(108, 99, 255, 0.2) 50%,
+    rgba(108, 99, 255, 0.1) 80%,
+    transparent 100%
+  );
+  border-radius: 4px;
+  opacity: 0;
+  animation: text-read 3s ease-in-out infinite;
+}
+
+.ai-box.scanning .text-reading-effect:nth-child(1) {
+  top: 40%;
+  left: 35%;
+  width: 120px;
+  animation-delay: 0s;
+}
+
+.ai-box.scanning .text-reading-effect:nth-child(2) {
+  top: 50%;
+  left: 45%;
+  width: 140px;
+  animation-delay: 0.5s;
+}
+
+.ai-box.scanning .text-reading-effect:nth-child(3) {
+  top: 60%;
+  left: 25%;
+  width: 100px;
+  animation-delay: 1s;
+}
+
+.ai-box.scanning .text-reading-effect:nth-child(4) {
+  top: 70%;
+  left: 55%;
+  width: 160px;
+  animation-delay: 1.5s;
+}
+
+@keyframes text-read {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scaleX(0.8);
+  }
+  10%, 90% {
+    opacity: 0.6;
+    transform: translateY(-2px) scaleX(1);
+  }
+}
+
+/* ===== تحسينات للعرض أثناء المسح ===== */
+.ai-box.scanning .file-preview {
+  animation: document-scan-pulse 3s ease-in-out infinite;
+}
+
+@keyframes document-scan-pulse {
+  0%, 100% {
+    transform: perspective(400px) rotateX(0deg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+  50% {
+    transform: perspective(400px) rotateX(5deg);
+    box-shadow: 0 10px 25px rgba(108, 99, 255, 0.1);
+  }
+}
+
+/* ===== تحديث التصميم الأساسي ===== */
+.upload-resume-upload-box.ai-box {
+  position: relative;
+  overflow: hidden;
+}
+
+/* تعديلات للتحسينات البصرية */
+.ai-box.scanning {
+  background: linear-gradient(#ffffff, #f8f9ff) padding-box;
+  box-shadow: 
+    0 10px 30px rgba(108, 99, 255, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+
+/* تعديل مساحة الروبوت الثابت */
+.robot-head-space {
+  height: 90px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+/* ===== أيقونة الملف الكبيرة أثناء المسح (أكبر بكثير) ===== */
+.ai-box.scanning .file-preview {
+  position: relative;
+  z-index: 2;
+  transition: all 0.5s ease;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(91, 49, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 
+    0 8px 20px rgba(91, 49, 255, 0.15),
+    inset 0 0 0 1px rgba(91, 49, 255, 0.1);
+}
+
+.ai-box.scanning .file-icon-modern {
+  width: 100px !important; /* أكبر بكثير */
+  height: 100px !important;
+  color: #5b31ff;
+  filter: 
+    drop-shadow(0 4px 8px rgba(91, 49, 255, 0.3))
+    drop-shadow(0 8px 16px rgba(108, 99, 255, 0.2));
+  animation: file-pulse 2s ease-in-out infinite;
+}
+
+/* أنيميشن نبض لأيقونة الملف */
+@keyframes file-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+/* تحسينات إضافية للعرض أثناء المسح */
+.ai-box.scanning .ai-scan-ui {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* زيادة حجم أيقونة العدسة لتتناسب مع أيقونة الملف الكبيرة */
+.ai-box.scanning .magnifier-icon-animated {
+  width: 90px;
+  height: 90px;
+}
+
+.ai-box.scanning .magnifier-icon-inner {
+  width: 80px;
+  height: 80px;
+}
+
+.ai-box.scanning .zoom-effect {
+  width: 200px;
+  height: 200px;
+}
+
+/* ===== تأثير إلكتروني رقمي متطور (بدون أرقام ثنائية) ===== */
+.digital-scan-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* شبكة بيانات رقمية */
+.data-grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(108, 99, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(108, 99, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0;
+}
+
+.ai-box.scanning .data-grid {
+  opacity: 0.4;
+  animation: grid-pulse 2s ease-in-out infinite;
+}
+
+@keyframes grid-pulse {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* نقاط بيانات متحركة */
+.data-point {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(108, 99, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 12px rgba(108, 99, 255, 0.8),
+    0 0 24px rgba(108, 99, 255, 0.4);
+  opacity: 0;
+}
+
+.ai-box.scanning .data-point {
+  animation: data-point-flow 3s linear infinite;
+}
+
+.data-point:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+.data-point:nth-child(2) { top: 40%; left: 85%; animation-delay: 0.5s; }
+.data-point:nth-child(3) { top: 60%; left: 10%; animation-delay: 1s; }
+.data-point:nth-child(4) { top: 80%; left: 90%; animation-delay: 1.5s; }
+.data-point:nth-child(5) { top: 30%; left: 70%; animation-delay: 2s; }
+.data-point:nth-child(6) { top: 70%; left: 30%; animation-delay: 2.5s; }
+
+@keyframes data-point-flow {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.2);
+  }
+  30% {
+    opacity: 0.8;
+    transform: translateY(30px) scale(1.5);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(50px) scale(1);
+  }
+  80% {
+    opacity: 0.4;
+    transform: translateY(80px) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.5);
+  }
+}
+
+/* خطوط بيانات متساقطة */
+.data-stream {
+  position: absolute;
+  width: 3px;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(108, 99, 255, 0.9) 20%,
+    rgba(108, 99, 255, 0.6) 50%,
+    rgba(108, 99, 255, 0.3) 80%,
+    transparent 100%
+  );
+  opacity: 0;
+}
+
+.ai-box.scanning .data-stream {
+  animation: data-stream-fall 2s linear infinite;
+}
+
+.data-stream:nth-child(1) { left: 20%; animation-delay: 0s; }
+.data-stream:nth-child(2) { left: 45%; animation-delay: 0.2s; }
+.data-stream:nth-child(3) { left: 70%; animation-delay: 0.4s; }
+.data-stream:nth-child(4) { left: 35%; animation-delay: 0.6s; }
+.data-stream:nth-child(5) { left: 60%; animation-delay: 0.8s; }
+
+@keyframes data-stream-fall {
+  0% {
+    opacity: 0;
+    top: -80px;
+    transform: translateY(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    top: 100%;
+    transform: translateY(0);
+  }
+}
+
+/* تأثير مسح دائري */
+.circular-scan {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 3px dashed rgba(108, 99, 255, 0.4);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.ai-box.scanning .circular-scan {
+  opacity: 0.3;
+  animation: circular-scan-rotate 4s linear infinite;
+}
+
+@keyframes circular-scan-rotate {
+  0% {
+    transform: rotate(0deg) scale(0.8);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.3);
+  }
+}
+
+/* تأثير نبض إلكتروني */
+.electron-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: 
+    0 0 0 0 rgba(108, 99, 255, 0.8),
+    inset 0 0 30px rgba(108, 99, 255, 0.15);
+  opacity: 0;
+}
+
+.ai-box.scanning .electron-pulse {
+  animation: electron-pulse-effect 2s ease-out infinite;
+}
+
+@keyframes electron-pulse-effect {
+  0% {
+    box-shadow: 
+      0 0 0 0 rgba(108, 99, 255, 0.8),
+      inset 0 0 30px rgba(108, 99, 255, 0.15);
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 
+      0 0 0 20px rgba(108, 99, 255, 0),
+      inset 0 0 30px rgba(108, 99, 255, 0.15);
+    opacity: 0.5;
+  }
+  100% {
+    box-shadow: 
+      0 0 0 0 rgba(108, 99, 255, 0),
+      inset 0 0 30px rgba(108, 99, 255, 0.15);
+    opacity: 0;
+  }
+}
+
+/* ===== الأنماط الإضافية للـ UploadBox ===== */
+.drag-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(91, 49, 255, 0.05);
+  border: 2px dashed #5b31ff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.drag-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.ai-scan-ui, .file-ready-ui, .upload-placeholder-ui {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10; /* أعلى من تأثيرات المسح */
+}
+
+.file-ready-ui .success-icon-wrapper {
+  background: rgba(91, 49, 255, 0.1);
+  border-radius: 50%;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.file-icon-success {
+  color: #5b31ff;
+}
+
+.file-name {
+  font-weight: 500;
+  color: #2b1d6a;
+  margin-bottom: 5px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-ready {
+  color: #00a000;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.file-details small {
+  color: #666;
+  font-size: 10px;
+}
+
+.upload-placeholder-ui .upload-icon {
+  color: #5b31ff;
+  margin-bottom: 15px;
+}
+
+.upload-title {
+  font-weight: 500;
+  color: #2b1d6a;
+  margin-bottom: 5px;
+}
+
+.upload-subtitle {
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.scan-preview-hint small {
+  color: #888;
+  font-size: 10px;
+  text-align: center;
+  display: block;
+  max-width: 200px;
+}
+
+.text-reading-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* تحسينات للاستجابة */
+@media (max-width: 900px) {
+  .ai-box.scanning .magnifier-icon-animated {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .ai-box.scanning .magnifier-icon-inner {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .ai-box.scanning .file-icon-modern {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .ai-box.scanning .circular-scan {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .ai-box.scanning .file-preview {
+    width: 100px;
+    height: 100px;
+    padding: 15px;
   }
 }

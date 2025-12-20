@@ -5,59 +5,69 @@ import {
   isValidWebsite,
 } from "./validation";
 
-// دالة عامة لمعالجة التحقق والإرسال
 export const handleSubmitLogic = (
   activeForm,
   employeeData,
-  companyData,
-  setErrors
+  companyData
 ) => {
   let newErrors = {};
-  let dataToSend = {};
 
   if (activeForm === "employee") {
-    if (!employeeData.firstName) newErrors.firstName = "First name is required";
-    if (!employeeData.lastName) newErrors.lastName = "Last name is required";
+    if (!employeeData.firstName?.trim()) newErrors.firstName = "Required";
+    if (!employeeData.lastName?.trim()) newErrors.lastName = "Required";
+    
+    if (!employeeData.email?.trim()) newErrors.email = "Required";
+    else if (!isValidEmail(employeeData.email)) newErrors.email = "Invalid";
 
-    if (!employeeData.email) newErrors.email = "Email is required";
-    else if (!isValidEmail(employeeData.email))
-      newErrors.email = "Invalid email format";
+    if (!employeeData.password) newErrors.password = "Required";
+    else if (!isValidPassword(employeeData.password)) 
+      newErrors.password = "Weak password";
 
-    if (!employeeData.password) newErrors.password = "Password is required";
-    else if (!isValidPassword(employeeData.password))
-      newErrors.password =
-        "Password must be at least 8 characters, include one capital letter and one number";
+    if (!employeeData.phone?.trim()) newErrors.phone = "Required";
+    else if (!isValidPhone(employeeData.phone)) newErrors.phone = "Invalid";
 
-    if (!employeeData.phone) newErrors.phone = "Phone number is required";
-    else if (!isValidPhone(employeeData.phone))
-      newErrors.phone = "Phone number must contain only digits (8–15)";
+    // التحقق من تاريخ الميلاد
+    if (!employeeData.birthDate) {
+      newErrors.birthDate = "Required";
+    } else {
+      const birthDate = new Date(employeeData.birthDate);
+      const today = new Date();
+      
+      // التحقق من أن التاريخ ليس في المستقبل
+      if (birthDate > today) {
+        newErrors.birthDate = "Birth date cannot be in the future";
+      }
+      
+      // التحقق من العمر (16 سنة على الأقل)
+      const age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      
+      if (age < 16) {
+        newErrors.birthDate = "You must be at least 16 years old";
+      }
+    }
 
-    dataToSend = { type: "job_seeker", ...employeeData };
-  }
+  } else {
+    if (!companyData.companyName?.trim()) newErrors.companyName = "Required";
+    
+    if (!companyData.email?.trim()) newErrors.email = "Required";
+    else if (!isValidEmail(companyData.email)) newErrors.email = "Invalid";
 
-  else {
-    if (!companyData.companyName)
-      newErrors.companyName = "Company name is required";
-
-    if (!companyData.companyPassword)
-      newErrors.companyPassword = "Password is required";
+    if (!companyData.companyPassword) newErrors.companyPassword = "Required";
     else if (!isValidPassword(companyData.companyPassword))
-      newErrors.companyPassword =
-        "Password must be at least 8 characters, include one capital letter and one number";
+      newErrors.companyPassword = "Weak password";
 
-    if (!companyData.companyAddress)
-      newErrors.companyAddress = "Address is required";
+    if (!companyData.companyAddress?.trim()) 
+      newErrors.companyAddress = "Required";
 
-    if (!companyData.website) newErrors.website = "Website is required";
-    else if (!isValidWebsite(companyData.website))
-      newErrors.website = "Invalid website format (use https://...)";
-
-    dataToSend = { type: "company", ...companyData };
+    if (!companyData.website?.trim()) newErrors.website = "Required";
+    else if (!isValidWebsite(companyData.website)) 
+      newErrors.website = "Invalid URL";
   }
 
-  setErrors(newErrors);
-
-  if (Object.keys(newErrors).length === 0) {
-    console.log("✅ Submitted Data:", dataToSend);
-  }
+  return newErrors;
 };

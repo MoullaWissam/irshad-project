@@ -1,42 +1,44 @@
-.sidebar-header {
+/* SidebarHeader.css */
+.sidebar-header-custom {
   padding: 16px 0px;
   margin-bottom: 20px;
 }
 
-.header-content {
+.sidebar-header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  min-height: 32px; /* تقليل الارتفاع */
+  min-height: 32px;
+  gap: 8px;
 }
 
 /* الشعار عندما يكون السايدبار مفتوحاً */
-.sidebar-logo {
+.sidebar-logo-main {
   transition: transform 0.3s ease;
   flex: 1;
-  height: 28px; /* ارتفاع مناسب */
-  width: auto; /* الحفاظ على التناسب */
-  max-width: 140px; /* عرض أقصى مناسب */
+  height: 28px;
+  width: auto;
+  max-width: 140px;
   object-fit: contain;
 }
 
 /* الشعار الصغير عندما يكون السايدبار مغلقاً */
-.sidebar-logo-small {
+.sidebar-logo-collapsed {
   transition: transform 0.3s ease;
-  height: 24px; /* حجم أصغر */
+  height: 24px;
   width: 24px;
   object-fit: contain;
 }
 
-.sidebar-logo:hover,
-.sidebar-logo-small:hover {
+.sidebar-logo-main:hover,
+.sidebar-logo-collapsed:hover {
   transform: scale(1.05);
 }
 
 /* أيقونة التبديل - الأساسية */
-.toggle-button {
-  width: 28px; /* تصغير الحجم */
+.sidebar-toggle-btn {
+  width: 28px;
   height: 28px;
   border-radius: 6px;
   display: flex;
@@ -45,29 +47,28 @@
   cursor: pointer;
   transition: all 0.3s ease;
   background-color: rgba(255, 255, 255, 0.1);
-  flex-shrink: 0; /* منع التقلص */
+  flex-shrink: 0;
 }
 
-.toggle-button:hover {
+.sidebar-toggle-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
 }
 
-.toggle-icon {
-  width: 14px; /* تصغير الأيقونة */
+.sidebar-toggle-icon {
+  width: 14px;
   height: 14px;
-  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(190deg) brightness(98%) contrast(105%);
 }
 
 /* عندما يكون مفتوحاً - أيقونة التبديل ثابتة */
-.toggle-button.always-visible {
+.sidebar-toggle-btn.sidebar-toggle-visible {
   opacity: 1;
   visibility: visible;
-  margin-left: 8px; /* مسافة بين الشعار والأيقونة */
+  margin-left: 8px;
 }
 
 /* عندما يكون مغلقاً - الشعار الافتراضي */
-.sidebar-logo-small.default-logo {
+.sidebar-logo-collapsed.sidebar-logo-default {
   opacity: 1;
   visibility: visible;
   position: absolute;
@@ -77,7 +78,7 @@
 }
 
 /* عندما يكون مغلقاً - أيقونة التبديل (تظهر عند الhover فقط) */
-.toggle-button.hover-only {
+.sidebar-toggle-btn.sidebar-toggle-hover {
   opacity: 0;
   visibility: hidden;
   position: absolute;
@@ -87,17 +88,12 @@
 }
 
 /* عند الhover على المنطقة عندما يكون مغلقاً */
-.header-content:hover .sidebar-logo-small.default-logo {
+.sidebar-header-content:hover .sidebar-logo-collapsed.sidebar-logo-default {
   opacity: 0;
   visibility: hidden;
 }
 
-.header-content:hover .toggle-button.hover-only {
+.sidebar-header-content:hover .sidebar-toggle-btn.sidebar-toggle-hover {
   opacity: 1;
   visibility: visible;
-}
-
-/* جعل المحتوى أكثر تناسقاً مع بقية العناصر */
-.header-content {
-  gap: 8px;
 }

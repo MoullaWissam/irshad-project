@@ -1,108 +1,7 @@
-// /**
-//  * المكون الرئيسي UploadResume
-//  * مسؤول عن منطق الصفحة الكامل: رفع الملف، التحقق من النوع، عرض الرسائل.
-//  */
-
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom"; // ✅ استدعاء useNavigate
-// import "./UploadResume.css";
-
-// // استيراد المكونات الفرعية
-// import TipsSection from "./TipsSection";
-// import UploadBox from "./UploadBox";
-// import ErrorMessage from "./ErrorMessage";
-
-// const UploadResume = () => {
-//   const [file, setFile] = useState(null);
-//   const [errorMsg, setErrorMsg] = useState("");
-//   const navigate = useNavigate(); // ✅ hook للتنقل بين الصفحات
-
-//   const handleFileUpload = (e) => {
-//     const selectedFile = e.target.files[0];
-//     if (!selectedFile) return;
-
-//     const allowedExtensions = ["pdf", "doc", "docx"];
-//     const ext = selectedFile.name.split(".").pop().toLowerCase();
-
-//     if (!allowedExtensions.includes(ext)) {
-//       setErrorMsg("❌ Please upload a valid file (PDF, DOC, DOCX)");
-//       return;
-//     }
-
-//     setFile(selectedFile);
-//     setErrorMsg("");
-//   };
-
-//   const handleExampleDownload = () => {
-//     const link = document.createElement("a");
-//     link.href = "/example.pdf";
-//     link.download = "example.pdf";
-//     link.click();
-//   };
-
-//   const handleSeeResults = async () => {
-//     if (!file) {
-//       setErrorMsg("⚠️ Upload your ATS CV to see results");
-//       return;
-//     }
-
-//     try {
-//       const formData = new FormData();
-//       formData.append("file", file);
-
-//       await fetch("http://localhost:3000/resumes/upload", {
-//         method: "POST",
-//         body: formData,
-//         credentials: "include", // يرسل accessToken من الكوكي تلقائيًا
-//       });
-
-//       // ✅ بدل ما يظهر Popup، نعمل Route لصفحة MatchesPage
-//       navigate("/jobseeker/matches");
-//     } catch (error) {
-//       setErrorMsg(`❌ Upload failed: ${error.message}`);
-//     }
-//   };
-
-//   return (
-//     <div className="upload-container">
-//       <div className="main-header">
-//         <h2 className="welcome-text">Welcome!</h2>
-//         <h3 className="subtitle">
-//           {file
-//             ? "If you’d like to update your resume, simply upload the new version here"
-//             : "Upload your resume and take the first step toward your career"}
-//         </h3>
-//       </div>
-
-//       <div className="content-sections">
-//         <div className="left-side">
-//           <TipsSection />
-//         </div>
-
-//         <div className="right-side">
-//           <button className="example-btn" onClick={handleExampleDownload}>
-//             Show me an example
-//           </button>
-
-//           <UploadBox onUpload={handleFileUpload} file={file} />
-
-//           <button className="see-results-btn" onClick={handleSeeResults}>
-//             See results
-//           </button>
-
-//           <ErrorMessage message={errorMsg} onClose={() => setErrorMsg("")} />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default UploadResume;
-
 import React, { useState } from "react";
 import "./UploadResume.css";
 
-// استيراد المكونات الفرعية (كل مكون مسؤول عن جزء محدد من الواجهة)
+// استيراد المكونات الفرعية
 import TipsSection from "./TipsSection";
 import UploadBox from "./UploadBox";
 import Popup from "./Popup";
@@ -112,6 +11,7 @@ const UploadResume = () => {
   const [file, setFile] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [scanComplete, setScanComplete] = useState(false); // ✅ حالة جديدة لتتبع اكتمال المسح
 
   const handleFileUpload = (e) => {
     const selectedFile = e.target.files[0];
@@ -121,12 +21,18 @@ const UploadResume = () => {
     const ext = selectedFile.name.split(".").pop().toLowerCase();
 
     if (!allowedExtensions.includes(ext)) {
-      setErrorMsg("❌ Please upload a valid file (PDF, DOC, DOCX)");
+      setErrorMsg(" Please upload a valid file (PDF, DOC, DOCX)");
       return;
     }
 
     setFile(selectedFile);
+    setScanComplete(false); // ✅ إعادة تعيين حالة المسح عند رفع ملف جديد
     setErrorMsg("");
+  };
+
+  // ✅ دالة تُستدعى عند اكتمال المسح
+  const handleScanComplete = () => {
+    setScanComplete(true);
   };
 
   const handleExampleDownload = () => {
@@ -149,7 +55,7 @@ const UploadResume = () => {
       await fetch("http://localhost:3000/resumes/upload", {
         method: "POST",
         body: formData,
-        credentials: "include", // يرسل accessToken من الكوكي تلقائيًا
+        credentials: "include",
       });
 
       setShowPopup(true);
@@ -159,7 +65,7 @@ const UploadResume = () => {
   };
 
   const closePopup = () => {
-    const popup = document.querySelector(".popup");
+    const popup = document.querySelector(".upload-resume-popup");
     if (popup) {
       popup.classList.add("fade-out");
       setTimeout(() => setShowPopup(false), 250);
@@ -169,31 +75,39 @@ const UploadResume = () => {
   };
 
   return (
-    <div className="upload-container">
-      <div className="main-header">
-        <h2 className="welcome-text">Welcome!</h2>
-        <h3 className="subtitle">
+    <div className="upload-resume-container">
+      <div className="upload-resume-main-header">
+        <h2 className="upload-resume-welcome-text">Welcome!</h2>
+        <h3 className="upload-resume-subtitle">
           {file
-            ? "If you’d like to update your resume, simply upload the new version here"
+            ? "If you'd like to update your resume, simply upload the new version here"
             : "Upload your resume and take the first step toward your career"}
         </h3>
       </div>
 
-      <div className="content-sections">
-        <div className="left-side">
+      <div className="upload-resume-content-sections">
+        <div className="upload-resume-left-side">
           <TipsSection />
         </div>
 
-        <div className="right-side">
-          <button className="example-btn" onClick={handleExampleDownload}>
+        <div className="upload-resume-right-side">
+          <button className="upload-resume-example-btn" onClick={handleExampleDownload}>
             Show me an example
           </button>
 
-          <UploadBox onUpload={handleFileUpload} file={file} />
+          {/* ✅ تمرير callback لمعرفة متى يكتمل المسح */}
+          <UploadBox 
+            onUpload={handleFileUpload} 
+            file={file} 
+            onScanComplete={handleScanComplete}
+          />
 
-          <button className="see-results-btn" onClick={handleSeeResults}>
-            See results
-          </button>
+          {/* ✅ زر يظهر فقط بعد انتهاء المسح */}
+          {file && scanComplete && (
+            <button className="upload-resume-see-results-btn" onClick={handleSeeResults}>
+              See results
+            </button>
+          )}
 
           <ErrorMessage message={errorMsg} onClose={() => setErrorMsg("")} />
         </div>

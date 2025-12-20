@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./RegisterPage.css";
 import logo from "../../assets/images/logo-signin.svg";
 import EmployeeForm from "./EmployeeForm";
 import CompanyForm from "./CompanyForm";
+import { handleSubmitLogic } from "./handleSubmit";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -32,11 +35,12 @@ const RegisterPage = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [fileUploaded, setFileUploaded] = useState(false);
 
   // قراءة userType من query parameters عند تحميل الصفحة
   useEffect(() => {
     const userType = searchParams.get("userType");
-    console.log("User type from URL:", userType); // للمساعدة في التصحيح
+    console.log("User type from URL:", userType);
     if (userType === "company") {
       setActiveForm("company");
     } else if (userType === "employee") {
@@ -60,19 +64,46 @@ const RegisterPage = () => {
       setCompanyData((prev) => ({ ...prev, [name]: value }));
     }
     
-    setErrors({ ...errors, [name]: "" });
+    // مسح الخطأ عند البدء بالكتابة في الحقل
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (activeForm === "employee")
+    if (activeForm === "employee") {
       setEmployeeData({ ...employeeData, photo: file });
-    else setCompanyData({ ...companyData, photo: file });
+      toast.success("تم رفع صورتك بنجاح!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } else {
+      setCompanyData({ ...companyData, photo: file });
+      toast.success("تم رفع شعار الشركة بنجاح!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+    setFileUploaded(true);
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    setErrors({});
+    
+    // استخدام handleSubmitLogic للتحقق من البيانات
+    const validationErrors = handleSubmitLogic(
+      activeForm,
+      employeeData,
+      companyData
+    );
+
+    // إذا كان هناك أخطاء في التحقق، نوقف الإرسال
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setIsLoading(false);
+      return;
+    }
 
     const formData = new FormData();
     let url = "";
@@ -84,14 +115,12 @@ const RegisterPage = () => {
       formData.append("lastName", employeeData.lastName);
       formData.append("email", employeeData.email);
       formData.append("password", employeeData.password);
+      formData.append("phone", employeeData.phone);
       formData.append("birthDate", employeeData.birthDate || "2000-01-01");
-      
       
       if (employeeData.photo) {
         formData.append("profileImage", employeeData.photo);
       }
-      console.log(employeeData.photo);
-      console.log(formData.get('profileImage'));
     } else {
       url = "http://localhost:3000/company-management/company-register";
       
@@ -107,30 +136,37 @@ const RegisterPage = () => {
     }
 
     try {
-      
       const response = await fetch(url, {
         method: "POST",
         body: formData,
-        credentials:"include"
+        credentials: "include"
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("setEmail",employeeData.email)
+        if (activeForm === "employee") {
+          localStorage.setItem("setEmail", employeeData.email);
+        }
         console.log("Registration Successful:", data);
         if (activeForm === "company") {
           navigate("/login");
-        }else{
+        } else {
           navigate("/verfiy-email");
         }
       } else {
         console.error("Registration Failed:", data);
-        setErrors({ general: data.message || "Registration failed. Please try again." });
+        toast.error(data.message || "Registration failed. Please try again.", {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
     } catch (error) {
       console.error("Network Error:", error);
-      setErrors({ general: "Network error. Please check your connection." });
+      toast.error("Network error. Please check your connection.", {
+        position: "top-right",
+        autoClose: 5000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -145,6 +181,7 @@ const RegisterPage = () => {
 
   return (
     <div className="register-page-wrapper">
+      <ToastContainer />
       <div className="register-page-content">
         <div className="register-container">
           <div className="left-section">
@@ -173,7 +210,7 @@ const RegisterPage = () => {
 
             {/* زر التسجيل للشاشات الكبيرة (يختفي في الشاشات الصغيرة) */}
             <button 
-              type="submit" 
+              type="button" 
               className="signup-btn" 
               onClick={handleSubmit}
               disabled={isLoading}
@@ -184,12 +221,6 @@ const RegisterPage = () => {
             >
               {isLoading ? "Signing up..." : `Sign up as ${activeForm === "employee" ? "Employee" : "Company"}`}
             </button>
-
-            {errors.general && (
-              <div className="error-general">
-                {errors.general}
-              </div>
-            )}
 
             <p className="signin">
               Already have an account? <Link to="/login">Sign In</Link>
@@ -237,7 +268,7 @@ const RegisterPage = () => {
           {/* قسم زر التسجيل للشاشات الصغيرة (يظهر فقط في الشاشات الصغيرة) */}
           <div className="mobile-signup-section">
             <button 
-              type="submit" 
+              type="button" 
               className="mobile-signup-btn" 
               onClick={handleSubmit}
               disabled={isLoading}
@@ -248,17 +279,6 @@ const RegisterPage = () => {
             >
               {isLoading ? "Signing up..." : `Sign up as ${activeForm === "employee" ? "Employee" : "Company"}`}
             </button>
-            
-            {errors.general && (
-              <div style={{ 
-                color: "red", 
-                marginTop: "10px", 
-                fontSize: "14px",
-                textAlign: "center" 
-              }}>
-                {errors.general}
-              </div>
-            )}
             
             <p className="mobile-signin">
               Already have an account? <Link to="/login">Sign In</Link>

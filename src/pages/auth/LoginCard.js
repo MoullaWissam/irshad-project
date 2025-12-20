@@ -17,7 +17,6 @@ const LoginCard = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -27,7 +26,6 @@ const LoginCard = () => {
       [field]: value,
       errors: { ...prev.errors, [field]: "" },
     }));
-    setServerError("");
   };
 
   const validate = () => {
@@ -60,7 +58,6 @@ const LoginCard = () => {
     if (!validate()) return;
 
     setIsLoading(true);
-    setServerError("");
 
     try {
       const endpoint = isCompanyMode 
@@ -132,15 +129,15 @@ const LoginCard = () => {
                            data.error || 
                            `Invalid ${isCompanyMode ? 'company credentials' : 'email or password'}`;
         
-        setServerError(errorMessage);
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 5000,
+        });
       }
     } catch (error) {
       console.error("Error:", error);
       
-      setServerError("Network error. Please try again later.");
-      
       toast.error("Network Error", {
-        description: "Unable to connect to server. Please check your internet connection.",
         position: "top-center",
         autoClose: 5000,
       });
@@ -165,7 +162,6 @@ const LoginCard = () => {
       password: "",
       errors: {},
     });
-    setServerError("");
   };
 
   return (
@@ -213,12 +209,7 @@ const LoginCard = () => {
 
         <form onSubmit={handleSubmit} className="login-card-form">
           <div className="login-card-inputs">
-            {/* Display server error at the top */}
-            {serverError && (
-              <div className="login-card-server-error">
-                {serverError}
-              </div>
-            )}
+            {/* تم إزالة عرض serverError من هنا */}
 
             <InputField
               label="Email"

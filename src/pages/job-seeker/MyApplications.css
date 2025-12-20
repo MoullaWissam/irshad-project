@@ -1,0 +1,116 @@
+.my-apps-container {
+  padding: 40px;
+  background-color: whitesmoke;
+  min-height: 100vh;
+}
+
+.my-apps-header {
+  margin-bottom: 40px;
+}
+
+.my-apps-title {
+  font-size: 48px;
+  color: #0b2b82;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.my-apps-title span {
+  color: #723dff;
+}
+
+.my-apps-subtitle {
+  color: #666;
+  font-size: 18px;
+}
+
+/* التبويبات */
+.apps-tabs-container {
+  display: flex;
+  gap: 20px;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 30px;
+}
+
+.tab-item {
+  padding: 12px 30px;
+  text-decoration: none;
+  color: #888;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-item.active {
+  color: var(--active-color);
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--active-color);
+}
+
+/* شبكة العرض */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.app-card-wrapper {
+  position: relative;
+}
+
+/* شارة الحالة فوق البطاقة */
+.status-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 5;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.pending { background: #fff3e0; color: #ff9800; border: 1px solid #ff9800; }
+.status-badge.approved { background: #e8f5e9; color: #2e7d32; border: 1px solid #2e7d32; }
+.status-badge.rejected { background: #ffebee; color: #c62828; border: 1px solid #c62828; }
+
+/* الحالة الفارغة */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.browse-jobs-btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: #723dff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.browse-jobs-btn:hover {
+  background: #5b31ff;
+  transform: translateY(-2px);
+}

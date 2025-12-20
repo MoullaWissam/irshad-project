@@ -462,16 +462,14 @@
 
 .main-content {
   flex: 1;
-  padding: 20px;
+  /* padding: 20px; */
   background-color: #f5f5f5;
   /* margin-left: 250px; Adjust based on sidebar width */
   transition: margin-left 0.3s ease;
 }
 
 /* When sidebar is collapsed */
-.sidebar.collapsed + .main-content {
-  margin-left: 70px; /* Adjust based on collapsed sidebar width */
-}
+
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
@@ -489,7 +487,7 @@
   
   .main-content {
     margin-left: 0;
-    padding: 15px;
+    /* padding: 15px; */
   }
   
   .sidebar.mobile-open + .main-content {

@@ -4,6 +4,7 @@ import "./SidebarFooter.css";
 
 import iconSettings from "../../assets/icons/settings.png";
 import iconLogout from "../../assets/icons/logout.png";
+import defaultUserIcon from "../../assets/icons/profile .png";
 
 function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
   const navigate = useNavigate();
@@ -43,20 +44,23 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
     jobSeeker: {
       name: "Michael Smith",
       email: "michaelsmith12@gmail.com",
-      avatar: "/user.png",
-      roleDisplay: "Job Seeker"
+      avatar: defaultUserIcon,
+      roleDisplay: "Job Seeker",
+      hasAvatar: false
     },
     company: {
       name: "Tech Solutions Inc.",
       email: "contact@techsolutions.com",
-      avatar: "/company-avatar.png",
-      roleDisplay: "Company"
+      avatar: defaultUserIcon,
+      roleDisplay: "Company",
+      hasAvatar: false
     }
   };
 
   // تحديد البيانات التي ستستخدم بناءً على ما في localStorage أو الافتراضي
   let user;
   let roleDisplayText;
+  let hasAvatar = false;
   
   if (storedData) {
     if (storedData.type === "company") {
@@ -64,24 +68,25 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       const companyData = storedData.data;
       
       // بناء مسار الصورة بشكل صحيح
-      let avatarPath = "/company-avatar.png"; // القيمة الافتراضية
+      let avatarPath = defaultUserIcon; // القيمة الافتراضية
       
-      if (companyData.companyLogo) {
+      if (companyData.companyLogo && companyData.companyLogo.trim() !== "") {
         // إذا كان المسار يحتوي على uploads/، أضف المسار الأساسي للخادم
         if (companyData.companyLogo.includes("uploads/")) {
           // تعديل المسار ليكون نسبياً للخادم
           avatarPath = `http://localhost:3000/${companyData.companyLogo}`;
-          console.log(avatarPath);
-          
+          hasAvatar = true;
         } else {
           avatarPath = companyData.companyLogo;
+          hasAvatar = true;
         }
       }
       
       user = {
         name: companyData.companyName || "Company",
         email: companyData.email || "",
-        avatar: avatarPath
+        avatar: avatarPath,
+        hasAvatar: hasAvatar
       };
       
       roleDisplayText = "Company";
@@ -90,14 +95,16 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       const userData = storedData.data;
       
       // بناء مسار الصورة بشكل صحيح للمستخدم
-      let avatarPath = "/user.png"; // القيمة الافتراضية
+      let avatarPath = defaultUserIcon; // القيمة الافتراضية
       
-      if (userData.profileImage) {
+      if (userData.profileImage && userData.profileImage.trim() !== "") {
         // إذا كان المسار يحتوي على uploads/، أضف المسار الأساسي للخادم
         if (userData.profileImage.includes("uploads/")) {
           avatarPath = `http://localhost:3000/${userData.profileImage}`;
+          hasAvatar = true;
         } else {
           avatarPath = userData.profileImage;
+          hasAvatar = true;
         }
       }
       
@@ -105,7 +112,8 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       user = {
         name: fullName || "User",
         email: userData.email || "",
-        avatar: avatarPath
+        avatar: avatarPath,
+        hasAvatar: hasAvatar
       };
       roleDisplayText = "Job Seeker";
     }
@@ -142,48 +150,64 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
   const handleImageError = (e) => {
     // استبدال الصورة المعطوبة بصورة افتراضية
     e.target.onerror = null; // منع تكرار الحدث
-    e.target.src = userRole === "company" ? "/company-avatar.png" : "/user.png";
+    e.target.src = defaultUserIcon;
+    e.target.classList.add("default-avatar");
+    user.hasAvatar = false;
+  };
+
+  const handleImageLoad = (e) => {
+    // إذا تم تحميل الصورة بنجاح، تأكد من إزالة كلاس الصورة الافتراضية
+    if (user.hasAvatar) {
+      e.target.classList.remove("default-avatar");
+    }
   };
 
   return (
-    <div className="sidebar-footer" onClick={onClickInside}>
+    <div className="sidebar-footer-container" onClick={onClickInside}>
       
       {/* Settings */}
       <div
-        className={`footer-item ${isCollapsed ? "collapsed" : ""}`}
+        className={`sidebar-footer-item ${isCollapsed ? "collapsed" : ""}`}
         onClick={handleSettings}
       >
-        <img src={iconSettings} alt="Settings" className="menu-icon-img" />
-        {!isCollapsed && <span className="footer-text">
+        <img src={iconSettings} alt="Settings" className="sidebar-footer-icon" />
+        {!isCollapsed && <span className="sidebar-footer-text">
           {userRole === "company" ? "Company Settings" : "Settings"}
         </span>}
       </div>
 
       {/* Logout */}
       <div
-        className={`footer-item ${isCollapsed ? "collapsed" : ""}`}
+        className={`sidebar-footer-item ${isCollapsed ? "collapsed" : ""}`}
         onClick={handleLogout}
       >
-        <img src={iconLogout} alt="Logout" className="menu-icon-img" />
-        {!isCollapsed && <span className="footer-text">Logout</span>}
+        <img src={iconLogout} alt="Logout" className="sidebar-footer-icon" />
+        {!isCollapsed && <span className="sidebar-footer-text">Logout</span>}
       </div>
 
       {/* User info */}
       <div
-        className={`user-info ${isCollapsed ? "collapsed" : ""}`}
+        className={`sidebar-footer-user-info ${isCollapsed ? "collapsed" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <img 
-          src={user.avatar} 
-          alt="User" 
-          className="user-avatar"
-          onError={handleImageError}
-        />
+        <div className={`sidebar-footer-avatar-container ${!user.hasAvatar ? 'has-default-avatar' : ''}`}>
+          <img 
+            src={user.avatar} 
+            alt="User" 
+            className={`sidebar-footer-avatar ${!user.hasAvatar ? 'default-avatar' : ''}`}
+            onError={handleImageError}
+            onLoad={handleImageLoad}
+            loading="lazy"
+          />
+          {isCollapsed && (
+            <span className={`sidebar-footer-status-dot ${userRole === "company" ? "active" : "active"}`}></span>
+          )}
+        </div>
         {!isCollapsed && (
-          <div className="user-details">
-            <p className="user-name">{user.name}</p>
-            <p className="user-email">{user.email}</p>
-            <span className={`status-dot ${userRole === "company" ? "active" : "active"}`}>
+          <div className="sidebar-footer-details">
+            <p className="sidebar-footer-name">{user.name}</p>
+            <p className="sidebar-footer-email">{user.email}</p>
+            <span className={`sidebar-footer-status ${userRole === "company" ? "active" : "active"}`}>
               {roleDisplayText}
             </span>
           </div>

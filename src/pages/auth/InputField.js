@@ -36,9 +36,14 @@ const InputField = ({ label, type, value, onChange, error, placeholder }) => {
         />
 
         {type === "password" && (
-          <span className="eyeIcon" onClick={() => setShow(!show)}>
+          <button 
+            type="button" 
+            className="eyeIcon" 
+            onClick={() => setShow(!show)}
+            aria-label={show ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+          >
             {show ? <FaEyeSlash /> : <FaEye />}
-          </span>
+          </button>
         )}
 
         {error && showFloating && (

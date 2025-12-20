@@ -1,25 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import UploadIcon from "../../assets/icons/image- 1.png";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const CompanyForm = ({ data, errors, onChange, onFileChange }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const fields = [
+    { label: "Company Name", name: "companyName", type: "text" },
+    { label: "Password", name: "companyPassword", type: "password" },
+    { label: "Company Address", name: "companyAddress", type: "text" },
+    { label: "Email", name: "email", type: "email" },
+    { label: "Website", name: "website", type: "text" },
+  ];
+
   return (
     <div className="formContent show">
-      {[
-        { label: "Company Name", name: "companyName" },
-        { label: "Password", name: "companyPassword", type: "password" },
-        { label: "Company Address", name: "companyAddress" },
-        { label: "email", name: "email" },
-        { label: "Website", name: "website" },
-      ].map((field) => (
+      {fields.map((field) => (
         <div key={field.name}>
           <h4 className="info-text compact-label">{field.label}</h4>
           <div style={{ position: "relative" }}>
             <input
               name={field.name}
-              type={field.type || "text"}
+              type={field.name === "companyPassword" && !showPassword ? "password" : field.name === "companyPassword" && showPassword ? "text" : field.type}
               value={data[field.name]}
               onChange={onChange}
+              style={
+                field.name === "companyPassword"
+                  ? { paddingRight: "40px", width: "100%" }
+                  : { width: "100%" }
+              }
             />
+            
+            {field.name === "companyPassword" && (
+              <span
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                  color: "#666",
+                  fontSize: "18px",
+                  zIndex: 2,
+                }}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            )}
+
             {errors[field.name] && (
               <span className="error-floating">{errors[field.name]}</span>
             )}
@@ -28,23 +57,25 @@ const CompanyForm = ({ data, errors, onChange, onFileChange }) => {
       ))}
 
       {/* تحميل شعار الشركة */}
-      <div className="upload" style={{ alignContent: "center" }}>
-        <label htmlFor="companyPhoto" className="upload-label">
-          <img
-            src={UploadIcon}
-            alt="Upload Icon"
-            style={{ verticalAlign: "middle", marginRight: "6px" }}
-          />
-          {/* <span>{data.photo ? data.photo.name : "Upload Company Logo"}</span> */}
-        </label>
-        <input
-          id="companyPhoto"
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-          style={{ display: "none" }}
-        />
-      </div>
+<div className="upload" style={{ alignContent: "center" }}>
+  <label htmlFor="companyPhoto" className="upload-label" style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexDirection: "row", gap: "8px" }}>
+    <img
+      src={UploadIcon}
+      alt="Upload Icon"
+      style={{ width: "20px", height: "20px" }}
+    />
+    <span style={{ color: "#00b8e7", fontWeight: "600", fontSize: "14px" }}>
+      {data.photo ? `✓ ${data.photo.name}` : "Upload the company logo here"}
+    </span>
+  </label>
+  <input
+    id="companyPhoto"
+    type="file"
+    accept="image/*"
+    onChange={onFileChange}
+    style={{ display: "none" }}
+  />
+</div>
     </div>
   );
 };
