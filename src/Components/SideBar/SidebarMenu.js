@@ -8,36 +8,43 @@ import matchesIcon from "../../assets/icons/matches.svg";
 import mainIcon from "../../assets/icons/home.svg";
 import applicantsIcon from "../../assets/icons/applicants.svg";
 import addJobIcon from "../../assets/icons/addjobs.svg";
-import dashboardIcon from "../../assets/icons/whightlogo.svg"; // تأكد من وجود هذه الأيقونة
+import dashboardIcon from "../../assets/icons/whightlogo.svg";
 import dropdownIcon from "../../assets/icons/dropdown.svg";
 
 function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
-  const [isApplicationsOpen, setIsApplicationsOpen] = useState(false);
-  const [isApplicantsOpen, setIsApplicantsOpen] = useState(false);
+  const [openDropdowns, setOpenDropdowns] = useState({
+    applications: false,
+    applicants: false
+  });
 
-  const toggleApplications = () => {
-    setIsApplicationsOpen(!isApplicationsOpen);
+  const toggleDropdown = (dropdownName) => {
+    setOpenDropdowns(prev => ({
+      ...prev,
+      [dropdownName]: !prev[dropdownName]
+    }));
   };
 
-  const toggleApplicants = () => {
-    setIsApplicantsOpen(!isApplicantsOpen);
+  const closeAllDropdowns = () => {
+    setOpenDropdowns({
+      applications: false,
+      applicants: false
+    });
   };
 
   const handleItemClick = () => {
+    closeAllDropdowns();
     if (onItemClick) {
       onItemClick();
     }
   };
 
   const handleSubItemClick = () => {
-    setIsApplicationsOpen(false);
-    setIsApplicantsOpen(false);
+    closeAllDropdowns();
     if (onItemClick) {
       onItemClick();
     }
   };
 
-  // قوائم التنقل حسب الدور - محدثة لتتناسب مع المسارات الجديدة
   const menuConfig = {
     jobSeeker: [
       {
@@ -59,6 +66,7 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
         type: "dropdown",
         text: "Applications",
         icon: applicationsIcon,
+        dropdownName: "applications",
         items: [
           { path: "/applications/approved", text: "Approved" },
           { path: "/applications/pending", text: "Pending" },
@@ -76,6 +84,7 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
         type: "dropdown",
         text: "Applicants",
         icon: applicantsIcon,
+        dropdownName: "applicants",
         items: [
           { path: "/company/applicants/all", text: "All Applicants" },
           { path: "/company/applicants/new", text: "New Applicants" },
@@ -95,16 +104,9 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
             <div className="dropdown-container">
               <div
                 className={`menu-item dropdown-toggle ${
-                  (userRole === "jobSeeker" && isApplicationsOpen) ||
-                  (userRole === "company" && isApplicantsOpen)
-                    ? "active"
-                    : ""
+                  openDropdowns[item.dropdownName] ? "active" : ""
                 }`}
-                onClick={
-                  userRole === "jobSeeker"
-                    ? toggleApplications
-                    : toggleApplicants
-                }
+                onClick={() => toggleDropdown(item.dropdownName)}
               >
                 <div className={`menu-left ${isCollapsed ? "collapsed" : ""}`}>
                   <img
@@ -119,10 +121,7 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
                         src={dropdownIcon}
                         alt="Dropdown"
                         className={`dropdown-arrow ${
-                          (userRole === "jobSeeker" && isApplicationsOpen) ||
-                          (userRole === "company" && isApplicantsOpen)
-                            ? "open"
-                            : ""
+                          openDropdowns[item.dropdownName] ? "open" : ""
                         }`}
                       />
                     </>
@@ -130,24 +129,22 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
                 </div>
               </div>
 
-              {!isCollapsed &&
-                ((userRole === "jobSeeker" && isApplicationsOpen) ||
-                  (userRole === "company" && isApplicantsOpen)) && (
-                  <div className="dropdown-menu">
-                    {item.items.map((subItem, subIndex) => (
-                      <NavLink
-                        key={subIndex}
-                        to={subItem.path}
-                        className={({ isActive }) =>
-                          `dropdown-item ${isActive ? "active" : ""}`
-                        }
-                        onClick={handleSubItemClick}
-                      >
-                        {subItem.text}
-                      </NavLink>
-                    ))}
-                  </div>
-                )}
+              {!isCollapsed && openDropdowns[item.dropdownName] && (
+                <div className="dropdown-menu">
+                  {item.items.map((subItem, subIndex) => (
+                    <NavLink
+                      key={subIndex}
+                      to={subItem.path}
+                      className={({ isActive }) =>
+                        `dropdown-item ${isActive ? "active" : ""}`
+                      }
+                      onClick={handleSubItemClick}
+                    >
+                      {subItem.text}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
             </div>
           ) : (
             <NavLink
