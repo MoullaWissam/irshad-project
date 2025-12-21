@@ -9,7 +9,6 @@ function VerfiyEmail() {
 
   // البريد الأصلي (يمكنك تمريره من الـ props أو من الـ backend)
   const email = localStorage.getItem("setEmail")
-  const maskedEmail = email.split("@")[0]; // إزالة لاحقة البريد
 
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -72,7 +71,6 @@ function VerfiyEmail() {
       subtitle={
         <>
           We have sent a password recovery link to{" "}
-          <strong>{maskedEmail}</strong>
           <br />
           Enter 5 digit code that mentioned in the email
         </>

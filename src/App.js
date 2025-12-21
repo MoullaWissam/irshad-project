@@ -68,7 +68,7 @@ function App() {
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/set-new-password" element={<SetNewPassword />} />
           <Route path="/success" element={<Success />} />
-          <Route path="/verify-email" element={<VerfiyEmail />} />
+          <Route path="/verfiy-email" element={<VerfiyEmail />} />
 
           {/* Job Seeker Routes (مع سايدبار) */}
           <Route path="/matches" element={
