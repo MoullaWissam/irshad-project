@@ -23,7 +23,7 @@ function CheckEmail() {
     const code = inputsRef.current.map((input) => input.value).join("");
 
     try {
-      const response = await fetch("http://localhost:3000/auth/verify-otp-password", {
+      const response = await fetch("http://localhost:3000/auth/verify-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
