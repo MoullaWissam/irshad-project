@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+// UploadResume.js - المكون الرئيسي المعدل
+import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./UploadResume.css";
 
 // استيراد المكونات الفرعية
 import TipsSection from "./TipsSection";
 import UploadBox from "./UploadBox";
-import Popup from "./Popup";
-import ErrorMessage from "./ErrorMessage";
 
 const UploadResume = () => {
   const [file, setFile] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [scanComplete, setScanComplete] = useState(false); // ✅ حالة جديدة لتتبع اكتمال المسح
+  const [scanComplete, setScanComplete] = useState(false);
+  const [hasUploadedBefore, setHasUploadedBefore] = useState(false);
+  const [isScanning, setIsScanning] = useState(false); // حالة جديدة لتتبع المسح
+
+  // ✅ التحقق من localStorage عند تحميل المكون
+  useEffect(() => {
+    const hasPreviousUpload = localStorage.getItem('hasUploadedCV');
+    if (hasPreviousUpload === 'true') {
+      setHasUploadedBefore(true);
+    }
+    
+    // استرجاع الملف السابق إذا كان موجودًا
+    const savedFile = localStorage.getItem('currentCV');
+    if (savedFile) {
+      try {
+        const parsedFile = JSON.parse(savedFile);
+        setFile(parsedFile);
+        setScanComplete(true); // نفترض أن المسح اكتمل
+      } catch (error) {
+        console.error("Error parsing saved file:", error);
+        toast.error("❌ خطأ في تحميل السيرة الذاتية المحفوظة");
+      }
+    }
+  }, []);
 
   const handleFileUpload = (e) => {
     const selectedFile = e.target.files[0];
@@ -21,18 +44,47 @@ const UploadResume = () => {
     const ext = selectedFile.name.split(".").pop().toLowerCase();
 
     if (!allowedExtensions.includes(ext)) {
-      setErrorMsg(" Please upload a valid file (PDF, DOC, DOCX)");
+      toast.error("⚠️ Please upload a valid file (PDF, DOC, DOCX)");
       return;
     }
 
-    setFile(selectedFile);
-    setScanComplete(false); // ✅ إعادة تعيين حالة المسح عند رفع ملف جديد
-    setErrorMsg("");
+    // إنشاء كائن ملف بحجم محسوب
+    const fileObject = {
+      name: selectedFile.name,
+      size: selectedFile.size,
+      type: selectedFile.type,
+      lastModified: selectedFile.lastModified
+    };
+
+    setFile(fileObject);
+    setScanComplete(false);
+    
+    // ✅ حفظ في localStorage
+    localStorage.setItem('hasUploadedCV', 'true');
+    localStorage.setItem('currentCV', JSON.stringify(fileObject));
+    
+    toast.success("✅ تم رفع الملف بنجاح!");
+  };
+
+  // ✅ دالة لتتبع حالة المسح
+  const handleScanStart = () => {
+    setIsScanning(true);
   };
 
   // ✅ دالة تُستدعى عند اكتمال المسح
   const handleScanComplete = () => {
     setScanComplete(true);
+    setIsScanning(false); // إنهاء حالة المسح
+    toast.success("✅ اكتمل الفحص الدقيق للملف");
+  };
+
+  // ✅ دالة لحذف الملف الحالي
+  const handleDeleteFile = () => {
+    setFile(null);
+    setScanComplete(false);
+    localStorage.removeItem('currentCV');
+    toast.info("🗑️ تم حذف السيرة الذاتية الحالية");
+    // لا نزيل hasUploadedCV لأن المستخدم قد رفع من قبل
   };
 
   const handleExampleDownload = () => {
@@ -40,17 +92,18 @@ const UploadResume = () => {
     link.href = "/example.pdf";
     link.download = "example.pdf";
     link.click();
+    toast.info("📥 جارٍ تحميل المثال...");
   };
 
   const handleSeeResults = async () => {
     if (!file) {
-      setErrorMsg("⚠️ Upload your ATS CV to see results");
+      toast.error("⚠️ Upload your ATS CV to see results");
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("fileName", file.name);
 
       await fetch("http://localhost:3000/resumes/upload", {
         method: "POST",
@@ -60,7 +113,7 @@ const UploadResume = () => {
 
       setShowPopup(true);
     } catch (error) {
-      setErrorMsg(`❌ Upload failed: ${error.message}`);
+      toast.error(`❌ Upload failed: ${error.message}`);
     }
   };
 
@@ -76,11 +129,29 @@ const UploadResume = () => {
 
   return (
     <div className="upload-resume-container">
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        style={{ zIndex: 99999 }}
+      />
+
       <div className="upload-resume-main-header">
-        <h2 className="upload-resume-welcome-text">Welcome!</h2>
+        <h2 className="upload-resume-welcome-text">
+          {hasUploadedBefore ? "Welcome back!" : "Welcome!"}
+        </h2>
         <h3 className="upload-resume-subtitle">
           {file
-            ? "If you'd like to update your resume, simply upload the new version here"
+            ? hasUploadedBefore
+              ? "You can replace your current CV with a new version, or delete it to start fresh"
+              : "If you'd like to update your resume, simply upload the new version here"
             : "Upload your resume and take the first step toward your career"}
         </h3>
       </div>
@@ -95,25 +166,33 @@ const UploadResume = () => {
             Show me an example
           </button>
 
-          {/* ✅ تمرير callback لمعرفة متى يكتمل المسح */}
+          {/* ✅ تمرير callback لمعرفة متى يبدأ وينتهي المسح */}
           <UploadBox 
             onUpload={handleFileUpload} 
             file={file} 
+            onScanStart={handleScanStart}
             onScanComplete={handleScanComplete}
           />
 
-          {/* ✅ زر يظهر فقط بعد انتهاء المسح */}
-          {file && scanComplete && (
+          {/* ✅ زر عرض النتائج يظهر فقط بعد انتهاء المسح */}
+          {file && scanComplete && !isScanning && (
             <button className="upload-resume-see-results-btn" onClick={handleSeeResults}>
               See results
             </button>
           )}
 
-          <ErrorMessage message={errorMsg} onClose={() => setErrorMsg("")} />
+          {/* ✅ زر حذف الملف يظهر عندما يكون هناك ملف مرفوع وليس أثناء المسح */}
+          {file && hasUploadedBefore && !isScanning && (
+            <button 
+              className="upload-resume-delete-btn"
+              onClick={handleDeleteFile}
+            >
+              Delete current CV
+            </button>
+          )}
         </div>
       </div>
 
-      {showPopup && <Popup closePopup={closePopup} />}
     </div>
   );
 };

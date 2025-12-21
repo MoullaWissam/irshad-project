@@ -1,29 +1,44 @@
-// UploadBox.jsx
-import React, { useState } from "react";
-import { FileText, UploadCloud, Check, Search } from "lucide-react";
+// UploadBox.jsx - المكون المعدل
+import React, { useState, useEffect, useRef } from "react";
+import { FileText, UploadCloud, Search } from "lucide-react";
 import RobotAvatar from "../../assets/images/Murshed.png";
+import "./UploadBoxAnimations.css";
 
-const UploadBox = ({ onUpload, file, onScanComplete }) => {
+const UploadBox = ({ onUpload, file, onScanStart, onScanComplete }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isScanComplete, setIsScanComplete] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleFileSelect = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
+    setIsScanComplete(false);
     startScan();
     onUpload(e);
   };
 
   const startScan = () => {
+    // إعلام المكون الرئيسي ببدء المسح
+    if (onScanStart) {
+      onScanStart();
+    }
+    
     setIsScanning(true);
     
-    // ✅ الأنميشن أقصر (4 ثوانٍ بدلاً من 6)
     setTimeout(() => {
       setIsScanning(false);
+      setIsScanComplete(true);
       if (onScanComplete) {
         onScanComplete(); // إعلام المكون الرئيسي بانتهاء المسح
       }
     }, 4000);
+  };
+
+  const handleClick = () => {
+    if (!isScanning && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleDragOver = (e) => {
@@ -46,6 +61,12 @@ const UploadBox = ({ onUpload, file, onScanComplete }) => {
     }
   };
 
+  useEffect(() => {
+    if (file && !isScanning) {
+      setIsScanComplete(true);
+    }
+  }, [file, isScanning]);
+
   const scanPoints = Array.from({ length: 6 });
   const textEffects = Array.from({ length: 4 });
   const activeLines = Array.from({ length: 4 });
@@ -53,13 +74,16 @@ const UploadBox = ({ onUpload, file, onScanComplete }) => {
   const dataStreams = Array.from({ length: 5 });
 
   return (
-    <label 
+    <div 
       className={`upload-resume-upload-box ai-box ${isScanning ? "scanning" : ""} ${isDragging ? "dragging" : ""}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      onClick={handleClick}
+      style={{ cursor: isScanning ? 'default' : 'pointer' }}
     >
       <input
+        ref={fileInputRef}
         type="file"
         accept=".pdf,.doc,.docx"
         hidden
@@ -67,11 +91,9 @@ const UploadBox = ({ onUpload, file, onScanComplete }) => {
         onChange={handleFileSelect}
       />
 
-      {/* 🤖 الروبوت الثابت في الأعلى */}
-      <div className="robot-head-space">
-        <div className="robot-head static">
-          <img src={RobotAvatar} alt="AI Assistant" />
-        </div>
+      {/* 🤖 الروبوت في المنتصف */}
+      <div className={`robot-head ${isScanning ? 'scanning-mode' : isScanComplete ? 'centered-after-scan' : 'upload-mode'}`}>
+        <img src={RobotAvatar} alt="AI Assistant" />
       </div>
 
       {/* 🔍 أيقونة العدسة بدون دائرة */}
@@ -126,19 +148,18 @@ const UploadBox = ({ onUpload, file, onScanComplete }) => {
         </div>
       ) : file ? (
         <div className="file-ready-ui">
-          <div className="success-icon-wrapper">
-            <Check size={40} className="file-icon-success" />
-          </div>
-          <p className="file-name">{file.name}</p>
-          <span className="file-ready">✓ اكتمل الفحص الدقيق</span>
-          <div className="file-details">
-            <small>تم تحليل {Math.floor(file.size / 500)} عنصر • جاهز للتقييم</small>
+          <div className="file-info">
+            <p className="file-name">{file.name}</p>
+            <span className="file-ready">✓ اكتمل الفحص الدقيق</span>
+            <div className="file-details">
+              <small>تم تحليل {Math.floor(file.size / 500)} عنصر • جاهز للتقييم</small>
+            </div>
           </div>
         </div>
       ) : (
         <div className="upload-placeholder-ui">
           <UploadCloud size={44} className="upload-icon" />
-          <p className="upload-title">  </p>
+          <p className="upload-title"></p>
           <span className="upload-subtitle">PDF أو DOC أو DOCX</span>
           <div className="scan-preview-hint">
             <small>
@@ -147,7 +168,7 @@ const UploadBox = ({ onUpload, file, onScanComplete }) => {
           </div>
         </div>
       )}
-    </label>
+    </div>
   );
 };
 

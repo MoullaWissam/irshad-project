@@ -14,12 +14,11 @@ import dropdownIcon from "../../assets/icons/dropdown.svg";
 
 function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
   const [openDropdowns, setOpenDropdowns] = useState({
-    applications: false,
-    applicants: false,
+    applicants: false, // تمت إزالة 'applications' من هنا
   });
 
   const toggleDropdown = (dropdownName) => {
-    if (isCollapsed) return; // لا نفتح القائمة إذا كان السايدبار مغلقاً
+    if (isCollapsed) return;
     setOpenDropdowns((prev) => ({
       ...prev,
       [dropdownName]: !prev[dropdownName],
@@ -47,20 +46,11 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
     },
     { path: "/company/settings", text: "Settings", icon: settingsIcon },
   ] : [
+    { path: "/upload-resume", text: "Main", icon: mainIcon },
     { path: "/matches", text: "Matches", icon: matchesIcon },
     { path: "/jobs", text: "Jobs", icon: searchIcon },
-    { path: "/upload-resume", text: "Upload Resume", icon: mainIcon },
-    {
-      text: "Applications",
-      icon: applicationsIcon,
-      isDropdown: true,
-      dropdownName: "applications",
-      items: [
-        { path: "/applications/pending", text: "Pending" },
-        { path: "/applications/accepted", text: "Accepted" },
-        { path: "/applications/rejected", text: "Rejected" },
-      ],
-    },
+    // تم التغيير هنا: تحويل "Applications" من قائمة منسدلة إلى رابط عادي
+    { path: "/applications", text: "Applications", icon: applicationsIcon },
   ];
 
   return (
@@ -102,6 +92,7 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
               )}
             </div>
           ) : (
+            // هذا الجزء يعالج الآن كلاً من الأزرار العادية والزر الجديد "Applications"
             <NavLink
               to={item.path}
               className={({ isActive }) => `menu-item ${isActive ? "active" : ""} ${isCollapsed ? "collapsed" : ""}`}

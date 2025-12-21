@@ -27,6 +27,7 @@ import JobsPage from "./pages/job-seeker/JobsPage";
 import JobDetails from "./pages/job-seeker/JobDetails";
 import QuickTest from "./pages/job-seeker/QuickTest";
 import ApplicationSuccess from "./pages/job-seeker/ApplicationSuccess";
+import MyApplications from "./pages/job-seeker/MyApplications";
 
 // Company Pages
 import ApplicantsGrid from "./pages/company/ApplicantsGrid";
@@ -100,6 +101,18 @@ function App() {
               <MainLayout userRole="jobSeeker"><ApplicationSuccess /></MainLayout>
             </ProtectedRoute>
           } />
+          
+          {/* MyApplications Routes - التعديلات المهمة */}
+          <Route path="/applications" element={
+            <ProtectedRoute>
+              <MainLayout userRole="jobSeeker"><MyApplications /></MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/applications/:status" element={
+            <ProtectedRoute>
+              <MainLayout userRole="jobSeeker"><MyApplications /></MainLayout>
+            </ProtectedRoute>
+          } />
 
           {/* Company Routes (مع سايدبار) */}
           <Route path="/company/applicants/all" element={
@@ -125,6 +138,25 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* صفحة Dashboard للشركة (مضافة حديثاً) */}
+          <Route path="/company/dashboard" element={
+            <ProtectedRoute>
+              <MainLayout userRole="company">
+                <div className="page-content"><h1>Company Dashboard</h1></div>
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          
+          {/* صفحة Add Job للشركة (مضافة حديثاً) */}
+          <Route path="/company/add-job" element={
+            <ProtectedRoute>
+              <MainLayout userRole="company">
+                <div className="page-content"><h1>Add New Job</h1></div>
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* إعادة التوجيه لجميع المسارات غير المعرفة */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

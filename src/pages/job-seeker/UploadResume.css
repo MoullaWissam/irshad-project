@@ -2,10 +2,11 @@
 .upload-resume-container {
   max-width: 100%;
   min-height: 100vh;
-  padding: 0px 20px 0px 20px;
+  padding: 0px 20px;
   background-color: whitesmoke;
+  display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   overflow-x: hidden;
 }
 
@@ -18,7 +19,7 @@
 /* نص الترحيب */
 .upload-resume-welcome-text {
   color: #733eff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 34px;
   line-height: 50px;
@@ -28,11 +29,12 @@
 /* الجملة التوضيحية تحت العنوان */
 .upload-resume-subtitle {
   color: #2b1d6a;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 30px;
   line-height: 50px;
   letter-spacing: 0%;
+  text-align: center;
 }
 
 /* ===== تنظيم القسمين (يمين ويسار) ===== */
@@ -42,6 +44,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
+  max-width: 1200px;
 }
 
 /* ===== القسم الأيسر: نصائح المستخدم ===== */
@@ -67,6 +70,9 @@
   background: linear-gradient(#fff, #fff) padding-box,
     linear-gradient(var(--border-angle), #723efe 0%, #00cbff 100%) border-box;
   box-shadow: 0px 4px 4px 0px #00000040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* قائمة النصائح */
@@ -75,6 +81,8 @@
   flex-direction: column;
   gap: 15px;
   padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 /* ===== كل نصيحة ضمن مستطيل بإطار متدرج ===== */
@@ -87,7 +95,7 @@
   padding: 12px 16px;
   border-radius: 12px;
   color: #2b1d6a;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -97,12 +105,16 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.upload-resume-tip-card span:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* أيقونة بجانب النص */
 .upload-resume-tip-card img {
   width: 30px;
   height: 30px;
   object-fit: contain;
-  margin-right: 10px;
   --border-angle: 90deg;
   border: 3px solid transparent;
   background: linear-gradient(#fff, #fff) padding-box,
@@ -128,7 +140,9 @@
   cursor: pointer;
   font-size: 15px;
   margin-bottom: 25px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
 }
 
 /* تأثير عند المرور */
@@ -150,12 +164,45 @@
   color: #5b31ff;
   text-align: center;
   margin-bottom: 25px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  position: relative;
+  background-color: #fff;
 }
 
 /* تأثير عند المرور */
 .upload-resume-upload-box:hover {
-  background-color: #fff;
+  background-color: #f8f9ff;
+  border-color: #723efe;
+}
+
+/* ===== الروبوت في صندوق الرفع ===== */
+.robot-head {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* حجم الروبوت */
+.robot-head img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow: 0 6px 20px rgba(108, 99, 255, 0.2),
+    0 0 0 4px rgba(108, 99, 255, 0.1);
+  object-fit: cover;
+  background: linear-gradient(135deg, #f8f9ff, #eef1ff);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* تأثير خفيف عند التحويم */
+.upload-resume-upload-box:hover .robot-head img {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 8px 25px rgba(108, 99, 255, 0.3),
+    0 0 0 4px rgba(108, 99, 255, 0.15);
 }
 
 /* ===== زر عرض النتائج ===== */
@@ -167,43 +214,47 @@
   padding: 12px 30px;
   cursor: pointer;
   font-size: 15px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
 }
 
 .upload-resume-see-results-btn:hover {
   background: #6a42ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(91, 49, 255, 0.2);
 }
 
-/* ===== رسالة الخطأ (ErrorMessage) ===== */
-.upload-resume-error-message {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+.upload-resume-see-results-btn:active {
+  transform: translateY(0);
+}
+
+/* ===== زر حذف الملف ===== */
+.upload-resume-delete-btn {
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s ease;
   margin-top: 15px;
-  background: #ffe5e5;
-  color: #b10000;
-  border: 1px solid #ffb3b3;
-  border-radius: 8px;
-  padding: 10px 0px;
-  width: 250px;
-  text-align: center;
-  font-size: 14px;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
-  animation: fadeInError 0.3s ease-in-out;
-  box-shadow: 0 2px 8px rgba(255, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(255, 68, 68, 0.2);
 }
 
-/* أنيميشن ظهور الخطأ */
-@keyframes fadeInError {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.upload-resume-delete-btn:hover {
+  background: #ff6666;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 68, 68, 0.3);
 }
+
+.upload-resume-delete-btn:active {
+  transform: translateY(0);
+}
+
 
 /* ===== النافذة العائمة (Popup) ===== */
 .upload-resume-overlay {
@@ -233,6 +284,7 @@
   position: relative;
   animation: slideIn 0.3s ease-in-out forwards;
   transition: opacity 0.25s ease, transform 0.25s ease;
+  max-width: 90%;
 }
 
 /* أنيميشن إغلاق النافذة */
@@ -282,849 +334,372 @@
 }
 
 /* ===== التصميم المتجاوب (Responsive Design) ===== */
+
+/* للأجهزة اللوحية والصغيرة (أقل من 1100px) */
 @media (max-width: 1100px) {
   .upload-resume-container {
-    padding: 0px 20px 0px 20px;
+    padding: 0px 20px;
+  }
+  
+  .upload-resume-content-sections {
+    gap: 30px;
+  }
+  
+  .upload-resume-subtitle {
+    font-size: 26px;
+    line-height: 40px;
+  }
+  
+  .upload-resume-tips-box h4 {
+    width: 450px;
+  }
+  
+  .upload-resume-tip-card span {
+    width: 350px;
   }
 }
 
+/* للأجهزة اللوحية (أقل من 900px) */
 @media (max-width: 900px) {
   .upload-resume-container {
     width: calc(100% - 40px);
     padding: 30px 20px;
   }
-
+  
+  .upload-resume-main-header {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .upload-resume-welcome-text {
+    font-size: 28px;
+    line-height: 40px;
+  }
+  
+  .upload-resume-subtitle {
+    font-size: 22px;
+    line-height: 34px;
+    width: 100%;
+  }
+  
   .upload-resume-content-sections {
     flex-direction: column;
     align-items: center;
     gap: 40px;
   }
-
-  .upload-resume-subtitle {
+  
+  .upload-resume-left-side,
+  .upload-resume-right-side {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-
+  
+  .upload-resume-tips-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .upload-resume-tips-box h4 {
+    width: 400px;
+    height: 60px;
+    font-size: 18px;
+  }
+  
   .upload-resume-tip-card {
     text-align: center;
   }
-}
-
-/* ===== الروبوت الثابت في الأعلى ===== */
-.robot-head.static {
-  position: absolute;
-  top: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  transition: all 0.5s ease;
-}
-
-/* حجم الروبوت الأساسي (أكبر 5% من السابق) */
-.robot-head.static img {
-  width: 73.5px; /* 70px + 5% */
-  height: 73.5px; /* 70px + 5% */
-  border-radius: 50%;
-  border: 3px solid #ffffff;
-  box-shadow: 
-    0 6px 20px rgba(108, 99, 255, 0.2),
-    0 0 0 4px rgba(108, 99, 255, 0.1);
-  object-fit: cover;
-  background: linear-gradient(135deg, #f8f9ff, #eef1ff);
-  transition: all 0.5s ease;
-}
-
-/* أثناء المسح - تصغير الروبوت ورفعه للأعلى */
-.ai-box.scanning .robot-head.static {
-  top: 10px;
-}
-
-.ai-box.scanning .robot-head.static img {
-  width: 56px; /* أصغر بنسبة ~25% */
-  height: 56px;
-  transform: translateX(-50%) scale(0.8);
-}
-
-/* تأثير خفيف عند التحويم */
-.upload-resume-upload-box:hover .robot-head.static img {
-  transform: scale(1.05);
-  box-shadow: 
-    0 8px 25px rgba(108, 99, 255, 0.3),
-    0 0 0 4px rgba(108, 99, 255, 0.15);
-}
-
-/* ===== أيقونة العدسة بدون دائرة ===== */
-.magnifier-icon-animated {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  z-index: 15;
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.3s ease;
-}
-
-.ai-box.scanning .magnifier-icon-animated {
-  opacity: 1;
-  animation: magnifier-icon-appear 0.5s ease-out forwards;
-}
-
-/* تصميم أيقونة العدسة النقية */
-.magnifier-icon-inner {
-  color: #5b31ff;
-  filter: 
-    drop-shadow(0 2px 4px rgba(91, 49, 255, 0.3))
-    drop-shadow(0 4px 8px rgba(108, 99, 255, 0.2));
-  width: 60px;
-  height: 60px;
-  animation: icon-float 3s ease-in-out infinite;
-}
-
-/* شعاع الضوء من الأيقونة */
-.icon-beam {
-  position: absolute;
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(90deg, 
-    rgba(108, 99, 255, 0) 0%, 
-    rgba(108, 99, 255, 0.8) 50%, 
-    rgba(108, 99, 255, 0) 100%);
-  border-radius: 2px;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  animation: beam-pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes beam-pulse {
-  0%, 100% {
-    opacity: 0.4;
-    transform: translateX(-50%) translateY(10px) scaleX(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateX(-50%) translateY(10px) scaleX(1.3);
-  }
-}
-
-@keyframes icon-glow {
-  0%, 100% {
-    filter: 
-      drop-shadow(0 2px 4px rgba(91, 49, 255, 0.3))
-      drop-shadow(0 4px 8px rgba(108, 99, 255, 0.2));
-  }
-  50% {
-    filter: 
-      drop-shadow(0 2px 6px rgba(91, 49, 255, 0.5))
-      drop-shadow(0 6px 12px rgba(108, 99, 255, 0.3))
-      drop-shadow(0 0 15px rgba(108, 99, 255, 0.2));
-  }
-}
-
-@keyframes magnifier-icon-appear {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes icon-float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-5px) scale(1.05);
-  }
-}
-
-/* ===== مسار مسح السيرة الذاتية ===== */
-.scan-path {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.scan-point {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 3px solid rgba(108, 99, 255, 0.8);
-  border-radius: 50%;
-  box-shadow: 
-    0 0 0 3px rgba(108, 99, 255, 0.2),
-    0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: scale(0);
-  z-index: 2;
-}
-
-.ai-box.scanning .scan-point {
-  animation: scan-point-pulse 0.6s ease-out forwards;
-}
-
-/* نقاط المسح الرئيسية - معدلة لأيقونة الملف الكبيرة */
-.scan-point:nth-child(1) { top: 45%; left: 30%; animation-delay: 0.5s; }
-.scan-point:nth-child(2) { top: 35%; left: 55%; animation-delay: 1s; }
-.scan-point:nth-child(3) { top: 55%; left: 80%; animation-delay: 1.5s; }
-.scan-point:nth-child(4) { top: 75%; left: 45%; animation-delay: 2s; }
-.scan-point:nth-child(5) { top: 65%; left: 25%; animation-delay: 2.5s; }
-.scan-point:nth-child(6) { top: 50%; left: 65%; animation-delay: 3s; }
-
-@keyframes scan-point-pulse {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  20% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  80% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
-}
-
-/* ===== أنيميشن مسح الأيقونة ===== */
-@keyframes magnifier-icon-scan {
-  0% {
-    top: 45%;
-    left: 30%;
-    transform: scale(1) rotate(0deg);
-  }
-  16% {
-    top: 35%;
-    left: 55%;
-    transform: scale(1.1) rotate(-5deg);
-  }
-  32% {
-    top: 55%;
-    left: 80%;
-    transform: scale(1) rotate(5deg);
-  }
-  48% {
-    top: 75%;
-    left: 45%;
-    transform: scale(1.1) rotate(-3deg);
-  }
-  64% {
-    top: 65%;
-    left: 25%;
-    transform: scale(1) rotate(3deg);
-  }
-  80% {
-    top: 50%;
-    left: 65%;
-    transform: scale(1.1) rotate(-2deg);
-  }
-  100% {
-    top: 45%;
-    left: 30%;
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-/* الحركة الدائرية للأيقونة */
-.ai-box.scanning .magnifier-icon-animated {
-  animation: 
-    magnifier-icon-scan 6s ease-in-out infinite,
-    magnifier-icon-float 3s ease-in-out infinite;
-}
-
-@keyframes magnifier-icon-float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-5px) scale(1.05);
-  }
-}
-
-/* ===== خطوط المسح النشطة ===== */
-.active-scan-lines {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.active-scan-line {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(108, 99, 255, 0.3) 20%,
-    rgba(108, 99, 255, 0.8) 50%,
-    rgba(108, 99, 255, 0.3) 80%,
-    transparent 100%
-  );
-  opacity: 0;
-}
-
-.ai-box.scanning .active-scan-line {
-  animation: active-line-scan 2s linear infinite;
-}
-
-.active-scan-line:nth-child(1) {
-  top: 45%;
-  animation-delay: 0s;
-}
-
-.active-scan-line:nth-child(2) {
-  top: 35%;
-  animation-delay: 0.4s;
-}
-
-.active-scan-line:nth-child(3) {
-  top: 55%;
-  animation-delay: 0.8s;
-}
-
-.active-scan-line:nth-child(4) {
-  top: 75%;
-  animation-delay: 1.2s;
-}
-
-@keyframes active-line-scan {
-  0% {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
-/* ===== تأثير التقريب (Zoom Effect) ===== */
-.zoom-effect {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at center,
-    rgba(108, 99, 255, 0.1) 0%,
-    rgba(108, 99, 255, 0.05) 50%,
-    transparent 70%
-  );
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.ai-box.scanning .zoom-effect {
-  opacity: 0.7;
-  animation: zoom-pulse 2s ease-in-out infinite;
-}
-
-@keyframes zoom-pulse {
-  0%, 100% {
-    transform: scale(0.8);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-}
-
-/* ===== تأثير قراءة النصوص ===== */
-.text-reading-effect {
-  position: absolute;
-  width: 200px;
-  height: 40px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(108, 99, 255, 0.1) 20%,
-    rgba(108, 99, 255, 0.2) 50%,
-    rgba(108, 99, 255, 0.1) 80%,
-    transparent 100%
-  );
-  border-radius: 4px;
-  opacity: 0;
-  animation: text-read 3s ease-in-out infinite;
-}
-
-.ai-box.scanning .text-reading-effect:nth-child(1) {
-  top: 40%;
-  left: 35%;
-  width: 120px;
-  animation-delay: 0s;
-}
-
-.ai-box.scanning .text-reading-effect:nth-child(2) {
-  top: 50%;
-  left: 45%;
-  width: 140px;
-  animation-delay: 0.5s;
-}
-
-.ai-box.scanning .text-reading-effect:nth-child(3) {
-  top: 60%;
-  left: 25%;
-  width: 100px;
-  animation-delay: 1s;
-}
-
-.ai-box.scanning .text-reading-effect:nth-child(4) {
-  top: 70%;
-  left: 55%;
-  width: 160px;
-  animation-delay: 1.5s;
-}
-
-@keyframes text-read {
-  0%, 100% {
-    opacity: 0;
-    transform: translateY(0) scaleX(0.8);
-  }
-  10%, 90% {
-    opacity: 0.6;
-    transform: translateY(-2px) scaleX(1);
-  }
-}
-
-/* ===== تحسينات للعرض أثناء المسح ===== */
-.ai-box.scanning .file-preview {
-  animation: document-scan-pulse 3s ease-in-out infinite;
-}
-
-@keyframes document-scan-pulse {
-  0%, 100% {
-    transform: perspective(400px) rotateX(0deg);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-  }
-  50% {
-    transform: perspective(400px) rotateX(5deg);
-    box-shadow: 0 10px 25px rgba(108, 99, 255, 0.1);
-  }
-}
-
-/* ===== تحديث التصميم الأساسي ===== */
-.upload-resume-upload-box.ai-box {
-  position: relative;
-  overflow: hidden;
-}
-
-/* تعديلات للتحسينات البصرية */
-.ai-box.scanning {
-  background: linear-gradient(#ffffff, #f8f9ff) padding-box;
-  box-shadow: 
-    0 10px 30px rgba(108, 99, 255, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.9);
-}
-
-/* تعديل مساحة الروبوت الثابت */
-.robot-head-space {
-  height: 90px;
-  position: relative;
-  margin-bottom: 10px;
-}
-
-/* ===== أيقونة الملف الكبيرة أثناء المسح (أكبر بكثير) ===== */
-.ai-box.scanning .file-preview {
-  position: relative;
-  z-index: 2;
-  transition: all 0.5s ease;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(91, 49, 255, 0.05);
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 
-    0 8px 20px rgba(91, 49, 255, 0.15),
-    inset 0 0 0 1px rgba(91, 49, 255, 0.1);
-}
-
-.ai-box.scanning .file-icon-modern {
-  width: 100px !important; /* أكبر بكثير */
-  height: 100px !important;
-  color: #5b31ff;
-  filter: 
-    drop-shadow(0 4px 8px rgba(91, 49, 255, 0.3))
-    drop-shadow(0 8px 16px rgba(108, 99, 255, 0.2));
-  animation: file-pulse 2s ease-in-out infinite;
-}
-
-/* أنيميشن نبض لأيقونة الملف */
-@keyframes file-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.9;
-  }
-}
-
-/* تحسينات إضافية للعرض أثناء المسح */
-.ai-box.scanning .ai-scan-ui {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* زيادة حجم أيقونة العدسة لتتناسب مع أيقونة الملف الكبيرة */
-.ai-box.scanning .magnifier-icon-animated {
-  width: 90px;
-  height: 90px;
-}
-
-.ai-box.scanning .magnifier-icon-inner {
-  width: 80px;
-  height: 80px;
-}
-
-.ai-box.scanning .zoom-effect {
-  width: 200px;
-  height: 200px;
-}
-
-/* ===== تأثير إلكتروني رقمي متطور (بدون أرقام ثنائية) ===== */
-.digital-scan-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* شبكة بيانات رقمية */
-.data-grid {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    linear-gradient(rgba(108, 99, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(108, 99, 255, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0;
-}
-
-.ai-box.scanning .data-grid {
-  opacity: 0.4;
-  animation: grid-pulse 2s ease-in-out infinite;
-}
-
-@keyframes grid-pulse {
-  0%, 100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-/* نقاط بيانات متحركة */
-.data-point {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(108, 99, 255, 0.8);
-  border-radius: 50%;
-  box-shadow: 
-    0 0 12px rgba(108, 99, 255, 0.8),
-    0 0 24px rgba(108, 99, 255, 0.4);
-  opacity: 0;
-}
-
-.ai-box.scanning .data-point {
-  animation: data-point-flow 3s linear infinite;
-}
-
-.data-point:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
-.data-point:nth-child(2) { top: 40%; left: 85%; animation-delay: 0.5s; }
-.data-point:nth-child(3) { top: 60%; left: 10%; animation-delay: 1s; }
-.data-point:nth-child(4) { top: 80%; left: 90%; animation-delay: 1.5s; }
-.data-point:nth-child(5) { top: 30%; left: 70%; animation-delay: 2s; }
-.data-point:nth-child(6) { top: 70%; left: 30%; animation-delay: 2.5s; }
-
-@keyframes data-point-flow {
-  0% {
-    opacity: 0;
-    transform: translateY(0) scale(0.5);
-  }
-  10% {
-    opacity: 1;
-    transform: translateY(-10px) scale(1.2);
-  }
-  30% {
-    opacity: 0.8;
-    transform: translateY(30px) scale(1.5);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translateY(50px) scale(1);
-  }
-  80% {
-    opacity: 0.4;
-    transform: translateY(80px) scale(0.8);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(100px) scale(0.5);
-  }
-}
-
-/* خطوط بيانات متساقطة */
-.data-stream {
-  position: absolute;
-  width: 3px;
-  height: 80px;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(108, 99, 255, 0.9) 20%,
-    rgba(108, 99, 255, 0.6) 50%,
-    rgba(108, 99, 255, 0.3) 80%,
-    transparent 100%
-  );
-  opacity: 0;
-}
-
-.ai-box.scanning .data-stream {
-  animation: data-stream-fall 2s linear infinite;
-}
-
-.data-stream:nth-child(1) { left: 20%; animation-delay: 0s; }
-.data-stream:nth-child(2) { left: 45%; animation-delay: 0.2s; }
-.data-stream:nth-child(3) { left: 70%; animation-delay: 0.4s; }
-.data-stream:nth-child(4) { left: 35%; animation-delay: 0.6s; }
-.data-stream:nth-child(5) { left: 60%; animation-delay: 0.8s; }
-
-@keyframes data-stream-fall {
-  0% {
-    opacity: 0;
-    top: -80px;
-    transform: translateY(0);
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    top: 100%;
-    transform: translateY(0);
-  }
-}
-
-/* تأثير مسح دائري */
-.circular-scan {
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border: 3px dashed rgba(108, 99, 255, 0.4);
-  border-radius: 50%;
-  opacity: 0;
-}
-
-.ai-box.scanning .circular-scan {
-  opacity: 0.3;
-  animation: circular-scan-rotate 4s linear infinite;
-}
-
-@keyframes circular-scan-rotate {
-  0% {
-    transform: rotate(0deg) scale(0.8);
-  }
-  100% {
-    transform: rotate(360deg) scale(1.3);
-  }
-}
-
-/* تأثير نبض إلكتروني */
-.electron-pulse {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  box-shadow: 
-    0 0 0 0 rgba(108, 99, 255, 0.8),
-    inset 0 0 30px rgba(108, 99, 255, 0.15);
-  opacity: 0;
-}
-
-.ai-box.scanning .electron-pulse {
-  animation: electron-pulse-effect 2s ease-out infinite;
-}
-
-@keyframes electron-pulse-effect {
-  0% {
-    box-shadow: 
-      0 0 0 0 rgba(108, 99, 255, 0.8),
-      inset 0 0 30px rgba(108, 99, 255, 0.15);
-    opacity: 1;
-  }
-  70% {
-    box-shadow: 
-      0 0 0 20px rgba(108, 99, 255, 0),
-      inset 0 0 30px rgba(108, 99, 255, 0.15);
-    opacity: 0.5;
-  }
-  100% {
-    box-shadow: 
-      0 0 0 0 rgba(108, 99, 255, 0),
-      inset 0 0 30px rgba(108, 99, 255, 0.15);
-    opacity: 0;
-  }
-}
-
-/* ===== الأنماط الإضافية للـ UploadBox ===== */
-.drag-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(91, 49, 255, 0.05);
-  border: 2px dashed #5b31ff;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-}
-
-.drag-icon {
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-
-.ai-scan-ui, .file-ready-ui, .upload-placeholder-ui {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 10; /* أعلى من تأثيرات المسح */
-}
-
-.file-ready-ui .success-icon-wrapper {
-  background: rgba(91, 49, 255, 0.1);
-  border-radius: 50%;
-  padding: 15px;
-  margin-bottom: 15px;
-}
-
-.file-icon-success {
-  color: #5b31ff;
-}
-
-.file-name {
-  font-weight: 500;
-  color: #2b1d6a;
-  margin-bottom: 5px;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.file-ready {
-  color: #00a000;
-  font-size: 12px;
-  margin-bottom: 5px;
-}
-
-.file-details small {
-  color: #666;
-  font-size: 10px;
-}
-
-.upload-placeholder-ui .upload-icon {
-  color: #5b31ff;
-  margin-bottom: 15px;
-}
-
-.upload-title {
-  font-weight: 500;
-  color: #2b1d6a;
-  margin-bottom: 5px;
-}
-
-.upload-subtitle {
-  color: #666;
-  font-size: 12px;
-  margin-bottom: 15px;
-}
-
-.scan-preview-hint small {
-  color: #888;
-  font-size: 10px;
-  text-align: center;
-  display: block;
-  max-width: 200px;
-}
-
-.text-reading-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* تحسينات للاستجابة */
-@media (max-width: 900px) {
-  .ai-box.scanning .magnifier-icon-animated {
-    width: 70px;
-    height: 70px;
+  
+  .upload-resume-tip-card span {
+    width: 400px;
+    font-size: 15px;
   }
   
-  .ai-box.scanning .magnifier-icon-inner {
+  .upload-resume-tip-card img {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .upload-resume-upload-box {
+    width: 220px;
+    height: 280px;
+  }
+  
+  .robot-head img {
     width: 60px;
     height: 60px;
   }
   
-  .ai-box.scanning .file-icon-modern {
-    width: 80px !important;
-    height: 80px !important;
+  .upload-resume-popup {
+    padding: 20px 30px;
+    font-size: 16px;
+  }
+}
+
+/* للهواتف (أقل من 768px) */
+@media (max-width: 768px) {
+  .upload-resume-welcome-text {
+    font-size: 24px;
+    line-height: 36px;
   }
   
-  .ai-box.scanning .circular-scan {
-    width: 180px;
-    height: 180px;
+  .upload-resume-subtitle {
+    font-size: 18px;
+    line-height: 28px;
   }
   
-  .ai-box.scanning .file-preview {
-    width: 100px;
-    height: 100px;
+  .upload-resume-tips-box h4 {
+    width: 350px;
+    height: 55px;
+    font-size: 16px;
+  }
+  
+  .upload-resume-tip-card span {
+    width: 350px;
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+  
+  .upload-resume-example-btn {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+  
+  .upload-resume-upload-box {
+    width: 200px;
+    height: 260px;
+  }
+  
+  .robot-head img {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .upload-resume-see-results-btn,
+  .upload-resume-delete-btn {
+    padding: 10px 25px;
+    font-size: 14px;
+    margin-top: 12px;
+  }
+
+}
+
+/* للهواتف الصغيرة جداً (أقل من 480px) */
+@media (max-width: 480px) {
+  .upload-resume-container {
     padding: 15px;
+  }
+  
+  .upload-resume-main-header {
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
+  
+  .upload-resume-welcome-text {
+    font-size: 22px;
+    line-height: 32px;
+  }
+  
+  .upload-resume-subtitle {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  
+  .upload-resume-content-sections {
+    gap: 30px;
+  }
+  
+  .upload-resume-tips-box h4 {
+    width: 300px;
+    height: 50px;
+    font-size: 15px;
+  }
+  
+  .upload-resume-tip-card span {
+    width: 300px;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+  
+  .upload-resume-tip-card img {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .upload-resume-example-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  
+  .upload-resume-upload-box {
+    width: 180px;
+    height: 240px;
+    margin-bottom: 20px;
+  }
+  
+  .robot-head img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .upload-resume-see-results-btn,
+  .upload-resume-delete-btn {
+    padding: 8px 20px;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  
+  .upload-resume-popup {
+    padding: 15px 25px;
+    font-size: 15px;
+  }
+  
+
+}
+
+/* للهواتف الصغيرة جداً (أقل من 360px) */
+@media (max-width: 360px) {
+  .upload-resume-welcome-text {
+    font-size: 20px;
+    line-height: 28px;
+  }
+  
+  .upload-resume-subtitle {
+    font-size: 14px;
+    line-height: 22px;
+  }
+  
+  .upload-resume-tips-box h4 {
+    width: 280px;
+    height: 45px;
+    font-size: 14px;
+  }
+  
+  .upload-resume-tip-card span {
+    width: 280px;
+    font-size: 12px;
+  }
+  
+  .upload-resume-upload-box {
+    width: 160px;
+    height: 220px;
+  }
+  
+  .robot-head img {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .upload-resume-see-results-btn,
+  .upload-resume-delete-btn {
+    padding: 6px 18px;
+    font-size: 12px;
+  }
+}
+/* أضف هذه الأنماط في نهاية ملف UploadResume.css */
+
+/* ===== تخصيصات لـ react-toastify ===== */
+.Toastify__toast-container {
+  z-index: 99999;
+  width: auto;
+  max-width: 400px;
+}
+
+.Toastify__toast {
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 10px;
+}
+
+.Toastify__toast--error {
+  background: linear-gradient(135deg, #ffe5e5 0%, #ffcccc 100%);
+  color: #b10000;
+  border: 1px solid #ff9999;
+}
+
+.Toastify__toast--success {
+  background: linear-gradient(135deg, #e5ffe5 0%, #ccffcc 100%);
+  color: #008000;
+  border: 1px solid #99cc99;
+}
+
+.Toastify__toast--info {
+  background: linear-gradient(135deg, #e5f0ff 0%, #cce0ff 100%);
+  color: #0066cc;
+  border: 1px solid #99ccff;
+}
+
+.Toastify__toast--warning {
+  background: linear-gradient(135deg, #fff9e5 0%, #fff2cc 100%);
+  color: #cc8800;
+  border: 1px solid #ffcc66;
+}
+
+.Toastify__toast-body {
+  padding: 8px 12px;
+}
+
+.Toastify__close-button {
+  color: #666;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1;
+}
+
+.Toastify__progress-bar {
+  height: 3px;
+}
+
+.Toastify__progress-bar--error {
+  background: linear-gradient(90deg, #ff4444 0%, #ff6666 100%);
+}
+
+.Toastify__progress-bar--success {
+  background: linear-gradient(90deg, #00cc00 0%, #00ff00 100%);
+}
+
+.Toastify__progress-bar--info {
+  background: linear-gradient(90deg, #0066cc 0%, #0088ff 100%);
+}
+
+.Toastify__progress-bar--warning {
+  background: linear-gradient(90deg, #ff9900 0%, #ffbb33 100%);
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .Toastify__toast-container {
+    width: 90%;
+    max-width: 300px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .Toastify__toast {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Toastify__toast-container {
+    width: 95%;
+    max-width: 280px;
+    bottom: 10px;
+  }
+  
+  .Toastify__toast {
+    font-size: 12px;
+    margin-bottom: 6px;
   }
 }
