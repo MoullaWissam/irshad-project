@@ -14,6 +14,29 @@ export default function AddJob() {
   const [employmentType, setEmploymentType] = useState("on-site");
   const fileInputRef = useRef(null);
 
+  const [jobData, setJobData] = useState({
+    title: "",
+    skills: "",
+    experience: "",
+    education: "",
+    description: "",
+    location: "",
+    logoPreview: null,
+    logoFile: null,
+    testDuration: 5,
+    questions: Array(4).fill().map(() => ({
+      text: "",
+      correctAnswer: "",
+      wrongAnswers: ["", "", ""]
+    }))
+  });
+
+  // مراقبة تغيير testDuration للتصحيح - يجب أن يكون بعد تعريف jobData
+  useEffect(() => {
+    console.log("testDuration updated to:", jobData.testDuration);
+    console.log("testDuration type:", typeof jobData.testDuration);
+  }, [jobData.testDuration]);
+
   // جلب companyId من localStorage عند تحميل المكون
   useEffect(() => {
     const savedCompanyData = localStorage.getItem('companyData');
@@ -55,23 +78,6 @@ export default function AddJob() {
       return () => clearTimeout(timer);
     }
   }, [message]);
-
-  const [jobData, setJobData] = useState({
-    title: "",
-    skills: "",
-    experience: "",
-    education: "",
-    description: "",
-    location: "",
-    logoPreview: null,
-    logoFile: null,
-    testDuration: 5,
-    questions: Array(4).fill().map(() => ({
-      text: "",
-      correctAnswer: "",
-      wrongAnswers: ["", "", ""]
-    }))
-  });
 
   // التحقق من صحة النموذج
   const validateForm = () => {
@@ -206,6 +212,7 @@ export default function AddJob() {
 
   // دالة لتقسيم النص إلى مصفوفة
   const splitToArray = (text) => {
+    if (!text || text.trim() === '') return [];
     return text
       .split(',')
       .map(item => item.trim())
@@ -255,9 +262,22 @@ export default function AddJob() {
       jobFormData.append('location', jobData.location);
       jobFormData.append('employmentType', employmentType);
       
+      // أضف testDuration كما هي - لا تحولها لشيء
+      jobFormData.append('testDuration', jobData.testDuration);
+      
       // إضافة الصورة باسم "image" بدلاً من "logo"
       if (jobData.logoFile) {
         jobFormData.append('img', jobData.logoFile);
+      }
+
+      // Debug: عرض محتويات FormData
+      console.log('=== SENDING JOB DATA ===');
+      console.log('Current testDuration value:', jobData.testDuration);
+      console.log('Current testDuration type:', typeof jobData.testDuration);
+      
+      // عرض جميع محتويات FormData
+      for (let pair of jobFormData.entries()) {
+        console.log(pair[0] + ':', pair[1], '(type:', typeof pair[1] + ')');
       }
 
       // إرسال طلب إنشاء الوظيفة - مع الكوكيز
@@ -271,7 +291,6 @@ export default function AddJob() {
         const errorText = await createJobResponse.text();
         console.error('Create job error response:', errorText);
         
-        // محاولة قراءة JSON إذا كان ذلك ممكناً
         try {
           const errorData = JSON.parse(errorText);
           throw new Error(errorData.message || 'Failed to create job');
@@ -281,7 +300,10 @@ export default function AddJob() {
       }
 
       const jobResult = await createJobResponse.json();
+      console.log('=== JOB CREATION RESPONSE ===');
       console.log('Job creation response:', jobResult);
+      console.log('Saved testDuration from job response:', jobResult.testDuration);
+      console.log('Saved testDuration type:', typeof jobResult.testDuration);
       
       const jobId = jobResult.id || jobResult.jobId;
 
@@ -289,9 +311,14 @@ export default function AddJob() {
         throw new Error('Job ID not received from server');
       }
 
+      console.log('✅ Job created successfully with ID:', jobId);
+
       // 2. إضافة الأسئلة إذا كانت موجودة
       if (showQuestions) {
         const questions = jobData.questions.filter(q => q.text.trim() !== "");
+        
+        console.log(`Adding ${questions.length} questions to job ${jobId}`);
+        console.log('Using testDuration for questions:', jobData.testDuration);
         
         for (const [index, question] of questions.entries()) {
           const questionPayload = {
@@ -307,8 +334,14 @@ export default function AddJob() {
                   text: w,
                   isCorrect: false
                 }))
-            ]
+            ],
+            // أرسل testDuration كما هي
+            testDuration: jobData.testDuration
           };
+
+          console.log(`=== SENDING QUESTION ${index + 1} ===`);
+          console.log('Question payload:', questionPayload);
+          console.log('Test duration being sent:', jobData.testDuration);
 
           // إرسال طلب إضافة السؤال
           const addQuestionResponse = await fetch(`http://localhost:3000/jobs/${jobId}/questions`, {
@@ -322,12 +355,28 @@ export default function AddJob() {
 
           if (!addQuestionResponse.ok) {
             const errorText = await addQuestionResponse.text();
-            console.error(`Failed to add question ${index + 1}:`, errorText);
+            console.error(`❌ Failed to add question ${index + 1}:`, errorText);
+            
+            try {
+              const errorData = JSON.parse(errorText);
+              console.error(`Error details:`, errorData);
+            } catch {
+              console.error('Raw error text:', errorText);
+            }
+            
             throw new Error(`Failed to add question ${index + 1}`);
           }
+
+          const questionResult = await addQuestionResponse.json();
+          console.log(`✅ SUCCESS - Question ${index + 1} added successfully!`);
+          console.log('Question response:', questionResult);
           
-          console.log(`Question ${index + 1} added successfully`);
+          if (questionResult.testDuration !== undefined) {
+            console.log(`Updated testDuration from question ${index + 1}:`, questionResult.testDuration);
+          }
         }
+        
+        console.log('✅ ALL QUESTIONS ADDED SUCCESSFULLY');
       }
 
       setMessage({ 
@@ -335,14 +384,14 @@ export default function AddJob() {
         text: "✅ Job and questions submitted successfully!" 
       });
       
-      // إعادة تعيين النموذج بعد 2 ثانية
       setTimeout(() => {
         resetForm();
         setIsSubmitting(false);
+        console.log('✅ Form reset completed');
       }, 2000);
       
     } catch (err) {
-      console.error('Submission error:', err);
+      console.error('❌ SUBMISSION ERROR:', err);
       setMessage({
         type: "error",
         text: `❌ ${err.message || 'Failed to submit. Please try again.'}`
@@ -640,9 +689,15 @@ export default function AddJob() {
                     <input
                       type="radio"
                       name="testDuration"
-                      value={5}
+                      value="5"
                       checked={jobData.testDuration === 5}
-                      onChange={(e) => setJobData({...jobData, testDuration: parseInt(e.target.value)})}
+                      onChange={() => {
+                        console.log("Setting testDuration to 5");
+                        setJobData(prev => ({
+                          ...prev,
+                          testDuration: 5
+                        }));
+                      }}
                       className="ajp-time-radio"
                     />
                     <span className="ajp-time-text">5 minutes</span>
@@ -652,13 +707,24 @@ export default function AddJob() {
                     <input
                       type="radio"
                       name="testDuration"
-                      value={7}
+                      value="7"
                       checked={jobData.testDuration === 7}
-                      onChange={(e) => setJobData({...jobData, testDuration: parseInt(e.target.value)})}
+                      onChange={() => {
+                        console.log("Setting testDuration to 7");
+                        setJobData(prev => ({
+                          ...prev,
+                          testDuration: 7
+                        }));
+                      }}
                       className="ajp-time-radio"
                     />
                     <span className="ajp-time-text">7 minutes</span>
                   </label>
+                </div>
+                
+                {/* Display current value for debugging */}
+                <div className="ajp-debug-info">
+                  <small>Current testDuration: {jobData.testDuration} (type: {typeof jobData.testDuration})</small>
                 </div>
               </div>
             </>
