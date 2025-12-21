@@ -20,7 +20,7 @@ const RegisterPage = () => {
     lastName: "",
     email: "",
     password: "",
-    phone: "",
+    // phone: "",
     birthDate: "",
     photo: null,
   });
@@ -89,6 +89,8 @@ const RegisterPage = () => {
   };
 
   const handleSubmit = async () => {
+    console.log("start");
+    
     setIsLoading(true);
     
     // استخدام handleSubmitLogic للتحقق من البيانات
@@ -100,11 +102,14 @@ const RegisterPage = () => {
 
     // إذا كان هناك أخطاء في التحقق، نوقف الإرسال
     if (Object.keys(validationErrors).length > 0) {
+      console.log(Object.keys(validationErrors).length);
+      
       setErrors(validationErrors);
       setIsLoading(false);
       return;
     }
-
+    console.log("s");
+    
     const formData = new FormData();
     let url = "";
 
@@ -115,7 +120,7 @@ const RegisterPage = () => {
       formData.append("lastName", employeeData.lastName);
       formData.append("email", employeeData.email);
       formData.append("password", employeeData.password);
-      formData.append("phone", employeeData.phone);
+      // formData.append("phone", employeeData.phone);
       formData.append("birthDate", employeeData.birthDate || "2000-01-01");
       
       if (employeeData.photo) {

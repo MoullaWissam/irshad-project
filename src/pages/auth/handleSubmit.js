@@ -23,8 +23,8 @@ export const handleSubmitLogic = (
     else if (!isValidPassword(employeeData.password)) 
       newErrors.password = "Weak password";
 
-    if (!employeeData.phone?.trim()) newErrors.phone = "Required";
-    else if (!isValidPhone(employeeData.phone)) newErrors.phone = "Invalid";
+    // if (!employeeData.phone?.trim()) newErrors.phone = "Required";
+    // else if (!isValidPhone(employeeData.phone)) newErrors.phone = "Invalid";
 
     // التحقق من تاريخ الميلاد
     if (!employeeData.birthDate) {

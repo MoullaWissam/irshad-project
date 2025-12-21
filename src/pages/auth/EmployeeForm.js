@@ -10,7 +10,7 @@ const EmployeeForm = ({ data, errors, onChange, onFileChange }) => {
     { label: "Last Name", name: "lastName", type: "text" },
     { label: "Email", name: "email", type: "email" },
     { label: "Password", name: "password", type: "password" },
-    { label: "Phone Number", name: "phone", type: "text" },
+    // { label: "Phone Number", name: "phone", type: "text" },
     { label: "Birth Date", name: "birthDate", type: "date" },
   ];
 
