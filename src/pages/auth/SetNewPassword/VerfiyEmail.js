@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthCard from "./AuthCard";
 import "./CheckEmail.css";
 
-function CheckEmail() {
+function VerfiyEmail() {
   const navigate = useNavigate();
   const inputsRef = useRef([]);
 
@@ -112,4 +112,4 @@ function CheckEmail() {
   );
 }
 
-export default CheckEmail;
+export default VerfiyEmail;
