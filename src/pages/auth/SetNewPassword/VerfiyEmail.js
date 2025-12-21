@@ -33,7 +33,7 @@ function CheckEmail() {
 
       if (response.ok) {
         // نجاح التحقق
-        navigate("/upload");
+        navigate("/upload-resume");
       } else {
         // فشل التحقق
         alert("Invalid OTP code");
