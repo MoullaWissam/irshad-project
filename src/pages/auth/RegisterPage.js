@@ -37,6 +37,27 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [fileUploaded, setFileUploaded] = useState(false);
 
+
+  // دالة لحساب العمر من تاريخ الميلاد
+
+  const calculateAge = (birthDate) => {
+    if (!birthDate) return null;
+    
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    
+    // حساب الفرق بالسنة
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    
+    // إذا كان الشهر الحالي أقل من شهر الميلاد، أو نفس الشهر ولكن اليوم أقل
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
+
   // قراءة userType من query parameters عند تحميل الصفحة
   useEffect(() => {
     const userType = searchParams.get("userType");

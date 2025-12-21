@@ -251,3 +251,47 @@
     word-wrap: break-word;
   }
 }
+/* حقل الإدخال */
+.custom-input {
+  width: 100%;
+  height: 36px; /* تعديل من 40px إلى 36px */
+  padding: 8px 32px 8px 10px; /* تعديل من 10px 36px 10px 12px */
+  border: 1.5px solid #e0e0e0; /* تعديل من 2px إلى 1.5px */
+  border-radius: 6px; /* تعديل من 8px إلى 6px */
+  font-size: 12px; /* تعديل من 13px إلى 12px */
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: block;
+}
+
+.custom-input::placeholder {
+  color: #999;
+  font-size: 11px; /* تعديل من 12px إلى 11px */
+}
+
+/* أيقونة العين - ثابتة داخل الحقل */
+.eyeIcon {
+  position: absolute;
+  right: 8px; /* تعديل من 10px إلى 8px */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px; /* تعديل من 15px إلى 14px */
+  color: #666;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px; /* تعديل من 40px إلى 36px */
+  width: 22px; /* تعديل من 24px إلى 22px */
+  padding: 0;
+  background: transparent;
+  border: none;
+  z-index: 10;
+  transition: color 0.3s ease;
+  outline: none;
+}

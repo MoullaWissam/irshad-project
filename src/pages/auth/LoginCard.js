@@ -261,20 +261,23 @@ const LoginCard = () => {
                 </p>
               </div>
             )}
-
-            {isCompanyMode && (
-              <div className="login-card-company-links">
-                <Link to="/company/forgot-password" className="login-card-forgot-link">
-                  Forgot Company Password?
-                </Link>
-                <p className="login-card-signup-text">
-                  New Company?{" "}
-                  <Link to="/company/register" className="login-card-signup-link">
-                    Register Company
-                  </Link>
-                </p>
-              </div>
-            )}
+{isCompanyMode && (
+  <div className="login-card-company-links">
+    <Link to="/forgot-password?userType=company" className="login-card-forgot-link">
+      Forgot Company Password?
+    </Link>
+    <p className="login-card-signup-text">
+      New Company?{" "}
+      <Link 
+        to="/register?userType=company" 
+        className="login-card-signup-link"
+        onClick={() => toast.info("Redirecting to company registration...")}
+      >
+        Register Company
+      </Link>
+    </p>
+  </div>
+)}
           </div>
         </form>
       </div>
