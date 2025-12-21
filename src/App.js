@@ -54,7 +54,7 @@ function App() {
   }, []);
 
   return (
-    // <AuthContext.Provider value={{ userRole, setUserRole }}>
+    <AuthContext.Provider value={{ userRole, setUserRole }}>
       <BrowserRouter>
         <Routes>
           {/* Public Routes (بدون سايدبار) */}
@@ -160,7 +160,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
-    // </AuthContext.Provider>
+     </AuthContext.Provider>
   );
 }
 
