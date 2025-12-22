@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+// import axios from "axios";
 import "./SidebarMenu.css";
 
 // Icons Imports
@@ -14,8 +16,60 @@ import dropdownIcon from "../../assets/icons/dropdown.svg";
 
 function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
   const [openDropdowns, setOpenDropdowns] = useState({
-    applicants: false, // تمت إزالة 'applications' من هنا
+    applicants: false,
   });
+  const [companyJobs, setCompanyJobs] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // جلب الوظائف الخاصة بالشركة
+  useEffect(() => {
+    if (userRole === "company") {
+      fetchCompanyJobs();
+    }
+  }, [userRole]);
+
+  const fetchCompanyJobs = async () => {
+    setLoading(true);
+    try {
+        // استرجاع البيانات من localStorage
+      const companyData = localStorage.getItem("companyData");
+
+      // تحويل النص إلى كائن JSON
+      const company = JSON.parse(companyData);
+
+      // الآن يمكنك الوصول إلى الـ id
+      const companyId = company.id;
+
+      console.log(companyId); // سيطبع 5
+
+      console.log("Fetching jobs for company ID:", companyId);
+      
+      const response = await fetch(
+        `http://localhost:3000/company-management/${companyId}/jobs`,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials:"include"
+        }
+      );
+      const responseData = await response.json();
+      console.log("Jobs API response:", responseData);
+      setCompanyJobs(responseData);
+      toast.success(`Loaded ${responseData.length} jobs`);
+    } catch (error) {
+      console.error("Error fetching company jobs:", error);
+      if (error.response) {
+        console.error("Response data:", error.responseData);
+        console.error("Response status:", error.responseData.status);
+        toast.error(`Failed to load jobs: ${error.responseData.message || 'Server error'}`);
+      } else {
+        toast.error("Failed to load jobs. Please check your connection.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleDropdown = (dropdownName) => {
     if (isCollapsed) return;
@@ -32,24 +86,25 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
   // تعريف عناصر القائمة بناءً على الدور
   const menuItems = userRole === "company" ? [
     { path: "/company/dashboard", text: "Dashboard", icon: mainIcon },
-    { path: "/company/add-job", text: "Add Job", icon: addJobIcon },
+    { path: "/company/my-jobs", text: "Add Job", icon: addJobIcon },
     {
       text: "Applicants",
       icon: applicantsIcon,
       isDropdown: true,
       dropdownName: "applicants",
-      items: [
-        { path: "/company/applicants/all", text: "All Applicants" },
-        { path: "/company/applicants/new", text: "New" },
-        { path: "/company/applicants/reviewed", text: "Reviewed" },
-      ],
+      items: loading ? 
+        [{ path: "#", text: "Loading..." }] :
+        companyJobs.map(job => ({
+          path: `/company/applicants/job/${job.id}`,
+          text: job.title,
+          jobId: job.id
+        }))
     },
     { path: "/company/settings", text: "Settings", icon: settingsIcon },
   ] : [
     { path: "/upload-resume", text: "Main", icon: mainIcon },
     { path: "/matches", text: "Matches", icon: matchesIcon },
     { path: "/jobs", text: "Jobs", icon: searchIcon },
-    // تم التغيير هنا: تحويل "Applications" من قائمة منسدلة إلى رابط عادي
     { path: "/applications", text: "Applications", icon: applicationsIcon },
   ];
 
@@ -83,7 +138,13 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
                       key={subIndex}
                       to={subItem.path}
                       className={({ isActive }) => `dropdown-item ${isActive ? "active" : ""}`}
-                      onClick={handleItemClick}
+                      onClick={() => {
+                        handleItemClick();
+                        // حفظ بيانات الوظيفة في localStorage للاستخدام في الصفحة التالية
+                        localStorage.setItem(`job_${subItem.jobId}`, JSON.stringify(
+                          companyJobs.find(j => j.id === subItem.jobId)
+                        ));
+                      }}
                     >
                       {subItem.text}
                     </NavLink>
@@ -92,7 +153,6 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
               )}
             </div>
           ) : (
-            // هذا الجزء يعالج الآن كلاً من الأزرار العادية والزر الجديد "Applications"
             <NavLink
               to={item.path}
               className={({ isActive }) => `menu-item ${isActive ? "active" : ""} ${isCollapsed ? "collapsed" : ""}`}

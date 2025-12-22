@@ -1,85 +1,147 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import "./ApplicantDetailsModal.css";
 
 function ApplicantDetailsModal({ 
   isOpen, 
   onClose, 
   applicant, 
-  onSendInterviewRequest, 
   onScheduleInterview, 
-  onRejectApplicant, 
-  onUndoRejection 
+  onRejectApplicant,
+  onAcceptApplicant,
+  onViewResume 
 }) {
   const [activeTab, setActiveTab] = useState("overview");
+  const [resumeUrl, setResumeUrl] = useState(null);
+  const [loadingResume, setLoadingResume] = useState(false);
 
-  if (!isOpen || !applicant) return null;
+  useEffect(() => {
+    if (applicant && activeTab === "resume") {
+      fetchResumeUrl();
+    }
+  }, [applicant, activeTab]);
 
-  const downloadResume = () => {
-    if (applicant.resume?.file_path) {
-      // محاكاة تنزيل السيرة الذاتية
-      const link = document.createElement('a');
-      link.href = applicant.resume.file_path;
-      link.download = `${applicant.firstName}_${applicant.lastName}_CV.pdf`;
-      link.click();
-    } else {
-      alert("No resume available for download");
+  const fetchResumeUrl = async () => {
+    if (!applicant || resumeUrl || loadingResume) return;
+    
+    setLoadingResume(true);
+    try {
+      console.log("Fetching resume URL for:", applicant);
+      
+      const response = await fetch(
+        `http://localhost:3000/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
+        {
+          credentials: "include"
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Resume API response:", data);
+      
+      if (data.path) {
+        // بناء الرابط الكامل
+        let fullUrl;
+        if (data.path.startsWith('http')) {
+          fullUrl = data.path;
+        } else {
+          fullUrl = `http://localhost:3000${data.path}`;
+        }
+        setResumeUrl(fullUrl);
+        console.log("Full resume URL:", fullUrl);
+      } else {
+        setResumeUrl(null);
+        toast.warning("No resume available for this applicant");
+      }
+    } catch (error) {
+      console.error("Error fetching resume URL:", error);
+      toast.error("Failed to fetch resume");
+      setResumeUrl(null);
+    } finally {
+      setLoadingResume(false);
     }
   };
 
-  const viewResume = () => {
-    if (applicant.resume?.file_path) {
-      window.open(applicant.resume.file_path, '_blank');
+  if (!isOpen || !applicant) return null;
+
+  const handleDownloadResume = () => {
+    if (resumeUrl) {
+      // استخراج اسم الملف من المسار
+      const fileName = resumeUrl.split('/').pop() || 'resume.pdf';
+      
+      // إنشاء رابط تحميل
+      const link = document.createElement('a');
+      link.href = resumeUrl;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      toast.success("Resume downloaded successfully!");
     } else {
-      alert("No resume available to view");
+      toast.warning("No resume available for download");
+    }
+  };
+
+  const handleViewResume = () => {
+    if (resumeUrl) {
+      window.open(resumeUrl, '_blank');
+    } else {
+      toast.warning("No resume available to view");
     }
   };
 
   const getStatusColor = (status) => {
     switch(status) {
-      case "none": return "#6c757d";
+      case "pending": return "#6c757d";
       case "sent": return "#0d6efd";
       case "scheduled": return "#198754";
       case "rejected": return "#dc3545";
+      case "accepted": return "#198754";
       default: return "#6c757d";
     }
   };
 
   const getStatusText = (status) => {
     switch(status) {
-      case "none": return "No Interview Sent";
+      case "pending": return "Pending";
       case "sent": return "Interview Request Sent";
       case "scheduled": return "Interview Scheduled";
       case "rejected": return "Rejected";
+      case "accepted": return "Accepted";
       default: return "Unknown";
     }
   };
 
   const getCurrentActions = () => {
-    switch (applicant.interviewStatus) {
-      case "none":
+    const status = applicant.interviewStatus || applicant.application_status;
+    
+    switch (status) {
+      case "pending":
         return (
-          <button 
-            className="btn-action-primary"
-            onClick={() => {
-              onSendInterviewRequest(applicant);
-              onClose();
-            }}
-          >
-            Send Interview Request
-          </button>
-        );
-      
-      case "sent":
-        return (
-          <button 
-            className="btn-action-primary"
-            onClick={() => {
-              onScheduleInterview(applicant);
-              onClose();
-            }}
-          >
-            Schedule Interview
-          </button>
+          <>
+            <button 
+              className="btn-action-primary"
+              onClick={() => {
+                onScheduleInterview(applicant);
+                onClose();
+              }}
+            >
+              Schedule Interview
+            </button>
+            <button 
+              className="btn-action-accept"
+              onClick={() => {
+                onAcceptApplicant(applicant);
+                onClose();
+              }}
+            >
+              Accept Applicant
+            </button>
+          </>
         );
       
       case "scheduled":
@@ -88,23 +150,36 @@ function ApplicantDetailsModal({
             <p className="interview-date">
               <strong>Scheduled for:</strong> {applicant.interviewDate ? new Date(applicant.interviewDate).toLocaleString() : "Date not set"}
             </p>
+            <button 
+              className="btn-action-accept"
+              onClick={() => {
+                onAcceptApplicant(applicant);
+                onClose();
+              }}
+            >
+              Accept Applicant
+            </button>
           </div>
         );
       
       case "rejected":
         return (
           <button 
-            className="btn-action-secondary"
+            className="btn-action-accept"
             onClick={() => {
-              // تأكيد مع ذكر الإيميل
-              if (window.confirm(`Undo rejection for ${applicant.firstName} ${applicant.lastName}? An email will be sent to notify them that their application is being reconsidered.`)) {
-                onUndoRejection(applicant);
-                onClose();
-              }
+              onAcceptApplicant(applicant);
+              onClose();
             }}
           >
-            ↶ Undo Rejection & Send Email
+            Accept Applicant
           </button>
+        );
+      
+      case "accepted":
+        return (
+          <div className="accepted-info">
+            <p><strong>Applicant Accepted</strong></p>
+          </div>
         );
       
       default:
@@ -239,12 +314,16 @@ function ApplicantDetailsModal({
                 <div className="info-section">
                   <h3>Resume Document</h3>
                   <div className="resume-actions">
-                    {applicant.resume?.file_path ? (
+                    {loadingResume ? (
+                      <div className="loading-resume">
+                        <p>Loading resume...</p>
+                      </div>
+                    ) : resumeUrl ? (
                       <>
-                        <button className="btn-view-resume" onClick={viewResume}>
+                        <button className="btn-view-resume" onClick={handleViewResume}>
                           📄 View Resume
                         </button>
-                        <button className="btn-download-resume" onClick={downloadResume}>
+                        <button className="btn-download-resume" onClick={handleDownloadResume}>
                           ⬇️ Download Resume
                         </button>
                       </>
@@ -320,7 +399,7 @@ function ApplicantDetailsModal({
 
         <div className="modal-footer">
           <div className="footer-left">
-            {applicant.interviewStatus !== "rejected" && (
+            {applicant.interviewStatus !== "rejected" && applicant.interviewStatus !== "accepted" && (
               <button 
                 className="btn-reject-applicant"
                 onClick={() => {

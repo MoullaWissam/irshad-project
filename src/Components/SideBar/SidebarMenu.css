@@ -4,6 +4,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  height: calc(100vh - 80px); /* ارتفاع السايدبار */
+  overflow-y: auto; /* إضافة scrollbar عند الحاجة */
 }
 
 /* ===== عنصر القائمة ===== */
@@ -15,6 +17,7 @@
   align-items: center;
   transition: background-color 0.25s ease, transform 0.25s ease;
   text-decoration: none;
+  flex-shrink: 0; /* منع الانضغاط */
 }
 
 /* Hover لطيف دون تحريك الأيقونات */
@@ -80,6 +83,7 @@
 /* ===== القائمة المنسدلة ===== */
 .dropdown-container {
   position: relative;
+  flex-shrink: 0; /* منع انضغاط القوائم المنسدلة */
 }
 
 .dropdown-toggle {
@@ -106,6 +110,8 @@
   margin: 4px 0;
   padding: 8px 0;
   animation: fadeIn 0.2s ease;
+  max-height: 300px; /* ارتفاع أقصى للقائمة المنسدلة */
+  overflow-y: auto; /* scrollbar للقائمة المنسدلة إذا طالت */
 }
 
 .dropdown-item {
@@ -116,6 +122,9 @@
   font-size: 13px;
   transition: all 0.2s ease;
   border-left: 2px solid transparent;
+  white-space: nowrap; /* منع التفاف النص */
+  overflow: hidden;
+  text-overflow: ellipsis; /* إضافة ... للنص الطويل */
 }
 
 .dropdown-item:hover {
@@ -144,4 +153,64 @@
 /* عند طي السايدبار - إخفاء القائمة المنسدلة */
 .sidebar.collapsed .dropdown-menu {
   display: none;
+}
+
+/* ===== Scrollbar Customization ===== */
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-height: 600px) {
+  .sidebar-menu {
+    height: calc(100vh - 60px); /* تقليل الارتفاع للشاشات الصغيرة */
+  }
+  
+  .menu-item {
+    padding: 8px 12px; /* تقليل الحشو */
+  }
+  
+  .dropdown-item {
+    padding: 6px 12px 6px 40px; /* تقليل الحشو للعناصر المنسدلة */
+  }
+}
+
+/* ===== Loading State ===== */
+.loading-dropdown-item {
+  padding: 8px 16px 8px 44px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-style: italic;
 }

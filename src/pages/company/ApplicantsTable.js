@@ -3,11 +3,11 @@ import "./ApplicantsTable.css";
 
 function ApplicantsTable({ 
   applicants, 
-  onSendInterviewRequest, 
   onScheduleInterview, 
   onRejectApplicant,
-  onUndoRejection,
-  onViewDetails 
+  onAcceptApplicant,
+  onViewDetails,
+  onViewResume 
 }) {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -51,13 +51,14 @@ function ApplicantsTable({
 
   const getInterviewStatusBadge = (status, date) => {
     const config = {
-      none: { label: "No Interview Sent", className: "status-none" },
+      pending: { label: "Pending", className: "status-pending" },
       sent: { label: "Interview Request Sent", className: "status-sent" },
       scheduled: { 
         label: date ? `Scheduled: ${new Date(date).toLocaleDateString()}` : "Interview Scheduled", 
         className: "status-scheduled" 
       },
-      rejected: { label: "Rejected", className: "status-rejected" }
+      rejected: { label: "Rejected", className: "status-rejected" },
+      accepted: { label: "Accepted", className: "status-accepted" }
     };
     
     const statusConfig = config[status] || { label: status || "Unknown", className: "status-unknown" };
@@ -76,28 +77,11 @@ function ApplicantsTable({
   };
 
   const getActionsForApplicant = (applicant) => {
-    switch (applicant.interviewStatus) {
-      case "none":
-        return (
-          <div className="action-buttons">
-            <button 
-              className="btn-action btn-interview-request"
-              onClick={() => onSendInterviewRequest(applicant)}
-              title="Send interview request"
-            >
-              Send Request
-            </button>
-            <button 
-              className="btn-action btn-reject"
-              onClick={() => onRejectApplicant(applicant)}
-              title="Reject applicant"
-            >
-              Reject
-            </button>
-          </div>
-        );
-      
-      case "sent":
+    // تحديد حالة المتقدم
+    const status = applicant.interviewStatus || applicant.application_status;
+    
+    switch (status) {
+      case "pending":
         return (
           <div className="action-buttons">
             <button 
@@ -105,7 +89,14 @@ function ApplicantsTable({
               onClick={() => onScheduleInterview(applicant)}
               title="Schedule interview"
             >
-              Schedule
+              Schedule Interview
+            </button>
+            <button 
+              className="btn-action btn-accept"
+              onClick={() => onAcceptApplicant(applicant)}
+              title="Accept applicant"
+            >
+              Accept
             </button>
             <button 
               className="btn-action btn-reject"
@@ -121,6 +112,13 @@ function ApplicantsTable({
         return (
           <div className="scheduled-actions">
             <div className="action-buttons">
+              <button 
+                className="btn-action btn-accept"
+                onClick={() => onAcceptApplicant(applicant)}
+                title="Accept applicant"
+              >
+                Accept
+              </button>
               <button 
                 className="btn-action btn-reject"
                 onClick={() => onRejectApplicant(applicant)}
@@ -140,11 +138,11 @@ function ApplicantsTable({
           <div className="rejected-actions">
             <div className="action-buttons">
               <button 
-                className="btn-action btn-undo"
-                onClick={() => onUndoRejection(applicant)}
-                title="Undo rejection"
+                className="btn-action btn-accept"
+                onClick={() => onAcceptApplicant(applicant)}
+                title="Accept applicant"
               >
-                Undo Rejection
+                Accept
               </button>
             </div>
             <div className="rejection-reason-info">
@@ -153,15 +151,40 @@ function ApplicantsTable({
           </div>
         );
       
+      case "accepted":
+        return (
+          <div className="accepted-actions">
+            <div className="action-buttons">
+              <button 
+                className="btn-action btn-reject"
+                onClick={() => onRejectApplicant(applicant)}
+                title="Reject applicant"
+              >
+                Reject
+              </button>
+            </div>
+            <div className="acceptance-info">
+              <small>Accepted</small>
+            </div>
+          </div>
+        );
+      
       default:
         return (
           <div className="action-buttons">
             <button 
-              className="btn-action btn-interview-request"
-              onClick={() => onSendInterviewRequest(applicant)}
-              title="Send interview request"
+              className="btn-action btn-schedule"
+              onClick={() => onScheduleInterview(applicant)}
+              title="Schedule interview"
             >
-              Send Request
+              Schedule Interview
+            </button>
+            <button 
+              className="btn-action btn-accept"
+              onClick={() => onAcceptApplicant(applicant)}
+              title="Accept applicant"
+            >
+              Accept
             </button>
             <button 
               className="btn-action btn-reject"
@@ -336,6 +359,13 @@ function ApplicantsTable({
                           title="View full details"
                         >
                           View Details
+                        </button>
+                        <button 
+                          className="btn-action btn-view-resume"
+                          onClick={() => onViewResume && onViewResume(applicant)}
+                          title="Download resume"
+                        >
+                          Download Resume
                         </button>
                         {getActionsForApplicant(applicant)}
                       </div>

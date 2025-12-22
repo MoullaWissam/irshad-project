@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./ApplicantsGrid.css";
 import ApplicantsTable from "./ApplicantsTable";
 import InterviewModal from "./InterviewModal";
@@ -10,6 +12,7 @@ import ApplicantDetailsModal from "./ApplicantDetailsModal";
 function ApplicantsGrid() {
   const { jobId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const [applicants, setApplicants] = useState([]);
   const [selectedJobTitle, setSelectedJobTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -19,449 +22,366 @@ function ApplicantsGrid() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [confirmationData, setConfirmationData] = useState(null);
-  const [jobs, setJobs] = useState([]);
-  const [allApplicants, setAllApplicants] = useState([]); // جميع المتقدمين بدون تصفية
+  const [jobDetails, setJobDetails] = useState(null);
+  const [allApplicants, setAllApplicants] = useState([]);
 
-  // بيانات الوظائف التجريبية
-  const mockJobs = [
-    { id: 1, title: "Frontend Developer", company: "Tech Corp" },
-    { id: 2, title: "Backend Developer", company: "Data Systems" },
-    { id: 3, title: "UI/UX Designer", company: "Creative Studio" },
-    { id: 4, title: "Project Manager", company: "Management Plus" },
-  ];
-
-  // بيانات المتقدمين مع التصنيف وحالة المقابلة
-  const mockApplicants = [
-    {
-      id: 1,
-      firstName: "Ali",
-      lastName: "Ahmed",
-      email: "ali@example.com",
-      phone: "0991234567",
-      appliedAt: "2024-01-15T10:30:00Z",
-      ranking: "gold", // gold, silver, bronze
-      interviewStatus: "none", // none, sent, scheduled, rejected
-      interviewDate: null,
-      rejectionReason: "",
-      jobId: 1,
-      jobTitle: "Frontend Developer",
-      resume: {
-        summary: "3 years experience in React and modern frontend frameworks",
-        extracted_skills: ["React", "JavaScript", "HTML5", "CSS3", "Redux", "Git"],
-        education: ["Bachelor in Computer Science - University of Damascus"],
-        experience_years: 3,
-        location: "Damascus, Syria",
-        file_path: "/resumes/ali_cv.pdf"
-      },
-      coverLetter: "I am excited to apply for the Frontend Developer position. With 3 years of experience in React and modern web technologies, I believe I can contribute effectively to your team.",
-      testScore: 92,
-      testAnswers: [
-        { question: "What is React?", answer: "A JavaScript library for building user interfaces" },
-        { question: "What is JSX?", answer: "JavaScript XML syntax extension" }
-      ]
-    },
-    {
-      id: 2,
-      firstName: "Sara",
-      lastName: "Mohammed",
-      email: "sara@example.com",
-      phone: "0999876543",
-      appliedAt: "2024-01-14T14:20:00Z",
-      ranking: "silver",
-      interviewStatus: "sent", // تم إرسال طلب مقابلة
-      interviewDate: null,
-      rejectionReason: "",
-      jobId: 1,
-      jobTitle: "Frontend Developer",
-      resume: {
-        summary: "Frontend specialist with Vue.js and TypeScript experience",
-        extracted_skills: ["Vue.js", "TypeScript", "JavaScript", "SCSS", "Webpack"],
-        education: ["Software Engineering - Al-Sham Private University"],
-        experience_years: 2,
-        location: "Damascus, Syria",
-        file_path: "/resumes/sara_cv.pdf"
-      },
-      coverLetter: "As a passionate frontend developer with expertise in Vue.js, I am eager to join your innovative team and contribute to building amazing user experiences.",
-      testScore: 85,
-      testAnswers: [
-        { question: "What is Vue.js?", answer: "A progressive JavaScript framework" },
-        { question: "What is Vuex?", answer: "State management pattern + library for Vue.js" }
-      ]
-    },
-    {
-      id: 3,
-      firstName: "Omar",
-      lastName: "Khaled",
-      email: "omar@example.com",
-      phone: "0995551234",
-      appliedAt: "2024-01-13T09:15:00Z",
-      ranking: "bronze",
-      interviewStatus: "rejected", // تم الرفض
-      interviewDate: null,
-      rejectionReason: "Insufficient experience for senior position",
-      jobId: 1,
-      jobTitle: "Frontend Developer",
-      resume: {
-        summary: "Backend developer with Node.js and Python experience",
-        extracted_skills: ["Node.js", "Express", "Python", "Django", "MongoDB", "PostgreSQL"],
-        education: ["Computer Science - Syrian Virtual University"],
-        experience_years: 4,
-        location: "Damascus, Syria",
-        file_path: "/resumes/omar_cv.pdf"
-      },
-      coverLetter: "With extensive experience in backend development using Node.js and Python, I am confident in my ability to build scalable and efficient systems.",
-      testScore: 78,
-      testAnswers: []
-    },
-    {
-      id: 4,
-      firstName: "Lina",
-      lastName: "Hassan",
-      email: "lina@example.com",
-      phone: "0993334444",
-      appliedAt: "2024-01-12T16:45:00Z",
-      ranking: "silver",
-      interviewStatus: "scheduled", // تم تحديد موعد المقابلة
-      interviewDate: "2024-02-10T14:30:00Z",
-      rejectionReason: "",
-      jobId: 2,
-      jobTitle: "Backend Developer",
-      resume: {
-        summary: "UI/UX Designer with Figma expertise and user-centered design approach",
-        extracted_skills: ["Figma", "Adobe XD", "User Research", "Wireframing", "Prototyping"],
-        education: ["Graphic Design - Fine Arts College"],
-        experience_years: 3,
-        location: "Damascus, Syria",
-        file_path: "/resumes/lina_cv.pdf"
-      },
-      coverLetter: "As a creative UI/UX designer with a strong focus on user experience, I aim to create intuitive and beautiful designs that solve real user problems.",
-      testScore: null,
-      testAnswers: []
-    }
-  ];
-
+  // جلب بيانات الوظيفة والمتقدمين
   useEffect(() => {
-    // محاكاة جلب البيانات من API
     const fetchData = async () => {
       setLoading(true);
+      console.log("Fetching data for jobId:", jobId);
       
       try {
-        // محاكاة API call
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        setJobs(mockJobs);
-        
-        // تحديد أي المتقدمين يعرض بناءً على jobId والمسار
-        const path = location.pathname;
-        console.log("Current path:", path);
-        console.log("Job ID from URL:", jobId);
-        
-        let filteredApplicants = [...mockApplicants];
-        
-        if (jobId) {
-          // الحالة 1: هناك jobId في الـ URL
-          const jobIdNum = parseInt(jobId);
-          const job = mockJobs.find(j => j.id === jobIdNum);
-          
-          if (job) {
-            setSelectedJobTitle(job.title);
-            filteredApplicants = mockApplicants.filter(app => app.jobId === jobIdNum);
-            console.log(`Filtered by job ID ${jobIdNum}:`, filteredApplicants.length);
-          } else {
-            setSelectedJobTitle("");
-            console.log("Job not found");
-          }
-        } else {
-          setSelectedJobTitle("");
-          console.log("No job ID in URL");
+        // 1. جلب تفاصيل الوظيفة من localStorage أو API
+        const savedJob = localStorage.getItem(`job_${jobId}`);
+        if (savedJob) {
+          const jobData = JSON.parse(savedJob);
+          setJobDetails(jobData);
+          setSelectedJobTitle(jobData.title);
+          console.log("Loaded job from localStorage:", jobData);
         }
+
+        // 2. جلب المتقدمين للوظيفة
+        console.log("Fetching applicants for job:", jobId);
+        const response = await fetch(
+          `http://localhost:3000/company-management/company/job/${jobId}/applicants`,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: "include"
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const applicantsResponse = await response.json();
+        console.log("Applicants API response:", applicantsResponse);
         
-        // حفظ جميع المتقدمين (قبل التصفية حسب الحالة)
-        setAllApplicants(filteredApplicants);
-        
-        // ترتيب حسب التصنيف: ذهبي ← فضي ← برونزي
-        const sortedApplicants = filteredApplicants.sort((a, b) => {
-          const rankingOrder = { gold: 1, silver: 2, bronze: 3 };
-          return (rankingOrder[a.ranking] || 4) - (rankingOrder[b.ranking] || 4);
+        // تحويل البيانات إلى التنسيق المناسب
+        const formattedApplicants = applicantsResponse.map(app => {
+          // حساب التصنيف بناءً على النقاط
+          let ranking = "bronze";
+          const rankingScore = app.ranking_score || 0;
+          const testScore = app.test_score || 0;
+          
+          if (rankingScore > 0.7 ) ranking = "gold";
+          else if (rankingScore > 0.4 ) ranking = "silver";
+          
+          // تحديد حالة المقابلة - نستخدم application_status مباشرة
+          let interviewStatus = app.application_status;
+          
+          return {
+            id: app.id,
+            userId: app.user.id,
+            applicationId: app.id,
+            firstName: app.user.firstName,
+            lastName: app.user.lastName,
+            email: app.user.email,
+            phone: app.user.phone || "N/A",
+            appliedAt: app.createdAt,
+            ranking: ranking,
+            interviewStatus: interviewStatus,
+            interviewDate: app.interview_date || null,
+            rejectionReason: app.rejectionFeedback || "",
+            jobId: app.job.id,
+            jobTitle: app.job.title,
+            resume: app.resume,
+            application_status: app.application_status,
+            interview_status: app.interview_status,
+            ranking_score: app.ranking_score,
+            test_score: app.test_score,
+            coverLetter: app.cover_letter || "",
+            testScore: app.test_score
+          };
         });
+
+        setAllApplicants(formattedApplicants);
         
-        // الآن تصفية حسب المسار (حالة المقابلة)
-        let finalApplicants = sortedApplicants;
+        // 3. تصفية المتقدمين حسب المسار
+        const path = location.pathname;
+        let filteredApplicants = [...formattedApplicants];
         
         if (path.includes("/none")) {
-          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "none");
-          console.log("Filtered by status 'none':", finalApplicants.length);
+          filteredApplicants = formattedApplicants.filter(app => app.interviewStatus === "pending");
         } else if (path.includes("/sent")) {
-          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "sent");
-          console.log("Filtered by status 'sent':", finalApplicants.length);
+          filteredApplicants = formattedApplicants.filter(app => app.interviewStatus === "sent");
         } else if (path.includes("/rejected")) {
-          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "rejected");
-          console.log("Filtered by status 'rejected':", finalApplicants.length);
+          filteredApplicants = formattedApplicants.filter(app => app.interviewStatus === "rejected");
         } else if (path.includes("/scheduled")) {
-          finalApplicants = sortedApplicants.filter(app => app.interviewStatus === "scheduled");
-          console.log("Filtered by status 'scheduled':", finalApplicants.length);
+          filteredApplicants = formattedApplicants.filter(app => app.interview_status === "scheduled");
+        } else if (path.includes("/accepted")) {
+          filteredApplicants = formattedApplicants.filter(app => app.interviewStatus === "accepted");
         }
-        // إذا كان المسار /all أو بدون تصفية، نعرض الجميع
         
-        console.log("Final applicants to display:", finalApplicants.length);
-        setApplicants(finalApplicants);
+        setApplicants(filteredApplicants);
+        toast.success(`Loaded ${formattedApplicants.length} applicants`);
         
       } catch (error) {
-        console.error("Error fetching applicants:", error);
-        // عرض بعض البيانات في حالة الخطأ للاختبار
-        setAllApplicants(mockApplicants);
-        setApplicants(mockApplicants.slice(0, 2));
+        console.error("Error fetching data:", error);
+        toast.error(`Failed to load data: ${error.message}`);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    if (jobId) {
+      fetchData();
+    }
   }, [jobId, location.pathname]);
 
-  const handleSendInterviewRequest = (applicant) => {
-    setSelectedApplicant(applicant);
-    setConfirmationData({
-      title: "Send Interview Request",
-      message: `Are you sure you want to send an interview request to ${applicant.firstName} ${applicant.lastName}?`,
-      confirmText: "Send Request",
-      onConfirm: () => {
-        // تغيير الحالة إلى "sent"
-        setApplicants(prev => prev.map(a => 
-          a.id === applicant.id 
-            ? { ...a, interviewStatus: "sent" }
-            : a
-        ));
-        
-        // تحديث allApplicants أيضًا
-        setAllApplicants(prev => prev.map(a => 
-          a.id === applicant.id 
-            ? { ...a, interviewStatus: "sent" }
-            : a
-        ));
-        
-        // محاكاة إرسال طلب المقابلة إلى السيرفر
-        console.log(`Sending interview request to ${applicant.email}`);
-        
-        // محاكاة API call
-        // await sendInterviewRequestAPI(applicant.id);
-      }
-    });
-    setShowConfirmationModal(true);
-  };
-
+  // جدولة مقابلة
   const handleScheduleInterview = (applicant) => {
     setSelectedApplicant(applicant);
     setShowInterviewModal(true);
   };
 
+  // رفض متقدم
   const handleRejectApplicant = (applicant) => {
     setSelectedApplicant(applicant);
     setShowRejectionModal(true);
   };
 
-  const handleInterviewScheduled = (dateTime, notes) => {
+  // تأكيد جدولة المقابلة
+  const handleInterviewScheduled = async (dateTime, notes, meetingUrl) => {
     if (!selectedApplicant) return;
     
-    // تحديث حالة المتقدم وتاريخ المقابلة
-    setApplicants(prev => prev.map(a => 
-      a.id === selectedApplicant.id 
-        ? { 
-            ...a, 
-            interviewStatus: "scheduled",
-            interviewDate: dateTime,
-            interviewNotes: notes
-          }
-        : a
-    ));
-    
-    // تحديث allApplicants أيضًا
-    setAllApplicants(prev => prev.map(a => 
-      a.id === selectedApplicant.id 
-        ? { 
-            ...a, 
-            interviewStatus: "scheduled",
-            interviewDate: dateTime,
-            interviewNotes: notes
-          }
-        : a
-    ));
-    
-    // محاكاة إرسال الإيميل إلى المتقدم
-    console.log(`Interview scheduled for ${selectedApplicant.email} at ${dateTime}`);
-    console.log(`Email sent to: ${selectedApplicant.email}`);
-    console.log(`Interview details: ${notes}`);
-    
-    // محاكاة API call
-    // await scheduleInterviewAPI(selectedApplicant.id, dateTime, notes);
-    
-    setShowInterviewModal(false);
-  };
-
-  const handleRejectionConfirmed = (reason) => {
-    if (!selectedApplicant) return;
-    
-    // تحديث حالة المتقدم وسبب الرفض
-    setApplicants(prev => prev.map(a => 
-      a.id === selectedApplicant.id 
-        ? { 
-            ...a, 
-            interviewStatus: "rejected",
-            rejectionReason: reason,
-            interviewDate: null // إزالة تاريخ المقابلة إذا كان موجوداً
-          }
-        : a
-    ));
-    
-    // تحديث allApplicants أيضًا
-    setAllApplicants(prev => prev.map(a => 
-      a.id === selectedApplicant.id 
-        ? { 
-            ...a, 
-            interviewStatus: "rejected",
-            rejectionReason: reason,
-            interviewDate: null
-          }
-        : a
-    ));
-    
-    // محاكاة إرسال الإيميل إلى المتقدم
-    console.log(`=== REJECTION EMAIL SENT ===`);
-    console.log(`To: ${selectedApplicant.email}`);
-    console.log(`Subject: Update on Your Application for ${selectedApplicant.jobTitle}`);
-    console.log(`Reason: ${reason}`);
-    console.log(`===========================`);
-    
-    // محاكاة API call
-    // await rejectApplicantAPI(selectedApplicant.id, reason);
-    
-    setShowRejectionModal(false);
-  };
-
-  const handleUndoRejection = (applicant) => {
-    setSelectedApplicant(applicant);
-    
-    // تحديد الحالة الجديدة
-    let newStatus = "none";
-    let statusText = "No Interview Sent";
-    
-    if (applicant.interviewDate) {
-      const interviewDate = new Date(applicant.interviewDate);
-      const now = new Date();
-      if (interviewDate > now) {
-        newStatus = "scheduled";
-        statusText = "Interview Scheduled";
-      }
-    }
-    
-    setConfirmationData({
-      title: "Undo Rejection",
-      message: `Are you sure you want to undo the rejection for ${applicant.firstName} ${applicant.lastName}?
+    try {
+      console.log("Scheduling interview for:", selectedApplicant);
       
-This will:
-• Change their status to: "${statusText}"
-• Send a notification email to: ${applicant.email}
-• Add them back to the active candidates list
-${newStatus === "scheduled" ? "• Re-instate their scheduled interview" : ""}
+      // إرسال طلب جدولة المقابلة 
+      const response = await fetch(
+        `http://localhost:3000/interview/${selectedApplicant.jobId}/applicants/${selectedApplicant.applicationId}/interview`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            interviewDate: dateTime.split('T')[0],
+            interviewTime: dateTime.split('T')[1],
+            meetingUrl: meetingUrl,
+            additionalNotes: notes
+          })
+        }
+      );
 
-An email will be sent to notify them that their application is being reconsidered.`,
-      confirmText: "Undo Rejection & Send Email",
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Interview scheduled response:", responseData);
+      
+      // تحديث الحالة محلياً
+      setApplicants(prev => prev.map(a => 
+        a.id === selectedApplicant.id 
+          ? { 
+              ...a, 
+              interviewStatus: "scheduled",
+              interviewDate: dateTime,
+              interview_status: "scheduled",
+              meetingUrl: meetingUrl
+            }
+          : a
+      ));
+      
+      setAllApplicants(prev => prev.map(a => 
+        a.id === selectedApplicant.id 
+          ? { 
+              ...a, 
+              interviewStatus: "scheduled",
+              interviewDate: dateTime,
+              interview_status: "scheduled",
+              meetingUrl: meetingUrl
+            }
+          : a
+      ));
+      
+      toast.success("Interview scheduled successfully!");
+      setShowInterviewModal(false);
+      
+    } catch (error) {
+      console.error("Error scheduling interview:", error);
+      toast.error(`Failed to schedule interview: ${error.message}`);
+    }
+  };
+
+  // تأكيد رفض المتقدم
+  const handleRejectionConfirmed = async (reason) => {
+    if (!selectedApplicant) return;
+    
+    try {
+      console.log("Rejecting applicant:", selectedApplicant);
+      
+      // إرسال طلب الرفض
+      const response = await fetch(
+        `http://localhost:3000/company-management/${selectedApplicant.jobId}/rejectuser/${selectedApplicant.userId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            rejectionFeedback: reason
+          })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Rejection response:", responseData);
+      
+      // تحديث الحالة محلياً
+      setApplicants(prev => prev.map(a => 
+        a.id === selectedApplicant.id 
+          ? { 
+              ...a, 
+              interviewStatus: "rejected",
+              rejectionReason: reason,
+              application_status: "rejected"
+            }
+          : a
+      ));
+      
+      setAllApplicants(prev => prev.map(a => 
+        a.id === selectedApplicant.id 
+          ? { 
+              ...a, 
+              interviewStatus: "rejected",
+              rejectionReason: reason,
+              application_status: "rejected"
+            }
+          : a
+      ));
+      
+      toast.success("Applicant rejected successfully!");
+      setShowRejectionModal(false);
+      
+    } catch (error) {
+      console.error("Error rejecting applicant:", error);
+      toast.error(`Failed to reject applicant: ${error.message}`);
+    }
+  };
+
+  // قبول المتقدم
+  const handleAcceptApplicant = async (applicant) => {
+    setSelectedApplicant(applicant);
+    setConfirmationData({
+      title: "Accept Applicant",
+      message: `Are you sure you want to accept ${applicant.firstName} ${applicant.lastName} for this position?`,
+      confirmText: "Accept",
       onConfirm: async () => {
         try {
-          // 1. تحديث الحالة
+          console.log("Accepting applicant:", applicant);
+          
+          // إرسال طلب القبول
+          const response = await fetch(
+            `http://localhost:3000/company-management/acceptuser/${applicant.userId}`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: "include"
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const responseData = await response.json();
+          console.log("Acceptance response:", responseData);
+          
+          // تحديث الحالة محلياً
           setApplicants(prev => prev.map(a => 
             a.id === applicant.id 
-              ? { 
-                  ...a, 
-                  interviewStatus: newStatus,
-                  rejectionReason: ""
-                }
+              ? { ...a, application_status: "accepted", interviewStatus: "accepted" }
               : a
           ));
           
           setAllApplicants(prev => prev.map(a => 
             a.id === applicant.id 
-              ? { 
-                  ...a, 
-                  interviewStatus: newStatus,
-                  rejectionReason: ""
-                }
+              ? { ...a, application_status: "accepted", interviewStatus: "accepted" }
               : a
           ));
           
-          // 2. إرسال إيميل التراجع
-          await sendUndoRejectionNotification(applicant, newStatus);
-          
-          console.log(`Success: Undo rejection for ${applicant.email}`);
+          toast.success("Applicant accepted successfully!");
           
         } catch (error) {
-          console.error("Failed to undo rejection:", error);
+          console.error("Error accepting applicant:", error);
+          toast.error(`Failed to accept applicant: ${error.message}`);
         }
       }
     });
     setShowConfirmationModal(true);
   };
 
-  // دالة محاكاة إرسال إيميل التراجع
-  const sendUndoRejectionNotification = async (applicant, newStatus) => {
-    // محاكاة API call
-    console.log(`Sending undo rejection email to ${applicant.email}...`);
-    
-    // تحديد نوع الإيميل
-    let emailSubject = "";
-    let emailBody = "";
-    
-    if (newStatus === "scheduled") {
-      emailSubject = `Update: Your Interview for ${applicant.jobTitle} Has Been Reinstated`;
-      emailBody = `Dear ${applicant.firstName},
-
-We are writing to inform you that we are reconsidering your application for the ${applicant.jobTitle} position.
-
-Your previously scheduled interview has been reinstated:
-
-Date: ${new Date(applicant.interviewDate).toLocaleDateString()}
-Time: ${new Date(applicant.interviewDate).toLocaleTimeString()}
-
-Please let us know if this time still works for you.
-
-We apologize for any confusion and look forward to speaking with you.
-
-Best regards,
-The Hiring Team`;
-    } else {
-      emailSubject = `Update: Your Application for ${applicant.jobTitle} Is Being Reconsidered`;
-      emailBody = `Dear ${applicant.firstName},
-
-Thank you for your patience.
-
-We are writing to inform you that we are reconsidering your application for the ${applicant.jobTitle} position at our company.
-
-After further review, we would like to continue the recruitment process with you. We will be in touch shortly with next steps.
-
-We appreciate your continued interest and look forward to reconnecting.
-
-Best regards,
-The Hiring Team`;
-    }
-    
-    // محاكاة إرسال الإيميل
-    console.log(`=== UNDO REJECTION EMAIL SENT ===`);
-    console.log(`To: ${applicant.email}`);
-    console.log(`Subject: ${emailSubject}`);
-    console.log(`Body: ${emailBody}`);
-    console.log(`=================================`);
-    
-    // محاكاة انتظار الإرسال
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log(`Email sent successfully to ${applicant.email}`);
-    return true;
-  };
-
+  // عرض تفاصيل المتقدم
   const handleViewApplicantDetails = (applicant) => {
     setSelectedApplicant(applicant);
     setShowDetailsModal(true);
   };
+
+  // عرض السيرة الذاتية
+const handleViewResume = async (applicant) => {
+  try {
+    console.log("Viewing resume for:", applicant);
+    
+    // الحصول على رابط السيرة الذاتية
+    const resumePath = applicant.resume?.file_path;
+    console.log(resumePath);
+    
+    if (resumePath) {
+      // استخراج اسم الملف من المسار
+      const fileName = resumePath.split('/').pop();
+      
+      // استخدام الرابط الصحيح
+      const response = await fetch(
+        `http://localhost:3000/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
+        {
+          credentials: "include"
+        }
+      );
+      
+      console.log("Response status:", response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      console.log("Blob size:", blob.size);
+      
+      // إنشاء رابط للملف
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName || 'resume.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      // تحرير الذاكرة
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Resume downloaded successfully!");
+    } else {
+      toast.warning("No resume available for this applicant");
+    }
+  } catch (error) {
+    console.error("Error viewing resume:", error);
+    toast.error("Failed to download resume");
+  }
+};
 
   const getPageTitle = () => {
     if (selectedJobTitle) {
@@ -470,40 +390,39 @@ The Hiring Team`;
     
     const path = location.pathname;
     if (path.includes("/none")) {
-      return "Applicants - No Interview Sent";
+      return "Applicants - Pending";
     } else if (path.includes("/sent")) {
       return "Applicants - Interview Request Sent";
     } else if (path.includes("/rejected")) {
       return "Applicants - Rejected";
     } else if (path.includes("/scheduled")) {
-      return "Applicants - Scheduled";
+      return "Applicants - Interview Scheduled";
+    } else if (path.includes("/accepted")) {
+      return "Applicants - Accepted";
     } else if (path.includes("/all")) {
       return "All Applicants";
-    } else if (path.includes("/company/applicants")) {
-      return "Applicants";
-    } else if (path.includes("/company/dashboard")) {
-      return "Dashboard - Recent Applicants";
     }
     
     return "Applicants";
   };
 
   const getApplicantsCountByStatus = () => {
-    // استخدام allApplicants لحساب العدد الإجمالي لكل حالة
     const counts = {
       all: allApplicants.length,
-      none: allApplicants.filter(a => a.interviewStatus === "none").length,
+      pending: allApplicants.filter(a => a.interviewStatus === "pending").length,
       sent: allApplicants.filter(a => a.interviewStatus === "sent").length,
       rejected: allApplicants.filter(a => a.interviewStatus === "rejected").length,
-      scheduled: allApplicants.filter(a => a.interviewStatus === "scheduled").length
+      scheduled: allApplicants.filter(a => a.interview_status === "scheduled").length,
+      accepted: allApplicants.filter(a => a.interviewStatus === "accepted").length
     };
     
-    console.log("Applicant counts by status:", counts);
     return counts;
   };
 
   return (
     <div className="applicants-grid-container">
+      <ToastContainer position="top-right" autoClose={3000} />
+      
       <div className="applicants-header">
         <h1>{getPageTitle()}</h1>
         {selectedJobTitle && (
@@ -518,34 +437,34 @@ The Hiring Team`;
       {!loading && (
         <div className="status-filters">
           <a 
-            href={jobId ? `/company/applicants/all?jobId=${jobId}` : "/company/applicants/all"} 
-            className={`status-filter-btn ${!location.pathname.includes('/none') && !location.pathname.includes('/sent') && !location.pathname.includes('/rejected') && !location.pathname.includes('/scheduled') ? 'active' : ''}`}
+            href={`/company/applicants/job/${jobId}/all`} 
+            className={`status-filter-btn ${location.pathname.includes('/all') ? 'active' : ''}`}
           >
             All ({getApplicantsCountByStatus().all})
           </a>
           <a 
-            href={jobId ? `/company/applicants/none?jobId=${jobId}` : "/company/applicants/none"} 
-            className={`status-filter-btn ${location.pathname.includes('/none') ? 'active' : ''}`}
+            href={`/company/applicants/job/${jobId}/pending`} 
+            className={`status-filter-btn ${location.pathname.includes('/pending') ? 'active' : ''}`}
           >
-            No Interview Sent ({getApplicantsCountByStatus().none})
+            Pending ({getApplicantsCountByStatus().pending})
           </a>
           <a 
-            href={jobId ? `/company/applicants/sent?jobId=${jobId}` : "/company/applicants/sent"} 
-            className={`status-filter-btn ${location.pathname.includes('/sent') ? 'active' : ''}`}
+            href={`/company/applicants/job/${jobId}/scheduled`} 
+            className={`status-filter-btn ${location.pathname.includes('/scheduled') ? 'active' : ''}`}
           >
-            Interview Request Sent ({getApplicantsCountByStatus().sent})
+            Scheduled ({getApplicantsCountByStatus().scheduled})
           </a>
           <a 
-            href={jobId ? `/company/applicants/rejected?jobId=${jobId}` : "/company/applicants/rejected"} 
+            href={`/company/applicants/job/${jobId}/rejected`} 
             className={`status-filter-btn ${location.pathname.includes('/rejected') ? 'active' : ''}`}
           >
             Rejected ({getApplicantsCountByStatus().rejected})
           </a>
           <a 
-            href={jobId ? `/company/applicants/scheduled?jobId=${jobId}` : "/company/applicants/scheduled"} 
-            className={`status-filter-btn ${location.pathname.includes('/scheduled') ? 'active' : ''}`}
+            href={`/company/applicants/job/${jobId}/accepted`} 
+            className={`status-filter-btn ${location.pathname.includes('/accepted') ? 'active' : ''}`}
           >
-            Scheduled ({getApplicantsCountByStatus().scheduled})
+            Accepted ({getApplicantsCountByStatus().accepted})
           </a>
         </div>
       )}
@@ -558,11 +477,11 @@ The Hiring Team`;
       ) : applicants.length > 0 ? (
         <ApplicantsTable
           applicants={applicants}
-          onSendInterviewRequest={handleSendInterviewRequest}
           onScheduleInterview={handleScheduleInterview}
           onRejectApplicant={handleRejectApplicant}
-          onUndoRejection={handleUndoRejection}
+          onAcceptApplicant={handleAcceptApplicant}
           onViewDetails={handleViewApplicantDetails}
+          onViewResume={handleViewResume}
         />
       ) : (
         <div className="no-applicants">
@@ -572,7 +491,7 @@ The Hiring Team`;
             <p>There are no applicants for this selection.</p>
             <div className="empty-actions">
               <a 
-                href={jobId ? `/company/applicants/all?jobId=${jobId}` : "/company/applicants/all"} 
+                href={`/company/applicants/job/${jobId}/all`} 
                 className="btn-view-all"
               >
                 View All Applicants
@@ -603,10 +522,10 @@ The Hiring Team`;
             isOpen={showDetailsModal}
             onClose={() => setShowDetailsModal(false)}
             applicant={selectedApplicant}
-            onSendInterviewRequest={handleSendInterviewRequest}
             onScheduleInterview={handleScheduleInterview}
             onRejectApplicant={handleRejectApplicant}
-            onUndoRejection={handleUndoRejection}
+            onAcceptApplicant={handleAcceptApplicant}
+            onViewResume={handleViewResume}
           />
         </>
       )}

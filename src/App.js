@@ -31,6 +31,8 @@ import MyApplications from "./pages/job-seeker/MyApplications";
 
 // Company Pages
 import ApplicantsGrid from "./pages/company/ApplicantsGrid";
+import JobManagementPage from "./pages/company/JobManagementPage";
+import AddJob from "./pages/company/AddJob/AddJob";
 
 // Mock Protected Route Component (لأغراض العرض)
 const ProtectedRoute = ({ children }) => {
@@ -91,7 +93,7 @@ function App() {
               <MainLayout userRole="jobSeeker"><UploadResume /></MainLayout>
             </ProtectedRoute>
           } />
-          <Route path="/test/:jobId" element={
+          <Route path="/job/:jobId/test" element={
             <ProtectedRoute>
               <MainLayout userRole="jobSeeker"><QuickTest /></MainLayout>
             </ProtectedRoute>
@@ -156,8 +158,60 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* Protected Pages - With MainLayout (Company) */}
+          <Route path="/company/dashboard" element={
+            <ProtectedRoute>
+              <MainLayout userRole={userRole}>
+                <ApplicantsGrid />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/company/AddJob" element={
+            <AddJob>
+              <MainLayout userRole={userRole}>
+                <ApplicantsGrid />
+              </MainLayout>
+            </AddJob>
+          } />
+          
+          <Route path="/company/my-jobs" element={
+            <ProtectedRoute>
+              <MainLayout userRole={userRole}>
+                <JobManagementPage  />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+           {/* المسارات الجديدة للوظائف المحددة */}
+          <Route path="/company/applicants/job/:jobId/all" element={
+            <ProtectedRoute>
+              <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/company/applicants/job/:jobId" element={
+            <ProtectedRoute>
+              <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/company/applicants/job/:jobId/sent" element={
+            <ProtectedRoute>
+              <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/company/applicants/job/:jobId/rejected" element={
+            <ProtectedRoute>
+              <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/company/applicants/job/:jobId/scheduled" element={
+            <ProtectedRoute>
+              <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
+            </ProtectedRoute>
+          } />
+
           {/* إعادة التوجيه لجميع المسارات غير المعرفة */}
-          <Route path="*" element={<Navigate to="/" />} />
+          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>
       </BrowserRouter>
      </AuthContext.Provider>
