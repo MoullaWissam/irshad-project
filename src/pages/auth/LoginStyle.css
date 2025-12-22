@@ -631,3 +631,354 @@
     transform: scale(1) translateY(0);
   }
 }
+/* البطاقة الرئيسية - حجم مصغر (حوالي 25% من الشاشة) */
+.login-card-main {
+  width: 90%;
+  max-width: 280px; /* تعديل من 300px */
+  min-height: 350px; /* تعديل من 380px */
+  background: #fff;
+  border-radius: 14px; /* تعديل من 16px */
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.12); /* تعديل من 8px 20px */
+  padding: 16px 14px; /* تعديل من 20px 18px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  margin: 12px; /* تعديل من 15px */
+}
+
+/* الشعار والعنوان (مصغر) */
+.login-card-logo-title {
+  width: 100%;
+  max-width: 140px; /* تعديل من 160px */
+  height: 70px; /* تعديل من 85px */
+  margin-top: 3px; /* تعديل من 5px */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card-logo {
+  width: 100%;
+  max-width: 120px; /* تعديل من 140px */
+  height: 38px; /* تعديل من 45px */
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)); /* تعديل */
+}
+
+.login-card-title {
+  color: #28205b;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(18px, 4vw, 20px); /* تعديل من 20px, 4vw, 22px */
+  line-height: 100%;
+  margin-top: 8px; /* تعديل من 10px */
+  font-weight: 700;
+  transition: color 0.3s ease;
+  letter-spacing: -0.2px; /* تعديل من -0.3px */
+  text-align: center;
+}
+
+/* زر التبديل بين الوضعين - استعادة الألوان الأصلية (مصغر) */
+.login-card-mode-toggle-container {
+  margin: 12px 0 16px; /* تعديل من 15px 0 20px */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.login-card-mode-toggle-wrapper {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px; /* تعديل من 24px */
+  padding: 3px; /* تعديل من 4px */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* تعديل من 3px 5px */
+  width: 100%;
+  max-width: 200px; /* تعديل من 220px */
+}
+
+.login-card-mode-btn {
+  padding: 6px 10px; /* تعديل من 8px 12px */
+  border: none;
+  border-radius: 16px; /* تعديل من 20px */
+  font-size: clamp(11px, 2.5vw, 12px); /* تعديل من 12px, 2.5vw, 13px */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  color: #c7c6c6;
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* النموذج */
+.login-card-inputs {
+  width: 100%;
+  padding: 8px 0; /* تعديل من 12px 0 */
+  margin-top: 5px; /* تعديل من 8px */
+  background: transparent;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* تعديل من 16px */
+  flex: 1;
+}
+
+/* زر تسجيل الدخول (مصغر) */
+.login-card-submit-btn {
+  margin-top: auto;
+  width: 100%;
+  height: 38px; /* تعديل من 44px */
+  border: none;
+  border-radius: 8px; /* تعديل من 10px */
+  padding: 0 8px; /* تعديل من 0 10px */
+  font-size: clamp(13px, 3.5vw, 14px); /* تعديل من 14px, 3.5vw, 15px */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-card-submit-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.login-card-submit-btn:hover::after {
+  left: 100%;
+}
+
+.login-card-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-card-submit-btn:disabled::after {
+  display: none;
+}
+
+/* سبينر للتحميل (مصغر) */
+.login-card-loading {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* تعديل من 8px */
+}
+
+.login-card-spinner {
+  width: 12px; /* تعديل من 14px */
+  height: 12px; /* تعديل من 14px */
+  border: 1.5px solid rgba(255, 255, 255, 0.3); /* تعديل من 2px */
+  border-radius: 50%;
+  border-top-color: white;
+  animation: login-card-spin 0.8s linear infinite;
+}
+
+/* الروابط (مصغرة) */
+.login-card-links,
+.login-card-company-links {
+  text-align: center;
+  margin-top: 16px; /* تعديل من 20px */
+  width: 100%;
+}
+
+.login-card-forgot-link {
+  display: block;
+  text-align: center;
+  margin-top: 12px; /* تعديل من 16px */
+  font-size: clamp(11px, 2.5vw, 12px); /* تعديل من 12px, 2.5vw, 13px */
+  color: #723efe;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 3px; /* تعديل من 4px */
+  border-radius: 4px; /* تعديل من 5px */
+}
+
+.login-card-signup-text {
+  margin-top: 16px; /* تعديل من 20px */
+  font-size: clamp(11px, 2.5vw, 12px); /* تعديل من 12px, 2.5vw, 13px */
+  color: #666;
+  text-align: center;
+  line-height: 1.4; /* تعديل من 1.5 */
+}
+
+.login-card-signup-link {
+  color: #723efe;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 1px 2px; /* تعديل من 1px 3px */
+  border-radius: 2px; /* تعديل من 3px */
+}
+
+/* تصميم متجاوب للأجهزة الصغيرة */
+@media (max-width: 768px) {
+  .login-card-main {
+    width: 85%;
+    min-height: 340px; /* تعديل من 400px */
+    padding: 18px 14px; /* تعديل من 22px 18px */
+    border-radius: 12px; /* تعديل من 14px */
+    margin: 10px; /* تعديل من 15px */
+  }
+  
+  .login-card-logo-title {
+    height: 60px; /* تعديل من 75px */
+  }
+  
+  .login-card-logo {
+    max-width: 100px; /* تعديل من 120px */
+    height: 32px; /* تعديل من 40px */
+  }
+  
+  .login-card-title {
+    font-size: 18px; /* تعديل من 20px */
+  }
+  
+  .login-card-inputs {
+    padding: 6px 0; /* تعديل من 10px 0 */
+    gap: 10px; /* تعديل من 14px */
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card-main {
+    width: 88%;
+    min-height: 320px; /* تعديل من 380px */
+    padding: 16px 12px; /* تعديل من 20px 16px */
+    border-radius: 10px; /* تعديل من 12px */
+    margin: 8px; /* تعديل من 10px */
+  }
+  
+  .login-card-logo-title {
+    height: 55px; /* تعديل من 65px */
+    margin-top: 1px; /* تعديل من 2px */
+  }
+  
+  .login-card-logo {
+    max-width: 90px; /* تعديل من 110px */
+    height: 30px; /* تعديل من 35px */
+  }
+  
+  .login-card-title {
+    font-size: 16px; /* تعديل من 18px */
+    margin-top: 6px; /* تعديل من 8px */
+  }
+  
+  .login-card-mode-toggle-container {
+    margin: 10px 0 14px; /* تعديل من 12px 0 16px */
+  }
+  
+  .login-card-mode-toggle-wrapper {
+    max-width: 160px; /* تعديل من 180px */
+  }
+  
+  .login-card-mode-btn {
+    padding: 5px 8px; /* تعديل من 6px 10px */
+    font-size: 10px; /* تعديل من 11px */
+  }
+  
+  .login-card-submit-btn {
+    height: 36px; /* تعديل من 42px */
+    font-size: 12px; /* تعديل من 13px */
+  }
+  
+  .login-card-inputs {
+    gap: 8px; /* تعديل من 12px */
+  }
+}
+
+@media (max-width: 320px) {
+  .login-card-main {
+    width: 90%;
+    min-height: 300px; /* تعديل من 360px */
+    padding: 14px 10px; /* تعديل من 16px 14px */
+    border-radius: 10px; /* تعديل من 12px */
+  }
+  
+  .login-card-logo-title {
+    height: 50px; /* تعديل من 60px */
+  }
+  
+  .login-card-logo {
+    max-width: 80px; /* تعديل من 100px */
+    height: 25px; /* تعديل من 30px */
+  }
+  
+  .login-card-title {
+    font-size: 15px; /* تعديل من 17px */
+  }
+  
+  .login-card-mode-toggle-wrapper {
+    max-width: 140px; /* تعديل من 160px */
+  }
+  
+  .login-card-mode-btn {
+    padding: 4px 6px; /* تعديل من 5px 8px */
+    font-size: 9px; /* تعديل من 10px */
+  }
+  
+  .login-card-submit-btn {
+    height: 34px; /* تعديل من 40px */
+    font-size: 11px; /* تعديل من 12px */
+  }
+  
+  .login-card-links,
+  .login-card-company-links {
+    margin-top: 12px; /* تعديل من 16px */
+  }
+}
+
+/* دعم الشاشات الكبيرة جداً (حجم 25% من الشاشة) */
+@media (min-width: 1200px) {
+  .login-card-main {
+    max-width: 320px; /* تعديل من 350px */
+    min-height: 360px; /* تعديل من 430px */
+    padding: 20px 16px; /* تعديل من 28px 22px */
+  }
+  
+  .login-card-title {
+    font-size: 20px; /* تعديل من 22px */
+  }
+  
+  .login-card-mode-toggle-wrapper {
+    max-width: 220px; /* تعديل من 240px */
+  }
+  
+  .login-card-mode-btn {
+    padding: 8px 12px; /* تعديل من 9px 14px */
+    font-size: 12px; /* تعديل من 13px */
+  }
+  
+  .login-card-submit-btn {
+    height: 40px; /* تعديل من 46px */
+    font-size: 14px; /* تعديل من 15px */
+  }
+}
+
+@media (min-width: 1600px) {
+  .login-card-main {
+    max-width: 340px; /* تعديل من 380px */
+    min-height: 380px; /* تعديل من 460px */
+    padding: 22px 18px; /* تعديل من 30px 25px */
+  }
+  
+  .login-card-title {
+    font-size: 22px; /* تعديل من 24px */
+  }
+}

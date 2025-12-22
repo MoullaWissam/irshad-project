@@ -182,8 +182,9 @@ const LoginCard = () => {
       <div className={`login-card-main ${isCompanyMode ? 'login-card-company-mode' : ''}`}>
         <div className="login-card-logo-title">
           <img src={logo} alt="Irshad" className="login-card-logo" />
-          <h2 className="login-card-title">{isCompanyMode ? 'Company Login' : 'User Login'}</h2>
-        </div>
+<h2 className="login-card-title" style={isCompanyMode ? { fontSize: 'clamp(14px, 3vw, 16px)' } : {}}>
+  {isCompanyMode ? 'Company Login' : 'User Login'}
+</h2>        </div>
 
         {/* Switch button between modes */}
         <div className="login-card-mode-toggle-container">
