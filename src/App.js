@@ -98,7 +98,7 @@ function App() {
               <MainLayout userRole="jobSeeker"><QuickTest /></MainLayout>
             </ProtectedRoute>
           } />
-          <Route path="/application-success/:jobId" element={
+          <Route path="job/:jobId/application-success" element={
             <ProtectedRoute>
               <MainLayout userRole="jobSeeker"><ApplicationSuccess /></MainLayout>
             </ProtectedRoute>

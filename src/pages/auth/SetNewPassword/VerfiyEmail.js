@@ -28,6 +28,7 @@ function VerfiyEmail() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ otp: code }),
+        credentials:"include"
       });
 
       if (response.ok) {

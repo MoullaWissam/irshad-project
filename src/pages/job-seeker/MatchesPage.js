@@ -1,6 +1,5 @@
-
-
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom"; // أضيفي هذا السطر
 import JobCard from "../../Components/Card/JobCard/JobCard";
 import RankedCardWrapper from "./RankedCardWrapper";
 import "./MatchesPage.css";
@@ -14,20 +13,20 @@ function MatchesPage() {
     const fetchJobs = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/auth/recommended-jobs"
-        ,{
-          method:"GET",
-          credentials:"include"
-        });
+          "http://localhost:3000/auth/recommended-jobs",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           throw new Error("فشل في جلب البيانات");
         }
-        
 
         const data = await response.json();
+        console.log(data);
 
-        // 🔥 تعديل بسيط فقط: استخراج الحقول المطلوبة
         const mapped = data.map((job) => ({
           id: job.id,
           title: job.title,
@@ -71,16 +70,22 @@ function MatchesPage() {
       {!loading && !error && jobs.length > 0 && (
         <div className="job-grid">
           {jobs.map((job, index) => (
-            <RankedCardWrapper key={job.id} rank={index + 1}>
-              <div className={`job-card-wrapper rank-${index + 1}`}>
-                <JobCard
-                  icon={job.companyLogo}
-                  title={job.title}
-                  desc={job.description}
-                  type={job.employmentType}
-                />
-              </div>
-            </RankedCardWrapper>
+            <Link
+              to={`/job/${job.id}`} // تغيير المسار حسب مسار الـ JobDetails الخاص بك
+              key={job.id}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <RankedCardWrapper rank={index + 1}>
+                <div className={`job-card-wrapper rank-${index + 1}`}>
+                  <JobCard
+                    icon={job.companyLogo}
+                    title={job.title}
+                    desc={job.description}
+                    type={job.employmentType}
+                  />
+                </div>
+              </RankedCardWrapper>
+            </Link>
           ))}
         </div>
       )}

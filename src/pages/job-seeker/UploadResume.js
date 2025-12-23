@@ -7,6 +7,7 @@ import "./UploadResume.css";
 // استيراد المكونات الفرعية
 import TipsSection from "./TipsSection";
 import UploadBox from "./UploadBox";
+import { useNavigate } from "react-router-dom";
 
 const UploadResume = () => {
   const [file, setFile] = useState(null);
@@ -14,6 +15,7 @@ const UploadResume = () => {
   const [scanComplete, setScanComplete] = useState(false);
   const [hasUploadedBefore, setHasUploadedBefore] = useState(false);
   const [isScanning, setIsScanning] = useState(false); // حالة جديدة لتتبع المسح
+  const navigate = useNavigate();
 
   // ✅ التحقق من localStorage عند تحميل المكون
   useEffect(() => {
@@ -36,6 +38,7 @@ const UploadResume = () => {
     }
   }, []);
 
+  // في handleFileUpload خزّن الملف الأصلي
   const handleFileUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
@@ -45,26 +48,25 @@ const UploadResume = () => {
 
     if (!allowedExtensions.includes(ext)) {
       toast.error("⚠️ Please upload a valid file (PDF, DOC, DOCX)");
-      return;
-    }
+    return;
+  }
 
-    // إنشاء كائن ملف بحجم محسوب
-    const fileObject = {
-      name: selectedFile.name,
-      size: selectedFile.size,
-      type: selectedFile.type,
-      lastModified: selectedFile.lastModified
-    };
+  // خزّن الملف نفسه في state
+  setFile(selectedFile);
+  setScanComplete(false);
 
-    setFile(fileObject);
-    setScanComplete(false);
-    
-    // ✅ حفظ في localStorage
-    localStorage.setItem('hasUploadedCV', 'true');
-    localStorage.setItem('currentCV', JSON.stringify(fileObject));
-    
-    toast.success("✅ تم رفع الملف بنجاح!");
-  };
+  localStorage.setItem('hasUploadedCV', 'true');
+  // إذا أردت تخزين بيانات فقط، لا تحفظ الملف نفسه في localStorage لأنه لا يُخزن Blob
+  localStorage.setItem('currentCV', JSON.stringify({
+    name: selectedFile.name,
+    size: selectedFile.size,
+    type: selectedFile.type,
+    lastModified: selectedFile.lastModified
+  }));
+
+  toast.success("✅ تم رفع الملف بنجاح!");
+};
+
 
   // ✅ دالة لتتبع حالة المسح
   const handleScanStart = () => {
@@ -95,27 +97,87 @@ const UploadResume = () => {
     toast.info("📥 جارٍ تحميل المثال...");
   };
 
-  const handleSeeResults = async () => {
-    if (!file) {
-      toast.error("⚠️ Upload your ATS CV to see results");
+ const handleSeeResults = async () => {
+  if (!file) {
+    toast.error("⚠️ Upload your ATS CV to see results");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // تحقق من حجم الملف
+    if (file.size > 10 * 1024 * 1024) { // 10MB
+      toast.error("⚠️ File size too large (max 10MB)");
       return;
     }
 
-    try {
-      const formData = new FormData();
-      formData.append("fileName", file.name);
+    console.log("File info:", {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    });
 
-      await fetch("http://localhost:3000/resumes/upload", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+    // جرب عدة endpoints
+    const endpoints = [
+      "http://localhost:3000/resumes/upload",
 
-      setShowPopup(true);
-    } catch (error) {
-      toast.error(`❌ Upload failed: ${error.message}`);
+    ];
+
+    let lastError = null;
+    
+    for (const endpoint of endpoints) {
+      try {
+        console.log(`Trying endpoint: ${endpoint}`);
+        
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Success with endpoint:", endpoint, data);
+          
+          // حفظ النتيجة
+          localStorage.setItem('resumeData', JSON.stringify(data));
+          localStorage.setItem('hasUploadedCV', 'true');
+          
+          // إظهار البوب أب أولاً
+          setShowPopup(true);
+          
+          // الانتقال بعد 3 ثواني
+          setTimeout(() => {
+            setShowPopup(false);
+            navigate("/matches");
+          }, 3000);
+          
+          return;
+        }
+        
+        lastError = `Endpoint ${endpoint} failed with status ${response.status}`;
+        console.error(lastError);
+        
+      } catch (err) {
+        lastError = `Endpoint ${endpoint} error: ${err.message}`;
+        console.error(lastError);
+      }
+      
+      // إعادة إنشاء FormData لكل محاولة
+      formData.delete('file');
+      formData.append('file', file);
     }
-  };
+
+    throw new Error(`All endpoints failed. Last error: ${lastError}`);
+    
+  } catch (error) {
+    console.error("Final upload error:", error);
+    toast.error(`❌ فشل الرفع: ${error.message}`);
+  }
+};
+
 
   const closePopup = () => {
     const popup = document.querySelector(".upload-resume-popup");
