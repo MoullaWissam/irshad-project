@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import JobCard from "../../Components/Card/JobCard/JobCard.js";
 import "./JobManagementPage.css";
 import { useNavigate } from "react-router-dom";
 
 function JobManagementPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,12 +21,12 @@ function JobManagementPage() {
         // جلب بيانات المستخدم من localStorage
         const companyData = localStorage.getItem("companyData");
         if (!companyData) {
-          throw new Error("No company data found. Please login first.");
+          throw new Error(t("No company data found. Please login first."));
         }
 
         const company = JSON.parse(companyData);
         if (!company || !company.id) {
-          throw new Error("Invalid company data. Please login again.");
+          throw new Error(t("Invalid company data. Please login again."));
         }
 
         const companyId = company.id;
@@ -41,12 +43,12 @@ function JobManagementPage() {
 
         if (!response.ok) {
           if (response.status === 401) {
-            throw new Error("Unauthorized. Please login again.");
+            throw new Error(t("Unauthorized. Please login again."));
           }
           if (response.status === 404) {
-            throw new Error(`Company with ID ${companyId} not found.`);
+            throw new Error(t("Company with ID {id} not found.", { id: companyId }));
           }
-          throw new Error(`Failed to fetch jobs: ${response.status} ${response.statusText}`);
+          throw new Error(`${t("Failed to fetch jobs:")} ${response.status} ${response.statusText}`);
         }
 
         const jobsData = await response.json();
@@ -61,7 +63,7 @@ function JobManagementPage() {
             ? (job.description.length > 100 
                 ? `${job.description.substring(0, 100)}...` 
                 : job.description)
-            : "No description available",
+            : t("No description available"),
           type: getEmploymentTypeDisplay(job.employmentType),
           location: job.location,
           hasQuestions: job.questions && job.questions.length > 0,
@@ -72,14 +74,14 @@ function JobManagementPage() {
         setJobs(processedJobs);
       } catch (err) {
         console.error("Error fetching company jobs:", err);
-        setError(err.message || "Failed to load jobs. Please try again.");
+        setError(err.message || t("Failed to load jobs. Please try again."));
       } finally {
         setLoading(false);
       }
     };
 
     fetchCompanyJobs();
-  }, []);
+  }, [t]);
 
   // ✅ دالة للحصول على أيقونة افتراضية حسب نوع الوظيفة
   const getDefaultIcon = (jobTitle) => {
@@ -101,13 +103,13 @@ function JobManagementPage() {
 
   // ✅ دالة لعرض نوع التوظيف
   const getEmploymentTypeDisplay = (employmentType) => {
-    if (!employmentType) return "FULL TIME";
+    if (!employmentType) return t("FULL TIME");
     
     switch(employmentType.toLowerCase()) {
-      case 'part-time': return 'PART TIME';
-      case 'full-time': return 'FULL TIME';
-      case 'on-site': return 'ON SITE';
-      case 'remote': return 'REMOTE';
+      case 'part-time': return t('PART TIME');
+      case 'full-time': return t('FULL TIME');
+      case 'on-site': return t('ON SITE');
+      case 'remote': return t('REMOTE');
       default: return employmentType.toUpperCase();
     }
   };
@@ -159,7 +161,7 @@ function JobManagementPage() {
       <div className="add-job-page">
         <div className="loading-state">
           <div className="loading-spinner"></div>
-          <p>Loading jobs...</p>
+          <p>{t("Loading jobs...")}</p>
         </div>
       </div>
     );
@@ -169,14 +171,14 @@ function JobManagementPage() {
     return (
       <div className="add-job-page">
         <div className="error-state">
-          <h3>⚠️ Error Loading Jobs</h3>
+          <h3>⚠️ {t("Error Loading Jobs")}</h3>
           <p>{error}</p>
           <div className="error-actions">
             <button className="retry-btn" onClick={handleRetry}>
-              Try Again
+              {t("Try Again")}
             </button>
             <button className="login-btn" onClick={handleLoginRedirect}>
-              Go to Login
+              {t("Go to Login")}
             </button>
           </div>
         </div>
@@ -186,15 +188,15 @@ function JobManagementPage() {
 
   return (
     <div className="add-job-page">
-      <h2 className="page-title">Add new Job application</h2>
+      <h2 className="page-title">{t("Add new Job application")}</h2>
 
       <div className="job-grid">
         {/* بطاقة الإضافة */}
         <div className="add-card" onClick={handleAddClick}>
           <div className="add-card-content">
             <span className="plus-icon">＋</span>
-            <h3>Add New Job</h3>
-            <p>Create a new job posting</p>
+            <h3>{t("Add New Job")}</h3>
+            <p>{t("Create a new job posting")}</p>
           </div>
         </div>
 

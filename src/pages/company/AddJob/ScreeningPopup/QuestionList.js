@@ -1,6 +1,10 @@
+// QuestionList.js
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 export default function QuestionList({ questions, onEdit, onDelete }) {
+  const { t } = useTranslation();
+  
   if (questions.length === 0) return null;
 
   return (
@@ -11,10 +15,10 @@ export default function QuestionList({ questions, onEdit, onDelete }) {
             <h4 style={{ margin: 0 }}>Q{idx + 1}</h4>
             <div>
               <button className="edit-btn" onClick={() => onEdit(idx)}>
-                Edit
+                {t("Edit")}
               </button>
               <button className="delete-btn" onClick={() => onDelete(idx)}>
-                Delete
+                {t("Delete")}
               </button>
             </div>
           </div>
@@ -23,7 +27,7 @@ export default function QuestionList({ questions, onEdit, onDelete }) {
             <ul style={{ paddingLeft: 18, marginTop: 8 }}>
               {q.answers.map((a, i) => (
                 <li key={i} style={{ color: a.isCorrect ? "#33d47c" : "#fff" }}>
-                  {a.text} {a.isCorrect ? "(Correct)" : ""}
+                  {a.text} {a.isCorrect ? `(${t("Correct")})` : ""}
                 </li>
               ))}
             </ul>

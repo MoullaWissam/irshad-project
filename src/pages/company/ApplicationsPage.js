@@ -1,12 +1,15 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 function ApplicationsPage({ type }) {
+  const { t } = useTranslation();
+
   const getTitle = () => {
     switch(type) {
-      case "approved": return "Approved Applications";
-      case "pending": return "Pending Applications";
-      case "denied": return "Denied Applications";
-      default: return "Applications";
+      case "approved": return t("Approved Applications");
+      case "pending": return t("Pending Applications");
+      case "denied": return t("Denied Applications");
+      default: return t("Applications");
     }
   };
 
@@ -64,10 +67,10 @@ function ApplicationsPage({ type }) {
               {app.jobTitle}
             </h3>
             <p style={{ margin: "5px 0", color: "#666" }}>
-              <strong>Company:</strong> {app.company}
+              <strong>{t("Company")}:</strong> {app.company}
             </p>
             <p style={{ margin: "5px 0", color: "#666" }}>
-              <strong>Applied on:</strong> {app.date}
+              <strong>{t("Applied on")}:</strong> {app.date}
             </p>
             <span 
               style={{

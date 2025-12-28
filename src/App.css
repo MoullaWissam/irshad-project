@@ -195,7 +195,7 @@
 }
 
 .toggle-switch input:checked + .toggle-slider {
-  background-color: #4CAF50;
+  background-color: #3bd541;
 }
 
 .toggle-switch input:checked + .toggle-slider:before {
@@ -237,7 +237,7 @@
 }
 
 .login-btn {
-  background: linear-gradient(135deg, #4CAF50, #45a049);
+  background: linear-gradient(135deg, #3bd541, #45a049);
   color: white;
 }
 
@@ -283,7 +283,7 @@
 }
 
 .authenticated {
-  color: #4CAF50;
+  color: #3bd541;
 }
 
 .not-authenticated {
@@ -291,7 +291,7 @@
 }
 
 .test-on {
-  color: #4CAF50;
+  color: #3bd541;
 }
 
 .test-off {
@@ -332,7 +332,7 @@
 .success-icon-large {
   width: 100px;
   height: 100px;
-  background: #4CAF50;
+  background: #3bd541;
   color: white;
   border-radius: 50%;
   display: flex;

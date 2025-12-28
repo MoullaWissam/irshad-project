@@ -1,10 +1,14 @@
+// DurationSlider.js
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 export default function DurationSlider({ duration, setDuration }) {
+  const { t } = useTranslation();
+  
   return (
     <div style={{ marginBottom: 12 }}>
       <label style={{ display: "block", marginBottom: 6, color: "white" }}>
-        Test Duration: <strong>{duration} minutes</strong>
+        {t("Test Duration:")} <strong>{duration} {t("minutes")}</strong>
       </label>
       <input
         className="range"
@@ -14,7 +18,7 @@ export default function DurationSlider({ duration, setDuration }) {
         step={2}
         value={duration}
         onChange={(e) => setDuration(Number(e.target.value))}
-        aria-label="Test duration slider"
+        aria-label={t("Test duration slider")}
       />
       <div
         style={{

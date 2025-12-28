@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import "./ApplicantsTable.css";
 
 function ApplicantsTable({ 
@@ -9,6 +10,7 @@ function ApplicantsTable({
   onViewDetails,
   onViewResume 
 }) {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
 
   // تطبيق البحث
@@ -34,12 +36,12 @@ function ApplicantsTable({
 
   const getRankingBadge = (ranking) => {
     const config = {
-      gold: { label: "Gold", className: "ranking-gold", icon: "🥇" },
-      silver: { label: "Silver", className: "ranking-silver", icon: "🥈" },
-      bronze: { label: "Bronze", className: "ranking-bronze", icon: "🥉" }
+      gold: { label: t("Gold"), className: "ranking-gold", icon: "🥇" },
+      silver: { label: t("Silver"), className: "ranking-silver", icon: "🥈" },
+      bronze: { label: t("Bronze"), className: "ranking-bronze", icon: "🥉" }
     };
     
-    const rank = config[ranking] || { label: ranking || "Unranked", className: "ranking-unknown", icon: "" };
+    const rank = config[ranking] || { label: ranking || t("Unranked"), className: "ranking-unknown", icon: "" };
     
     return (
       <div className={`ranking-badge ${rank.className}`}>
@@ -51,17 +53,17 @@ function ApplicantsTable({
 
   const getInterviewStatusBadge = (status, date) => {
     const config = {
-      pending: { label: "Pending", className: "status-pending" },
-      sent: { label: "Interview Request Sent", className: "status-sent" },
+      pending: { label: t("Pending"), className: "status-pending" },
+      sent: { label: t("Interview Request Sent"), className: "status-sent" },
       scheduled: { 
-        label: date ? `Scheduled: ${new Date(date).toLocaleDateString()}` : "Interview Scheduled", 
+        label: date ? `${t("Scheduled")}: ${new Date(date).toLocaleDateString()}` : t("Interview Scheduled"), 
         className: "status-scheduled" 
       },
-      rejected: { label: "Rejected", className: "status-rejected" },
-      accepted: { label: "Accepted", className: "status-accepted" }
+      rejected: { label: t("Rejected"), className: "status-rejected" },
+      accepted: { label: t("Accepted"), className: "status-accepted" }
     };
     
-    const statusConfig = config[status] || { label: status || "Unknown", className: "status-unknown" };
+    const statusConfig = config[status] || { label: status || t("Unknown"), className: "status-unknown" };
     
     return <span className={`interview-status-badge ${statusConfig.className}`}>{statusConfig.label}</span>;
   };
@@ -72,7 +74,7 @@ function ApplicantsTable({
       const date = new Date(dateString);
       return date.toLocaleDateString();
     } catch (error) {
-      return "Invalid Date";
+      return t("Invalid Date");
     }
   };
 
@@ -87,23 +89,23 @@ function ApplicantsTable({
             <button 
               className="btn-action btn-schedule"
               onClick={() => onScheduleInterview(applicant)}
-              title="Schedule interview"
+              title={t("Schedule Interview")}
             >
-              Schedule Interview
+              {t("Schedule Interview")}
             </button>
             <button 
               className="btn-action btn-accept"
               onClick={() => onAcceptApplicant(applicant)}
-              title="Accept applicant"
+              title={t("Accept applicant")}
             >
-              Accept
+              {t("Accept")}
             </button>
             <button 
               className="btn-action btn-reject"
               onClick={() => onRejectApplicant(applicant)}
-              title="Reject applicant"
+              title={t("Reject applicant")}
             >
-              Reject
+              {t("Reject")}
             </button>
           </div>
         );
@@ -115,20 +117,20 @@ function ApplicantsTable({
               <button 
                 className="btn-action btn-accept"
                 onClick={() => onAcceptApplicant(applicant)}
-                title="Accept applicant"
+                title={t("Accept applicant")}
               >
-                Accept
+                {t("Accept")}
               </button>
               <button 
                 className="btn-action btn-reject"
                 onClick={() => onRejectApplicant(applicant)}
-                title="Reject applicant"
+                title={t("Reject applicant")}
               >
-                Reject
+                {t("Reject")}
               </button>
             </div>
             <div className="interview-date-info">
-              <small>Scheduled: {applicant.interviewDate ? new Date(applicant.interviewDate).toLocaleDateString() : "Date not set"}</small>
+              <small>{t("Scheduled")}: {applicant.interviewDate ? new Date(applicant.interviewDate).toLocaleDateString() : t("Date not set")}</small>
             </div>
           </div>
         );
@@ -140,13 +142,13 @@ function ApplicantsTable({
               <button 
                 className="btn-action btn-accept"
                 onClick={() => onAcceptApplicant(applicant)}
-                title="Accept applicant"
+                title={t("Accept applicant")}
               >
-                Accept
+                {t("Accept")}
               </button>
             </div>
             <div className="rejection-reason-info">
-              <small>Reason: {applicant.rejectionReason || "No reason provided"}</small>
+              <small>{t("Reason")}: {applicant.rejectionReason || t("No reason provided")}</small>
             </div>
           </div>
         );
@@ -158,13 +160,13 @@ function ApplicantsTable({
               <button 
                 className="btn-action btn-reject"
                 onClick={() => onRejectApplicant(applicant)}
-                title="Reject applicant"
+                title={t("Reject applicant")}
               >
-                Reject
+                {t("Reject")}
               </button>
             </div>
             <div className="acceptance-info">
-              <small>Accepted</small>
+              <small>{t("Accepted")}</small>
             </div>
           </div>
         );
@@ -175,23 +177,23 @@ function ApplicantsTable({
             <button 
               className="btn-action btn-schedule"
               onClick={() => onScheduleInterview(applicant)}
-              title="Schedule interview"
+              title={t("Schedule Interview")}
             >
-              Schedule Interview
+              {t("Schedule Interview")}
             </button>
             <button 
               className="btn-action btn-accept"
               onClick={() => onAcceptApplicant(applicant)}
-              title="Accept applicant"
+              title={t("Accept applicant")}
             >
-              Accept
+              {t("Accept")}
             </button>
             <button 
               className="btn-action btn-reject"
               onClick={() => onRejectApplicant(applicant)}
-              title="Reject applicant"
+              title={t("Reject applicant")}
             >
-              Reject
+              {t("Reject")}
             </button>
           </div>
         );
@@ -205,7 +207,7 @@ function ApplicantsTable({
     if (!skills || skills.length === 0) {
       return (
         <div className="applicant-skills">
-          <span className="no-skills">No skills</span>
+          <span className="no-skills">{t("No skills")}</span>
         </div>
       );
     }
@@ -224,7 +226,7 @@ function ApplicantsTable({
               if (onViewDetails) onViewDetails(applicant);
             }}
           >
-            +{skills.length - 2} more
+            +{skills.length - 2} {t("more")}
           </span>
         )}
       </div>
@@ -254,7 +256,7 @@ function ApplicantsTable({
         <div className="search-box">
           <input
             type="text"
-            placeholder="Search by name, email, job title, or skills..."
+            placeholder={t("Search by name, email, job title, or skills...")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
@@ -263,7 +265,7 @@ function ApplicantsTable({
         </div>
         
         <div className="results-count">
-          <span className="count-number">{filteredApplicants.length}</span> of <span className="count-number">{applicants.length}</span> applicants
+          <span className="count-number">{filteredApplicants.length}</span> {t("of")} <span className="count-number">{applicants.length}</span> {t("applicants")}
         </div>
       </div>
       
@@ -271,8 +273,8 @@ function ApplicantsTable({
         <div className="no-results">
           <div className="empty-state">
             <div className="empty-icon">🔍</div>
-            <h4>No applicants found</h4>
-            <p>Try adjusting your search or filter criteria</p>
+            <h4>{t("No applicants found")}</h4>
+            <p>{t("Try adjusting your search or filter criteria")}</p>
           </div>
         </div>
       ) : (
@@ -280,13 +282,13 @@ function ApplicantsTable({
           <table className="applicants-table">
             <thead>
               <tr>
-                <th className="col-ranking">Ranking</th>
-                <th className="col-name">Name & Position</th>
-                <th className="col-skills">Skills</th>
-                <th className="col-applied">Applied</th>
-                <th className="col-test">Test Score</th>
-                <th className="col-status">Status</th>
-                <th className="col-actions">Actions</th>
+                <th className="col-ranking">{t("Ranking")}</th>
+                <th className="col-name">{t("Name & Position")}</th>
+                <th className="col-skills">{t("Skills")}</th>
+                <th className="col-applied">{t("Applied")}</th>
+                <th className="col-test">{t("Test Score")}</th>
+                <th className="col-status">{t("Status")}</th>
+                <th className="col-actions">{t("Actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -296,7 +298,7 @@ function ApplicantsTable({
                     <div 
                       className="ranking-cell-content"
                       onClick={() => onViewDetails && onViewDetails(applicant)}
-                      title="Click to view details"
+                      title={t("Click to view details")}
                     >
                       {getRankingBadge(applicant.ranking)}
                     </div>
@@ -312,10 +314,10 @@ function ApplicantsTable({
                         </strong>
                         <div className="applicant-meta">
                           <span className="applicant-experience">
-                            {applicant.resume?.experience_years || 0} years exp
+                            {applicant.resume?.experience_years || 0} {t("years exp")}
                           </span>
                           <span className="applicant-position">
-                            {applicant.jobTitle || "No position"}
+                            {applicant.jobTitle || t("No position")}
                           </span>
                         </div>
                         <div className="applicant-contact-info">
@@ -330,7 +332,7 @@ function ApplicantsTable({
                     <div 
                       className="skills-cell-content"
                       onClick={() => onViewDetails && onViewDetails(applicant)}
-                      title="Click to view all skills"
+                      title={t("Click to view all skills")}
                     >
                       {getSkillsDisplay(applicant)}
                     </div>
@@ -356,16 +358,16 @@ function ApplicantsTable({
                         <button 
                           className="btn-action btn-view-details"
                           onClick={() => onViewDetails && onViewDetails(applicant)}
-                          title="View full details"
+                          title={t("View full details")}
                         >
-                          View Details
+                          {t("View Details")}
                         </button>
                         <button 
                           className="btn-action btn-view-resume"
                           onClick={() => onViewResume && onViewResume(applicant)}
-                          title="Download resume"
+                          title={t("Download resume")}
                         >
-                          Download Resume
+                          {t("Download Resume")}
                         </button>
                         {getActionsForApplicant(applicant)}
                       </div>

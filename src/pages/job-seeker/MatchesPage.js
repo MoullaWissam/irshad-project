@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // أضيفي هذا السطر
+import { Link } from "react-router-dom";
 import JobCard from "../../Components/Card/JobCard/JobCard";
 import RankedCardWrapper from "./RankedCardWrapper";
 import "./MatchesPage.css";
+import { useTranslation } from 'react-i18next';
 
 function MatchesPage() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
+  // نمط خط Roboto
+  const robotoStyle = {
+    fontFamily: "'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -21,7 +29,7 @@ function MatchesPage() {
         );
 
         if (!response.ok) {
-          throw new Error("فشل في جلب البيانات");
+          throw new Error(t("فشل في جلب البيانات"));
         }
 
         const data = await response.json();
@@ -46,24 +54,47 @@ function MatchesPage() {
     };
 
     fetchJobs();
-  }, []);
+  }, [t]);
 
   return (
-    <div className="home-container">
+    <div 
+      className="home-container" 
+      dir={isRTL ? 'rtl' : 'ltr'} 
+      style={robotoStyle}
+    >
       {/* عنوان الصفحة */}
-      <h2>
-        Best Matched <span>Jobs</span>
+      <h2 style={{ textAlign: isRTL ? 'right' : 'left' }}>
+        {t("Best Matched")} <span>{t("Jobs")}</span>
       </h2>
 
       {/* رسالة تحميل */}
-      {loading && <div className="loading-message">جاري تحميل الوظائف...</div>}
+      {loading && (
+        <div 
+          className="loading-message"
+          style={{ textAlign: 'center', ...robotoStyle }}
+        >
+          {t("جاري تحميل الوظائف...")}
+        </div>
+      )}
 
       {/* رسالة خطأ */}
-      {error && <div className="error-message">⚠️ {error}</div>}
+      {error && (
+        <div 
+          className="error-message"
+          style={{ textAlign: 'center', ...robotoStyle }}
+        >
+          ⚠️ {error}
+        </div>
+      )}
 
       {/* إذا ما في بيانات بعد الانتهاء من التحميل */}
       {!loading && !error && jobs.length === 0 && (
-        <div className="no-jobs-message">لا توجد وظائف متاحة حالياً</div>
+        <div 
+          className="no-jobs-message"
+          style={{ textAlign: 'center', ...robotoStyle }}
+        >
+          {t("لا توجد وظائف متاحة حالياً")}
+        </div>
       )}
 
       {/* شبكة عرض الوظائف - تعرض فقط إذا في بيانات */}
@@ -71,9 +102,13 @@ function MatchesPage() {
         <div className="job-grid">
           {jobs.map((job, index) => (
             <Link
-              to={`/job/${job.id}`} // تغيير المسار حسب مسار الـ JobDetails الخاص بك
+              to={`/job/${job.id}`}
               key={job.id}
-              style={{ textDecoration: "none", color: "inherit" }}
+              style={{ 
+                textDecoration: "none", 
+                color: "inherit",
+                display: 'block'
+              }}
             >
               <RankedCardWrapper rank={index + 1}>
                 <div className={`job-card-wrapper rank-${index + 1}`}>

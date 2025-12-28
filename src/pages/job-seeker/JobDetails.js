@@ -3,6 +3,25 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./JobDetails.css";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faMapMarkerAlt, 
+  faClock, 
+  faBriefcase, 
+  faFileAlt, 
+  faTools, 
+  faBullseye, 
+  faGraduationCap, 
+  faStar, 
+  faTasks, 
+  faMoneyBillWave, 
+  faPaperPlane,
+  faBuilding,
+  faCalendarAlt,
+  faCheckCircle,
+  faTimesCircle
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function JobDetails() {
   const { jobId } = useParams();
@@ -12,13 +31,24 @@ export default function JobDetails() {
   const [hasTest, setHasTest] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
+  const [userType, setUserType] = useState(null);
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
+  const robotoStyle = {
+    fontFamily: "'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+  };
+
+  const iconStyle = {
+    color: '#0b2b82',
+    marginRight: '5px'
+  };
 
   useEffect(() => { 
     const fetchJob = async () => {
       try {
         setLoading(true);
         
-        // جلب البيانات من API الحقيقي مع credentials
         const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
           method: 'GET',
           credentials: 'include',
@@ -29,7 +59,7 @@ export default function JobDetails() {
         });
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch job: ${response.status}`);
+          throw new Error(t("Failed to fetch job: {status}", { status: response.status }));
         }
         
         const data = await response.json();
@@ -39,36 +69,36 @@ export default function JobDetails() {
       } catch (error) {
         console.error("Failed to load job:", error);
         
-        toast.error("❌ Failed to load job details", {
-          position: "top-right",
+        toast.error("❌ " + t("Failed to load job details"), {
+          position: isRTL ? "top-left" : "top-right",
           autoClose: 3000,
+          rtl: isRTL
         });
         
-        // استخدام بيانات تجريبية في حالة فشل API
         const mockJobs = {
           1: {
             id: 1,
-            title: "Email Marketing Specialist",
-            type: "FULL TIME",
-            location: "Damascus",
-            companyName: "Tech Solutions Inc.",
-            description: "We are seeking a skilled Email Marketing Specialist to join our dynamic marketing team. You will be responsible for creating and executing email marketing campaigns, analyzing performance metrics, and optimizing strategies for maximum engagement.",
-            skills: "Email Marketing, Copywriting, Analytics, CRM Tools, A/B Testing",
-            experience: "3+ years in digital marketing",
-            education: "Bachelor's degree in Marketing or related field",
+            title: t("Email Marketing Specialist"),
+            type: t("FULL TIME"),
+            location: t("Damascus"),
+            companyName: t("Tech Solutions Inc."),
+            description: t("We are seeking a skilled Email Marketing Specialist to join our dynamic marketing team. You will be responsible for creating and executing email marketing campaigns, analyzing performance metrics, and optimizing strategies for maximum engagement."),
+            skills: t("Email Marketing, Copywriting, Analytics, CRM Tools, A/B Testing"),
+            experience: t("3+ years in digital marketing"),
+            education: t("Bachelor's degree in Marketing or related field"),
             hasTest: true,
             testDuration: 5,
           },
           2: {
             id: 2,
-            title: "Frontend Developer",
-            type: "FULL TIME",
-            location: "Remote",
-            companyName: "WebTech Co.",
-            description: "Looking for a skilled frontend developer with React experience. You will be responsible for building user interfaces, implementing responsive designs, and collaborating with backend developers.",
-            skills: "React, JavaScript, HTML5, CSS3, Git, Responsive Design",
-            experience: "2+ years in frontend development",
-            education: "Computer Science or equivalent",
+            title: t("Frontend Developer"),
+            type: t("FULL TIME"),
+            location: t("Remote"),
+            companyName: t("WebTech Co."),
+            description: t("Looking for a skilled frontend developer with React experience. You will be responsible for building user interfaces, implementing responsive designs, and collaborating with backend developers."),
+            skills: t("React, JavaScript, HTML5, CSS3, Git, Responsive Design"),
+            experience: t("2+ years in frontend development"),
+            education: t("Computer Science or equivalent"),
             hasTest: false
           }
         };
@@ -83,61 +113,111 @@ export default function JobDetails() {
     };
 
     fetchJob();
-  }, [jobId]);
+  }, [jobId, t]);
+
+  useEffect(() => {
+    const companyData = localStorage.getItem('companyData');
+    const userData = localStorage.getItem('userData');
+    
+    if (companyData) {
+      setUserType('company');
+    } else if (userData) {
+      setUserType('user');
+    } else {
+      setUserType(null);
+    }
+  }, []);
 
   const handleApply = () => {
-  if (hasTest) {
-    // إذا كان هناك اختبار، انتقل مباشرة إلى صفحة الاختبار
-    navigate(`/job/${jobId}/test`, { state: { jobData: job } });
-  } else {
-    // إذا لم يكن هناك اختبار، اعرض نافذة التأكيد
-    setShowConfirmation(true);
-  }
-};
+    if (hasTest) {
+      navigate(`/job/${jobId}/test`, { state: { jobData: job } });
+    } else {
+      setShowConfirmation(true);
+    }
+  };
 
-const confirmApplyWithoutTest = async () => {
-  setIsApplying(true);
-  try {
-    const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  const confirmApplyWithoutTest = async () => {
+    setIsApplying(true);
+    try {
+      const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(t("HTTP error! status: {status}", { status: response.status }));
+      }
+      
+      const result = await response.json();
+      
+      toast.success("✅ " + t("Application submitted successfully!"), {
+        position: isRTL ? "top-left" : "top-right",
+        autoClose: 3000,
+        rtl: isRTL
+      });
+      
+      navigate(`/job/${jobId}/application-success`, { 
+        state: { 
+          jobData: job,
+          applicationResult: result,
+          testCompleted: false
+        } 
+      });
+      
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      toast.error("❌ " + t("Failed to submit application"), {
+        position: isRTL ? "top-left" : "top-right",
+        autoClose: 3000,
+        rtl: isRTL
+      });
+    } finally {
+      setIsApplying(false);
+      setShowConfirmation(false);
+    }
+  };
+
+  const handleEditJob = () => {
+    navigate(`/job/${jobId}/edit`);
+  };
+
+  const handleDeleteJob = async () => {
+    if (!window.confirm(t("Are you sure you want to delete this job? This action cannot be undone."))) {
+      return;
     }
     
-    const result = await response.json();
-    console.log("Application submitted:", result);
-    
-    toast.success("✅ Application submitted successfully!", {
-      position: "top-right",
-      autoClose: 3000,
-    });
-    
-    navigate(`/job/${jobId}/application-success`, { 
-      state: { 
-        jobData: job,
-        applicationResult: result,
-        testCompleted: false
-      } 
-    });
-    
-  } catch (error) {
-    console.error("Error submitting application:", error);
-    toast.error("❌ Failed to submit application", {
-      position: "top-right",
-      autoClose: 3000,
-    });
-  } finally {
-    setIsApplying(false);
-    setShowConfirmation(false);
-  }
-};
-
+    try {
+      const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        throw new Error(t("Delete failed: {status}", { status: response.status }));
+      }
+      
+      toast.success("✅ " + t("Job deleted successfully!"), {
+        position: isRTL ? "top-left" : "top-right",
+        autoClose: 3000,
+        rtl: isRTL
+      });
+      
+      setTimeout(() => {
+        navigate('/job-management');
+      }, 1500);
+      
+    } catch (error) {
+      console.error("Error deleting job:", error);
+      toast.error(`❌ ${error.message}`, {
+        position: isRTL ? "top-left" : "top-right",
+        autoClose: 3000,
+        rtl: isRTL
+      });
+    }
+  };
 
   const cancelApply = () => {
     setShowConfirmation(false);
@@ -145,11 +225,15 @@ const confirmApplyWithoutTest = async () => {
 
   if (loading) {
     return (
-      <div className="jobdetails-container">
-        <ToastContainer />
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading job details...</p>
+      <div className="job-details-page" dir={isRTL ? 'rtl' : 'ltr'} style={robotoStyle}>
+        <ToastContainer 
+          position={isRTL ? "top-left" : "top-right"}
+          rtl={isRTL}
+          style={{ fontFamily: "'Roboto', sans-serif" }}
+        />
+        <div className="job-loading-state">
+          <div className="loading-spinner-animation"></div>
+          <p style={robotoStyle}>{t("Loading job details...")}</p>
         </div>
       </div>
     );
@@ -157,57 +241,146 @@ const confirmApplyWithoutTest = async () => {
 
   if (!job) {
     return (
-      <div className="jobdetails-container">
-        <ToastContainer />
-        <div className="error-message">
-          <h2>Job Not Found</h2>
-          <p>The job you're looking for doesn't exist or has been removed.</p>
-          <button onClick={() => navigate('/jobs')}>Back to Jobs</button>
+      <div className="job-details-page" dir={isRTL ? 'rtl' : 'ltr'} style={robotoStyle}>
+        <ToastContainer 
+          position={isRTL ? "top-left" : "top-right"}
+          rtl={isRTL}
+          style={{ fontFamily: "'Roboto', sans-serif" }}
+        />
+        <div className="job-error-state">
+          <h2 style={robotoStyle}>{t("Job Not Found")}</h2>
+          <p style={robotoStyle}>{t("The job you're looking for doesn't exist or has been removed.")}</p>
+          <button 
+            onClick={() => navigate('/jobs')}
+            style={{  fontWeight: 500 }}
+          >
+            {t("Back to Jobs")}
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="jobdetails-container">
-      <ToastContainer />
+    <div className="job-details-page" dir={isRTL ? 'rtl' : 'ltr'} style={robotoStyle}>
+      <ToastContainer 
+        position={isRTL ? "top-left" : "top-right"}
+        rtl={isRTL}
+        style={{ fontFamily: "'Roboto', sans-serif" }}
+      />
       
-      <div className="jobdetails-content">
-        {/* Header */}
-        <div className="job-header">
-          <div>
-            <h1 className="job-title">{job.title || "Untitled Job"}</h1>
-            <p className="job-meta">
-              {job.type || "FULL TIME"} <span> | </span> Location: {job.location || "Not specified"}
-            </p>
-          </div>
-
-          <button 
-            className="apply-btn" 
-            onClick={handleApply}
-            disabled={isApplying}
-          >
-            {isApplying ? "Applying..." : (hasTest ? "Apply & Start Test" : "Apply Now")}
-          </button>
+      <div className="job-details-content">
+        <div className="navigation-back-link" onClick={() => navigate('/jobs')} style={robotoStyle}>
+          <FontAwesomeIcon icon={faTimesCircle} style={iconStyle} />
+          {t("Back to Jobs")}
         </div>
-
-        {/* Company Section */}
-        <div className="company-box">
-          <div className="company-icon">
-            <div className="company-avatar">
-              {job.companyName ? job.companyName.charAt(0).toUpperCase() : 'C'}
+        
+        <div className="job-header-section">
+          <div className="job-title-area">
+            <h1 className="job-main-title" style={{  fontWeight: 600 }}>
+              {job.title || t("Untitled Job")}
+            </h1>
+            <div className="job-info-meta" style={robotoStyle}>
+              <span className="job-info-item">
+                <FontAwesomeIcon icon={faMapMarkerAlt} style={iconStyle} />
+                {job.location || t("Not specified")}
+              </span>
+              <span className="job-info-item">
+                <FontAwesomeIcon icon={faClock} style={iconStyle} />
+                {job.type || t("FULL TIME")}
+              </span>
+              <span className="job-info-item">
+                <FontAwesomeIcon icon={faBriefcase} style={iconStyle} />
+                {job.employmentType || t("Full-time")}
+              </span>
             </div>
+            {job.salary && (
+              <div className="job-salary-tag" style={robotoStyle}>
+                <FontAwesomeIcon icon={faMoneyBillWave} style={iconStyle} />
+                {job.salary}
+              </div>
+            )}
           </div>
-          <h3>{job.companyName || "Unknown Company"}</h3>
+
+          <div className="apply-action-area">
+            {userType === 'company' && (
+              <div className="company-management-actions">
+                <button 
+                  className="edit-job-action"
+                  onClick={handleEditJob}
+                  style={{  fontWeight: 500 }}
+                >
+                  {t("Edit Job")}
+                </button>
+                <button 
+                  className="delete-job-action"
+                  onClick={handleDeleteJob}
+                  style={{  fontWeight: 500 }}
+                >
+                  {t("Delete Job")}
+                </button>
+              </div>
+            )}
+
+            {userType === 'user' && (
+              <div className="apply-action-container">
+                <button 
+                  className="job-apply-button" 
+                  onClick={handleApply}
+                  disabled={isApplying}
+                  style={{  fontWeight: 500 }}
+                >
+                  {isApplying ? t("Applying...") : (hasTest ? t("Apply & Start Test") : t("Apply Now"))}
+                </button>
+                {job.createdAt && (
+                  <p className="job-posted-date" style={robotoStyle}>
+                    <FontAwesomeIcon icon={faCalendarAlt} style={iconStyle} />
+                    {t("Posted")}: {new Date(job.createdAt).toLocaleDateString(i18n.language === 'ar' ? 'ar-SA' : 'en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Job Image if available */}
+        <div className="job-company-card">
+          <div className="company-logo-avatar">
+            <FontAwesomeIcon icon={faBuilding} style={{color: 'white', fontSize: '26px'}} />
+          </div>
+          <div className="company-details-info">
+            <h3 className="company-title-name" style={{  fontWeight: 600 }}>
+              {job.companyName || t("Unknown Company")}
+            </h3>
+            <p className="company-brief-description" style={robotoStyle}>
+              {job.companyDescription || t("A leading company in its field")}
+            </p>
+            {job.companyRating && (
+              <div className="company-rating-stars">
+                <span className="rating-stars">★★★★★</span>
+                <span className="rating-value" style={robotoStyle}>{job.companyRating}/5</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {job.tags && (
+          <div className="job-categories-tags">
+            {job.tags.split(',').map((tag, index) => (
+              <span key={index} className="category-tag" style={robotoStyle}>{tag.trim()}</span>
+            ))}
+          </div>
+        )}
+
         {job.image && (
-          <div className="job-image-section">
+          <div className="job-image-container">
             <img 
               src={job.image} 
               alt={job.title}
-              className="job-image"
+              className="job-cover-image"
               onError={(e) => {
                 e.target.style.display = 'none';
               }}
@@ -215,72 +388,112 @@ const confirmApplyWithoutTest = async () => {
           </div>
         )}
 
-        {/* Sections */}
-        <div className="job-section">
-          <h4>Job Description</h4>
-          <p>{job.description || "No description available"}</p>
-        </div>
-
-        <div className="job-section">
-          <h4>Required Skills</h4>
-          <p>{job.skills || "Not specified"}</p>
-        </div>
-
-        <div className="job-section">
-          <h4>Required Experience</h4>
-          <p>{job.experience || "Not specified"}</p>
-        </div>
-
-        <div className="job-section">
-          <h4>Required Education</h4>
-          <p>{job.education || "Not specified"}</p>
-        </div>
-
-        {/* Additional Information */}
-        {job.employmentType && (
-          <div className="job-section">
-            <h4>Employment Type</h4>
-            <p>{job.employmentType}</p>
+        <div className="job-sections-grid">
+          <div className="job-detail-card">
+            <div className="detail-card-header">
+              <FontAwesomeIcon icon={faFileAlt} style={iconStyle} />
+              <h4 style={{  fontWeight: 600 }}>{t("Job Description")}</h4>
+            </div>
+            <p style={robotoStyle}>{job.description || t("No description available")}</p>
           </div>
-        )}
 
-        {job.createdAt && (
-          <div className="job-section">
-            <h4>Posted Date</h4>
-            <p>{new Date(job.createdAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}</p>
+          <div className="job-detail-card">
+            <div className="detail-card-header">
+              <FontAwesomeIcon icon={faTools} style={iconStyle} />
+              <h4 style={{  fontWeight: 600 }}>{t("Required Skills")}</h4>
+            </div>
+            <div className="skills-grid-container">
+              {job.skills ? job.skills.split(',').map((skill, index) => (
+                <div key={index} className="skill-tag-item" style={robotoStyle}>
+                  <strong>{skill.trim()}</strong>
+                </div>
+              )) : <p style={robotoStyle}>{t("Not specified")}</p>}
+            </div>
           </div>
-        )}
 
-        {/* Test Information if available */}
-        {hasTest && (
-          <div className="job-section test-info">
-            <h4>📝 Test Information</h4>
-            <p>This job requires a screening test.</p>
-            <p>Estimated time: {job.testDuration || 5} minutes</p>
+          <div className="job-detail-card">
+            <div className="detail-card-header">
+              <FontAwesomeIcon icon={faBullseye} style={iconStyle} />
+              <h4 style={{  fontWeight: 600 }}>{t("Required Experience")}</h4>
+            </div>
+            <p style={robotoStyle}>{job.experience || t("Not specified")}</p>
           </div>
-        )}
+
+          <div className="job-detail-card">
+            <div className="detail-card-header">
+              <FontAwesomeIcon icon={faGraduationCap} style={iconStyle} />
+              <h4 style={{  fontWeight: 600 }}>{t("Required Education")}</h4>
+            </div>
+            <p style={robotoStyle}>{job.education || t("Not specified")}</p>
+          </div>
+
+          {job.benefits && (
+            <div className="job-detail-card">
+              <div className="detail-card-header">
+                <FontAwesomeIcon icon={faStar} style={iconStyle} />
+                <h4 style={{  fontWeight: 600 }}>{t("Benefits & Perks")}</h4>
+              </div>
+              <ul style={robotoStyle}>
+                {job.benefits.split(',').map((benefit, index) => (
+                  <li key={index}>{benefit.trim()}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {job.responsibilities && (
+            <div className="job-detail-card">
+              <div className="detail-card-header">
+                <FontAwesomeIcon icon={faTasks} style={iconStyle} />
+                <h4 style={{  fontWeight: 600 }}>{t("Key Responsibilities")}</h4>
+              </div>
+              <ul style={robotoStyle}>
+                {job.responsibilities.split(',').map((responsibility, index) => (
+                  <li key={index}>{responsibility.trim()}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {hasTest && (
+            <div className="job-detail-card test-info">
+              <div className="detail-card-header">
+                <FontAwesomeIcon icon={faFileAlt} style={iconStyle} />
+                <h4 style={{  fontWeight: 600 }}>{t("Test Information")}</h4>
+              </div>
+              <p style={robotoStyle}>{t("This job requires a screening test.")}</p>
+              <p style={robotoStyle}>{t("Estimated time: {duration} minutes", { duration: job.testDuration || 5 })}</p>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Confirmation Modal for jobs without test */}
       {showConfirmation && (
-        <div className="confirmation-overlay">
-          <div className="confirmation-modal">
-            <h3>Confirm Application</h3>
-            <p>Are you sure you want to apply for this position?</p>
-            <div className="confirmation-buttons">
-              <button className="cancel-btn" onClick={cancelApply}>
-                Cancel
+        <div className="confirmation-modal-overlay">
+          <div className="confirmation-dialog-box">
+            <div className="dialog-icon">
+              <FontAwesomeIcon icon={faPaperPlane} style={{color: '#00b4d8', fontSize: '52px'}} />
+            </div>
+            <h3 style={{  fontWeight: 600 }}>{t("Confirm Application")}</h3>
+            <p style={robotoStyle}>{t("Are you sure you want to apply for this position?")}</p>
+            <p style={{...robotoStyle, fontSize: '14px', color: '#666', marginTop: '-10px'}}>
+              {t("Your application will be sent directly to the employer.")}
+            </p>
+            <div className="dialog-action-buttons">
+              <button 
+                className="dialog-cancel-button" 
+                onClick={cancelApply}
+                style={{  fontWeight: 500 }}
+              >
+                {t("Cancel")}
               </button>
               <button 
-                className="confirm-btn" 
+                className="dialog-confirm-button" 
                 onClick={confirmApplyWithoutTest}
                 disabled={isApplying}
+                style={{  fontWeight: 500 }}
               >
-                {isApplying ? "Applying..." : "Yes, Apply Now"}
+                {isApplying ? t("Applying...") : t("Yes, Apply Now")}
               </button>
             </div>
           </div>

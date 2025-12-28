@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 import "./ApplicantDetailsModal.css";
 
 function ApplicantDetailsModal({ 
@@ -11,6 +12,7 @@ function ApplicantDetailsModal({
   onAcceptApplicant,
   onViewResume 
 }) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("overview");
   const [resumeUrl, setResumeUrl] = useState(null);
   const [loadingResume, setLoadingResume] = useState(false);
@@ -54,11 +56,11 @@ function ApplicantDetailsModal({
         console.log("Full resume URL:", fullUrl);
       } else {
         setResumeUrl(null);
-        toast.warning("No resume available for this applicant");
+        toast.warning(t("No resume available for this applicant"));
       }
     } catch (error) {
       console.error("Error fetching resume URL:", error);
-      toast.error("Failed to fetch resume");
+      toast.error(t("Failed to fetch resume"));
       setResumeUrl(null);
     } finally {
       setLoadingResume(false);
@@ -80,9 +82,9 @@ function ApplicantDetailsModal({
       link.click();
       link.remove();
       
-      toast.success("Resume downloaded successfully!");
+      toast.success(t("Resume downloaded successfully!"));
     } else {
-      toast.warning("No resume available for download");
+      toast.warning(t("No resume available for download"));
     }
   };
 
@@ -90,7 +92,7 @@ function ApplicantDetailsModal({
     if (resumeUrl) {
       window.open(resumeUrl, '_blank');
     } else {
-      toast.warning("No resume available to view");
+      toast.warning(t("No resume available to view"));
     }
   };
 
@@ -107,12 +109,12 @@ function ApplicantDetailsModal({
 
   const getStatusText = (status) => {
     switch(status) {
-      case "pending": return "Pending";
-      case "sent": return "Interview Request Sent";
-      case "scheduled": return "Interview Scheduled";
-      case "rejected": return "Rejected";
-      case "accepted": return "Accepted";
-      default: return "Unknown";
+      case "pending": return t("Pending");
+      case "sent": return t("Interview Request Sent");
+      case "scheduled": return t("Interview Scheduled");
+      case "rejected": return t("Rejected");
+      case "accepted": return t("Accepted");
+      default: return t("Unknown");
     }
   };
 
@@ -130,7 +132,7 @@ function ApplicantDetailsModal({
                 onClose();
               }}
             >
-              Schedule Interview
+              {t("Schedule Interview")}
             </button>
             <button 
               className="btn-action-accept"
@@ -139,7 +141,7 @@ function ApplicantDetailsModal({
                 onClose();
               }}
             >
-              Accept Applicant
+              {t("Accept Applicant")}
             </button>
           </>
         );
@@ -148,7 +150,7 @@ function ApplicantDetailsModal({
         return (
           <div className="scheduled-info">
             <p className="interview-date">
-              <strong>Scheduled for:</strong> {applicant.interviewDate ? new Date(applicant.interviewDate).toLocaleString() : "Date not set"}
+              <strong>{t("Scheduled for")}:</strong> {applicant.interviewDate ? new Date(applicant.interviewDate).toLocaleString() : t("Date not set")}
             </p>
             <button 
               className="btn-action-accept"
@@ -157,7 +159,7 @@ function ApplicantDetailsModal({
                 onClose();
               }}
             >
-              Accept Applicant
+              {t("Accept Applicant")}
             </button>
           </div>
         );
@@ -171,14 +173,14 @@ function ApplicantDetailsModal({
               onClose();
             }}
           >
-            Accept Applicant
+            {t("Accept Applicant")}
           </button>
         );
       
       case "accepted":
         return (
           <div className="accepted-info">
-            <p><strong>Applicant Accepted</strong></p>
+            <p><strong>{t("Applicant Accepted")}</strong></p>
           </div>
         );
       
@@ -194,7 +196,7 @@ function ApplicantDetailsModal({
           <div className="header-left">
             <h2>{applicant.firstName} {applicant.lastName}</h2>
             <div className="applicant-subtitle">
-              <span className="job-title">{applicant.jobTitle || "No Position"}</span>
+              <span className="job-title">{applicant.jobTitle || t("No Position")}</span>
               <span 
                 className="status-badge" 
                 style={{ backgroundColor: getStatusColor(applicant.interviewStatus) }}
@@ -214,19 +216,19 @@ function ApplicantDetailsModal({
               className={`tab-btn ${activeTab === "overview" ? "active" : ""}`}
               onClick={() => setActiveTab("overview")}
             >
-              Overview
+              {t("Overview")}
             </button>
             <button 
               className={`tab-btn ${activeTab === "resume" ? "active" : ""}`}
               onClick={() => setActiveTab("resume")}
             >
-              Resume
+              {t("Resume")}
             </button>
             <button 
               className={`tab-btn ${activeTab === "test" ? "active" : ""}`}
               onClick={() => setActiveTab("test")}
             >
-              Test Results
+              {t("Test Results")}
             </button>
           </div>
 
@@ -236,30 +238,30 @@ function ApplicantDetailsModal({
               <div className="overview-content">
                 {/* Basic Information */}
                 <div className="info-section">
-                  <h3>Basic Information</h3>
+                  <h3>{t("Basic Information")}</h3>
                   <div className="info-grid">
                     <div className="info-item">
-                      <label>Email</label>
+                      <label>{t("Email")}</label>
                       <p>{applicant.email}</p>
                     </div>
                     <div className="info-item">
-                      <label>Phone</label>
-                      <p>{applicant.phone || "Not provided"}</p>
+                      <label>{t("estimated_salary")}</label>
+                      <p>{applicant.estimated_salary+"$" || t("Not provided")}</p>
                     </div>
                     <div className="info-item">
-                      <label>Applied Date</label>
+                      <label>{t("Applied Date")}</label>
                       <p>{new Date(applicant.appliedAt).toLocaleDateString()}</p>
                     </div>
                     <div className="info-item">
-                      <label>Experience</label>
-                      <p>{applicant.resume?.experience_years || 0} years</p>
+                      <label>{t("Experience")}</label>
+                      <p>{applicant.resume?.experience_years || 0} {t("years")}</p>
                     </div>
                     <div className="info-item">
-                      <label>Location</label>
-                      <p>{applicant.resume?.location || "Not specified"}</p>
+                      <label>{t("Location")}</label>
+                      <p>{applicant.resume?.location || t("Not specified")}</p>
                     </div>
                     <div className="info-item">
-                      <label>Test Score</label>
+                      <label>{t("Test Score")}</label>
                       <p className={`test-score-detail ${applicant.testScore >= 80 ? 'high' : applicant.testScore >= 60 ? 'medium' : 'low'}`}>
                         {applicant.testScore ? `${applicant.testScore}%` : "N/A"}
                       </p>
@@ -269,32 +271,32 @@ function ApplicantDetailsModal({
 
                 {/* Skills */}
                 <div className="info-section">
-                  <h3>Skills</h3>
+                  <h3>{t("Skills")}</h3>
                   <div className="skills-container">
                     {applicant.resume?.extracted_skills?.map((skill, index) => (
                       <span key={index} className="skill-tag-large">{skill}</span>
-                    )) || <p className="no-data">No skills listed</p>}
+                    )) || <p className="no-data">{t("No skills listed")}</p>}
                   </div>
                 </div>
 
                 {/* Education */}
                 <div className="info-section">
-                  <h3>Education</h3>
+                  <h3>{t("Education")}</h3>
                   <div className="education-list">
                     {applicant.resume?.education?.map((edu, index) => (
                       <div key={index} className="education-item">
                         <div className="education-icon">🎓</div>
                         <div className="education-text">{edu}</div>
                       </div>
-                    )) || <p className="no-data">No education information</p>}
+                    )) || <p className="no-data">{t("No education information")}</p>}
                   </div>
                 </div>
 
                 {/* Summary */}
                 <div className="info-section">
-                  <h3>Resume Summary</h3>
+                  <h3>{t("Resume Summary")}</h3>
                   <div className="summary-box">
-                    <p>{applicant.resume?.summary || "No summary available"}</p>
+                    <p>{applicant.resume?.summary || t("No summary available")}</p>
                   </div>
                 </div>
               </div>
@@ -304,31 +306,31 @@ function ApplicantDetailsModal({
               <div className="resume-content">
                 {/* Cover Letter */}
                 <div className="info-section">
-                  <h3>Cover Letter</h3>
+                  <h3>{t("Cover Letter")}</h3>
                   <div className="cover-letter-box">
-                    <p>{applicant.coverLetter || "No cover letter provided"}</p>
+                    <p>{applicant.coverLetter || t("No cover letter provided")}</p>
                   </div>
                 </div>
 
                 {/* Resume Actions */}
                 <div className="info-section">
-                  <h3>Resume Document</h3>
+                  <h3>{t("Resume Document")}</h3>
                   <div className="resume-actions">
                     {loadingResume ? (
                       <div className="loading-resume">
-                        <p>Loading resume...</p>
+                        <p>{t("Loading resume...")}</p>
                       </div>
                     ) : resumeUrl ? (
                       <>
                         <button className="btn-view-resume" onClick={handleViewResume}>
-                          📄 View Resume
+                          📄 {t("View Resume")}
                         </button>
                         <button className="btn-download-resume" onClick={handleDownloadResume}>
-                          ⬇️ Download Resume
+                          ⬇️ {t("Download Resume")}
                         </button>
                       </>
                     ) : (
-                      <p className="no-data">No resume uploaded</p>
+                      <p className="no-data">{t("No resume uploaded")}</p>
                     )}
                   </div>
                 </div>
@@ -339,7 +341,7 @@ function ApplicantDetailsModal({
               <div className="test-content">
                 {/* Test Score */}
                 <div className="info-section">
-                  <h3>Test Results</h3>
+                  <h3>{t("Test Results")}</h3>
                   <div className="test-score-display">
                     <div className="score-circle">
                       <span className="score-percentage">
@@ -348,9 +350,9 @@ function ApplicantDetailsModal({
                     </div>
                     <div className="score-label">
                       {applicant.testScore ? (
-                        applicant.testScore >= 80 ? "Excellent" :
-                        applicant.testScore >= 60 ? "Good" : "Needs Improvement"
-                      ) : "Not Tested"}
+                        applicant.testScore >= 80 ? t("Excellent") :
+                        applicant.testScore >= 60 ? t("Good") : t("Needs Improvement")
+                      ) : t("Not Tested")}
                     </div>
                   </div>
                 </div>
@@ -358,7 +360,7 @@ function ApplicantDetailsModal({
                 {/* Test Answers */}
                 {applicant.testAnswers && applicant.testAnswers.length > 0 && (
                   <div className="info-section">
-                    <h3>Test Answers</h3>
+                    <h3>{t("Test Answers")}</h3>
                     <div className="test-answers">
                       {applicant.testAnswers.map((answer, index) => (
                         <div key={index} className="test-answer-item">
@@ -376,7 +378,7 @@ function ApplicantDetailsModal({
 
                 {(!applicant.testAnswers || applicant.testAnswers.length === 0) && (
                   <div className="no-test-data">
-                    <p>No test answers available</p>
+                    <p>{t("No test answers available")}</p>
                   </div>
                 )}
               </div>
@@ -386,11 +388,11 @@ function ApplicantDetailsModal({
           {/* Rejection Details (if rejected) */}
           {applicant.interviewStatus === "rejected" && (
             <div className="rejection-section">
-              <h3>Rejection Details</h3>
+              <h3>{t("Rejection Details")}</h3>
               <div className="rejection-info">
-                <p><strong>Reason:</strong> {applicant.rejectionReason || "No reason provided"}</p>
+                <p><strong>{t("Reason")}:</strong> {applicant.rejectionReason || t("No reason provided")}</p>
                 <div className="email-notice">
-                  <p><small>📧 A rejection email was sent to the applicant.</small></p>
+                  <p><small>📧 {t("A rejection email was sent to the applicant.")}</small></p>
                 </div>
               </div>
             </div>
@@ -407,7 +409,7 @@ function ApplicantDetailsModal({
                   onClose();
                 }}
               >
-                Reject Applicant
+                {t("Reject Applicant")}
               </button>
             )}
           </div>
@@ -415,7 +417,7 @@ function ApplicantDetailsModal({
           <div className="footer-right">
             {getCurrentActions()}
             <button className="btn-close-modal" onClick={onClose}>
-              Close
+              {t("Close")}
             </button>
           </div>
         </div>

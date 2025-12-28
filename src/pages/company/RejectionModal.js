@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import "./RejectionModal.css";
 
 function RejectionModal({ isOpen, onClose, applicant, onReject }) {
+  const { t } = useTranslation();
   const [rejectionReason, setRejectionReason] = useState("");
   const [customReason, setCustomReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -9,21 +11,21 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
   if (!isOpen) return null;
 
   const predefinedReasons = [
-    "Insufficient experience",
-    "Skills not matching job requirements",
-    "Found a more suitable candidate",
-    "Position has been filled",
-    "Budget constraints",
-    "Other"
+    t("Insufficient experience"),
+    t("Skills not matching job requirements"),
+    t("Found a more suitable candidate"),
+    t("Position has been filled"),
+    t("Budget constraints"),
+    t("Other")
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const finalReason = rejectionReason === "Other" ? customReason : rejectionReason;
+    const finalReason = rejectionReason === t("Other") ? customReason : rejectionReason;
     
     if (!finalReason.trim()) {
-      alert("Please provide a rejection reason");
+      alert(t("Please provide a rejection reason"));
       return;
     }
 
@@ -36,7 +38,7 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
       onClose();
     } catch (error) {
       console.error("Error rejecting applicant:", error);
-      alert("Failed to reject applicant. Please try again.");
+      alert(t("Failed to reject applicant. Please try again."));
     } finally {
       setIsSubmitting(false);
     }
@@ -46,24 +48,24 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
     <div className="modal-overlay">
       <div className="rejection-modal">
         <div className="modal-header">
-          <h2>Reject Applicant</h2>
+          <h2>{t("Reject Applicant")}</h2>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
         
         <div className="modal-body">
           <div className="applicant-info">
             <h3>{applicant.firstName} {applicant.lastName}</h3>
-            <p>Position: {applicant.jobTitle}</p>
+            <p>{t("Position")}: {applicant.jobTitle}</p>
             <div className="warning-box">
               <div className="warning-icon">⚠️</div>
               <div className="warning-content">
-                <p className="warning-title">Important Notice</p>
-                <p className="warning-text">This action will:</p>
+                <p className="warning-title">{t("Important Notice")}</p>
+                <p className="warning-text">{t("This action will:")}</p>
                 <ul className="action-list">
-                  <li>Change applicant status to "Rejected"</li>
-                  <li><strong>Send a rejection email to the applicant</strong></li>
-                  <li>Remove them from active candidate lists</li>
-                  <li>Cancel any scheduled interviews</li>
+                  <li>{t('Change applicant status to "Rejected"')}</li>
+                  <li><strong>{t("Send a rejection email to the applicant")}</strong></li>
+                  <li>{t("Remove them from active candidate lists")}</li>
+                  <li>{t("Cancel any scheduled interviews")}</li>
                 </ul>
               </div>
             </div>
@@ -71,7 +73,7 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
           
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Select Rejection Reason *</label>
+              <label>{t("Select Rejection Reason *")}</label>
               <div className="reasons-list">
                 {predefinedReasons.map((reason, index) => (
                   <div key={index} className="reason-option">
@@ -89,14 +91,14 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
               </div>
             </div>
             
-            {rejectionReason === "Other" && (
+            {rejectionReason === t("Other") && (
               <div className="form-group">
-                <label htmlFor="customReason">Custom Reason *</label>
+                <label htmlFor="customReason">{t("Custom Reason *")}</label>
                 <textarea
                   id="customReason"
                   value={customReason}
                   onChange={(e) => setCustomReason(e.target.value)}
-                  placeholder="Please specify the rejection reason..."
+                  placeholder={t("Please specify the rejection reason...")}
                   rows="3"
                   required
                 />
@@ -104,24 +106,24 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
             )}
             
             <div className="email-preview">
-              <h4>Email Preview:</h4>
+              <h4>{t("Email Preview:")}</h4>
               <div className="preview-content">
-                <p><strong>Subject:</strong> Update on Your Application for {applicant.jobTitle}</p>
-                <p><strong>To:</strong> {applicant.firstName} {applicant.lastName}</p>
-                <p>Dear {applicant.firstName},</p>
-                <p>Thank you for your interest in the {applicant.jobTitle} position.</p>
-                <p>After careful consideration, we regret to inform you that we have decided not to move forward with your application at this time.</p>
-                <p><strong>Reason:</strong> {rejectionReason === "Other" ? customReason : rejectionReason}</p>
-                <p>We appreciate the time you invested in your application and wish you the best in your job search.</p>
+                <p><strong>{t("Subject")}:</strong> {t("Update on Your Application for")} {applicant.jobTitle}</p>
+                <p><strong>{t("To")}:</strong> {applicant.firstName} {applicant.lastName}</p>
+                <p>{t("Dear")} {applicant.firstName},</p>
+                <p>{t("Thank you for your interest in the")} {applicant.jobTitle} {t("position")}.</p>
+                <p>{t("After careful consideration, we regret to inform you that we have decided not to move forward with your application at this time.")}</p>
+                <p><strong>{t("Reason")}:</strong> {rejectionReason === t("Other") ? customReason : rejectionReason}</p>
+                <p>{t("We appreciate the time you invested in your application and wish you the best in your job search.")}</p>
               </div>
             </div>
             
             <div className="modal-footer">
               <button type="button" className="btn-cancel" onClick={onClose}>
-                Cancel
+                {t("Cancel")}
               </button>
               <button type="submit" className="btn-submit" disabled={isSubmitting}>
-                {isSubmitting ? "Processing..." : "Reject Applicant & Send Email"}
+                {isSubmitting ? t("Processing...") : t("Reject Applicant & Send Email")}
               </button>
             </div>
           </form>

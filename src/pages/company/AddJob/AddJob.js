@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import "./AddJop.css";
 import InputField from "./InputField";
 
 export default function AddJob() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [showQuestions, setShowQuestions] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -64,10 +66,10 @@ export default function AddJob() {
     if (!companyId) {
       setMessage({
         type: "error",
-        text: "❌ Please login as a company to add jobs"
+        text: t("❌ Please login as a company to add jobs")
       });
     }
-  }, [companyId, navigate]);
+  }, [companyId, navigate, t]);
 
   // إخفاء تلقائي بعد 3 ثواني
   useEffect(() => {
@@ -83,32 +85,32 @@ export default function AddJob() {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!jobData.title.trim()) newErrors.title = "Job Title is required";
-    if (!jobData.skills.trim()) newErrors.skills = "Required Skills is required";
-    if (!jobData.experience.trim()) newErrors.experience = "Required Experience is required";
-    if (!jobData.education.trim()) newErrors.education = "Required Education is required";
-    if (!jobData.description.trim()) newErrors.description = "Job Description is required";
-    if (!jobData.location.trim()) newErrors.location = "Location is required";
+    if (!jobData.title.trim()) newErrors.title = t("Job Title is required");
+    if (!jobData.skills.trim()) newErrors.skills = t("Required Skills is required");
+    if (!jobData.experience.trim()) newErrors.experience = t("Required Experience is required");
+    if (!jobData.education.trim()) newErrors.education = t("Required Education is required");
+    if (!jobData.description.trim()) newErrors.description = t("Job Description is required");
+    if (!jobData.location.trim()) newErrors.location = t("Location is required");
     
     // التحقق من أن requiredExperience هو رقم
     if (jobData.experience.trim()) {
       const experienceNum = parseFloat(jobData.experience);
       if (isNaN(experienceNum)) {
-        newErrors.experience = "Required Experience must be a number";
+        newErrors.experience = t("Required Experience must be a number");
       }
     }
     
     if (showQuestions) {
       jobData.questions.forEach((question, index) => {
         if (!question.text.trim()) {
-          newErrors[`question_${index}`] = `Question ${index + 1} is required`;
+          newErrors[`question_${index}`] = `${t("Question")} ${index + 1} ${t("is required")}`;
         }
         if (!question.correctAnswer.trim()) {
-          newErrors[`correct_${index}`] = `Correct answer for Question ${index + 1} is required`;
+          newErrors[`correct_${index}`] = `${t("Correct answer for Question")} ${index + 1} ${t("is required")}`;
         }
         const hasWrongAnswer = question.wrongAnswers.some(answer => answer.trim() !== "");
         if (!hasWrongAnswer) {
-          newErrors[`wrong_${index}`] = `At least one wrong answer is required for Question ${index + 1}`;
+          newErrors[`wrong_${index}`] = `${t("At least one wrong answer is required for Question")} ${index + 1}`;
         }
       });
     }
@@ -146,12 +148,12 @@ export default function AddJob() {
     const file = e.target.files[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
-        setMessage({ type: "error", text: "❌ Please upload an image file" });
+        setMessage({ type: "error", text: t("❌ Please upload an image file") });
         return;
       }
       
       if (file.size > 5 * 1024 * 1024) {
-        setMessage({ type: "error", text: "❌ File size should be less than 5MB" });
+        setMessage({ type: "error", text: t("❌ File size should be less than 5MB") });
         return;
       }
       
@@ -162,7 +164,7 @@ export default function AddJob() {
           logoPreview: event.target.result,
           logoFile: file
         });
-        setMessage({ type: "success", text: "✅ Logo uploaded successfully!" });
+        setMessage({ type: "success", text: t("✅ Logo uploaded successfully!") });
       };
       reader.readAsDataURL(file);
     }
@@ -224,7 +226,7 @@ export default function AddJob() {
     if (!validateForm()) {
       setMessage({
         type: "error",
-        text: "⚠️ Please fill all required fields correctly"
+        text: t("⚠️ Please fill all required fields correctly")
       });
       return;
     }
@@ -233,7 +235,7 @@ export default function AddJob() {
     if (!companyId) {
       setMessage({
         type: "error",
-        text: "❌ Company information not found. Please login again as a company."
+        text: t("❌ Company information not found. Please login again as a company.")
       });
       setTimeout(() => navigate('/login'), 2000);
       return;
@@ -293,9 +295,9 @@ export default function AddJob() {
         
         try {
           const errorData = JSON.parse(errorText);
-          throw new Error(errorData.message || 'Failed to create job');
+          throw new Error(errorData.message || t('Failed to create job'));
         } catch {
-          throw new Error('Failed to create job. Please try again.');
+          throw new Error(t('Failed to create job. Please try again.'));
         }
       }
 
@@ -308,7 +310,7 @@ export default function AddJob() {
       const jobId = jobResult.id || jobResult.jobId;
 
       if (!jobId) {
-        throw new Error('Job ID not received from server');
+        throw new Error(t('Job ID not received from server'));
       }
 
       console.log('✅ Job created successfully with ID:', jobId);
@@ -364,7 +366,7 @@ export default function AddJob() {
               console.error('Raw error text:', errorText);
             }
             
-            throw new Error(`Failed to add question ${index + 1}`);
+            throw new Error(`${t('Failed to add question')} ${index + 1}`);
           }
 
           const questionResult = await addQuestionResponse.json();
@@ -381,7 +383,7 @@ export default function AddJob() {
 
       setMessage({ 
         type: "success", 
-        text: "✅ Job and questions submitted successfully!" 
+        text: t("✅ Job and questions submitted successfully!") 
       });
       
       setTimeout(() => {
@@ -394,7 +396,7 @@ export default function AddJob() {
       console.error('❌ SUBMISSION ERROR:', err);
       setMessage({
         type: "error",
-        text: `❌ ${err.message || 'Failed to submit. Please try again.'}`
+        text: `❌ ${err.message || t('Failed to submit. Please try again.')}`
       });
       setIsSubmitting(false);
     }
@@ -402,13 +404,13 @@ export default function AddJob() {
 
   return (
     <div className="ajp-container">
-      <h1 className="ajp-page-title">Add new Job application</h1>
+      <h1 className="ajp-page-title">{t("Add new Job application")}</h1>
 
       <div className="ajp-form-wrapper">
         {/* LEFT SIDE FORM */}
         <div className="ajp-left-section">
           <InputField
-            label="Job Title"
+            label={t("Job Title")}
             type="text"
             value={jobData.title}
             onChange={(e) => {
@@ -416,12 +418,12 @@ export default function AddJob() {
               if (errors.title) setErrors({ ...errors, title: null });
             }}
             error={errors.title}
-            placeholder="Enter job title"
+            placeholder={t("Enter job title")}
             required
           />
           
           <InputField
-            label="Required Skills"
+            label={t("Required Skills")}
             type="text"
             value={jobData.skills}
             onChange={(e) => {
@@ -429,12 +431,12 @@ export default function AddJob() {
               if (errors.skills) setErrors({ ...errors, skills: null });
             }}
             error={errors.skills}
-            placeholder="Enter required skills separated by commas (e.g., JavaScript, React, Node.js)"
+            placeholder={t("Enter required skills separated by commas (e.g., JavaScript, React, Node.js)")}
             required
           />
           
           <InputField
-            label="Required Experience (years)"
+            label={t("Required Experience (years)")}
             type="number"
             step="0.5"
             value={jobData.experience}
@@ -443,12 +445,12 @@ export default function AddJob() {
               if (errors.experience) setErrors({ ...errors, experience: null });
             }}
             error={errors.experience}
-            placeholder="Enter required experience in years (e.g., 2.5)"
+            placeholder={t("Enter required experience in years (e.g., 2.5)")}
             required
           />
           
           <InputField
-            label="Required Education"
+            label={t("Required Education")}
             type="text"
             value={jobData.education}
             onChange={(e) => {
@@ -456,12 +458,12 @@ export default function AddJob() {
               if (errors.education) setErrors({ ...errors, education: null });
             }}
             error={errors.education}
-            placeholder="Enter required education separated by commas (e.g., Bachelor Degree, Master Degree)"
+            placeholder={t("Enter required education separated by commas (e.g., Bachelor Degree, Master Degree)")}
             required
           />
           
           <InputField
-            label="Job Description"
+            label={t("Job Description")}
             type="text"
             value={jobData.description}
             onChange={(e) => {
@@ -469,12 +471,12 @@ export default function AddJob() {
               if (errors.description) setErrors({ ...errors, description: null });
             }}
             error={errors.description}
-            placeholder="Enter job description"
+            placeholder={t("Enter job description")}
             required
           />
           
           <InputField
-            label="Location"
+            label={t("Location")}
             type="text"
             value={jobData.location}
             onChange={(e) => {
@@ -482,13 +484,13 @@ export default function AddJob() {
               if (errors.location) setErrors({ ...errors, location: null });
             }}
             error={errors.location}
-            placeholder="Enter job location"
+            placeholder={t("Enter job location")}
             required
           />
 
           {/* Employment Type Selection */}
           <div className="ajp-employment-section">
-            <label className="ajp-employment-label">Employment Type</label>
+            <label className="ajp-employment-label">{t("Employment Type")}</label>
             <div className="ajp-employment-options">
               <label className="ajp-employment-option">
                 <input
@@ -499,7 +501,7 @@ export default function AddJob() {
                   onChange={(e) => setEmploymentType(e.target.value)}
                   className="ajp-employment-radio"
                 />
-                <span className="ajp-employment-text">Part-time</span>
+                <span className="ajp-employment-text">{t("Part-time")}</span>
               </label>
               
               <label className="ajp-employment-option">
@@ -511,7 +513,7 @@ export default function AddJob() {
                   onChange={(e) => setEmploymentType(e.target.value)}
                   className="ajp-employment-radio"
                 />
-                <span className="ajp-employment-text">Full-time</span>
+                <span className="ajp-employment-text">{t("Full-time")}</span>
               </label>
               
               <label className="ajp-employment-option">
@@ -523,7 +525,7 @@ export default function AddJob() {
                   onChange={(e) => setEmploymentType(e.target.value)}
                   className="ajp-employment-radio"
                 />
-                <span className="ajp-employment-text">On-site</span>
+                <span className="ajp-employment-text">{t("On-site")}</span>
               </label>
               
               <label className="ajp-employment-option">
@@ -535,14 +537,14 @@ export default function AddJob() {
                   onChange={(e) => setEmploymentType(e.target.value)}
                   className="ajp-employment-radio"
                 />
-                <span className="ajp-employment-text">Remote</span>
+                <span className="ajp-employment-text">{t("Remote")}</span>
               </label>
             </div>
           </div>
 
           {/* Upload Company Logo */}
           <div className="ajp-upload-section">
-            <label className="ajp-upload-label">Upload Company Logo/Image</label>
+            <label className="ajp-upload-label">{t("Upload Company Logo/Image")}</label>
             <div 
               className="ajp-upload-box"
               onClick={() => fileInputRef.current.click()}
@@ -555,13 +557,13 @@ export default function AddJob() {
                     alt="Company logo preview" 
                     className="ajp-logo-image"
                   />
-                  <span className="ajp-change-text">Change image</span>
+                  <span className="ajp-change-text">{t("Change image")}</span>
                 </div>
               ) : (
                 <>
                   <span className="ajp-upload-icon">📁</span>
-                  <span className="ajp-upload-text">Click to upload</span>
-                  <small className="ajp-upload-hint">PNG, JPG up to 5MB</small>
+                  <span className="ajp-upload-text">{t("Click to upload")}</span>
+                  <small className="ajp-upload-hint">{t("PNG, JPG up to 5MB")}</small>
                 </>
               )}
               <input
@@ -578,7 +580,7 @@ export default function AddJob() {
         {/* RIGHT SIDE SCREENING TEST */}
         <div className="ajp-right-section">
           <h3 className="ajp-section-title">
-            Screening Test <span className="ajp-optional-text">(Optional)</span>
+            {t("Screening Test")} <span className="ajp-optional-text">({t("Optional")})</span>
           </h3>
 
           {!showQuestions ? (
@@ -588,14 +590,14 @@ export default function AddJob() {
               style={{ cursor: 'pointer' }}
             >
               <span className="ajp-plus-icon">+</span>
-              <p className="ajp-add-test-text">Add Screening Test</p>
+              <p className="ajp-add-test-text">{t("Add Screening Test")}</p>
             </div>
           ) : (
             <>
               {/* Questions Slider */}
               <div className="ajp-questions-slider">
                 <div className="ajp-question-indicator">
-                  Question {currentQuestionIndex + 1} of {jobData.questions.length}
+                  {t("Question")} {currentQuestionIndex + 1} {t("of")} {jobData.questions.length}
                 </div>
                 
                 <div className="ajp-question-slide">
@@ -605,7 +607,7 @@ export default function AddJob() {
                         type="text"
                         value={jobData.questions[currentQuestionIndex].text}
                         onChange={(e) => handleQuestionChange(currentQuestionIndex, 'text', e.target.value)}
-                        placeholder="Enter question text"
+                        placeholder={t("Enter question text")}
                         className={errors[`question_${currentQuestionIndex}`] ? 'ajp-input-error' : ''}
                       />
                       {errors[`question_${currentQuestionIndex}`] && (
@@ -614,7 +616,7 @@ export default function AddJob() {
                     </div>
                     
                     <div className="ajp-choices-section">
-                      <p className="ajp-choices-label">Choices:</p>
+                      <p className="ajp-choices-label">{t("Choices:")}</p>
                       
                       {/* Correct Answer */}
                       <div className="ajp-answer-input ajp-correct-answer">
@@ -622,7 +624,7 @@ export default function AddJob() {
                           type="text"
                           value={jobData.questions[currentQuestionIndex].correctAnswer}
                           onChange={(e) => handleQuestionChange(currentQuestionIndex, 'correctAnswer', e.target.value)}
-                          placeholder="Enter correct answer here"
+                          placeholder={t("Enter correct answer here")}
                           className={errors[`correct_${currentQuestionIndex}`] ? 'ajp-input-error' : ''}
                         />
                         {errors[`correct_${currentQuestionIndex}`] && (
@@ -637,7 +639,7 @@ export default function AddJob() {
                             type="text"
                             value={wrongAnswer}
                             onChange={(e) => handleQuestionChange(currentQuestionIndex, `wrong_${wrongIndex}`, e.target.value)}
-                            placeholder="Enter wrong answer here"
+                            placeholder={t("Enter wrong answer here")}
                           />
                         </div>
                       ))}
@@ -656,7 +658,7 @@ export default function AddJob() {
                     onClick={goToPrevQuestion}
                     disabled={currentQuestionIndex === 0}
                   >
-                    ← Previous
+                    ← {t("Previous")}
                   </button>
                   
                   <div className="ajp-slider-dots">
@@ -676,14 +678,14 @@ export default function AddJob() {
                     onClick={goToNextQuestion}
                     disabled={currentQuestionIndex === jobData.questions.length - 1}
                   >
-                    Next →
+                    {t("Next")} →
                   </button>
                 </div>
               </div>
 
               {/* Time Selection */}
               <div className="ajp-time-selection">
-                <p className="ajp-time-label">Select test time limit:</p>
+                <p className="ajp-time-label">{t("Select test time limit:")}</p>
                 <div className="ajp-time-options">
                   <label className="ajp-time-option">
                     <input
@@ -700,7 +702,7 @@ export default function AddJob() {
                       }}
                       className="ajp-time-radio"
                     />
-                    <span className="ajp-time-text">5 minutes</span>
+                    <span className="ajp-time-text">{t("5 minutes")}</span>
                   </label>
                   
                   <label className="ajp-time-option">
@@ -718,13 +720,13 @@ export default function AddJob() {
                       }}
                       className="ajp-time-radio"
                     />
-                    <span className="ajp-time-text">7 minutes</span>
+                    <span className="ajp-time-text">{t("7 minutes")}</span>
                   </label>
                 </div>
                 
                 {/* Display current value for debugging */}
                 <div className="ajp-debug-info">
-                  <small>Current testDuration: {jobData.testDuration} (type: {typeof jobData.testDuration})</small>
+                  <small>{t("Current testDuration:")} {jobData.testDuration} ({t("type:")} {typeof jobData.testDuration})</small>
                 </div>
               </div>
             </>
@@ -746,16 +748,16 @@ export default function AddJob() {
               {isSubmitting ? (
                 <>
                   <span className="ajp-spinner"></span>
-                  Submitting...
+                  {t("Submitting...")}
                 </>
               ) : (
-                'Submit Job'
+                t('Submit Job')
               )}
             </button>
             
             {!companyId && (
               <p className="ajp-warning-text">
-                ⚠️ Please login as a company to submit jobs
+                ⚠️ {t("Please login as a company to submit jobs")}
               </p>
             )}
           </div>

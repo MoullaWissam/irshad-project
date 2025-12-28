@@ -5,19 +5,22 @@
 
 import React from "react";
 import checkicon from "../../assets/icons/check.svg"
-
-const tips = [
-  "Keep it updated and include your latest jobs and skills",
-  "Add your details: Career Objective, Work Experience, Education, Skills, Certifications, Projects",
-  "Use simple formatting, plain text, and clear headings",
-  "Highlight your skills — they help AI match the right jobs",
-  "Review the recommended jobs and tips",
-];
+import { useTranslation } from 'react-i18next'; // أضف هذا الاستيراد
 
 const TipsSection = () => {
+  const { t } = useTranslation(); // أضف هذا
+
+  const tips = [
+    t("Keep it updated and include your latest jobs and skills"),
+    t("Add your details: Career Objective, Work Experience, Education, Skills, Certifications, Projects"),
+    t("Use simple formatting, plain text, and clear headings"),
+    t("Highlight your skills — they help AI match the right jobs"),
+    t("Review the recommended jobs and tips"),
+  ];
+
   return (
     <div className="upload-resume-tips-box">
-      <h4>Tips to Improve Your AI Experience</h4>
+      <h4>{t("Tips to Improve Your AI Experience")}</h4>
 
       {/* قائمة النصائح */}
       <ul>

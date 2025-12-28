@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
-// import axios from "axios";
 import "./SidebarMenu.css";
 
 // Icons Imports
@@ -15,6 +15,7 @@ import addJobIcon from "../../assets/icons/addjobs.svg";
 import dropdownIcon from "../../assets/icons/dropdown.svg";
 
 function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
+  const { t } = useTranslation();
   const [openDropdowns, setOpenDropdowns] = useState({
     applicants: false,
   });
@@ -85,27 +86,27 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
 
   // تعريف عناصر القائمة بناءً على الدور
   const menuItems = userRole === "company" ? [
-    { path: "/company/dashboard", text: "Dashboard", icon: mainIcon },
-    { path: "/company/my-jobs", text: "Add Job", icon: addJobIcon },
+    { path: "/company/dashboard", text: t("Dashboard"), icon: mainIcon },
+    { path: "/company/my-jobs", text: t("Add Job"), icon: addJobIcon },
     {
-      text: "Applicants",
+      text: t("Applicants"),
       icon: applicantsIcon,
       isDropdown: true,
       dropdownName: "applicants",
       items: loading ? 
-        [{ path: "#", text: "Loading..." }] :
+        [{ path: "#", text: t("Loading...") }] :
         companyJobs.map(job => ({
           path: `/company/applicants/job/${job.id}`,
           text: job.title,
           jobId: job.id
         }))
     },
-    { path: "/company/settings", text: "Settings", icon: settingsIcon },
+    { path: "/company/settings", text: t("Settings"), icon: settingsIcon },
   ] : [
-    { path: "/upload-resume", text: "Main", icon: mainIcon },
-    { path: "/matches", text: "Matches", icon: matchesIcon },
-    { path: "/jobs", text: "Jobs", icon: searchIcon },
-    { path: "/applications", text: "Applications", icon: applicationsIcon },
+    { path: "/upload-resume", text: t("Main"), icon: mainIcon },
+    { path: "/matches", text: t("Matches"), icon: matchesIcon },
+    { path: "/jobs", text: t("Jobs"), icon: searchIcon },
+    { path: "/applications", text: t("Applications"), icon: applicationsIcon },
   ];
 
   return (

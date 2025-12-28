@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import "./SidebarFooter.css";
 
@@ -7,6 +8,7 @@ import iconLogout from "../../assets/icons/logout.png";
 import defaultUserIcon from "../../assets/icons/profile .png";
 
 function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   // جلب بيانات المستخدم من localStorage
@@ -45,14 +47,14 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       name: "Michael Smith",
       email: "michaelsmith12@gmail.com",
       avatar: defaultUserIcon,
-      roleDisplay: "Job Seeker",
+      roleDisplay: t("Job Seeker"),
       hasAvatar: false
     },
     company: {
       name: "Tech Solutions Inc.",
       email: "contact@techsolutions.com",
       avatar: defaultUserIcon,
-      roleDisplay: "Company",
+      roleDisplay: t("Company"),
       hasAvatar: false
     }
   };
@@ -89,7 +91,7 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
         hasAvatar: hasAvatar
       };
       
-      roleDisplayText = "Company";
+      roleDisplayText = t("Company");
     } else {
       // استخدام بيانات المستخدم العادي من localStorage
       const userData = storedData.data;
@@ -115,12 +117,12 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
         avatar: avatarPath,
         hasAvatar: hasAvatar
       };
-      roleDisplayText = "Job Seeker";
+      roleDisplayText = t("Job Seeker");
     }
   } else {
     // استخدام البيانات الافتراضية
     user = defaultUserData[userRole] || defaultUserData.jobSeeker;
-    roleDisplayText = userRole === "company" ? "Company" : "Job Seeker";
+    roleDisplayText = userRole === "company" ? t("Company") : t("Job Seeker");
   }
 
   const handleLogout = (e) => {
@@ -172,7 +174,7 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       >
         <img src={iconSettings} alt="Settings" className="sidebar-footer-icon" />
         {!isCollapsed && <span className="sidebar-footer-text">
-          {userRole === "company" ? "Company Settings" : "Settings"}
+          {userRole === "company" ? t("Company Settings") : t("Settings")}
         </span>}
       </div>
 
@@ -182,7 +184,7 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
         onClick={handleLogout}
       >
         <img src={iconLogout} alt="Logout" className="sidebar-footer-icon" />
-        {!isCollapsed && <span className="sidebar-footer-text">Logout</span>}
+        {!isCollapsed && <span className="sidebar-footer-text">{t("Logout")}</span>}
       </div>
 
       {/* User info */}

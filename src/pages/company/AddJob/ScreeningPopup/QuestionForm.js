@@ -1,4 +1,6 @@
+// QuestionForm.js
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 export default function QuestionForm({
   form,
@@ -9,21 +11,23 @@ export default function QuestionForm({
   onUpdate,
   onCancel,
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="question-block" style={{ background: "#27407c" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h4 style={{ margin: 0 }}>
-          {editingIndex >= 0 ? "Edit Question" : "New Question"}
+          {editingIndex >= 0 ? t("Edit Question") : t("New Question")}
         </h4>
         {editingIndex >= 0 && (
           <small style={{ color: "#ffeb99" }}>
-            Editing Q{editingIndex + 1}
+            {t("Editing")} Q{editingIndex + 1}
           </small>
         )}
       </div>
 
       {/* QUESTION */}
-      <label>Question</label>
+      <label>{t("Question")}</label>
       <input
         type="text"
         value={form.question}
@@ -35,7 +39,7 @@ export default function QuestionForm({
       )}
 
       {/* CORRECT ANSWER */}
-      <label style={{ marginTop: 8 }}>Correct Answer</label>
+      <label style={{ marginTop: 8 }}>{t("Correct Answer")}</label>
       <input
         type="text"
         value={form.correct}
@@ -45,7 +49,7 @@ export default function QuestionForm({
       {errors.correct && <small className="error-msg">{errors.correct}</small>}
 
       {/* WRONG ANSWERS */}
-      <label style={{ marginTop: 8 }}>Wrong Answers (at least one)</label>
+      <label style={{ marginTop: 8 }}>{t("Wrong Answers (at least one)")}</label>
 
       <input
         type="text"
@@ -69,15 +73,15 @@ export default function QuestionForm({
         {editingIndex >= 0 ? (
           <>
             <button className="add-btn" onClick={onUpdate}>
-              Update Question
+              {t("Update Question")}
             </button>
             <button className="delete-btn" onClick={onCancel}>
-              Cancel
+              {t("Cancel")}
             </button>
           </>
         ) : (
           <button className="add-btn" onClick={onAdd}>
-            + Add Question
+            + {t("Add Question")}
           </button>
         )}
       </div>

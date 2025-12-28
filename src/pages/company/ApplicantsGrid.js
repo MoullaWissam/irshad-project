@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 import "react-toastify/dist/ReactToastify.css";
 import "./ApplicantsGrid.css";
 import ApplicantsTable from "./ApplicantsTable";
@@ -10,6 +11,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import ApplicantDetailsModal from "./ApplicantDetailsModal";
 
 function ApplicantsGrid() {
+  const { t } = useTranslation();
   const { jobId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -80,7 +82,7 @@ function ApplicantsGrid() {
             firstName: app.user.firstName,
             lastName: app.user.lastName,
             email: app.user.email,
-            phone: app.user.phone || "N/A",
+            estimated_salary: app.estimated_salary || "N/A",
             appliedAt: app.createdAt,
             ranking: ranking,
             interviewStatus: interviewStatus,
@@ -117,11 +119,11 @@ function ApplicantsGrid() {
         }
         
         setApplicants(filteredApplicants);
-        toast.success(`Loaded ${formattedApplicants.length} applicants`);
+        toast.success(`${t("Loaded")} ${formattedApplicants.length} ${t("applicants")}`);
         
       } catch (error) {
         console.error("Error fetching data:", error);
-        toast.error(`Failed to load data: ${error.message}`);
+        toast.error(`${t("Failed to load data:")} ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -130,7 +132,7 @@ function ApplicantsGrid() {
     if (jobId) {
       fetchData();
     }
-  }, [jobId, location.pathname]);
+  }, [jobId, location.pathname, t]);
 
   // جدولة مقابلة
   const handleScheduleInterview = (applicant) => {
@@ -201,12 +203,12 @@ function ApplicantsGrid() {
           : a
       ));
       
-      toast.success("Interview scheduled successfully!");
+      toast.success(t("Interview scheduled successfully!"));
       setShowInterviewModal(false);
       
     } catch (error) {
       console.error("Error scheduling interview:", error);
-      toast.error(`Failed to schedule interview: ${error.message}`);
+      toast.error(`${t("Failed to schedule interview:")} ${error.message}`);
     }
   };
 
@@ -262,12 +264,12 @@ function ApplicantsGrid() {
           : a
       ));
       
-      toast.success("Applicant rejected successfully!");
+      toast.success(t("Applicant rejected successfully!"));
       setShowRejectionModal(false);
       
     } catch (error) {
       console.error("Error rejecting applicant:", error);
-      toast.error(`Failed to reject applicant: ${error.message}`);
+      toast.error(`${t("Failed to reject applicant:")} ${error.message}`);
     }
   };
 
@@ -275,9 +277,9 @@ function ApplicantsGrid() {
   const handleAcceptApplicant = async (applicant) => {
     setSelectedApplicant(applicant);
     setConfirmationData({
-      title: "Accept Applicant",
-      message: `Are you sure you want to accept ${applicant.firstName} ${applicant.lastName} for this position?`,
-      confirmText: "Accept",
+      title: t("Accept Applicant"),
+      message: `${t("Are you sure you want to accept")} ${applicant.firstName} ${applicant.lastName} ${t("for this position?")}`,
+      confirmText: t("Accept"),
       onConfirm: async () => {
         try {
           console.log("Accepting applicant:", applicant);
@@ -314,11 +316,11 @@ function ApplicantsGrid() {
               : a
           ));
           
-          toast.success("Applicant accepted successfully!");
+          toast.success(t("Applicant accepted successfully!"));
           
         } catch (error) {
           console.error("Error accepting applicant:", error);
-          toast.error(`Failed to accept applicant: ${error.message}`);
+          toast.error(`${t("Failed to accept applicant:")} ${error.message}`);
         }
       }
     });
@@ -332,78 +334,78 @@ function ApplicantsGrid() {
   };
 
   // عرض السيرة الذاتية
-const handleViewResume = async (applicant) => {
-  try {
-    console.log("Viewing resume for:", applicant);
-    
-    // الحصول على رابط السيرة الذاتية
-    const resumePath = applicant.resume?.file_path;
-    console.log(resumePath);
-    
-    if (resumePath) {
-      // استخراج اسم الملف من المسار
-      const fileName = resumePath.split('/').pop();
+  const handleViewResume = async (applicant) => {
+    try {
+      console.log("Viewing resume for:", applicant);
       
-      // استخدام الرابط الصحيح
-      const response = await fetch(
-        `http://localhost:3000/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
-        {
-          credentials: "include"
+      // الحصول على رابط السيرة الذاتية
+      const resumePath = applicant.resume?.file_path;
+      console.log(resumePath);
+      
+      if (resumePath) {
+        // استخراج اسم الملف من المسار
+        const fileName = resumePath.split('/').pop();
+        
+        // استخدام الرابط الصحيح
+        const response = await fetch(
+          `http://localhost:3000/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
+          {
+            credentials: "include"
+          }
+        );
+        
+        console.log("Response status:", response.status);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      );
-      
-      console.log("Response status:", response.status);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const blob = await response.blob();
+        console.log("Blob size:", blob.size);
+        
+        // إنشاء رابط للملف
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName || 'resume.pdf');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        
+        // تحرير الذاكرة
+        window.URL.revokeObjectURL(url);
+        
+        toast.success(t("Resume downloaded successfully!"));
+      } else {
+        toast.warning(t("No resume available for this applicant"));
       }
-      
-      const blob = await response.blob();
-      console.log("Blob size:", blob.size);
-      
-      // إنشاء رابط للملف
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', fileName || 'resume.pdf');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      
-      // تحرير الذاكرة
-      window.URL.revokeObjectURL(url);
-      
-      toast.success("Resume downloaded successfully!");
-    } else {
-      toast.warning("No resume available for this applicant");
+    } catch (error) {
+      console.error("Error viewing resume:", error);
+      toast.error(t("Failed to download resume"));
     }
-  } catch (error) {
-    console.error("Error viewing resume:", error);
-    toast.error("Failed to download resume");
-  }
-};
+  };
 
   const getPageTitle = () => {
     if (selectedJobTitle) {
-      return `Applicants for ${selectedJobTitle}`;
+      return `${t("Applicants for")} ${selectedJobTitle}`;
     }
     
     const path = location.pathname;
     if (path.includes("/none")) {
-      return "Applicants - Pending";
+      return t("Applicants - Pending");
     } else if (path.includes("/sent")) {
-      return "Applicants - Interview Request Sent";
+      return t("Applicants - Interview Request Sent");
     } else if (path.includes("/rejected")) {
-      return "Applicants - Rejected";
+      return t("Applicants - Rejected");
     } else if (path.includes("/scheduled")) {
-      return "Applicants - Interview Scheduled";
+      return t("Applicants - Interview Scheduled");
     } else if (path.includes("/accepted")) {
-      return "Applicants - Accepted";
+      return t("Applicants - Accepted");
     } else if (path.includes("/all")) {
-      return "All Applicants";
+      return t("All Applicants");
     }
     
-    return "Applicants";
+    return t("Applicants");
   };
 
   const getApplicantsCountByStatus = () => {
@@ -427,8 +429,8 @@ const handleViewResume = async (applicant) => {
         <h1>{getPageTitle()}</h1>
         {selectedJobTitle && (
           <div className="job-info-badge">
-            <span>Job: {selectedJobTitle}</span>
-            <span className="applicants-count">{allApplicants.length} applicants</span>
+            <span>{t("Job")}: {selectedJobTitle}</span>
+            <span className="applicants-count">{allApplicants.length} {t("applicants")}</span>
           </div>
         )}
       </div>
@@ -440,31 +442,31 @@ const handleViewResume = async (applicant) => {
             href={`/company/applicants/job/${jobId}/all`} 
             className={`status-filter-btn ${location.pathname.includes('/all') ? 'active' : ''}`}
           >
-            All ({getApplicantsCountByStatus().all})
+            {t("All")} ({getApplicantsCountByStatus().all})
           </a>
           <a 
             href={`/company/applicants/job/${jobId}/pending`} 
             className={`status-filter-btn ${location.pathname.includes('/pending') ? 'active' : ''}`}
           >
-            Pending ({getApplicantsCountByStatus().pending})
+            {t("Pending")} ({getApplicantsCountByStatus().pending})
           </a>
           <a 
             href={`/company/applicants/job/${jobId}/scheduled`} 
             className={`status-filter-btn ${location.pathname.includes('/scheduled') ? 'active' : ''}`}
           >
-            Scheduled ({getApplicantsCountByStatus().scheduled})
+            {t("Scheduled")} ({getApplicantsCountByStatus().scheduled})
           </a>
           <a 
             href={`/company/applicants/job/${jobId}/rejected`} 
             className={`status-filter-btn ${location.pathname.includes('/rejected') ? 'active' : ''}`}
           >
-            Rejected ({getApplicantsCountByStatus().rejected})
+            {t("Rejected")} ({getApplicantsCountByStatus().rejected})
           </a>
           <a 
             href={`/company/applicants/job/${jobId}/accepted`} 
             className={`status-filter-btn ${location.pathname.includes('/accepted') ? 'active' : ''}`}
           >
-            Accepted ({getApplicantsCountByStatus().accepted})
+            {t("Accepted")} ({getApplicantsCountByStatus().accepted})
           </a>
         </div>
       )}
@@ -472,7 +474,7 @@ const handleViewResume = async (applicant) => {
       {loading ? (
         <div className="loading-indicator">
           <div className="spinner"></div>
-          <p>Loading applicants...</p>
+          <p>{t("Loading applicants...")}</p>
         </div>
       ) : applicants.length > 0 ? (
         <ApplicantsTable
@@ -487,14 +489,14 @@ const handleViewResume = async (applicant) => {
         <div className="no-applicants">
           <div className="empty-state">
             <div className="empty-icon">📋</div>
-            <h3>No applicants found</h3>
-            <p>There are no applicants for this selection.</p>
+            <h3>{t("No applicants found")}</h3>
+            <p>{t("There are no applicants for this selection.")}</p>
             <div className="empty-actions">
               <a 
                 href={`/company/applicants/job/${jobId}/all`} 
                 className="btn-view-all"
               >
-                View All Applicants
+                {t("View All Applicants")}
               </a>
             </div>
           </div>

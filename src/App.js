@@ -34,6 +34,10 @@ import ApplicantsGrid from "./pages/company/ApplicantsGrid";
 import JobManagementPage from "./pages/company/JobManagementPage";
 import AddJob from "./pages/company/AddJob/AddJob";
 
+import SettingsPage from "./pages/settings/SettingsPage";
+import { settingsByRole } from "./pages/settings/settingsConfig";
+import EditJob from "./pages/job-seeker/EditJob";
+
 // Mock Protected Route Component (لأغراض العرض)
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = true; // يجب ربطها بنظام التحقق الخاص بك
@@ -183,6 +187,8 @@ function App() {
             </ProtectedRoute>
           } />
 
+          <Route path="/job/:jobId/edit" element={<EditJob />} />
+          
            {/* المسارات الجديدة للوظائف المحددة */}
           <Route path="/company/applicants/job/:jobId/all" element={
             <ProtectedRoute>
@@ -210,6 +216,27 @@ function App() {
             </ProtectedRoute>
           } />
 
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <MainLayout userRole={userRole}>
+                <SettingsPage 
+                  settings={settingsByRole[userRole]} 
+                />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/company/settings" element={
+            <ProtectedRoute>
+              <MainLayout userRole={userRole}>
+                <div className="page-content">
+                  <h1>Company Settings</h1>
+                  <p>This page would contain company-specific settings.</p>
+                </div>
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+          
           {/* إعادة التوجيه لجميع المسارات غير المعرفة */}
           {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>

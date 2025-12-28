@@ -1,40 +1,41 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import "./AddCompanyForm.css";
 
-// import uploadIcon from "/upload.png";
-
 function AddCompanyForm() {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <h2 className="page-title">Add new Job application</h2>
+      <h2 className="page-title">{t("Add new Job application")}</h2>
 
       <div className="add-company-form">
         <form className="form-fields">
           <label>
-            Company Name
-            <input type="text" placeholder="Enter company name" />
+            {t("Company Name")}
+            <input type="text" placeholder={t("Enter company name")} />
           </label>
 
           <label>
-            Password
-            <input type="password" placeholder="Enter password" />
+            {t("Password")}
+            <input type="password" placeholder={t("Enter password")} />
           </label>
 
           <label>
-            Company Address
-            <input type="text" placeholder="Enter address" />
+            {t("Company Address")}
+            <input type="text" placeholder={t("Enter address")} />
           </label>
 
           <label>
-            Website
-            <input type="text" placeholder="Enter website URL" />
+            {t("Website")}
+            <input type="text" placeholder={t("Enter website URL")} />
           </label>
 
           <label className="upload-label">
-            Upload Company Logo (optional)
+            {t("Upload Company Logo (optional)")}
             <div className="upload-box">
               <img src={""} alt="Upload" />
-              <span>Upload Logo</span>
+              <span>{t("Upload Logo")}</span>
             </div>
           </label>
         </form>

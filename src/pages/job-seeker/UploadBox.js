@@ -3,12 +3,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { FileText, UploadCloud, Search } from "lucide-react";
 import RobotAvatar from "../../assets/images/Murshed.png";
 import "./UploadBoxAnimations.css";
+import { useTranslation } from 'react-i18next'; // أضف هذا الاستيراد
 
 const UploadBox = ({ onUpload, file, onScanStart, onScanComplete }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isScanComplete, setIsScanComplete] = useState(false);
   const fileInputRef = useRef(null);
+  const { t } = useTranslation(); // أضف هذا
 
   const handleFileSelect = (e) => {
     const selectedFile = e.target.files[0];
@@ -135,7 +137,7 @@ const UploadBox = ({ onUpload, file, onScanStart, onScanComplete }) => {
       {isDragging && !isScanning && !file && (
         <div className="drag-overlay">
           <div className="drag-icon">📄</div>
-          <span>إسقاط السيرة الذاتية هنا</span>
+          <span>{t("إسقاط السيرة الذاتية هنا")}</span>
         </div>
       )}
 
@@ -150,9 +152,9 @@ const UploadBox = ({ onUpload, file, onScanStart, onScanComplete }) => {
         <div className="file-ready-ui">
           <div className="file-info">
             <p className="file-name">{file.name}</p>
-            <span className="file-ready">✓ اكتمل الفحص الدقيق</span>
+            <span className="file-ready">{t("✓ اكتمل الفحص الدقيق")}</span>
             <div className="file-details">
-              <small>تم تحليل {Math.floor(file.size / 500)} عنصر • جاهز للتقييم</small>
+              <small>{t("تم تحليل {count} عنصر • جاهز للتقييم", { count: Math.floor(file.size / 500) })}</small>
             </div>
           </div>
         </div>
@@ -160,10 +162,10 @@ const UploadBox = ({ onUpload, file, onScanStart, onScanComplete }) => {
         <div className="upload-placeholder-ui">
           <UploadCloud size={44} className="upload-icon" />
           <p className="upload-title"></p>
-          <span className="upload-subtitle">PDF أو DOC أو DOCX</span>
+          <span className="upload-subtitle">{t("PDF أو DOC أو DOCX")}</span>
           <div className="scan-preview-hint">
             <small>
-              سيتم فحص دقيق للملف باستخدام تقنيات ذكاء اصطناعي متقدمة
+              {t("سيتم فحص دقيق للملف باستخدام تقنيات ذكاء اصطناعي متقدمة")}
             </small>
           </div>
         </div>

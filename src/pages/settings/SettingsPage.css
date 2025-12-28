@@ -112,11 +112,9 @@
 }
 
 .warning-text {
-  color: #f44336 !important;
   background-color: #ffebee;
   padding: 10px;
   border-radius: 8px;
-  border-left: 4px solid #f44336;
   font-weight: 500;
 }
 
@@ -181,7 +179,7 @@
 }
 
 .btn-activate {
-  background-color: #4caf50;
+  background-color: #3bd541;
   color: white;
 }
 
@@ -320,13 +318,13 @@
 }
 
 .success-message {
-  color: #4caf50;
+  color: #3bd541;
   margin-top: 15px;
   text-align: center;
   padding: 10px;
   background-color: #f1f8e9;
   border-radius: 8px;
-  border-left: 4px solid #4caf50;
+  border-left: 4px solid #3bd541;
 }
 
 /* Responsive Design */
@@ -352,5 +350,458 @@
   .forgot-password-page {
     margin: 20px;
     padding: 20px;
+  }
+}
+.settings-page {
+  background-color: white;
+  padding: 40px 24px 24px; /* أضفنا 40px حشوة علوية */
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin: auto;
+  margin-top: 90px; /* يمكنك تغيير هذه القيمة حسب الحاجة */
+}
+
+.settings-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+/* إضافة أنماط جديدة للغة */
+.language-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.language-option {
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.language-option:hover {
+  border-color: #723dff;
+  background-color: #f5f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(114, 61, 255, 0.1);
+}
+
+.language-option.selected {
+  border-color: #723dff;
+  background-color: #f0e6ff;
+}
+
+.language-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.language-flag {
+  font-size: 28px;
+}
+
+.language-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.language-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.language-desc {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.language-check {
+  display: flex;
+  align-items: center;
+}
+
+.check-circle {
+  width: 24px;
+  height: 24px;
+  background-color: #723dff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* تحسين مؤشر اللغة في القائمة */
+.language-indicator {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background-color: #f0e6ff;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #723dff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.language-indicator:hover {
+  background-color: #e6daff;
+  border-color: #723dff;
+}
+
+/* لا تغيير في بقية الأنماط */
+.settings-section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #723dff;
+}
+
+.section-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.settings-item:hover {
+  background-color: #eaeaea;
+}
+
+.item-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.item-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.divider {
+  border: 20px;
+  border-top: 1px solid #652cff;
+  margin: 12px 0 0 0;
+}
+
+/* ------------------- */
+
+/* Popup Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.popup-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 450px;
+  width: 90%;
+  animation: popupFadeIn 0.3s ease;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.popup-content h3 {
+  color: #723dff;
+  margin-bottom: 16px;
+  font-size: 22px;
+}
+
+.popup-content p {
+  margin-bottom: 20px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.password-input-group {
+  margin-bottom: 20px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.password-input:focus {
+  border-color: #723dff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(114, 61, 255, 0.1);
+}
+
+.password-input.input-error {
+  border-color: #f44336;
+  background-color: #fff5f5;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 14px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.error-message:before {
+  content: "⚠️";
+}
+
+.popup-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.btn-activate,
+.btn-deactivate,
+.btn-confirm,
+.btn-cancel,
+.btn-disabled {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  min-width: 120px;
+}
+
+.btn-activate {
+  background-color: #3bd541;
+  color: white;
+}
+
+.btn-activate:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.btn-deactivate {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-deactivate:hover:not(:disabled) {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+}
+
+.btn-confirm {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-confirm:hover:not(:disabled) {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+.btn-cancel {
+  background-color: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.btn-cancel:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.btn-disabled {
+  background-color: #cccccc !important;
+  color: #888888 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Forgot Password Page Styles */
+.forgot-password-page {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.forgot-password-page h2 {
+  color: #723dff;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.password-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #723dff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(114, 61, 255, 0.1);
+}
+
+.btn-submit,
+.btn-back {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-submit {
+  background-color: #723dff;
+  color: white;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #652cff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(114, 61, 255, 0.2);
+}
+
+.btn-submit:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.btn-back {
+  background-color: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.btn-back:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.success-message {
+  color: #3bd541;
+  margin-top: 15px;
+  text-align: center;
+  padding: 10px;
+  background-color: #f1f8e9;
+  border-radius: 8px;
+  border-left: 4px solid #3bd541;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .popup-content {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .popup-actions {
+    flex-direction: column;
+  }
+
+  .btn-activate,
+  .btn-deactivate,
+  .btn-confirm,
+  .btn-cancel,
+  .btn-disabled {
+    min-width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .forgot-password-page {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .settings-page {
+    padding: 30px 20px 20px; /* تعديل الحشوة للشاشات الصغيرة */
+    margin: 10px;
   }
 }

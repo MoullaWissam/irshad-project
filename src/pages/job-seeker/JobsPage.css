@@ -1,171 +1,571 @@
-/* JobsPage.css - النسخة المحدثة */
-
-/* تنسيق الحاوية الرئيسية للصفحة */
 .jobs-page-container {
-  padding: 0px 40px 40px 40px;
+  padding: 0 40px 40px;
   max-width: 100%;
   min-height: 100vh;
   background-color: whitesmoke;
 }
 
-/* تنسيق عنوان الصفحة */
 .jobs-page-title {
   font-weight: 600;
-  font-style: normal;
   font-size: 56px;
-  line-height: 32px;
+  line-height: 1.2;
   padding-top: 40px;
-  margin: 0px 0 60px 0;
+  margin: 0 0 40px;
   color: #0b2b82;
+  text-align: center;
 }
 
-/* تلوين كلمة "Jobs" داخل العنوان */
 .jobs-page-title-span {
   color: #723dff;
 }
 
-/* مربع البحث */
 .jobs-page-search-box {
   position: relative;
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto 80px auto;
+  max-width: 800px;
+  margin: 0 auto 60px;
+  padding: 0 15px;
+}
+
+.jobs-page-search-wrapper {
+  position: relative;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.jobs-page-search-wrapper:focus-within {
+  box-shadow: 0 8px 30px rgba(114, 61, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .jobs-page-search-input {
-  width: 80%;
-  padding: 18px 24px;
-  padding-right: 60px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 16px;
+  width: 100%;
+  padding: 20px 70px 20px 30px;
+  border: 2px solid #eef2ff;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 400;
   background-color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #333;
   transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+[dir="rtl"] .jobs-page-search-input {
+  padding: 20px 30px 20px 70px;
+}
+
+.jobs-page-search-input::placeholder {
+  color: #999;
+  font-weight: 300;
 }
 
 .jobs-page-search-input:focus {
   outline: none;
   border-color: #723dff;
-  box-shadow: 0 4px 16px rgba(114, 61, 255, 0.25);
+  background-color: #fafbff;
+}
+
+.jobs-page-search-input:hover {
+  border-color: #d1d5ff;
 }
 
 .jobs-page-search-button {
   position: absolute;
-  right: 10%;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #723dff, #5a2fd8);
   border: none;
+  border-radius: 14px;
   cursor: pointer;
-  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(114, 61, 255, 0.3);
 }
 
-.jobs-page-search-button:hover {
-  opacity: 0.8;
+[dir="ltr"] .jobs-page-search-button {
+  right: 20px;
 }
 
-.jobs-page-search-button:active {
-  opacity: 0.6;
+[dir="rtl"] .jobs-page-search-button {
+  left: 20px;
+}
+
+.jobs-page-search-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #652cff, #4a25c9);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(114, 61, 255, 0.4);
+}
+
+.jobs-page-search-button:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.98);
+  box-shadow: 0 2px 10px rgba(114, 61, 255, 0.3);
+}
+
+.jobs-page-search-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .jobs-page-search-icon-img {
-  width: 22px;
-  height: 22px;
-  opacity: 0.6;
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
 }
 
-/* شبكة عرض البطاقات - التعديل الرئيسي هنا */
+.jobs-page-search-button:hover:not(:disabled) .jobs-page-search-icon-img {
+  transform: scale(1.1);
+}
+
+.jobs-page-search-button.loading .jobs-page-search-icon-img {
+  display: none;
+}
+
+.jobs-page-search-button.loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .jobs-page-job-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 أعمدة */
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   margin-top: 20px;
 }
 
-/* تنسيق بطاقة الوظيفة لتلائم الشبكة */
 .jobs-page-job-grid > * {
   height: 100%;
 }
 
-/* رسائل التحميل والخطأ */
-.jobs-page-loading-message,
-.jobs-page-error-message,
-.jobs-page-no-jobs-message {
+.jobs-page-search-info {
   text-align: center;
-  padding: 60px;
-  font-size: 20px;
-  color: #666;
-  background-color: white;
+  margin: 10px 0 30px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f8f9ff, #eef2ff);
   border-radius: 12px;
-  margin: 40px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  grid-column: 1 / -1; /* يشغل كل الأعمدة */
-}
-
-.jobs-page-error-message {
-  color: #e74c3c;
-  background-color: #fdf0ef;
-  border-left: 4px solid #e74c3c;
-}
-
-.jobs-page-no-jobs-message {
   color: #666;
-  background-color: #f8f9fa;
+  font-size: 16px;
+  font-weight: 500;
   border-left: 4px solid #723dff;
 }
 
-/* تصميم متجاوب للشاشات المختلفة */
+[dir="rtl"] .jobs-page-search-info {
+  border-left: none;
+  border-right: 4px solid #723dff;
+}
+
+.jobs-page-search-info .search-term {
+  color: #723dff;
+  font-weight: 600;
+}
+
+.jobs-page-search-info .results-count {
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.jobs-page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  margin: 40px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.loading-spinner-large {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #723dff;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+  margin-bottom: 25px;
+}
+
+.jobs-page-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  text-align: center;
+  background: linear-gradient(135deg, #fff5f5, #fed7d7);
+  border-radius: 16px;
+  margin: 40px 0;
+  border: 2px solid #fc8181;
+}
+
+.error-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+  color: #e53e3e;
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #723dff, #5a2fd8);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(114, 61, 255, 0.3);
+}
+
+.retry-btn:hover {
+  background: linear-gradient(135deg, #652cff, #4a25c9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(114, 61, 255, 0.4);
+}
+
+.jobs-page-no-jobs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  text-align: center;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border-radius: 16px;
+  margin: 40px 0;
+  border: 2px solid #90cdf4;
+}
+
+.no-jobs-icon {
+  font-size: 64px;
+  margin-bottom: 25px;
+  color: #3182ce;
+}
+
+.clear-search-btn {
+  background: white;
+  color: #723dff;
+  border: 2px solid #723dff;
+  padding: 12px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+}
+
+.clear-search-btn:hover {
+  background: linear-gradient(135deg, #723dff, #5a2fd8);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(114, 61, 255, 0.3);
+}
+
+.jobs-page-results-footer {
+  margin-top: 40px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  color: #666;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
 @media (max-width: 1200px) {
   .jobs-page-job-grid {
-    grid-template-columns: repeat(2, 1fr); /* عمودان للشاشات المتوسطة */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+}
+
+@media (max-width: 992px) {
+  .jobs-page-title {
+    font-size: 48px;
+    margin-bottom: 35px;
+  }
+  
+  .jobs-page-search-box {
+    max-width: 700px;
+  }
+  
+  .jobs-page-search-input {
+    padding: 18px 65px 18px 25px;
+    font-size: 17px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-input {
+    padding: 18px 25px 18px 65px;
+  }
+  
+  .jobs-page-search-button {
+    width: 52px;
+    height: 52px;
+  }
+  
+  [dir="ltr"] .jobs-page-search-button {
+    right: 18px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-button {
+    left: 18px;
   }
 }
 
 @media (max-width: 768px) {
   .jobs-page-container {
-    padding: 0px 20px 30px 20px;
+    padding: 0 25px 35px;
   }
   
   .jobs-page-title {
-    font-size: 40px;
-    margin-bottom: 40px;
-    text-align: center;
+    font-size: 36px;
+    margin-bottom: 30px;
+    padding-top: 30px;
   }
   
   .jobs-page-search-box {
-    margin-bottom: 60px;
+    margin-bottom: 50px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  .jobs-page-search-wrapper {
+    border-radius: 14px;
   }
   
   .jobs-page-job-grid {
-    grid-template-columns: 1fr; /* عمود واحد للشاشات الصغيرة */
+    grid-template-columns: 1fr;
     gap: 25px;
   }
   
   .jobs-page-search-input {
-    padding: 16px 20px;
-    padding-right: 50px;
+    padding: 18px 60px 18px 22px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-input {
+    padding: 18px 22px 18px 60px;
+  }
+  
+  .jobs-page-search-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+  }
+  
+  [dir="ltr"] .jobs-page-search-button {
+    right: 15px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-button {
+    left: 15px;
+  }
+  
+  .jobs-page-search-icon-img {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .jobs-page-search-info {
+    margin: 10px 0 25px;
+    padding: 14px;
+    font-size: 15px;
+  }
+  
+  .jobs-page-loading,
+  .jobs-page-error,
+  .jobs-page-no-jobs {
+    padding: 45px 25px;
+    margin: 35px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .jobs-page-container {
+    padding: 0 20px 30px;
+  }
+  
+  .jobs-page-title {
+    font-size: 32px;
+    margin-bottom: 25px;
+    padding-top: 25px;
+  }
+  
+  .jobs-page-search-box {
+    margin-bottom: 40px;
+  }
+  
+  .jobs-page-search-input {
+    padding: 16px 56px 16px 20px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-input {
+    padding: 16px 20px 16px 56px;
+  }
+  
+  .jobs-page-search-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+  
+  [dir="ltr"] .jobs-page-search-button {
+    right: 12px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-button {
+    left: 12px;
+  }
+  
+  .jobs-page-search-icon-img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .jobs-page-job-grid {
+    gap: 20px;
+  }
+  
+  .jobs-page-search-info {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  
+  .loading-spinner-large {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .error-icon,
+  .no-jobs-icon {
+    font-size: 48px;
+  }
+  
+  .retry-btn,
+  .clear-search-btn {
+    padding: 12px 24px;
+    font-size: 14px;
   }
 }
 
 @media (max-width: 480px) {
+  .jobs-page-container {
+    padding: 0 16px 25px;
+  }
+  
   .jobs-page-title {
-    font-size: 32px;
-    margin-bottom: 30px;
+    font-size: 28px;
+    margin-bottom: 20px;
+    padding-top: 20px;
   }
   
   .jobs-page-search-box {
-    max-width: 100%;
+    margin-bottom: 35px;
+    padding: 0 8px;
   }
   
-  .jobs-page-loading-message,
-  .jobs-page-error-message,
-  .jobs-page-no-jobs-message {
-    padding: 40px 20px;
-    font-size: 18px;
+  .jobs-page-search-input {
+    padding: 14px 52px 14px 18px;
+    font-size: 14px;
+    border-width: 1.5px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-input {
+    padding: 14px 18px 14px 52px;
+  }
+  
+  .jobs-page-search-button {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .jobs-page-search-icon-img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .jobs-page-loading,
+  .jobs-page-error,
+  .jobs-page-no-jobs {
+    padding: 35px 20px;
+    margin: 30px 0;
+    border-radius: 14px;
+  }
+  
+  .loading-spinner-large {
+    width: 45px;
+    height: 45px;
+    border-width: 3px;
+  }
+  
+  .error-icon,
+  .no-jobs-icon {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 360px) {
+  .jobs-page-container {
+    padding: 0 12px 20px;
+  }
+  
+  .jobs-page-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+  }
+  
+  .jobs-page-search-input {
+    padding: 12px 48px 12px 16px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-input {
+    padding: 12px 16px 12px 48px;
+  }
+  
+  .jobs-page-search-button {
+    width: 40px;
+    height: 40px;
+  }
+  
+  [dir="ltr"] .jobs-page-search-button {
+    right: 10px;
+  }
+  
+  [dir="rtl"] .jobs-page-search-button {
+    left: 10px;
+  }
+  
+  .retry-btn,
+  .clear-search-btn {
+    padding: 10px 20px;
+    font-size: 13px;
   }
 }

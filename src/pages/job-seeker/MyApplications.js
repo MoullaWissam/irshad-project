@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, NavLink } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import JobCard from "../../Components/Card/JobCard/JobCard";
 import "./MyApplications.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from 'react-i18next';
 
 const MyApplications = () => {
   const { status = "pending" } = useParams();
@@ -16,12 +17,15 @@ const MyApplications = () => {
     accepted: 0,
     rejected: 0
   });
+  
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
 
   // مصفوفة التبويبات
   const tabs = [
-    { id: "pending", label: "Pending", color: "#ffa500", key: "pending" },
-    { id: "accepted", label: "Approved", color: "#2ecc71", key: "accepted" },
-    { id: "rejected", label: "Rejected", color: "#e74c3c", key: "rejected" },
+    { id: "pending", label: t("Pending"), color: "#ffa500", key: "pending" },
+    { id: "accepted", label: t("Approved"), color: "#2ecc71", key: "accepted" },
+    { id: "rejected", label: t("Rejected"), color: "#e74c3c", key: "rejected" },
   ];
 
   // تحويل حالة API إلى حالة مكون
@@ -34,38 +38,68 @@ const MyApplications = () => {
     }
   };
 
-  // جلب إحصائيات التطبيقات
+  // دالة محسنة لجلب الإحصائيات - تجلب التطبيقات من كل الحالات
   const fetchApplicationStats = async () => {
     try {
+      console.log('Fetching all application statistics...');
       
-      const response = await fetch('http://localhost:3000/auth/my-applications/stats', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include'
+      // جلب جميع التطبيقات من جميع الحالات في نفس الوقت
+      const [pendingRes, acceptedRes, rejectedRes] = await Promise.allSettled([
+        fetch('http://localhost:3000/auth/my-applications/pending', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        }),
+        fetch('http://localhost:3000/auth/my-applications/accepted', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        }),
+        fetch('http://localhost:3000/auth/my-applications/rejected', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        })
+      ]);
+
+      let pendingCount = 0;
+      let acceptedCount = 0;
+      let rejectedCount = 0;
+
+      // معالجة استجابة pending
+      if (pendingRes.status === 'fulfilled' && pendingRes.value.ok) {
+        const data = await pendingRes.value.json();
+        if (Array.isArray(data)) {
+          pendingCount = data.length;
+        }
+      }
+
+      // معالجة استجابة accepted
+      if (acceptedRes.status === 'fulfilled' && acceptedRes.value.ok) {
+        const data = await acceptedRes.value.json();
+        if (Array.isArray(data)) {
+          acceptedCount = data.length;
+        }
+      }
+
+      // معالجة استجابة rejected
+      if (rejectedRes.status === 'fulfilled' && rejectedRes.value.ok) {
+        const data = await rejectedRes.value.json();
+        if (Array.isArray(data)) {
+          rejectedCount = data.length;
+        }
+      }
+
+      console.log('Calculated stats from API calls:', { pendingCount, acceptedCount, rejectedCount });
+      
+      setStats({
+        pending: pendingCount,
+        accepted: acceptedCount,
+        rejected: rejectedCount
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Application stats:', data);
-      
-      if (data.success) {
-        setStats({
-          pending: data.pending || 0,
-          accepted: data.accepted || 0,
-          rejected: data.rejected || 0
-        });
-      }
     } catch (error) {
-      console.error('Error fetching application stats:', error);
-      toast.error('Failed to load application statistics', {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      console.error('Error calculating application stats:', error);
     }
   };
 
@@ -75,24 +109,19 @@ const MyApplications = () => {
     
     try {
       const apiStatus = getApiStatus(status);
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       
       console.log(`Fetching ${apiStatus} applications...`);
       
       const response = await fetch(`http://localhost:3000/auth/my-applications/${apiStatus}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
       });
 
       console.log('Response status:', response.status);
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('API Error Response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(t("HTTP error! status: {status}", { status: response.status }));
       }
 
       const data = await response.json();
@@ -102,26 +131,25 @@ const MyApplications = () => {
       const formattedApplications = Array.isArray(data) ? data.map((job, index) => ({
         id: job.id || index,
         jobId: job.id,
-        title: job.title || "No Title",
-        description: job.description || "No description available",
-        employmentType: job.employmentType || "Not specified",
+        title: job.title || t("No Title"),
+        description: job.description || t("No description available"),
+        employmentType: job.employmentType || t("Not specified"),
         companyLogo: job.image || "https://via.placeholder.com/50/cccccc/ffffff?text=CO",
-        companyName: job.companyName || "Unknown Company",
-        location: job.location || "Location not specified",
-        salary: job.salary || "Salary not specified",
+        companyName: job.companyName || t("Unknown Company"),
+        location: job.location || t("Location not specified"),
+        salary: job.salary || t("Salary not specified"),
         appliedDate: job.createdAt || new Date().toISOString(),
         status: apiStatus,
-        skills: job.skills || "Not specified",
-        experience: job.experience || "Not specified",
+        skills: job.skills || t("Not specified"),
+        experience: job.experience || t("Not specified"),
         education: job.education ? JSON.parse(job.education) : [],
         hasTest: job.hasTest || false,
-        // إضافة تواريخ افتراضية بناءً على الحالة
         ...(apiStatus === 'accepted' && { 
           approvedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() 
         }),
         ...(apiStatus === 'rejected' && { 
           rejectedDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          feedback: "Based on our evaluation of your application and qualifications..."
+          feedback: t("Based on our evaluation of your application and qualifications...")
         })
       })) : [];
       
@@ -131,33 +159,13 @@ const MyApplications = () => {
     } catch (error) {
       console.error('Error fetching applications:', error);
       
-      toast.error(`Failed to load ${status} applications`, {
-        position: "top-center",
+      toast.error(t("Failed to load {status} applications", { status: status }), {
+        position: isRTL ? "top-center" : "top-center",
         autoClose: 3000,
+        rtl: isRTL
       });
       
-      // استخدام بيانات تجريبية في حالة فشل API
-      const mockData = {
-        pending: [
-          { 
-            id: 1, 
-            jobId: "101", 
-            title: "Frontend React Developer", 
-            description: "Join our team to build cutting-edge web applications", 
-            employmentType: "Full-time", 
-            companyLogo: "https://via.placeholder.com/50/007bff/ffffff?text=FB",
-            companyName: "Facebook",
-            location: "Remote",
-            salary: "$85,000 - $110,000",
-            appliedDate: "2024-01-15",
-            status: "pending"
-          }
-        ],
-        accepted: [],
-        rejected: []
-      };
-      
-      setApplications(mockData[status] || []);
+      setApplications([]);
       
     } finally {
       setLoading(false);
@@ -175,6 +183,13 @@ const MyApplications = () => {
     setSelectedTab(status);
   }, [status]);
 
+  // تحديث الإحصائيات عند تغيير التطبيقات
+  useEffect(() => {
+    if (applications.length > 0) {
+      console.log(`Applications for ${status}: ${applications.length}`);
+    }
+  }, [applications, status]);
+
   // دالة لمعالجة النقر على علامة التبويب
   const handleTabClick = (tabId) => {
     navigate(`/applications/${tabId}`);
@@ -182,33 +197,30 @@ const MyApplications = () => {
 
   // تنسيق التاريخ
   const formatDate = (dateString) => {
-    if (!dateString) return "Date not available";
+    if (!dateString) return t("Date not available");
     
     try {
       const date = new Date(dateString);
-      if (isNaN(date.getTime())) return "Invalid date";
+      if (isNaN(date.getTime())) return t("Invalid date");
       
       const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return date.toLocaleDateString('en-US', options);
+      return date.toLocaleDateString(i18n.language === 'ar' ? 'ar-SA' : 'en-US', options);
     } catch (error) {
       console.error('Error formatting date:', error);
-      return "Date error";
+      return t("Date error");
     }
   };
 
   // إزالة الاقتباسات المزدوجة من التعليم
   const parseEducation = (educationString) => {
     try {
-      if (!educationString) return ["Not specified"];
+      if (!educationString) return [t("Not specified")];
       
-      // محاولة تحليل JSON
       const parsed = JSON.parse(educationString);
       
-      // إذا كان مصفوفة، قم بتسطيحها وإزالة الاقتباسات الزائدة
       if (Array.isArray(parsed)) {
         return parsed.map(item => {
           if (typeof item === 'string') {
-            // إزالة الاقتباسات المزدوجة والرموز الزائدة
             return item.replace(/\\"/g, '').replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
           }
           return String(item);
@@ -218,7 +230,7 @@ const MyApplications = () => {
       return [String(parsed)];
     } catch (error) {
       console.error('Error parsing education:', error);
-      return ["Education details"];
+      return [t("Education details")];
     }
   };
 
@@ -227,29 +239,44 @@ const MyApplications = () => {
     return stats[tabKey] || 0;
   };
 
+  // نمط خط Roboto
+  const robotoStyle = {
+    fontFamily: "'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+  };
+
   return (
-    <div className="my-applications-page">
-      {/* عنوان الصفحة بنفس تنسيق MatchesPage */}
-      <h2 className="my-applications-title">
-        My <span>Applications</span>
+    <div 
+      className="my-applications-page" 
+      dir={isRTL ? 'rtl' : 'ltr'} 
+      style={robotoStyle}
+    >
+      {/* عنوان الصفحة */}
+      <h2 
+        className="my-applications-title"
+        style={{ textAlign: isRTL ? 'right' : 'left' }}
+      >
+        {t("My")} <span>{t("Applications")}</span>
       </h2>
 
       <div className="my-applications-header">
-        <p className="my-applications-subtitle">
-          Track the status of your job applications in real-time
+        <p 
+          className="my-applications-subtitle"
+          style={{ textAlign: isRTL ? 'right' : 'left' }}
+        >
+          {t("Track the status of your job applications in real-time")}
         </p>
         <div className="my-applications-stats">
           <div className="my-applications-stat-item">
             <span className="my-applications-stat-number">{stats.pending}</span>
-            <span className="my-applications-stat-label">Pending</span>
+            <span className="my-applications-stat-label">{t("Pending")}</span>
           </div>
           <div className="my-applications-stat-item">
             <span className="my-applications-stat-number">{stats.accepted}</span>
-            <span className="my-applications-stat-label">Approved</span>
+            <span className="my-applications-stat-label">{t("Approved")}</span>
           </div>
           <div className="my-applications-stat-item">
             <span className="my-applications-stat-number">{stats.rejected}</span>
-            <span className="my-applications-stat-label">Rejected</span>
+            <span className="my-applications-stat-label">{t("Rejected")}</span>
           </div>
         </div>
       </div>
@@ -260,7 +287,14 @@ const MyApplications = () => {
           <button
             key={tab.id}
             className={`my-applications-tab ${selectedTab === tab.id ? "my-applications-tab-active" : ""}`}
-            style={{ "--my-applications-active-color": tab.color }}
+            style={{ 
+              "--my-applications-active-color": tab.color,
+              "--my-applications-active-color-rgb": tab.color === "#ffa500" ? "255, 165, 0" : 
+                                                  tab.color === "#2ecc71" ? "46, 204, 113" : 
+                                                  "231, 76, 60",
+              fontFamily: "'Roboto', sans-serif",
+              fontWeight: 500
+            }}
             onClick={() => handleTabClick(tab.id)}
           >
             {tab.label}
@@ -274,36 +308,40 @@ const MyApplications = () => {
         {loading ? (
           <div className="my-applications-loading">
             <div className="my-applications-spinner"></div>
-            <p>Loading your applications...</p>
+            <p style={robotoStyle}>{t("Loading your applications...")}</p>
           </div>
         ) : applications.length > 0 ? (
           <>
-            <div className="my-applications-results">
-              Showing {applications.length} {status} application{applications.length !== 1 ? 's' : ''}
+            <div 
+              className="my-applications-results"
+              style={{ textAlign: isRTL ? 'right' : 'left' }}
+            >
+              <span style={{color: '#161616ff', fontSize: '15px', fontFamily: "'Roboto', sans-serif"}}>
+                {t("Total: {count} applications", { count: stats.pending + stats.accepted + stats.rejected })}
+              </span>
             </div>
             <div className="my-applications-grid">
               {applications.map((app) => {
-                // تحليل التعليم للعرض الصحيح
                 const educationArray = parseEducation(app.education);
                 const educationText = educationArray.join(", ");
                 
                 return (
                   <div className="my-applications-card-wrapper" key={`${app.id}-${app.jobId}`}>
                     <div className={`my-applications-status-badge my-applications-status-${status}`}>
-                      {status.toUpperCase()}
+                      {t(status.toUpperCase())}
                     </div>
                     <div className="my-applications-meta">
                       <span className="my-applications-applied-date">
-                        Applied: {formatDate(app.appliedDate)}
+                        {t("Applied")}: {formatDate(app.appliedDate)}
                       </span>
                       {app.approvedDate && (
                         <span className="my-applications-approved-date">
-                          Approved: {formatDate(app.approvedDate)}
+                          {t("Approved")}: {formatDate(app.approvedDate)}
                         </span>
                       )}
                       {app.rejectedDate && (
                         <span className="my-applications-rejected-date">
-                          Rejected: {formatDate(app.rejectedDate)}
+                          {t("Rejected")}: {formatDate(app.rejectedDate)}
                         </span>
                       )}
                     </div>
@@ -316,14 +354,13 @@ const MyApplications = () => {
                       company={app.companyName}
                       location={app.location}
                       salary={app.salary}
-                      // إضافة خصائص إضافية إذا كانت موجودة في JobCard
                       {...(app.skills && { skills: app.skills })}
                       {...(app.experience && { experience: app.experience })}
                       {...(educationText && { education: educationText })}
                     />
                     {app.feedback && status === "rejected" && (
                       <div className="my-applications-feedback">
-                        <strong>Feedback:</strong> {app.feedback}
+                        <strong>{t("Feedback")}:</strong> {app.feedback}
                       </div>
                     )}
                   </div>
@@ -334,13 +371,18 @@ const MyApplications = () => {
         ) : (
           <div className="my-applications-empty">
             <div className="my-applications-empty-icon">📁</div>
-            <h3>No {status} applications found</h3>
-            <p>You haven't received any updates for this category yet.</p>
+            <h3 style={robotoStyle}>
+              {t("No {status} applications found", { status: t(status) })}
+            </h3>
+            <p style={robotoStyle}>
+              {t("You haven't received any updates for this category yet.")}
+            </p>
             <button 
               onClick={() => navigate("/jobs")} 
               className="my-applications-browse-btn"
+              style={robotoStyle}
             >
-              Browse Available Jobs
+              {t("Browse Available Jobs")}
             </button>
           </div>
         )}

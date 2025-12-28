@@ -1,69 +1,85 @@
 /* ===== الحاوية العامة (الهيكل الأساسي) ===== */
 .upload-resume-container {
-  max-width: 100%;
+  width: calc(100% - 250px); /* تأخذ في الاعتبار عرض الـ sidebar */
+  margin-left: 50px; /* تبدأ بعد الـ sidebar */
   min-height: 100vh;
-  padding: 0px 20px;
+  padding: 20px 30px;
   background-color: whitesmoke;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  overflow-x: hidden;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 /* ===== العنوان العام أعلى الصفحة ===== */
 .upload-resume-main-header {
-  margin-bottom: 40px;
-  margin-top: 40px;
+  text-align: start;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: none;
+  margin-top: 20px;
 }
 
 /* نص الترحيب */
 .upload-resume-welcome-text {
   color: #733eff;
-  font-family: Roboto, sans-serif;
   font-weight: 500;
-  font-size: 34px;
-  line-height: 50px;
-  margin: 0;
+  font-size: 32px;
+  line-height: 1.2;
+  margin: 0 0 15px 0;
+  text-align: left;
 }
 
 /* الجملة التوضيحية تحت العنوان */
 .upload-resume-subtitle {
   color: #2b1d6a;
-  font-family: Roboto, sans-serif;
   font-weight: 500;
-  font-size: 30px;
-  line-height: 50px;
-  letter-spacing: 0%;
-  text-align: center;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: start;
+  max-width: 800px;
+  margin: 0;
+  padding: 0;
 }
 
 /* ===== تنظيم القسمين (يمين ويسار) ===== */
 .upload-resume-content-sections {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+  align-items: stretch;
+  gap: 40px;
   width: 100%;
-  max-width: 1200px;
+  max-width: none;
+  margin: 0;
+  flex-wrap: nowrap;
 }
 
 /* ===== القسم الأيسر: نصائح المستخدم ===== */
 .upload-resume-left-side {
   flex: 1;
+  min-width: 300px;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== صندوق النصائح (العنوان + القائمة) ===== */
 .upload-resume-tips-box {
-  margin-top: 20px;
+  margin-top: 0;
+  height: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* عنوان قسم النصائح */
 .upload-resume-tips-box h4 {
   color: #2b1d6a;
   text-align: center;
-  align-content: center;
-  width: 500px;
-  height: 74px;
+  width: 100%;
+  height: auto;
+  min-height: 70px;
   border-radius: 12px;
   border: 3px solid transparent;
   --border-angle: 90deg;
@@ -73,6 +89,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 15px 25px;
+  font-size: 20px;
+  margin-bottom: 25px;
 }
 
 /* قائمة النصائح */
@@ -83,43 +102,56 @@
   padding: 0;
   margin: 0;
   list-style: none;
+  flex: 1;
 }
 
 /* ===== كل نصيحة ضمن مستطيل بإطار متدرج ===== */
-.upload-resume-tip-card span {
+.upload-resume-tip-card {
   display: flex;
-  justify-content: center;
-  width: 400px;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  color: #2b1d6a;
-  font-family: Roboto, sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 3px solid;
-  border-image-source: linear-gradient(90deg, #723efe 0%, #00cbff 100%);
-  border-image-slice: 1;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
-.upload-resume-tip-card span:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+.upload-resume-tip-card span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  color: #2b1d6a;
+  font-weight: 500;
+  font-size: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   box-shadow: 
+    0 4px 15px rgba(114, 62, 254, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+  border-image-source: linear-gradient(90deg, #723efe 0%, #00cbff 100%);
+  border-image-slice: 1;
+  min-height: 60px;
+  box-sizing: border-box;
 }
 
 /* أيقونة بجانب النص */
 .upload-resume-tip-card img {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  --border-angle: 90deg;
-  border: 3px solid transparent;
-  background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(var(--border-angle), #723efe 0%, #00cbff 100%) border-box;
-  border-radius: 50px;
+
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 
+    0 4px 15px rgba(114, 62, 254, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== القسم الأيمن: الرفع + الأزرار ===== */
@@ -128,6 +160,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  min-width: 300px;
+  max-width: 50%;
+  padding-top: 40px;
 }
 
 /* زر "Show me an example" */
@@ -136,27 +172,24 @@
   color: #fff;
   border: none;
   border-radius: 25px;
-  padding: 10px 22px;
+  padding: 12px 28px;
   cursor: pointer;
-  font-size: 15px;
-  margin-bottom: 25px;
+  font-size: 16px;
+  margin-bottom: 30px;
   transition: all 0.3s ease;
-  font-family: Roboto, sans-serif;
   font-weight: 500;
-}
-
-/* تأثير عند المرور */
-.upload-resume-example-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 320px;
+  font-family: 'Roboto', 'Tajawal', sans-serif;
 }
 
 /* ===== مربع رفع الملف ===== */
 .upload-resume-upload-box {
   border: 2px dashed #5b31ff;
   border-radius: 10px;
-  width: 250px;
-  height: 300px;
+  width: 100%;
+  max-width: 320px;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,25 +200,10 @@
   transition: all 0.3s ease;
   position: relative;
   background-color: #fff;
-}
-
-/* تأثير عند المرور */
-.upload-resume-upload-box:hover {
-  background-color: #f8f9ff;
-  border-color: #723efe;
+  box-sizing: border-box;
 }
 
 /* ===== الروبوت في صندوق الرفع ===== */
-.robot-head {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 20;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* حجم الروبوت */
 .robot-head img {
   width: 70px;
   height: 70px;
@@ -195,66 +213,86 @@
     0 0 0 4px rgba(108, 99, 255, 0.1);
   object-fit: cover;
   background: linear-gradient(135deg, #f8f9ff, #eef1ff);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* تأثير خفيف عند التحويم */
-.upload-resume-upload-box:hover .robot-head img {
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 8px 25px rgba(108, 99, 255, 0.3),
-    0 0 0 4px rgba(108, 99, 255, 0.15);
+/* ===== أزرار الإجراءات ===== */
+.upload-resume-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 25px;
+  width: 100%;
+  max-width: 320px;
 }
 
-/* ===== زر عرض النتائج ===== */
 .upload-resume-see-results-btn {
   background: #5b31ff;
   color: #fff;
   border: none;
   border-radius: 10px;
-  padding: 12px 30px;
+  padding: 14px 30px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
   transition: all 0.3s ease;
-  font-family: Roboto, sans-serif;
+  font-family: 'Roboto', 'Tajawal', sans-serif;
   font-weight: 500;
+  width: 100%;
+  order: 1; /* يجعل زر النتائج في الأعلى */
 }
 
-.upload-resume-see-results-btn:hover {
-  background: #6a42ff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(91, 49, 255, 0.2);
+.upload-resume-update-delete-container {
+  font-family: 'Roboto', 'Tajawal', sans-serif;
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  order: 2; /* يجعل مجموعة التحديث والحذف تحت زر النتائج */
 }
 
-.upload-resume-see-results-btn:active {
-  transform: translateY(0);
-}
-
-/* ===== زر حذف الملف ===== */
+.upload-resume-update-btn,
 .upload-resume-delete-btn {
-  background: #ff4444;
-  color: #fff;
-  border: none;
+  flex: 1; /* يجعل كلا الزرين يأخذان نفس العرض */
+  padding: 14px 20px;
+  font-size: 14px;
   border-radius: 10px;
-  padding: 12px 30px;
+  border: none;
   cursor: pointer;
-  font-size: 15px;
   transition: all 0.3s ease;
-  margin-top: 15px;
-  font-family: "Roboto", sans-serif;
+  text-align: center;
   font-weight: 500;
-  box-shadow: 0 4px 8px rgba(255, 68, 68, 0.2);
+  white-space: nowrap;
+    font-family: 'Roboto', 'Tajawal', sans-serif;
+
+}
+
+.upload-resume-update-btn {
+  background-color: #3bd541;
+  color: white;
+}
+
+.upload-resume-update-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.upload-resume-update-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.upload-resume-delete-btn {
+  background-color: #ff4444;
+  color: white;
+  margin-top: 0; /* إزالة الهامش العلوي القديم */
 }
 
 .upload-resume-delete-btn:hover {
-  background: #ff6666;
+  background-color: #cc0000;
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(255, 68, 68, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
 }
-
-.upload-resume-delete-btn:active {
-  transform: translateY(0);
-}
-
 
 /* ===== النافذة العائمة (Popup) ===== */
 .upload-resume-overlay {
@@ -311,21 +349,63 @@
   color: #000;
 }
 
-/* ===== أنيميشن عام للظهور ===== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* ===== Popup styles ===== */
+.upload-resume-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
-/* أنيميشن دخول النافذة من الأعلى */
-@keyframes slideIn {
+.upload-resume-popup.fade-out {
+  animation: fadeOut 0.25s ease forwards;
+}
+
+.upload-resume-popup-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+}
+
+.upload-resume-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #2196F3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -335,51 +415,39 @@
 
 /* ===== التصميم المتجاوب (Responsive Design) ===== */
 
-/* للأجهزة اللوحية والصغيرة (أقل من 1100px) */
-@media (max-width: 1100px) {
+/* للأجهزة اللوحية والصغيرة (أقل من 1200px) */
+@media (max-width: 1200px) {
   .upload-resume-container {
-    padding: 0px 20px;
-  }
-  
-  .upload-resume-content-sections {
-    gap: 30px;
-  }
-  
-  .upload-resume-subtitle {
-    font-size: 26px;
-    line-height: 40px;
-  }
-  
-  .upload-resume-tips-box h4 {
-    width: 450px;
-  }
-  
-  .upload-resume-tip-card span {
-    width: 350px;
-  }
-}
-
-/* للأجهزة اللوحية (أقل من 900px) */
-@media (max-width: 900px) {
-  .upload-resume-container {
-    width: calc(100% - 40px);
-    padding: 30px 20px;
-  }
-  
-  .upload-resume-main-header {
-    margin-top: 20px;
-    margin-bottom: 30px;
+    width: calc(100% - 200px);
+    margin-left: 200px;
+    padding: 20px 25px;
   }
   
   .upload-resume-welcome-text {
     font-size: 28px;
-    line-height: 40px;
   }
   
   .upload-resume-subtitle {
-    font-size: 22px;
-    line-height: 34px;
+    font-size: 16px;
+  }
+  
+  .upload-resume-tips-box h4 {
+    font-size: 18px;
+    min-height: 65px;
+  }
+  
+  .upload-resume-tip-card span {
+    font-size: 14px;
+    padding: 12px 18px;
+  }
+}
+
+/* للأجهزة اللوحية (أقل من 992px) */
+@media (max-width: 992px) {
+  .upload-resume-container {
     width: 100%;
+    margin-left: 0;
+    padding: 20px;
   }
   
   .upload-resume-content-sections {
@@ -390,42 +458,83 @@
   
   .upload-resume-left-side,
   .upload-resume-right-side {
+    max-width: 100%;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
   
-  .upload-resume-tips-box {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .upload-resume-right-side {
+    padding-top: 0;
   }
   
   .upload-resume-tips-box h4 {
-    width: 400px;
-    height: 60px;
-    font-size: 18px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .upload-resume-tip-card {
-    text-align: center;
+    justify-content: center;
   }
   
   .upload-resume-tip-card span {
-    width: 400px;
-    font-size: 15px;
+    max-width: 600px;
   }
   
-  .upload-resume-tip-card img {
-    width: 25px;
-    height: 25px;
+  .upload-resume-example-btn,
+  .upload-resume-upload-box,
+  .upload-resume-action-buttons {
+    max-width: 400px;
   }
   
   .upload-resume-upload-box {
-    width: 220px;
+    height: 300px;
+  }
+}
+
+/* للهواتف (أقل من 768px) */
+@media (max-width: 768px) {
+  .upload-resume-container {
+    padding: 15px;
+  }
+  
+  .upload-resume-main-header {
+    margin-bottom: 20px;
+  }
+  
+  .upload-resume-welcome-text {
+    font-size: 24px;
+  }
+  
+  .upload-resume-subtitle {
+    font-size: 15px;
+  }
+  
+  .upload-resume-tips-box h4 {
+    font-size: 16px;
+    min-height: 60px;
+    padding: 10px 20px;
+  }
+  
+  .upload-resume-tip-card span {
+    font-size: 14px;
+    padding: 10px 15px;
+    gap: 12px;
+  }
+  
+  .upload-resume-tip-card img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .upload-resume-example-btn {
+    padding: 10px 24px;
+    font-size: 15px;
+    margin-bottom: 25px;
+  }
+  
+  .upload-resume-upload-box {
     height: 280px;
+    max-width: 350px;
   }
   
   .robot-head img {
@@ -433,95 +542,48 @@
     height: 60px;
   }
   
-  .upload-resume-popup {
-    padding: 20px 30px;
-    font-size: 16px;
-  }
-}
-
-/* للهواتف (أقل من 768px) */
-@media (max-width: 768px) {
-  .upload-resume-welcome-text {
-    font-size: 24px;
-    line-height: 36px;
+  .upload-resume-see-results-btn {
+    padding: 12px 25px;
+    font-size: 15px;
   }
   
-  .upload-resume-subtitle {
-    font-size: 18px;
-    line-height: 28px;
+  .upload-resume-update-delete-container {
+    flex-direction: column; /* على الشاشات الصغيرة يرجعوا عمودياً */
+    gap: 10px;
   }
   
-  .upload-resume-tips-box h4 {
-    width: 350px;
-    height: 55px;
-    font-size: 16px;
-  }
-  
-  .upload-resume-tip-card span {
-    width: 350px;
-    font-size: 14px;
-    padding: 10px 14px;
-  }
-  
-  .upload-resume-example-btn {
-    padding: 8px 18px;
-    font-size: 14px;
-  }
-  
-  .upload-resume-upload-box {
-    width: 200px;
-    height: 260px;
-  }
-  
-  .robot-head img {
-    width: 55px;
-    height: 55px;
-  }
-  
-  .upload-resume-see-results-btn,
+  .upload-resume-update-btn,
   .upload-resume-delete-btn {
-    padding: 10px 25px;
-    font-size: 14px;
-    margin-top: 12px;
+    width: 100%;
+    padding: 12px 25px;
+    font-size: 15px;
   }
-
 }
 
 /* للهواتف الصغيرة جداً (أقل من 480px) */
 @media (max-width: 480px) {
   .upload-resume-container {
-    padding: 15px;
-  }
-  
-  .upload-resume-main-header {
-    margin-top: 15px;
-    margin-bottom: 25px;
+    padding: 10px 15px;
   }
   
   .upload-resume-welcome-text {
     font-size: 22px;
-    line-height: 32px;
   }
   
   .upload-resume-subtitle {
-    font-size: 16px;
-    line-height: 24px;
-  }
-  
-  .upload-resume-content-sections {
-    gap: 30px;
+    font-size: 14px;
   }
   
   .upload-resume-tips-box h4 {
-    width: 300px;
-    height: 50px;
     font-size: 15px;
+    min-height: 55px;
+    padding: 8px 15px;
   }
   
   .upload-resume-tip-card span {
-    width: 300px;
     font-size: 13px;
     padding: 8px 12px;
+    gap: 10px;
   }
   
   .upload-resume-tip-card img {
@@ -530,77 +592,27 @@
   }
   
   .upload-resume-example-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-    margin-bottom: 20px;
-  }
-  
-  .upload-resume-upload-box {
-    width: 180px;
-    height: 240px;
-    margin-bottom: 20px;
-  }
-  
-  .robot-head img {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .upload-resume-see-results-btn,
-  .upload-resume-delete-btn {
     padding: 8px 20px;
-    font-size: 13px;
-    margin-top: 10px;
-  }
-  
-  .upload-resume-popup {
-    padding: 15px 25px;
-    font-size: 15px;
-  }
-  
-
-}
-
-/* للهواتف الصغيرة جداً (أقل من 360px) */
-@media (max-width: 360px) {
-  .upload-resume-welcome-text {
-    font-size: 20px;
-    line-height: 28px;
-  }
-  
-  .upload-resume-subtitle {
     font-size: 14px;
-    line-height: 22px;
-  }
-  
-  .upload-resume-tips-box h4 {
-    width: 280px;
-    height: 45px;
-    font-size: 14px;
-  }
-  
-  .upload-resume-tip-card span {
-    width: 280px;
-    font-size: 12px;
   }
   
   .upload-resume-upload-box {
-    width: 160px;
-    height: 220px;
+    height: 260px;
+    max-width: 300px;
   }
   
   .robot-head img {
-    width: 45px;
-    height: 45px;
+    width: 55px;
+    height: 55px;
   }
   
   .upload-resume-see-results-btn,
+  .upload-resume-update-btn,
   .upload-resume-delete-btn {
-    padding: 6px 18px;
-    font-size: 12px;
+    padding: 10px 20px;
+    font-size: 14px;
   }
 }
-/* أضف هذه الأنماط في نهاية ملف UploadResume.css */
 
 /* ===== تخصيصات لـ react-toastify ===== */
 .Toastify__toast-container {
@@ -702,4 +714,13 @@
     font-size: 12px;
     margin-bottom: 6px;
   }
+}
+@media (max-width: 768px) {
+  .upload-resume-tips-box h4 {
+    min-height: 55px; /* كان 70px */
+    font-size: 17px; /* كان 20px */
+    padding: 12px 3px; /* كان 15px 25px */
+    margin-bottom: 20px; /* كان 25px */
+  }
+    
 }

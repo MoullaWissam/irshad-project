@@ -222,7 +222,7 @@
 }
 
 .answered-indicator {
-  color: #4CAF50;
+  color: #3bd541;
   font-size: 14px;
   font-weight: 500;
 }
@@ -380,8 +380,8 @@
 }
 
 .question-dot.answered {
-  border-color: #4CAF50;
-  background: #4CAF50;
+  border-color: #3bd541;
+  background: #3bd541;
   color: white;
 }
 
@@ -403,7 +403,7 @@
   background: #e8f5e9;
   padding: 12px 20px;
   border-radius: 8px;
-  border-left: 4px solid #4CAF50;
+  border-left: 4px solid #3bd541;
   margin-bottom: 10px;
 }
 
@@ -446,7 +446,7 @@
 .success-icon-large {
   width: 80px;
   height: 80px;
-  background: #4CAF50;
+  background: #3bd541;
   color: white;
   border-radius: 50%;
   display: flex;

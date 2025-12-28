@@ -20,7 +20,7 @@
 .success-icon {
   width: 80px;
   height: 80px;
-  background: #4CAF50;
+  background: #3bd541;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -54,7 +54,7 @@
   padding: 15px;
   border-radius: 10px;
   margin: 20px 0;
-  border-left: 4px solid #4CAF50;
+  border-left: 4px solid #3bd541;
 }
 
 .test-info p {
@@ -218,7 +218,7 @@
 }
 
 .result-value.status-success {
-  color: #4caf50;
+  color: #3bd541;
   background-color: #f1f8e9;
   padding: 4px 12px;
   border-radius: 20px;
@@ -234,7 +234,7 @@
 }
 
 .result-value.status-completed {
-  color: #4caf50;
+  color: #3bd541;
   background-color: #f1f8e9;
   padding: 4px 12px;
   border-radius: 20px;
@@ -243,7 +243,7 @@
 
 .test-info {
   background-color: #e8f5e9;
-  border-left: 4px solid #4caf50;
+  border-left: 4px solid #3bd541;
   padding: 12px 16px;
   margin: 20px 0;
   border-radius: 4px;
@@ -365,7 +365,7 @@
   content: "✓";
   position: absolute;
   left: 0;
-  color: #4caf50;
+  color: #3bd541;
   font-weight: bold;
 }
 /* Responsive Design */

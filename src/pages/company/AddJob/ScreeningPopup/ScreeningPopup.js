@@ -1,4 +1,6 @@
+// ScreeningPopup.js
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import "./ScreeningPopup.css";
 
 import Toast from "./Toast";
@@ -12,6 +14,7 @@ export default function ScreeningPopup({
   initialQuestions = [],
   initialDuration = 6,
 }) {
+  const { t } = useTranslation();
   const [questions, setQuestions] = useState([]);
   const [duration, setDuration] = useState(initialDuration);
 
@@ -46,12 +49,12 @@ export default function ScreeningPopup({
   const validateForm = () => {
     let e = {};
 
-    if (!form.question.trim()) e.question = "Question is required.";
-    if (!form.correct.trim()) e.correct = "Correct answer is required.";
+    if (!form.question.trim()) e.question = t("Question is required.");
+    if (!form.correct.trim()) e.correct = t("Correct answer is required.");
 
     const wrongs = [form.wrong1, form.wrong2, form.wrong3].map((w) => w.trim());
     if (!wrongs.some((w) => w.length > 0))
-      e.wrong = "At least one wrong answer is required.";
+      e.wrong = t("At least one wrong answer is required.");
 
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -62,7 +65,7 @@ export default function ScreeningPopup({
     if (!validateForm()) {
       setToast({
         type: "error",
-        text: "⚠️ Please fix the highlighted errors.",
+        text: t("⚠️ Please fix the highlighted errors."),
       });
       return;
     }
@@ -83,7 +86,7 @@ export default function ScreeningPopup({
     setForm({ question: "", correct: "", wrong1: "", wrong2: "", wrong3: "" });
     setEditingIndex(-1);
     setErrors({});
-    setToast({ type: "success", text: "✅ Question added successfully!" });
+    setToast({ type: "success", text: t("✅ Question added successfully!") });
   };
 
   // بدء التعديل
@@ -111,7 +114,7 @@ export default function ScreeningPopup({
     if (!validateForm()) {
       setToast({
         type: "error",
-        text: "⚠️ Please fix the highlighted errors.",
+        text: t("⚠️ Please fix the highlighted errors."),
       });
       return;
     }
@@ -134,7 +137,7 @@ export default function ScreeningPopup({
     setForm({ question: "", correct: "", wrong1: "", wrong2: "", wrong3: "" });
     setEditingIndex(-1);
     setErrors({});
-    setToast({ type: "success", text: "✅ Question updated successfully!" });
+    setToast({ type: "success", text: t("✅ Question updated successfully!") });
   };
 
   // حذف سؤال
@@ -153,7 +156,7 @@ export default function ScreeningPopup({
       setEditingIndex(-1);
     }
 
-    setToast({ type: "success", text: "🗑️ Question deleted." });
+    setToast({ type: "success", text: t("🗑️ Question deleted.") });
   };
 
   // حفظ الاختبار
@@ -161,12 +164,12 @@ export default function ScreeningPopup({
     if (questions.length === 0) {
       setToast({
         type: "error",
-        text: "⚠️ Add at least one question before saving.",
+        text: t("⚠️ Add at least one question before saving."),
       });
       return;
     }
     onSave({ questions, duration });
-    setToast({ type: "success", text: "✅ Test saved!" });
+    setToast({ type: "success", text: t("✅ Test saved!") });
   };
 
   return (
@@ -176,7 +179,7 @@ export default function ScreeningPopup({
           ×
         </button>
 
-        <h2 style={{ marginTop: 0 }}>Screening Questions</h2>
+        <h2 style={{ marginTop: 0 }}>{t("Screening Questions")}</h2>
 
         <Toast toast={toast} />
 
@@ -210,7 +213,7 @@ export default function ScreeningPopup({
 
         <div style={{ marginTop: 14 }}>
           <button className="save-btn" onClick={handleSaveTest}>
-            Save Test & Close
+            {t("Save Test & Close")}
           </button>
         </div>
       </div>
