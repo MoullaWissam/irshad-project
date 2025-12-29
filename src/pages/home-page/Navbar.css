@@ -146,13 +146,13 @@
 
 /* زر تسجيل الدخول */
 .login-link .login-btn {
+  font-family: 'Segoe UI', Roboto, sans-serif;
   width: 120px;
   height: 40px;
   border-radius: 8px;
   border: none;
   background: #00b8e7;
   color: white;
-  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;

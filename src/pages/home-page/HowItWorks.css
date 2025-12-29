@@ -14,7 +14,6 @@
 }
 
 .hiw-title {
-  font-family: "Roboto", sans-serif;
   font-size: 42px;
   font-weight: 700;
   margin-bottom: 60px;
@@ -676,4 +675,15 @@
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }
+}
+/* HowItWorks.css - أضف هذه السطرين فقط في النهاية */
+
+/* ينعكس السهم فقط في الوضع العربي */
+.hiw-arrow-bg.rtl {
+  transform: scaleX(-1);
+}
+
+/* يبقى المحتوى الداخلي كما هو (لا ينعكس) */
+.hiw-arrow-bg.rtl .hiw-steps-container {
+  transform: scaleX(-1);
 }

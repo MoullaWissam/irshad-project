@@ -46,6 +46,7 @@
 }
 
 .hero-btn {
+    font-family: 'Segoe UI', Roboto, sans-serif;
   width: 180px;
   padding: 12px 20px;
   border: none;
@@ -58,7 +59,6 @@
   margin-right: 15px;
   margin-left: 15px;
   gap: 10px;
-  font-family: Roboto;
   font-size: 18px;
   line-height: 100%;
 }

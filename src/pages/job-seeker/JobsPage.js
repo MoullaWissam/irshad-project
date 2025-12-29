@@ -301,14 +301,7 @@ function JobsPage() {
             })}
           </div>
           
-          <div className="jobs-page-results-footer">
-            <p style={robotoStyle}>
-              {t("Showing {shown} of {total} jobs", { 
-                shown: filteredJobs.length, 
-                total: jobs.length 
-              })}
-            </p>
-          </div>
+
         </>
       )}
     </div>

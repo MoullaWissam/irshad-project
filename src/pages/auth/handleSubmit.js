@@ -23,22 +23,16 @@ export const handleSubmitLogic = (
     else if (!isValidPassword(employeeData.password)) 
       newErrors.password = "Weak password";
 
-    // if (!employeeData.phone?.trim()) newErrors.phone = "Required";
-    // else if (!isValidPhone(employeeData.phone)) newErrors.phone = "Invalid";
-
-    // التحقق من تاريخ الميلاد
     if (!employeeData.birthDate) {
       newErrors.birthDate = "Required";
     } else {
       const birthDate = new Date(employeeData.birthDate);
       const today = new Date();
       
-      // التحقق من أن التاريخ ليس في المستقبل
       if (birthDate > today) {
         newErrors.birthDate = "Birth date cannot be in the future";
       }
       
-      // التحقق من العمر (16 سنة على الأقل)
       const age = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
       

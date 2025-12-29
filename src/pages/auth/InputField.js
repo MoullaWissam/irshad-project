@@ -40,7 +40,7 @@ const InputField = ({ label, type, value, onChange, error, placeholder }) => {
             type="button" 
             className="eyeIcon" 
             onClick={() => setShow(!show)}
-            aria-label={show ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+            aria-label={show ? "Hide password" : "Show password"}
           >
             {show ? <FaEyeSlash /> : <FaEye />}
           </button>

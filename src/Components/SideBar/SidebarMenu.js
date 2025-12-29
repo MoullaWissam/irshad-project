@@ -22,7 +22,6 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
   const [companyJobs, setCompanyJobs] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // جلب الوظائف الخاصة بالشركة
   useEffect(() => {
     if (userRole === "company") {
       fetchCompanyJobs();
@@ -32,16 +31,13 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
   const fetchCompanyJobs = async () => {
     setLoading(true);
     try {
-        // استرجاع البيانات من localStorage
       const companyData = localStorage.getItem("companyData");
 
-      // تحويل النص إلى كائن JSON
       const company = JSON.parse(companyData);
 
-      // الآن يمكنك الوصول إلى الـ id
       const companyId = company.id;
 
-      console.log(companyId); // سيطبع 5
+      console.log(companyId); 
 
       console.log("Fetching jobs for company ID:", companyId);
       
@@ -84,9 +80,7 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
     if (onItemClick) onItemClick();
   };
 
-  // تعريف عناصر القائمة بناءً على الدور
   const menuItems = userRole === "company" ? [
-    { path: "/company/dashboard", text: t("Dashboard"), icon: mainIcon },
     { path: "/company/my-jobs", text: t("Add Job"), icon: addJobIcon },
     {
       text: t("Applicants"),
@@ -101,7 +95,6 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
           jobId: job.id
         }))
     },
-    { path: "/company/settings", text: t("Settings"), icon: settingsIcon },
   ] : [
     { path: "/upload-resume", text: t("Main"), icon: mainIcon },
     { path: "/matches", text: t("Matches"), icon: matchesIcon },
@@ -141,7 +134,6 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
                       className={({ isActive }) => `dropdown-item ${isActive ? "active" : ""}`}
                       onClick={() => {
                         handleItemClick();
-                        // حفظ بيانات الوظيفة في localStorage للاستخدام في الصفحة التالية
                         localStorage.setItem(`job_${subItem.jobId}`, JSON.stringify(
                           companyJobs.find(j => j.id === subItem.jobId)
                         ));

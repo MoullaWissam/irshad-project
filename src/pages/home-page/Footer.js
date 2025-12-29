@@ -6,7 +6,7 @@ import "./Footer.css";
 
 // استيراد الصور
 import footerLogo from "../../assets/images/footerLogo.png";
-import robotGif from "../../assets/images/robot.gif";
+import robotGif from "../../assets/images/Murshed.gif";
 import facebook from "../../assets/icons/facebook.png";
 import gmail from "../../assets/icons/gmail.png";
 import instagram from "../../assets/icons/instagram.png";

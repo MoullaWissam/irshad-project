@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import UploadIcon from "../../assets/icons/image- 1.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 const EmployeeForm = ({ data, errors, onChange, onFileChange }) => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const fields = [
-    { label: "First Name", name: "firstName", type: "text" },
-    { label: "Last Name", name: "lastName", type: "text" },
-    { label: "Email", name: "email", type: "email" },
-    { label: "Password", name: "password", type: "password" },
-    // { label: "Phone Number", name: "phone", type: "text" },
-    { label: "Birth Date", name: "birthDate", type: "date" },
+    { label: t('First Name'), name: "firstName", type: "text", placeholder: t('Enter first name') },
+    { label: t('Last Name'), name: "lastName", type: "text", placeholder: t('Enter last name') },
+    { label: t('Email'), name: "email", type: "email", placeholder: t('Enter email') },
+    { label: t('Password'), name: "password", type: "password", placeholder: t('Enter password') },
+    { label: t('Birth Date'), name: "birthDate", type: "date" },
   ];
 
   return (
@@ -30,6 +31,7 @@ const EmployeeForm = ({ data, errors, onChange, onFileChange }) => {
                   ? { paddingRight: "40px", width: "100%" }
                   : { width: "100%" }
               }
+              placeholder={field.placeholder}
             />
             
             {field.name === "password" && (
@@ -57,25 +59,25 @@ const EmployeeForm = ({ data, errors, onChange, onFileChange }) => {
         </div>
       ))}
 
-<div className="upload" style={{ alignContent: "center" }}>
-  <label htmlFor="employeePhoto" className="upload-label" style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexDirection: "row", gap: "8px" }}>
-    <img
-      src={UploadIcon}
-      alt="Upload Icon"
-      style={{ width: "20px", height: "20px" }}
-    />
-    <span style={{ color: "#00b8e7", fontWeight: "600", fontSize: "14px" }}>
-      {data.photo ? `✓ ${data.photo.name}` : "Upload your photo here"}
-    </span>
-  </label>
-  <input
-    id="employeePhoto"
-    type="file"
-    accept="image/*"
-    onChange={onFileChange}
-    style={{ display: "none" }}
-  />
-</div>
+      <div className="upload" style={{ alignContent: "center" }}>
+        <label htmlFor="employeePhoto" className="upload-label" style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexDirection: "row", gap: "8px" }}>
+          <img
+            src={UploadIcon}
+            alt="Upload Icon"
+            style={{ width: "20px", height: "20px" }}
+          />
+          <span style={{ color: "#00b8e7", fontWeight: "600", fontSize: "14px" }}>
+            {data.photo ? `✓ ${data.photo.name}` : t('Upload your photo here')}
+          </span>
+        </label>
+        <input
+          id="employeePhoto"
+          type="file"
+          accept="image/*"
+          onChange={onFileChange}
+          style={{ display: "none" }}
+        />
+      </div>
     </div>
   );
 };

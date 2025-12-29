@@ -1,17 +1,16 @@
-// HowItWorks.js - بعد التعديل
+// HowItWorks.js - التعديل النهائي
 import React from "react";
 import { useTranslation } from 'react-i18next';
 import "./HowItWorks.css";
 
-// 👇 استيراد الأيقونات الثلاث
 import uploadIcon from "../../assets/images/upload.png";
 import aiIcon from "../../assets/images/AI.png";
 import getIcon from "../../assets/images/get.png";
 
 function HowItWorks() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === 'rtl';
   
-  // استخدام مفاتيح الترجمة في كائن الخطوات
   const steps = [
     {
       icon: uploadIcon,
@@ -32,11 +31,11 @@ function HowItWorks() {
 
   return (
     <section className="hiw-section">
-      {/* عنوان القسم */}
       <h2 className="hiw-title">
         {t("How It Works With Irshad")}
       </h2>
-      <div className="hiw-arrow-bg">
+      {/* فقط أضف className "rtl" عندما تكون اللغة العربية */}
+      <div className={`hiw-arrow-bg ${isRTL ? 'rtl' : ''}`}>
         <div className="hiw-steps-container">
           {steps.map((step, index) => (
             <div key={index} className="hiw-step-card">

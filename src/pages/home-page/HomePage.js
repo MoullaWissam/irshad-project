@@ -23,7 +23,6 @@ function HomePage() {
         <ChatIcon onOpen={() => setIsChatOpen(true)} />
       )}
       
-      {/* النافذة الجانبية */}
       <ChatSidebar 
         isOpen={isChatOpen} 
         onClose={() => setIsChatOpen(false)} 

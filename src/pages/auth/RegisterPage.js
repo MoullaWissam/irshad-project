@@ -8,8 +8,10 @@ import logo from "../../assets/images/logo-signin.svg";
 import EmployeeForm from "./EmployeeForm";
 import CompanyForm from "./CompanyForm";
 import { handleSubmitLogic } from "./handleSubmit";
+import { useTranslation } from 'react-i18next';
 
 const RegisterPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeForm, setActiveForm] = useState("employee");
@@ -20,7 +22,6 @@ const RegisterPage = () => {
     lastName: "",
     email: "",
     password: "",
-    // phone: "",
     birthDate: "",
     photo: null,
   });
@@ -37,28 +38,6 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [fileUploaded, setFileUploaded] = useState(false);
 
-
-  // دالة لحساب العمر من تاريخ الميلاد
-
-  const calculateAge = (birthDate) => {
-    if (!birthDate) return null;
-    
-    const today = new Date();
-    const birthDateObj = new Date(birthDate);
-    
-    // حساب الفرق بالسنة
-    let age = today.getFullYear() - birthDateObj.getFullYear();
-    const monthDiff = today.getMonth() - birthDateObj.getMonth();
-    
-    // إذا كان الشهر الحالي أقل من شهر الميلاد، أو نفس الشهر ولكن اليوم أقل
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
-      age--;
-    }
-    
-    return age;
-  };
-
-  // قراءة userType من query parameters عند تحميل الصفحة
   useEffect(() => {
     const userType = searchParams.get("userType");
     console.log("User type from URL:", userType);
@@ -85,7 +64,6 @@ const RegisterPage = () => {
       setCompanyData((prev) => ({ ...prev, [name]: value }));
     }
     
-    // مسح الخطأ عند البدء بالكتابة في الحقل
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -95,13 +73,13 @@ const RegisterPage = () => {
     const file = e.target.files[0];
     if (activeForm === "employee") {
       setEmployeeData({ ...employeeData, photo: file });
-      toast.success("تم رفع صورتك بنجاح!", {
+      toast.success(t('Photo uploaded successfully'), {
         position: "top-right",
         autoClose: 3000,
       });
     } else {
       setCompanyData({ ...companyData, photo: file });
-      toast.success("تم رفع شعار الشركة بنجاح!", {
+      toast.success(t('Logo uploaded successfully'), {
         position: "top-right",
         autoClose: 3000,
       });
@@ -114,18 +92,21 @@ const RegisterPage = () => {
     
     setIsLoading(true);
     
-    // استخدام handleSubmitLogic للتحقق من البيانات
     const validationErrors = handleSubmitLogic(
       activeForm,
       employeeData,
       companyData
     );
 
-    // إذا كان هناك أخطاء في التحقق، نوقف الإرسال
     if (Object.keys(validationErrors).length > 0) {
       console.log(Object.keys(validationErrors).length);
       
-      setErrors(validationErrors);
+      const translatedErrors = {};
+      Object.keys(validationErrors).forEach(key => {
+        translatedErrors[key] = t(validationErrors[key]);
+      });
+      
+      setErrors(translatedErrors);
       setIsLoading(false);
       return;
     }
@@ -141,7 +122,6 @@ const RegisterPage = () => {
       formData.append("lastName", employeeData.lastName);
       formData.append("email", employeeData.email);
       formData.append("password", employeeData.password);
-      // formData.append("phone", employeeData.phone);
       formData.append("birthDate", employeeData.birthDate || "2000-01-01");
       
       if (employeeData.photo) {
@@ -182,14 +162,14 @@ const RegisterPage = () => {
         }
       } else {
         console.error("Registration Failed:", data);
-        toast.error(data.message || "Registration failed. Please try again.", {
+        toast.error(data.message || t('Registration failed. Please try again.'), {
           position: "top-right",
           autoClose: 5000,
         });
       }
     } catch (error) {
       console.error("Network Error:", error);
-      toast.error("Network error. Please check your connection.", {
+      toast.error(t('Network error. Please check your connection.'), {
         position: "top-right",
         autoClose: 5000,
       });
@@ -212,11 +192,11 @@ const RegisterPage = () => {
         <div className="register-container">
           <div className="left-section">
             <img className="logo" src={logo} alt="Irshad" />
-            <h2>Start your journey</h2>
+            <h2>{t('Start your journey')}</h2>
             <p className="register-description">
               {activeForm === "employee" 
-                ? "Register as an employee and let us guide you" 
-                : "Register as a company and let us guide you"}
+                ? t('Register as an employee and let us guide you') 
+                : t('Register as a company and let us guide you')}
             </p>
 
             <div className="buttons">
@@ -224,17 +204,16 @@ const RegisterPage = () => {
                 className={activeForm === "employee" ? "active" : ""}
                 onClick={() => setActiveForm("employee")}
               >
-                Employee
+                {t('Employee')}
               </button>
               <button
                 className={activeForm === "company" ? "active" : ""}
                 onClick={() => setActiveForm("company")}
               >
-                Company
+                {t('Company')}
               </button>
             </div>
 
-            {/* زر التسجيل للشاشات الكبيرة (يختفي في الشاشات الصغيرة) */}
             <button 
               type="button" 
               className="signup-btn" 
@@ -245,11 +224,11 @@ const RegisterPage = () => {
                 cursor: isLoading ? "not-allowed" : "pointer" 
               }}
             >
-              {isLoading ? "Signing up..." : `Sign up as ${activeForm === "employee" ? "Employee" : "Company"}`}
+              {isLoading ? t('Signing up...') : `${t('Sign up as')} ${activeForm === "employee" ? t('Employee') : t('Company')}`}
             </button>
 
             <p className="signin">
-              Already have an account? <Link to="/login">Sign In</Link>
+              {t('Already have an account?')} <Link to="/login">{t('Sign In')}</Link>
             </p>
           </div>
 
@@ -291,7 +270,6 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          {/* قسم زر التسجيل للشاشات الصغيرة (يظهر فقط في الشاشات الصغيرة) */}
           <div className="mobile-signup-section">
             <button 
               type="button" 
@@ -303,11 +281,11 @@ const RegisterPage = () => {
                 cursor: isLoading ? "not-allowed" : "pointer" 
               }}
             >
-              {isLoading ? "Signing up..." : `Sign up as ${activeForm === "employee" ? "Employee" : "Company"}`}
+              {isLoading ? t('Signing up...') : `${t('Sign up as')} ${activeForm === "employee" ? t('Employee') : t('Company')}`}
             </button>
             
             <p className="mobile-signin">
-              Already have an account? <Link to="/login">Sign In</Link>
+              {t('Already have an account?')} <Link to="/login">{t('Sign In')}</Link>
             </p>
           </div>
         </div>

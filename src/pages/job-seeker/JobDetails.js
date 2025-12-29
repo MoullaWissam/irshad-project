@@ -19,7 +19,6 @@ import {
   faPaperPlane,
   faBuilding,
   faCalendarAlt,
-  faCheckCircle,
   faTimesCircle
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -69,7 +68,7 @@ export default function JobDetails() {
       } catch (error) {
         console.error("Failed to load job:", error);
         
-        toast.error("❌ " + t("Failed to load job details"), {
+        toast.error(t("Failed to load job details"), {
           position: isRTL ? "top-left" : "top-right",
           autoClose: 3000,
           rtl: isRTL
@@ -153,7 +152,7 @@ export default function JobDetails() {
       
       const result = await response.json();
       
-      toast.success("✅ " + t("Application submitted successfully!"), {
+      toast.success(t("Application submitted successfully!"), {
         position: isRTL ? "top-left" : "top-right",
         autoClose: 3000,
         rtl: isRTL
@@ -169,7 +168,7 @@ export default function JobDetails() {
       
     } catch (error) {
       console.error("Error submitting application:", error);
-      toast.error("❌ " + t("Failed to submit application"), {
+      toast.error(t("Failed to submit application"), {
         position: isRTL ? "top-left" : "top-right",
         autoClose: 3000,
         rtl: isRTL
@@ -199,7 +198,7 @@ export default function JobDetails() {
         throw new Error(t("Delete failed: {status}", { status: response.status }));
       }
       
-      toast.success("✅ " + t("Job deleted successfully!"), {
+      toast.success(t("Job deleted successfully!"), {
         position: isRTL ? "top-left" : "top-right",
         autoClose: 3000,
         rtl: isRTL
@@ -211,7 +210,7 @@ export default function JobDetails() {
       
     } catch (error) {
       console.error("Error deleting job:", error);
-      toast.error(`❌ ${error.message}`, {
+      toast.error(error.message, {
         position: isRTL ? "top-left" : "top-right",
         autoClose: 3000,
         rtl: isRTL
@@ -348,9 +347,25 @@ export default function JobDetails() {
         </div>
 
         <div className="job-company-card">
-          <div className="company-logo-avatar">
-            <FontAwesomeIcon icon={faBuilding} style={{color: 'white', fontSize: '26px'}} />
-          </div>
+          <div className="company-logo-avatar" style={{ 
+  backgroundColor: job.image ? 'white' : '', 
+  background: job.image ? 'white' : 'linear-gradient(135deg, #0b2b82 0%, #1a4dc7 100%)'
+}}>
+  {job.image ? (
+    <img 
+      src={job.image} 
+      alt={job.companyName || t("Company Logo")}
+      className="company-logo-image"
+      onError={(e) => {
+        e.target.style.display = 'none';
+      }}
+    />
+  ) : (
+    <svg data-prefix="fas" data-icon="building" className="svg-inline--fa fa-building" role="img" viewBox="0 0 384 512" aria-hidden="true" style={{color: 'white', fontSize: '26px'}}>
+      <path fill="currentColor" d="M64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-384c0-35.3-28.7-64-64-64L64 0zM176 352l32 0c17.7 0 32 14.3 32 32l0 80-96 0 0-80c0-17.7 14.3-32 32-32zM96 112c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32zM240 96l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16zM96 240c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32zm144-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16z"></path>
+    </svg>
+  )}
+</div>
           <div className="company-details-info">
             <h3 className="company-title-name" style={{  fontWeight: 600 }}>
               {job.companyName || t("Unknown Company")}
@@ -372,19 +387,6 @@ export default function JobDetails() {
             {job.tags.split(',').map((tag, index) => (
               <span key={index} className="category-tag" style={robotoStyle}>{tag.trim()}</span>
             ))}
-          </div>
-        )}
-
-        {job.image && (
-          <div className="job-image-container">
-            <img 
-              src={job.image} 
-              alt={job.title}
-              className="job-cover-image"
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
-            />
           </div>
         )}
 

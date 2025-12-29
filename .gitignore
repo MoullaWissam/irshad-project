@@ -24,3 +24,11 @@ yarn-error.log*
 
 # Ignore only the specific GLB file
 /public/models/Murshed.glb
+/public/models/*.glb
+!/public/models/*-compressed.glb
+/public/*/*.png
+/public/*/*.jpg
+/public/*/*.jpeg
+/public/*/*.gif
+!/public/*/*-optimized.webp
+build/*.map

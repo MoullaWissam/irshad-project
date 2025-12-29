@@ -622,8 +622,8 @@
 }
 
 .Toastify__toast {
+  font-family: 'Segoe UI', Roboto, sans-serif;
   border-radius: 8px;
-  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 500;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
