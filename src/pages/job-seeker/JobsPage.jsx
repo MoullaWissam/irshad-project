@@ -56,7 +56,7 @@ function JobsPage() {
       setError(t("Failed to load jobs data"));
       setLoading(false);
       
-      toast.error("❌ " + t("Failed to load jobs data"), {
+      toast.error(t("Failed to load jobs data"), {
         position: isRTL ? "top-left" : "top-right",
         autoClose: 3000,
         rtl: isRTL
@@ -222,12 +222,7 @@ function JobsPage() {
         </div>
       </div>
 
-      {searchTerm && !loading && (
-        <div className="jobs-page-search-info">
-          <span className="search-term">{t('Search for: "{term}"', { term: searchTerm })}</span>
-          <span className="results-count"> ({t("{count} results", { count: filteredJobs.length })})</span>
-        </div>
-      )}
+
 
       {loading && (
         <div className="jobs-page-loading">

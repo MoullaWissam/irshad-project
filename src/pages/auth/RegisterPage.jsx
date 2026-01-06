@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./RegisterPage.css";
 import logo from "../../assets/images/logo-signin.svg";
 import EmployeeForm from "./EmployeeForm";
 import CompanyForm from "./CompanyForm";
 import { handleSubmitLogic } from "./handleSubmit";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const RegisterPage = () => {
   const { t } = useTranslation();
@@ -57,13 +57,13 @@ const RegisterPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (activeForm === "employee") {
       setEmployeeData((prev) => ({ ...prev, [name]: value }));
     } else {
       setCompanyData((prev) => ({ ...prev, [name]: value }));
     }
-    
+
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -73,13 +73,13 @@ const RegisterPage = () => {
     const file = e.target.files[0];
     if (activeForm === "employee") {
       setEmployeeData({ ...employeeData, photo: file });
-      toast.success(t('Photo uploaded successfully'), {
+      toast.success(t("Photo uploaded successfully"), {
         position: "top-right",
         autoClose: 3000,
       });
     } else {
       setCompanyData({ ...companyData, photo: file });
-      toast.success(t('Logo uploaded successfully'), {
+      toast.success(t("Logo uploaded successfully"), {
         position: "top-right",
         autoClose: 3000,
       });
@@ -89,9 +89,9 @@ const RegisterPage = () => {
 
   const handleSubmit = async () => {
     console.log("start");
-    
+
     setIsLoading(true);
-    
+
     const validationErrors = handleSubmitLogic(
       activeForm,
       employeeData,
@@ -100,42 +100,42 @@ const RegisterPage = () => {
 
     if (Object.keys(validationErrors).length > 0) {
       console.log(Object.keys(validationErrors).length);
-      
+
       const translatedErrors = {};
-      Object.keys(validationErrors).forEach(key => {
+      Object.keys(validationErrors).forEach((key) => {
         translatedErrors[key] = t(validationErrors[key]);
       });
-      
+
       setErrors(translatedErrors);
       setIsLoading(false);
       return;
     }
     console.log("s");
-    
+
     const formData = new FormData();
     let url = "";
 
     if (activeForm === "employee") {
       url = "http://localhost:3000/auth/register";
-      
+
       formData.append("firstName", employeeData.firstName);
       formData.append("lastName", employeeData.lastName);
       formData.append("email", employeeData.email);
       formData.append("password", employeeData.password);
       formData.append("birthDate", employeeData.birthDate || "2000-01-01");
-      
+
       if (employeeData.photo) {
         formData.append("profileImage", employeeData.photo);
       }
     } else {
       url = "http://localhost:3000/company-management/company-register";
-      
+
       formData.append("companyName", companyData.companyName);
       formData.append("email", companyData.email);
       formData.append("password", companyData.companyPassword);
       formData.append("companyLocation", companyData.companyAddress);
       formData.append("companyWebsite", companyData.website);
-      
+
       if (companyData.photo) {
         formData.append("companyLogo", companyData.photo);
       }
@@ -145,7 +145,7 @@ const RegisterPage = () => {
       const response = await fetch(url, {
         method: "POST",
         body: formData,
-        credentials: "include"
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -162,14 +162,17 @@ const RegisterPage = () => {
         }
       } else {
         console.error("Registration Failed:", data);
-        toast.error(data.message || t('Registration failed. Please try again.'), {
-          position: "top-right",
-          autoClose: 5000,
-        });
+        toast.error(
+          data.message || t("Registration failed. Please try again."),
+          {
+            position: "top-right",
+            autoClose: 5000,
+          }
+        );
       }
     } catch (error) {
       console.error("Network Error:", error);
-      toast.error(t('Network error. Please check your connection.'), {
+      toast.error(t("Network error. Please check your connection."), {
         position: "top-right",
         autoClose: 5000,
       });
@@ -192,11 +195,11 @@ const RegisterPage = () => {
         <div className="register-container">
           <div className="left-section">
             <img className="logo" src={logo} alt="Irshad" />
-            <h2>{t('Start your journey')}</h2>
+            <h2>{t("Start your journey")}</h2>
             <p className="register-description">
-              {activeForm === "employee" 
-                ? t('Register as an employee and let us guide you') 
-                : t('Register as a company and let us guide you')}
+              {activeForm === "employee"
+                ? t("Register as an employee and let us guide you")
+                : t("Register as a company and let us guide you")}
             </p>
 
             <div className="buttons">
@@ -204,31 +207,36 @@ const RegisterPage = () => {
                 className={activeForm === "employee" ? "active" : ""}
                 onClick={() => setActiveForm("employee")}
               >
-                {t('Employee')}
+                {t("Employee")}
               </button>
               <button
                 className={activeForm === "company" ? "active" : ""}
                 onClick={() => setActiveForm("company")}
               >
-                {t('Company')}
+                {t("Company")}
               </button>
             </div>
 
-            <button 
-              type="button" 
-              className="signup-btn" 
+            <button
+              type="button"
+              className="signup-btn"
               onClick={handleSubmit}
               disabled={isLoading}
-              style={{ 
-                opacity: isLoading ? 0.7 : 1, 
-                cursor: isLoading ? "not-allowed" : "pointer" 
+              style={{
+                opacity: isLoading ? 0.7 : 1,
+                cursor: isLoading ? "not-allowed" : "pointer",
               }}
             >
-              {isLoading ? t('Signing up...') : `${t('Sign up as')} ${activeForm === "employee" ? t('Employee') : t('Company')}`}
+              {isLoading
+                ? t("Signing up...")
+                : `${t("Sign up as")} ${
+                    activeForm === "employee" ? t("Employee") : t("Company")
+                  }`}
             </button>
 
             <p className="signin">
-              {t('Already have an account?')} <Link to="/login">{t('Sign In')}</Link>
+              {t("Already have an account?")}{" "}
+              <Link to="/login">{t("Sign In")}</Link>
             </p>
           </div>
 
@@ -271,21 +279,26 @@ const RegisterPage = () => {
           </div>
 
           <div className="mobile-signup-section">
-            <button 
-              type="button" 
-              className="mobile-signup-btn" 
+            <button
+              type="button"
+              className="mobile-signup-btn"
               onClick={handleSubmit}
               disabled={isLoading}
-              style={{ 
-                opacity: isLoading ? 0.7 : 1, 
-                cursor: isLoading ? "not-allowed" : "pointer" 
+              style={{
+                opacity: isLoading ? 0.7 : 1,
+                cursor: isLoading ? "not-allowed" : "pointer",
               }}
             >
-              {isLoading ? t('Signing up...') : `${t('Sign up as')} ${activeForm === "employee" ? t('Employee') : t('Company')}`}
+              {isLoading
+                ? t("Signing up...")
+                : `${t("Sign up as")} ${
+                    activeForm === "employee" ? t("Employee") : t("Company")
+                  }`}
             </button>
-            
+
             <p className="mobile-signin">
-              {t('Already have an account?')} <Link to="/login">{t('Sign In')}</Link>
+              {t("Already have an account?")}{" "}
+              <Link to="/login">{t("Sign In")}</Link>
             </p>
           </div>
         </div>

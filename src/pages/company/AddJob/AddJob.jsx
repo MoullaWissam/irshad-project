@@ -66,7 +66,7 @@ export default function AddJob() {
     if (!companyId) {
       setMessage({
         type: "error",
-        text: t("❌ Please login as a company to add jobs")
+        text: t(" Please login as a company to add jobs")
       });
     }
   }, [companyId, navigate, t]);
@@ -148,12 +148,12 @@ export default function AddJob() {
     const file = e.target.files[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
-        setMessage({ type: "error", text: t("❌ Please upload an image file") });
+        setMessage({ type: "error", text: t(" Please upload an image file") });
         return;
       }
       
       if (file.size > 5 * 1024 * 1024) {
-        setMessage({ type: "error", text: t("❌ File size should be less than 5MB") });
+        setMessage({ type: "error", text: t(" File size should be less than 5MB") });
         return;
       }
       
@@ -164,7 +164,7 @@ export default function AddJob() {
           logoPreview: event.target.result,
           logoFile: file
         });
-        setMessage({ type: "success", text: t("✅ Logo uploaded successfully!") });
+        setMessage({ type: "success", text: t(" Logo uploaded successfully!") });
       };
       reader.readAsDataURL(file);
     }
@@ -235,7 +235,7 @@ export default function AddJob() {
     if (!companyId) {
       setMessage({
         type: "error",
-        text: t("❌ Company information not found. Please login again as a company.")
+        text: t(" Company information not found. Please login again as a company.")
       });
       setTimeout(() => navigate('/login'), 2000);
       return;
@@ -357,7 +357,7 @@ export default function AddJob() {
 
           if (!addQuestionResponse.ok) {
             const errorText = await addQuestionResponse.text();
-            console.error(`❌ Failed to add question ${index + 1}:`, errorText);
+            console.error(` Failed to add question ${index + 1}:`, errorText);
             
             try {
               const errorData = JSON.parse(errorText);
@@ -378,28 +378,44 @@ export default function AddJob() {
           }
         }
         
-        console.log('✅ ALL QUESTIONS ADDED SUCCESSFULLY');
+        console.log(' ALL QUESTIONS ADDED SUCCESSFULLY');
       }
 
       setMessage({ 
         type: "success", 
-        text: t("✅ Job and questions submitted successfully!") 
+        text: t(" Job and questions submitted successfully!") 
       });
       
       setTimeout(() => {
         resetForm();
         setIsSubmitting(false);
-        console.log('✅ Form reset completed');
+        console.log(' Form reset completed');
       }, 2000);
       
     } catch (err) {
-      console.error('❌ SUBMISSION ERROR:', err);
+      console.error(' SUBMISSION ERROR:', err);
       setMessage({
         type: "error",
-        text: `❌ ${err.message || t('Failed to submit. Please try again.')}`
+        text: ` ${err.message || t('Failed to submit. Please try again.')}`
       });
       setIsSubmitting(false);
     }
+  };
+
+  // دالة لإزالة الاختبار
+  const handleRemoveTest = () => {
+    setShowQuestions(false);
+    // إعادة تعيين الأسئلة إلى حالة فارغة
+    setJobData(prev => ({
+      ...prev,
+      questions: Array(4).fill().map(() => ({
+        text: "",
+        correctAnswer: "",
+        wrongAnswers: ["", "", ""]
+      }))
+    }));
+    setCurrentQuestionIndex(0);
+
   };
 
   return (
@@ -579,9 +595,20 @@ export default function AddJob() {
 
         {/* RIGHT SIDE SCREENING TEST */}
         <div className="ajp-right-section">
-          <h3 className="ajp-section-title">
-            {t("Screening Test")} <span className="ajp-optional-text">({t("Optional")})</span>
-          </h3>
+          <div className="ajp-test-header">
+            <h3 className="ajp-section-title">
+              {t("Screening Test")} <span className="ajp-optional-text">({t("Optional")})</span>
+            </h3>
+            {showQuestions && (
+              <button 
+                className="ajp-remove-test-btn"
+                onClick={handleRemoveTest}
+                title={t("Remove screening test")}
+              >
+                {t("Remove Test")} ✕
+              </button>
+            )}
+          </div>
 
           {!showQuestions ? (
             <div 
@@ -757,7 +784,7 @@ export default function AddJob() {
             
             {!companyId && (
               <p className="ajp-warning-text">
-                ⚠️ {t("Please login as a company to submit jobs")}
+                {t("Please login as a company to submit jobs")}
               </p>
             )}
           </div>

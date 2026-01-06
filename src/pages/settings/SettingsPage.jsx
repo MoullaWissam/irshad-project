@@ -1,6 +1,6 @@
 import React from "react";
-import SettingsSection from "./SettingsSection";
-import { settingsByRole } from "./settingsConfig.js";
+import SettingsSection from "./SettingsSection.jsx";
+import { settingsByRole } from "./settingsConfig.jsx";
 import "./SettingsPage.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';

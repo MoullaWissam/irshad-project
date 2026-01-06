@@ -230,6 +230,12 @@ function ApplicantDetailsModal({
             >
               {t("Test Results")}
             </button>
+            <button 
+              className={`tab-btn ${activeTab === "interviews" ? "active" : ""}`}
+              onClick={() => setActiveTab("interviews")}
+            >
+              {t("Interviews")}
+            </button>
           </div>
 
           {/* Tab Content */}
@@ -383,10 +389,78 @@ function ApplicantDetailsModal({
                 )}
               </div>
             )}
+
+            {activeTab === "interviews" && (
+              <div className="interviews-content">
+                <div className="info-section">
+                  <h3>{t("Scheduled Interviews")}</h3>
+                  {applicant.interviews && applicant.interviews.length > 0 ? (
+                    <div className="interviews-list-modal">
+                      {applicant.interviews.map((interview) => (
+                        <div key={interview.id} className="interview-card">
+                          <div className="interview-header">
+                            <h4>{t("Interview")} #{interview.id}</h4>
+                            <span className="interview-status">
+                              {interview.status || t("Scheduled")}
+                            </span>
+                          </div>
+                          <div className="interview-details">
+                            <div className="interview-date-time">
+                              <div><strong>{t("Date")}:</strong> {interview.interviewDate}</div>
+                              <div><strong>{t("Time")}:</strong> {interview.interviewTime}</div>
+                            </div>
+                            {interview.additionalNotes && (
+                              <div className="interview-notes">
+                                <strong>{t("Notes")}:</strong> 
+                                <p>{interview.additionalNotes}</p>
+                              </div>
+                            )}
+                            {interview.meetingUrl && (
+                              <div className="meeting-link-container">
+                                <a 
+                                  href={interview.meetingUrl} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="meeting-btn"
+                                >
+                                  {t("Join Meeting")}
+                                </a>
+                              </div>
+                            )}
+                            <div className="interview-created">
+                              <small>{t("Created at")}: {new Date(interview.createdAt).toLocaleString()}</small>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="no-interviews">
+                      <div className="empty-interviews">
+                        <div className="empty-icon">📅</div>
+                        <h4>{t("No interviews scheduled")}</h4>
+                        <p>{t("This applicant hasn't been scheduled for any interviews yet.")}</p>
+                        {applicant.interviewStatus === "pending" && (
+                          <button 
+                            className="btn-schedule-now"
+                            onClick={() => {
+                              onScheduleInterview(applicant);
+                              onClose();
+                            }}
+                          >
+                            {t("Schedule Interview Now")}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Rejection Details (if rejected) */}
-          {applicant.interviewStatus === "rejected" && (
+          {applicant.interviewStatus === "rejected" && activeTab !== "interviews" && (
             <div className="rejection-section">
               <h3>{t("Rejection Details")}</h3>
               <div className="rejection-info">

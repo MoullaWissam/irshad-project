@@ -20,22 +20,18 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   
-  // عنوان السيرفر الخاص بـ Flask - محفوظ كما هو
   const API_URL = 'http://127.0.0.1:8000';
 
-  // التمرير التلقائي لأسفل المحادثة عند وصول رسالة جديدة
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  // دالة إرسال الرسالة إلى Flask - محفوظة تماماً كما هي
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
     const userMessageText = inputValue;
 
-    // 1. إضافة رسالة المستخدم للواجهة
     const userMsg = {
       id: Date.now(),
       type: 'user',
@@ -49,7 +45,6 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
     setIsTyping(true);
 
     try {
-      // 2. إرسال الطلب إلى سيرفر Flask (نستخدم POST)
       const response = await fetch(`${API_URL}/get`, {
         method: 'POST',
         headers: {
@@ -62,7 +57,6 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
 
       const botAnswer = await response.text();
 
-      // 3. إضافة رد البوت للواجهة
       const botMsg = {
         id: Date.now() + 1,
         type: 'bot',
@@ -87,7 +81,6 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
     }
   };
 
-  // تعريض الدوال للـ ref
   useImperativeHandle(ref, () => ({
     getMessages: () => messages,
     clearChat: () => setMessages([messages[0]])
@@ -95,10 +88,8 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
 
   return (
     <div className={`chat-sidebar ${isOpen ? 'open' : ''} ${i18n.language === 'ar' ? 'rtl' : 'ltr'}`}>
-      {/* الجزء العلوي - الهيدر */}
       <div className="chat-sidebar-header">
         <div className="header-content">
-          {/* استبدال الصورة الثابتة أو الكانفاس القديم بالمكون الجديد */}
           <div className="avatar-container">
             <InteractiveAvatar />
           </div>
@@ -138,7 +129,6 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
         </div>
       </div>
 
-      {/* حقل الإدخال - محفوظ كما هو تماماً */}
       <form className="chat-sidebar-input" onSubmit={handleSendMessage}>
         <input
           type="text"

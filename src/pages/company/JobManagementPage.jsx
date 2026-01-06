@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
-import JobCard from "../../Components/Card/JobCard/JobCard.js";
+import JobCard from "../../Components/Card/JobCard/JobCard.jsx";
 import "./JobManagementPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -10,8 +10,8 @@ function JobManagementPage() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [companyName, setCompanyName] = useState("");
 
-  // ✅ جلب بيانات الشركة من localStorage
   useEffect(() => {
     const fetchCompanyJobs = async () => {
       try {
@@ -30,6 +30,7 @@ function JobManagementPage() {
         }
 
         const companyId = company.id;
+        setCompanyName(company.name || company.companyName || ""); // حفظ اسم الشركة
         console.log("Company ID:", companyId);
 
         // جلب الوظائف من الـ API
@@ -54,20 +55,20 @@ function JobManagementPage() {
         const jobsData = await response.json();
         console.log("Jobs data received:", jobsData);
 
-        // معالجة البيانات للواجهة
+        // معالجة البيانات للواجهة مع بيانات إضافية للمكون الجديد
         const processedJobs = jobsData.map(job => ({
           id: job.id,
-          icon: job.image || getDefaultIcon(job.title), // أيقونة حسب نوع الوظيفة
+          icon: job.image || getDefaultIcon(job.title),
           title: job.title || "Untitled Job",
-          desc: job.description 
-            ? (job.description.length > 100 
-                ? `${job.description.substring(0, 100)}...` 
-                : job.description)
-            : t("No description available"),
+          desc: job.description || t("No description available"),
           type: getEmploymentTypeDisplay(job.employmentType),
-          location: job.location,
+          company: companyName, // اسم الشركة
+          location: job.location || t("Location not specified"),
+          skills: Array.isArray(job.requiredSkills) ? job.requiredSkills : 
+                 (job.requiredSkills ? job.requiredSkills.split(",").map(s => s.trim()) : []),
+          experience: job.experienceLevel || job.minimumExperience || undefined,
+          education: job.educationLevel || job.requiredEducation || undefined,
           hasQuestions: job.questions && job.questions.length > 0,
-          skills: job.requiredSkills || [],
           createdAt: job.createdAt
         }));
 
@@ -200,7 +201,7 @@ function JobManagementPage() {
           </div>
         </div>
 
-        {/* بطاقات الوظائف */}
+        {/* بطاقات الوظائف باستخدام المكون الجديد */}
         {jobs.map((job, index) => (
           <div key={job.id || index} onClick={() => handleJobClick(job.id)}>
             <JobCard
@@ -209,6 +210,11 @@ function JobManagementPage() {
               title={job.title}
               desc={job.desc}
               type={job.type}
+              company={companyName} // اسم الشركة
+              location={job.location}
+              skills={job.skills}
+              experience={job.experience}
+              education={job.education}
             />
           </div>
         ))}

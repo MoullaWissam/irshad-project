@@ -96,7 +96,8 @@ function ApplicantsGrid() {
             ranking_score: app.ranking_score,
             test_score: app.test_score,
             coverLetter: app.cover_letter || "",
-            testScore: app.test_score
+            testScore: app.test_score,
+            interviews: app.interviews || []
           };
         });
 
@@ -212,29 +213,41 @@ function ApplicantsGrid() {
     }
   };
 
-  // تأكيد رفض المتقدم
-  const handleRejectionConfirmed = async (reason) => {
+  // تأكيد رفض المتقدم - تم التعديل ليناسب متطلبات API
+  const handleRejectionConfirmed = async (feedbackText) => {
     if (!selectedApplicant) return;
+    
+    // التحقق من طول النص (على الأقل 5 أحرف)
+    if (!feedbackText || feedbackText.trim().length < 5) {
+      toast.error(t("Rejection reason must be at least 5 characters long"));
+      return;
+    }
     
     try {
       console.log("Rejecting applicant:", selectedApplicant);
+      console.log("Feedback text:", feedbackText);
       
-      // إرسال طلب الرفض
+      // إرسال طلب الرفض مع حقل feedback فقط
       const response = await fetch(
         `http://localhost:3000/company-management/${selectedApplicant.jobId}/rejectuser/${selectedApplicant.userId}`,
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
           },
           credentials: "include",
           body: JSON.stringify({
-            rejectionFeedback: reason
+            feedback: feedbackText
           })
         }
       );
 
+      console.log("Response status:", response.status);
+      
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -242,26 +255,19 @@ function ApplicantsGrid() {
       console.log("Rejection response:", responseData);
       
       // تحديث الحالة محلياً
+      const updatedApplicant = {
+        ...selectedApplicant,
+        interviewStatus: "rejected",
+        rejectionReason: feedbackText,
+        application_status: "rejected"
+      };
+      
       setApplicants(prev => prev.map(a => 
-        a.id === selectedApplicant.id 
-          ? { 
-              ...a, 
-              interviewStatus: "rejected",
-              rejectionReason: reason,
-              application_status: "rejected"
-            }
-          : a
+        a.id === selectedApplicant.id ? updatedApplicant : a
       ));
       
       setAllApplicants(prev => prev.map(a => 
-        a.id === selectedApplicant.id 
-          ? { 
-              ...a, 
-              interviewStatus: "rejected",
-              rejectionReason: reason,
-              application_status: "rejected"
-            }
-          : a
+        a.id === selectedApplicant.id ? updatedApplicant : a
       ));
       
       toast.success(t("Applicant rejected successfully!"));

@@ -107,7 +107,7 @@
 //               <MainLayout userRole="jobSeeker"><ApplicationSuccess /></MainLayout>
 //             </ProtectedRoute>
 //           } />
-          
+
 //           {/* MyApplications Routes - التعديلات المهمة */}
 //           <Route path="/applications" element={
 //             <ProtectedRoute>
@@ -152,7 +152,7 @@
 //               </MainLayout>
 //             </ProtectedRoute>
 //           } />
-          
+
 //           {/* صفحة Add Job للشركة (مضافة حديثاً) */}
 //           <Route path="/company/add-job" element={
 //             <ProtectedRoute>
@@ -170,7 +170,7 @@
 //               </MainLayout>
 //             </ProtectedRoute>
 //           } />
-          
+
 //           <Route path="/company/AddJob" element={
 //             <AddJob>
 //               <MainLayout userRole={userRole}>
@@ -178,7 +178,7 @@
 //               </MainLayout>
 //             </AddJob>
 //           } />
-          
+
 //           <Route path="/company/my-jobs" element={
 //             <ProtectedRoute>
 //               <MainLayout userRole={userRole}>
@@ -188,7 +188,7 @@
 //           } />
 
 //           <Route path="/job/:jobId/edit" element={<EditJob />} />
-          
+
 //            {/* المسارات الجديدة للوظائف المحددة */}
 //           <Route path="/company/applicants/job/:jobId/all" element={
 //             <ProtectedRoute>
@@ -219,8 +219,8 @@
 //           <Route path="/settings" element={
 //             <ProtectedRoute>
 //               <MainLayout userRole={userRole}>
-//                 <SettingsPage 
-//                   settings={settingsByRole[userRole]} 
+//                 <SettingsPage
+//                   settings={settingsByRole[userRole]}
 //                 />
 //               </MainLayout>
 //             </ProtectedRoute>
@@ -245,8 +245,14 @@
 
 // export default App;
 
-// src/App.js
-import React, { useEffect, useState, createContext, lazy, Suspense } from "react";
+
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  lazy,
+  Suspense,
+} from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 
@@ -263,50 +269,64 @@ const ServicesPage = lazy(() => import("./pages/home-page/ServicesPage"));
 const ContactPage = lazy(() => import("./pages/home-page/ContactPage"));
 const RegisterPage = lazy(() => import("./pages/auth/RegisterPage"));
 const LoginCard = lazy(() => import("./pages/auth/LoginCard"));
-const ForgotPassword = lazy(() => import("./pages/auth/SetNewPassword/ForgotPassword"));
+const ForgotPassword = lazy(() =>
+  import("./pages/auth/SetNewPassword/ForgotPassword")
+);
 const CheckEmail = lazy(() => import("./pages/auth/SetNewPassword/CheckEmail"));
-const SetNewPassword = lazy(() => import("./pages/auth/SetNewPassword/SetNewPassword"));
+const SetNewPassword = lazy(() =>
+  import("./pages/auth/SetNewPassword/SetNewPassword")
+);
 const Success = lazy(() => import("./pages/auth/SetNewPassword/Success"));
-const VerfiyEmail = lazy(() => import("./pages/auth/SetNewPassword/VerfiyEmail"));
+const VerfiyEmail = lazy(() =>
+  import("./pages/auth/SetNewPassword/VerfiyEmail")
+);
 const MatchesPage = lazy(() => import("./pages/job-seeker/MatchesPage"));
 const UploadResume = lazy(() => import("./pages/job-seeker/UploadResume"));
 const JobsPage = lazy(() => import("./pages/job-seeker/JobsPage"));
 const JobDetails = lazy(() => import("./pages/job-seeker/JobDetails"));
 const QuickTest = lazy(() => import("./pages/job-seeker/QuickTest"));
-const ApplicationSuccess = lazy(() => import("./pages/job-seeker/ApplicationSuccess"));
+const ApplicationSuccess = lazy(() =>
+  import("./pages/job-seeker/ApplicationSuccess")
+);
 const MyApplications = lazy(() => import("./pages/job-seeker/MyApplications"));
 const ApplicantsGrid = lazy(() => import("./pages/company/ApplicantsGrid"));
-const JobManagementPage = lazy(() => import("./pages/company/JobManagementPage"));
+const JobManagementPage = lazy(() =>
+  import("./pages/company/JobManagementPage")
+);
 const AddJob = lazy(() => import("./pages/company/AddJob/AddJob"));
 const EditJob = lazy(() => import("./pages/company/EditJob"));
 const SettingsPage = lazy(() => import("./pages/settings/SettingsPage"));
 
 // Loading component for Suspense
 const PageLoading = () => (
-  <div style={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-  }}>
-    <div style={{ textAlign: 'center', color: 'white' }}>
-      <div style={{
-        width: '50px',
-        height: '50px',
-        border: '5px solid rgba(255,255,255,0.3)',
-        borderRadius: '50%',
-        borderTopColor: 'white',
-        animation: 'spin 1s linear infinite',
-        margin: '0 auto 20px'
-      }}></div>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    }}
+  >
+    <div style={{ textAlign: "center", color: "white" }}>
+      <div
+        style={{
+          width: "50px",
+          height: "50px",
+          border: "5px solid rgba(255,255,255,0.3)",
+          borderRadius: "50%",
+          borderTopColor: "white",
+          animation: "spin 1s linear infinite",
+          margin: "0 auto 20px",
+        }}
+      ></div>
       <h3>جاري التحميل...</h3>
     </div>
   </div>
 );
 
 // Add CSS for spinner
-const spinnerStyle = document.createElement('style');
+const spinnerStyle = document.createElement("style");
 spinnerStyle.innerHTML = `
   @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -319,22 +339,24 @@ document.head.appendChild(spinnerStyle);
 const ProtectedRoute = ({ children, requiredRole }) => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const userRole = localStorage.getItem("userRole");
-  
+
   if (!isAuthenticated) {
     return <Navigate replace to="/login" />;
   }
-  
+
   if (requiredRole && userRole !== requiredRole) {
     return <Navigate replace to="/" />;
   }
-  
+
   return children;
 };
 
 export const AuthContext = createContext();
 
 function App() {
-  const [userRole, setUserRole] = useState(localStorage.getItem("userRole") || "jobSeeker");
+  const [userRole, setUserRole] = useState(
+    localStorage.getItem("userRole") || "jobSeeker"
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   // تحديث الروول عند التغيير في localStorage
@@ -380,145 +402,255 @@ function App() {
             <Route path="/verfiy-email" element={<VerfiyEmail />} />
 
             {/* Job Seeker Routes (مع سايدبار) */}
-            <Route path="/matches" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><MatchesPage /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/jobs" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><JobsPage /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/job/:jobId" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><JobDetails /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/upload-resume" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><UploadResume /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/job/:jobId/test" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><QuickTest /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/job/:jobId/application-success" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><ApplicationSuccess /></MainLayout>
-              </ProtectedRoute>
-            } />
-            
+            <Route
+              path="/matches"
+              element={
+                <ProtectedRoute requiredRole="jobSeeker">
+                  <MainLayout userRole="jobSeeker">
+                    <MatchesPage />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/jobs"
+              element={
+                <ProtectedRoute requiredRole="jobSeeker">
+                  <MainLayout userRole="jobSeeker">
+                    <JobsPage />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/job/:jobId"
+              element={
+                <ProtectedRoute>
+                  <MainLayout userRole={userRole}>
+                    <JobDetails />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/upload-resume"
+              element={
+                <ProtectedRoute requiredRole="jobSeeker">
+                  <MainLayout userRole="jobSeeker">
+                    <UploadResume />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/job/:jobId/test"
+              element={
+                <ProtectedRoute requiredRole="jobSeeker">
+                  <MainLayout userRole="jobSeeker">
+                    <QuickTest />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/job/:jobId/application-success"
+              element={
+                <ProtectedRoute requiredRole="jobSeeker">
+                  <MainLayout userRole="jobSeeker">
+                    <ApplicationSuccess />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+
             {/* MyApplications Routes */}
-            <Route path="/applications" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><MyApplications /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/applications/:status" element={
-              <ProtectedRoute requiredRole="jobSeeker">
-                <MainLayout userRole="jobSeeker"><MyApplications /></MainLayout>
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/applications"
+              element={
+                <ProtectedRoute requiredRole="jobSeeker">
+                  <MainLayout userRole="jobSeeker">
+                    <MyApplications />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/applications/:status"
+              element={
+                <ProtectedRoute requiredRole="jobSeeker">
+                  <MainLayout userRole="jobSeeker">
+                    <MyApplications />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
 
             {/* Company Routes (مع سايدبار) */}
-            <Route path="/company/applicants" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/company/applicants/all" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/company/applicants/new" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/company/applicants/reviewed" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            
-            {/* Company Dashboard */}
-            <Route path="/company/dashboard" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company">
-                  <div className="page-content">
-                    <h1>لوحة تحكم الشركة</h1>
-                  </div>
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            
-            {/* Add Job */}
-            <Route path="/company/add-job" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><AddJob /></MainLayout>
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/company/my-jobs" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><JobManagementPage /></MainLayout>
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/company/applicants"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/applicants/all"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/applicants/new"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/applicants/reviewed"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
 
-            <Route path="/job/:jobId/edit" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><EditJob /></MainLayout>
-              </ProtectedRoute>
-            } />
-            
+            {/* Company Dashboard */}
+            <Route
+              path="/company/dashboard"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <div className="page-content">
+                      <h1>لوحة تحكم الشركة</h1>
+                    </div>
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Add Job */}
+            <Route
+              path="/company/AddJob"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <AddJob />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/company/my-jobs"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <JobManagementPage />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/job/:jobId/edit"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <EditJob />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+
             {/* Job-specific applicant routes */}
-            <Route path="/company/applicants/job/:jobId" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/company/applicants/job/:jobId/all" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/company/applicants/job/:jobId/sent" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/company/applicants/job/:jobId/rejected" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/company/applicants/job/:jobId/scheduled" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company"><ApplicantsGrid /></MainLayout>
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/company/applicants/job/:jobId"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/applicants/job/:jobId/all"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/applicants/job/:jobId/sent"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/applicants/job/:jobId/rejected"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/applicants/job/:jobId/scheduled"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <ApplicantsGrid />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
 
             {/* Settings - General */}
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <MainLayout userRole={userRole}>
-                  <SettingsPage settings={settingsByRole[userRole]} />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <MainLayout userRole={userRole}>
+                    <SettingsPage settings={settingsByRole[userRole]} />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
 
             {/* Company Settings */}
-            <Route path="/company/settings" element={
-              <ProtectedRoute requiredRole="company">
-                <MainLayout userRole="company">
-                  <SettingsPage settings={settingsByRole.company} />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/company/settings"
+              element={
+                <ProtectedRoute requiredRole="company">
+                  <MainLayout userRole="company">
+                    <SettingsPage settings={settingsByRole.company} />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
 
             {/* Fallback route */}
             <Route path="*" element={<Navigate to="/" />} />

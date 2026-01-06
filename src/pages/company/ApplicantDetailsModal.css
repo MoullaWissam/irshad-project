@@ -432,6 +432,230 @@
   font-weight: 500;
 }
 
+
+
+/* Tab جديد للمقابلات */
+.details-tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  color: #2196f3;
+}
+
+.tab-btn.active {
+  color: #2196f3;
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #2196f3;
+}
+
+/* محتوى المقابلات */
+.interviews-content {
+  padding: 10px 0;
+}
+
+.interviews-list-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 5px;
+}
+
+.interview-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s;
+}
+
+.interview-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.interview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.interview-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.interview-status {
+  background: #4caf50;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.interview-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.interview-date-time {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.interview-date-time div {
+  background: white;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.interview-date-time strong {
+  color: #555;
+  margin-right: 8px;
+}
+
+.interview-notes {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.interview-notes p {
+  margin: 8px 0 0 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+.meeting-link-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.meeting-btn {
+  display: inline-block;
+  background: #2196f3;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.meeting-btn:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+}
+
+.interview-created {
+  text-align: right;
+  color: #888;
+  font-size: 12px;
+}
+
+/* حالة عدم وجود مقابلات */
+.no-interviews {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-interviews {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.empty-interviews .empty-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.empty-interviews h4 {
+  margin: 0 0 10px 0;
+  color: #666;
+}
+
+.empty-interviews p {
+  color: #888;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.btn-schedule-now {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-schedule-now:hover {
+  background: #388e3c;
+  transform: translateY(-1px);
+}
+
+/* تجاوب مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .applicants-table {
+    font-size: 14px;
+  }
+  
+  .applicants-table th,
+  .applicants-table td {
+    padding: 10px 8px;
+  }
+  
+  .interview-date-time {
+    grid-template-columns: 1fr;
+  }
+  
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .interviews-list {
+    max-height: 120px;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .applicant-details-modal {

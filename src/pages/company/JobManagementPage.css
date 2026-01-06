@@ -1,50 +1,407 @@
 .add-job-page {
-  padding: 30px 0px;
+  padding: 40px;
+  background: #f7f9fc;
   flex: 1;
+  min-height: 100vh;
 }
 
-.main-content{
+.main-content {
   margin-left: 0px;
 }
 
 .page-title {
-  font-size: 56px;
-  font-weight: 500;
-  margin-bottom: 100px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c2c54;
+  margin-bottom: 30px;
   margin-top: 0px;
-  color: #2a1c69;
-  text-shadow: 6px 6px 12px #00000050;
+  text-shadow: none;
 }
 
 .job-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 22px;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 /* بطاقة الإضافة */
 .add-card {
   background-color: #fff;
-  border: 2px dashed #ccc;
+  border: 2px dashed #d1d5db;
   border-radius: 12px;
-  width: 280px;
-  height: 230px;
+  width: 100%;
+  height: 340px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .add-card:hover {
-  background-color: #eee;
+  background-color: #f8fafc;
+  border-color: #723dff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .plus-icon {
-  font-size: 36px;
+  font-size: 48px;
   color: #723dff;
+  margin-bottom: 12px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.add-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c2c54;
   margin-bottom: 8px;
+  text-align: center;
+}
+
+.add-card p {
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  max-width: 200px;
+  line-height: 1.4;
+}
+
+/* حاوية بطاقات الوظائف */
+.job-grid > div {
+  width: 100%;
+  height: 340px;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+}
+
+.job-grid > div:hover {
+  transform: translateY(-4px);
+}
+
+/* بطاقة الوظيفة (المكون الجديد) */
+.jc-wrapper.jc-compact {
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.jc-wrapper.jc-compact:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  border-color: #e0e7ff;
+}
+
+/* التأكد من أن المحتوى داخل البطاقة يتناسب مع الارتفاع الثابت */
+.jc-compact .jc-header {
+  padding: 18px 18px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.jc-compact .jc-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.jc-compact .jc-type {
+  background: #f0f9ff;
+  color: #0369a1;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.jc-compact .jc-title {
+  padding: 0 18px 8px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #2c2c54;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.jc-compact .jc-meta {
+  padding: 0 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.jc-compact .jc-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jc-compact .jc-meta svg {
+  color: #9ca3af;
+}
+
+.jc-compact .jc-desc {
+  padding: 0 18px 12px;
+  flex-grow: 1;
+  overflow: hidden;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0;
+  max-height: 63px;
+}
+
+.jc-compact .jc-read-more {
+  background: none;
+  border: none;
+  color: #723dff;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.jc-compact .jc-read-more:hover {
+  text-decoration: underline;
+}
+
+.jc-compact .jc-skills {
+  padding: 0 18px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 60px;
+  overflow: hidden;
+}
+
+.jc-compact .jc-skill {
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.jc-compact .jc-skill-more {
+  background: #e5e7eb;
+  color: #6b7280;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.jc-compact .jc-req {
+  padding: 0 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.jc-compact .jc-req span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jc-compact .jc-req svg {
+  color: #9ca3af;
+}
+
+.jc-compact .jc-details-btn {
+  margin: 0 18px 18px;
+  margin-top: auto;
+  background: #723dff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.3s ease;
+}
+
+.jc-compact .jc-details-btn:hover {
+  background: #5a2bd1;
+}
+
+/* حالة التحميل */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #6b7280;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #723dff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* حالة الخطأ */
+.error-state {
+  text-align: center;
+  padding: 60px 40px;
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #fecaca;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.error-state h3 {
+  color: #dc2626;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.error-state p {
+  color: #6b7280;
+  margin-bottom: 30px;
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.retry-btn,
+.login-btn {
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  min-width: 140px;
+}
+
+.retry-btn {
+  background-color: #723dff;
+  color: white;
+}
+
+.retry-btn:hover {
+  background-color: #5a2bd1;
+}
+
+.login-btn {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.login-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 1024px) {
+  .job-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-job-page {
+    padding: 30px 24px;
+  }
+  
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .job-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  
+  .add-card,
+  .job-grid > div {
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-job-page {
+    padding: 24px 16px;
+  }
+  
+  .page-title {
+    font-size: 22px;
+    text-align: center;
+  }
+  
+  .job-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .add-card,
+  .job-grid > div {
+    height: 300px;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .retry-btn,
+  .login-btn {
+    width: 100%;
+    max-width: 280px;
+  }
 }

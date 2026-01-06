@@ -1,11 +1,11 @@
 // src/pages/HomePage.js
 import React, { useState } from 'react';
-import Hero from "./Hero.js";
-import Navbar from "./Navbar.js";
-import HowItWorks from "./HowItWorks.js";
-import FeaturedJobs from "./FeaturedJobs.js";
-import Footer from "./Footer.js";
-import { ChatIcon, ChatSidebar } from '../../Components/ChatBot';
+import Hero from "./Hero.jsx";
+import Navbar from "./Navbar.jsx";
+import HowItWorks from "./HowItWorks.jsx";
+import FeaturedJobs from "./FeaturedJobs.jsx";
+import Footer from "./Footer.jsx";
+import { ChatIcon, ChatSidebar } from "../../Components/ChatBot/index.jsx";
 
 function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);

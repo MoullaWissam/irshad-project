@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./EditJob.css";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 function EditJob() {
   const { jobId } = useParams();
@@ -11,7 +11,7 @@ function EditJob() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -19,17 +19,17 @@ function EditJob() {
     skills: "",
     experience: "",
     education: "",
-    employmentType: "FULL_TIME"
+    employmentType: "FULL_TIME",
   });
-  
+
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  
+
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = i18n.language === "ar";
 
   const robotoStyle = {
-    fontFamily: "'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+    fontFamily: "'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
   };
 
   useEffect(() => {
@@ -37,39 +37,39 @@ function EditJob() {
       try {
         setLoading(true);
         const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
-          method: 'GET',
-          credentials: 'include',
+          method: "GET",
+          credentials: "include",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
-        
+
         if (!response.ok) {
-          throw new Error(t("Failed to fetch job: {status}", { status: response.status }));
+          throw new Error(
+            t("Failed to fetch job: {status}", { status: response.status })
+          );
         }
-        
+
         const job = await response.json();
-        
+
         setFormData({
           title: job.title || "",
           description: job.description || "",
           location: job.location || "",
-          skills: Array.isArray(job.skills) 
-            ? job.skills.join(', ') 
-            : job.skills || "",
-          experience: job.experience || "",
+          skills: job.requiredSkills?.join(", ") || "",
+          education: job.requiredEducation?.[0] || "",
+
           education: job.education || "",
-          employmentType: job.employmentType || "FULL_TIME"
+          employmentType: job.employmentType || "FULL_TIME",
         });
-        
+
         if (job.image) {
           setImagePreview(job.image);
         }
-        
       } catch (error) {
         console.error("Error fetching job details:", error);
         toast.error(t("Failed to load job details"));
-        
+
         if (location.state?.jobData) {
           const job = location.state.jobData;
           setFormData({
@@ -79,7 +79,7 @@ function EditJob() {
             skills: job.skills || "",
             experience: job.experience || "",
             education: job.education || "",
-            employmentType: job.employmentType || "FULL_TIME"
+            employmentType: job.employmentType || "FULL_TIME",
           });
           if (job.image) setImagePreview(job.image);
         }
@@ -93,9 +93,9 @@ function EditJob() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -103,7 +103,7 @@ function EditJob() {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -114,48 +114,59 @@ function EditJob() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.title.trim()) {
       toast.error(t("Job title is required"));
       return;
     }
-    
+
     setSaving(true);
-    
+
     try {
       const formDataToSend = new FormData();
-      
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('location', formData.location);
-      formDataToSend.append('skills', formData.skills);
-      formDataToSend.append('experience', formData.experience);
-      formDataToSend.append('education', formData.education);
-      formDataToSend.append('employmentType', formData.employmentType);
-      
+
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("location", formData.location);
+      const skillsArray = formData.skills
+        .split(",")
+        .map((skill) => skill.trim())
+        .filter((skill) => skill.length > 0);
+      formDataToSend.append("requiredSkills", JSON.stringify(skillsArray));
+
+      formDataToSend.append(
+        "requiredEducation",
+        JSON.stringify([formData.education])
+      );
+
+      formDataToSend.append("education", formData.education);
+      formDataToSend.append("employmentType", formData.employmentType);
+
       if (imageFile) {
-        formDataToSend.append('img', imageFile);
+        formDataToSend.append("img", imageFile);
       }
-      
+
       const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
-        method: 'PUT',
+        method: "PUT",
         body: formDataToSend,
-        credentials: 'include',
+        credentials: "include",
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || t("Update failed: {status}", { status: response.status }));
+        throw new Error(
+          errorData.message ||
+            t("Update failed: {status}", { status: response.status })
+        );
       }
-      
+
       const result = await response.json();
-      
+
       toast.success(t("Job updated successfully!"));
-      
+
       setTimeout(() => {
         navigate(`/job/${jobId}`);
       }, 1500);
-      
     } catch (error) {
       console.error("Error updating job:", error);
       toast.error(error.message);
@@ -165,26 +176,33 @@ function EditJob() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm(t("Are you sure you want to delete this job? This action cannot be undone."))) {
+    if (
+      !window.confirm(
+        t(
+          "Are you sure you want to delete this job? This action cannot be undone."
+        )
+      )
+    ) {
       return;
     }
-    
+
     try {
       const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
-        method: 'DELETE',
-        credentials: 'include',
+        method: "DELETE",
+        credentials: "include",
       });
-      
+
       if (!response.ok) {
-        throw new Error(t("Delete failed: {status}", { status: response.status }));
+        throw new Error(
+          t("Delete failed: {status}", { status: response.status })
+        );
       }
-      
+
       toast.success(t("Job deleted successfully!"));
-      
+
       setTimeout(() => {
-        navigate('/job-management');
+        navigate("/job-management");
       }, 1500);
-      
     } catch (error) {
       console.error("Error deleting job:", error);
       toast.error(error.message);
@@ -193,8 +211,12 @@ function EditJob() {
 
   if (loading) {
     return (
-      <div className="edit-job-container" dir={isRTL ? 'rtl' : 'ltr'} style={robotoStyle}>
-        <ToastContainer 
+      <div
+        className="edit-job-container"
+        dir={isRTL ? "rtl" : "ltr"}
+        style={robotoStyle}
+      >
+        <ToastContainer
           position={isRTL ? "top-left" : "top-right"}
           rtl={isRTL}
           style={{ fontFamily: "'Roboto', sans-serif" }}
@@ -208,16 +230,25 @@ function EditJob() {
   }
 
   return (
-    <div className="edit-job-container" dir={isRTL ? 'rtl' : 'ltr'} style={robotoStyle}>
-      <ToastContainer 
+    <div
+      className="edit-job-container"
+      dir={isRTL ? "rtl" : "ltr"}
+      style={robotoStyle}
+    >
+      <ToastContainer
         position={isRTL ? "top-left" : "top-right"}
         rtl={isRTL}
         style={{ fontFamily: "'Roboto', sans-serif" }}
       />
-      
-      <div className="edit-job-header" style={{ textAlign: isRTL ? 'right' : 'left' }}>
-        <h1 style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 600 }}>{t("Edit Job")}</h1>
-        <button 
+
+      <div
+        className="edit-job-header"
+        style={{ textAlign: isRTL ? "right" : "left" }}
+      >
+        <h1 style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 600 }}>
+          {t("Edit Job")}
+        </h1>
+        <button
           className="delete-job-btn"
           onClick={handleDelete}
           style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
@@ -225,17 +256,26 @@ function EditJob() {
           {t("Delete Job")}
         </button>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="edit-job-form">
         <div className="form-group image-upload">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Job Image")}
           </label>
           <div className="image-preview-container">
             {imagePreview ? (
-              <img src={imagePreview} alt={t("Preview")} className="image-preview" />
+              <img
+                src={imagePreview}
+                alt={t("Preview")}
+                className="image-preview"
+              />
             ) : (
-              <div className="no-image-placeholder" style={{ fontFamily: "'Roboto', sans-serif" }}>
+              <div
+                className="no-image-placeholder"
+                style={{ fontFamily: "'Roboto', sans-serif" }}
+              >
                 {t("No Image")}
               </div>
             )}
@@ -250,9 +290,11 @@ function EditJob() {
             {t("Upload new image (optional)")}
           </small>
         </div>
-        
+
         <div className="form-group">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Job Title *")}
           </label>
           <input
@@ -263,12 +305,14 @@ function EditJob() {
             placeholder={t("Enter job title")}
             required
             style={robotoStyle}
-            dir={isRTL ? 'rtl' : 'ltr'}
+            dir={isRTL ? "rtl" : "ltr"}
           />
         </div>
-        
+
         <div className="form-group">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Employment Type")}
           </label>
           <select
@@ -283,9 +327,11 @@ function EditJob() {
             <option value="ON_SITE">{t("On Site")}</option>
           </select>
         </div>
-        
+
         <div className="form-group">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Location")}
           </label>
           <input
@@ -295,12 +341,14 @@ function EditJob() {
             onChange={handleInputChange}
             placeholder={t("Enter job location")}
             style={robotoStyle}
-            dir={isRTL ? 'rtl' : 'ltr'}
+            dir={isRTL ? "rtl" : "ltr"}
           />
         </div>
-        
+
         <div className="form-group">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Job Description")}
           </label>
           <textarea
@@ -310,12 +358,14 @@ function EditJob() {
             placeholder={t("Enter job description")}
             rows="5"
             style={robotoStyle}
-            dir={isRTL ? 'rtl' : 'ltr'}
+            dir={isRTL ? "rtl" : "ltr"}
           />
         </div>
-        
+
         <div className="form-group">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Required Skills")}
           </label>
           <textarea
@@ -325,15 +375,17 @@ function EditJob() {
             placeholder={t("Enter required skills (comma separated)")}
             rows="3"
             style={robotoStyle}
-            dir={isRTL ? 'rtl' : 'ltr'}
+            dir={isRTL ? "rtl" : "ltr"}
           />
           <small style={{ fontFamily: "'Roboto', sans-serif" }}>
             {t("Separate skills with commas: JavaScript, React, Node.js")}
           </small>
         </div>
-        
+
         <div className="form-group">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Required Experience")}
           </label>
           <input
@@ -343,12 +395,14 @@ function EditJob() {
             onChange={handleInputChange}
             placeholder={t("e.g., 3+ years in software development")}
             style={robotoStyle}
-            dir={isRTL ? 'rtl' : 'ltr'}
+            dir={isRTL ? "rtl" : "ltr"}
           />
         </div>
-        
+
         <div className="form-group">
-          <label style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}>
+          <label
+            style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
+          >
             {t("Required Education")}
           </label>
           <input
@@ -358,10 +412,10 @@ function EditJob() {
             onChange={handleInputChange}
             placeholder={t("e.g., Bachelor's degree in Computer Science")}
             style={robotoStyle}
-            dir={isRTL ? 'rtl' : 'ltr'}
+            dir={isRTL ? "rtl" : "ltr"}
           />
         </div>
-        
+
         <div className="form-actions">
           <button
             type="button"

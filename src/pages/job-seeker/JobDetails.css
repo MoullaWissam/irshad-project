@@ -146,7 +146,6 @@
   object-fit: cover;
 }
 
-
 .company-logo-avatar img.company-logo-image {
   width: 100%;
   height: 100%;
@@ -155,6 +154,7 @@
 }
 
 .company-details-info {
+  padding-top: 5px;
   flex: 1;
 }
 
@@ -232,7 +232,8 @@
   margin: 0;
 }
 
-.detail-card-content, .detail-card-list {
+.detail-card-content,
+.detail-card-list {
   color: #4b4b4b;
   line-height: 1.7;
   font-size: 15.5px;
@@ -303,8 +304,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error State */
@@ -373,8 +378,12 @@
 }
 
 @keyframes fadeInModal {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .confirmation-dialog-box {
@@ -550,11 +559,11 @@
   .job-details-content {
     padding: 35px 40px 50px;
   }
-  
+
   .job-main-title {
     font-size: 36px;
   }
-  
+
   .job-sections-grid {
     grid-template-columns: 1fr;
   }
@@ -564,45 +573,45 @@
   .job-details-content {
     padding: 25px 20px 40px;
   }
-  
+
   .job-header-section {
     flex-direction: column;
     align-items: stretch;
     gap: 20px;
   }
-  
+
   .job-main-title {
     font-size: 32px;
   }
-  
+
   .apply-action-area {
     align-items: stretch;
   }
-  
+
   .job-apply-button {
     width: 100%;
     padding: 16px;
   }
-  
+
   .job-company-card {
     flex-direction: column;
     text-align: center;
     padding: 25px 20px;
   }
-  
+
   .job-detail-card {
     padding: 22px;
   }
-  
+
   .dialog-action-buttons {
     flex-direction: column;
   }
-  
+
   .dialog-button {
     width: 100%;
     min-width: auto;
   }
-  
+
   .job-info-item {
     font-size: 14px;
   }
@@ -612,17 +621,17 @@
   .job-main-title {
     font-size: 28px;
   }
-  
+
   .job-info-meta {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .skills-grid-container {
     grid-template-columns: 1fr;
   }
-  
+
   .confirmation-dialog-box {
     padding: 25px 20px;
   }

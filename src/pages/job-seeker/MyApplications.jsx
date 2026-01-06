@@ -265,20 +265,7 @@ const MyApplications = () => {
         >
           {t("Track the status of your job applications in real-time")}
         </p>
-        <div className="my-applications-stats">
-          <div className="my-applications-stat-item">
-            <span className="my-applications-stat-number">{stats.pending}</span>
-            <span className="my-applications-stat-label">{t("Pending")}</span>
-          </div>
-          <div className="my-applications-stat-item">
-            <span className="my-applications-stat-number">{stats.accepted}</span>
-            <span className="my-applications-stat-label">{t("Approved")}</span>
-          </div>
-          <div className="my-applications-stat-item">
-            <span className="my-applications-stat-number">{stats.rejected}</span>
-            <span className="my-applications-stat-label">{t("Rejected")}</span>
-          </div>
-        </div>
+   
       </div>
 
       {/* نظام التبويبات */}
@@ -312,14 +299,7 @@ const MyApplications = () => {
           </div>
         ) : applications.length > 0 ? (
           <>
-            <div 
-              className="my-applications-results"
-              style={{ textAlign: isRTL ? 'right' : 'left' }}
-            >
-              <span style={{color: '#161616ff', fontSize: '15px', fontFamily: "'Roboto', sans-serif"}}>
-                {t("Total: {count} applications", { count: stats.pending + stats.accepted + stats.rejected })}
-              </span>
-            </div>
+ 
             <div className="my-applications-grid">
               {applications.map((app) => {
                 const educationArray = parseEducation(app.education);
@@ -327,7 +307,7 @@ const MyApplications = () => {
                 
                 return (
                   <div className="my-applications-card-wrapper" key={`${app.id}-${app.jobId}`}>
-                    <div className={`my-applications-status-badge my-applications-status-${status}`}>
+                    <div className={`my-applications-status-badge my-applications-status`}>
                       {t(status.toUpperCase())}
                     </div>
                     <div className="my-applications-meta">
@@ -372,7 +352,7 @@ const MyApplications = () => {
           <div className="my-applications-empty">
             <div className="my-applications-empty-icon">📁</div>
             <h3 style={robotoStyle}>
-              {t("No {status} applications found", { status: t(status) })}
+              {t("No  applications found")}
             </h3>
             <p style={robotoStyle}>
               {t("You haven't received any updates for this category yet.")}

@@ -41,7 +41,7 @@ const UploadResume = () => {
         setScanComplete(true);
       } catch (error) {
         console.error("Error parsing saved file:", error);
-        toast.error(t("❌ خطأ في تحميل السيرة الذاتية المحفوظة"));
+        toast.error(t(" خطأ في تحميل السيرة الذاتية المحفوظة"));
       }
     }
     
@@ -192,7 +192,7 @@ const UploadResume = () => {
       
     } catch (error) {
       console.error("Final upload error:", error);
-      toast.error(t(`❌ فشل الرفع: ${error.message}`));
+      toast.error(t(` فشل الرفع: ${error.message}`));
     }
   };
 
@@ -249,14 +249,14 @@ const UploadResume = () => {
         console.error("Update failed:", response.status, errorText);
         
         if (response.status === 404) {
-          toast.error(t("❌ لم يتم العثور على السيرة الذاتية. حاول رفعها أولاً."));
+          toast.error(t(" لم يتم العثور على السيرة الذاتية. حاول رفعها أولاً."));
         } else {
-          toast.error(t(`❌ فشل التحديث: ${response.status}`));
+          toast.error(t(` فشل التحديث: ${response.status}`));
         }
       }
     } catch (error) {
       console.error("Update error:", error);
-      toast.error(t(`❌ خطأ في التحديث: ${error.message}`));
+      toast.error(t(` خطأ في التحديث: ${error.message}`));
     }
   };
 

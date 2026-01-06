@@ -5,12 +5,14 @@ import "./AddJobPage.css";
 import { useNavigate } from "react-router-dom";
 
 function AddJobPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [companyId, setCompanyId] = useState(null);
+  const [companyName, setCompanyName] = useState("");
+  const isRTL = i18n.language === 'ar';
 
   // ✅ جلب user data من localStorage
   useEffect(() => {
@@ -24,6 +26,7 @@ function AddJobPage() {
         
         if (parsedUser && parsedUser.id) {
           setCompanyId(parsedUser.id);
+          setCompanyName(parsedUser.companyName || parsedUser.name || "");
           console.log("Company ID set:", parsedUser.id);
         } else {
           console.error("User data doesn't contain id:", parsedUser);
@@ -94,9 +97,20 @@ function AddJobPage() {
       const jobsData = await response.json();
       console.log("Jobs data received:", jobsData);
       
-      // معالجة البيانات للفرونت
+      // ✅ تحويل البيانات إلى نفس تنسيق واجهة الباحث عن العمل
       const processedJobs = jobsData.map(job => ({
-        ...job,
+        id: job.id || Date.now() + Math.random(),
+        title: job.title || t("Untitled Job"),
+        type: job.employmentType ? job.employmentType.toUpperCase() : t("FULL TIME"),
+        desc: job.description || t("No description available"),
+        icon: job.image || "https://cdn-icons-png.flaticon.com/512/3067/3067256.png",
+        company: String(companyName || job.companyName || (job.company && job.company.companyName) || t("Your Company")),
+        location: String(job.location || t("Location not specified")),
+        salary: String(job.salary || t("Salary not specified")),
+        skills: job.skills || (job.requiredSkills && (Array.isArray(job.requiredSkills) ? job.requiredSkills.join(', ') : String(job.requiredSkills))) || t("Not specified"),
+        experience: String(job.experience || job.requiredExperience || t("Not specified")),
+        education: String(job.education || job.requiredEducation || t("Not specified")),
+        originalJob: job,
         hasQuestions: job.questions && job.questions.length > 0,
         formattedDate: job.createdAt ? new Date(job.createdAt).toLocaleDateString('en-US', {
           year: 'numeric',
@@ -151,30 +165,11 @@ function AddJobPage() {
     }
   };
 
-  const truncateDescription = (description) => {
-    if (!description) return t("No description available");
-    const maxLength = 120;
-    return description.length > maxLength 
-      ? `${description.substring(0, maxLength)}...` 
-      : description;
-  };
-
-  const getJobTypeDisplay = (employmentType) => {
-    if (!employmentType) return t("Full-time");
-    switch(employmentType.toLowerCase()) {
-      case 'part-time': return t('Part-time');
-      case 'full-time': return t('Full-time');
-      case 'on-site': return t('On-site');
-      case 'remote': return t('Remote');
-      default: return employmentType;
-    }
-  };
-
   if (loading) {
     return (
-      <div className="add-job-page">
-        <div className="loading-state">
-          <div className="spinner"></div>
+      <div className="company-jobs-page" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="company-jobs-loading">
+          <div className="company-jobs-spinner"></div>
           <p>{t("Loading your jobs...")}</p>
         </div>
       </div>
@@ -183,120 +178,126 @@ function AddJobPage() {
 
   if (error) {
     return (
-      <div className="add-job-page">
-        <div className="error-state">
-          <h3>❌ {t("Error Loading Jobs")}</h3>
+      <div className="company-jobs-page" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="company-jobs-error">
+          <h3>{t("Error Loading Jobs")}</h3>
           <p>{error}</p>
-          <p className="debug-info">
+          <p className="company-jobs-debug">
             {t("Company ID:")} {companyId || t("Not found")}<br/>
             {t("Token:")} {getTokenFromCookies() ? t("Found") : t("Not found")}<br/>
             {t("User Data:")} {localStorage.getItem("user") ? t("Exists") : t("Not found")}
           </p>
-          <button className="retry-button" onClick={handleRetry}>
-            {t("Try Again")}
-          </button>
-          <button 
-            className="login-button" 
-            onClick={() => navigate("/login")}
-          >
-            {t("Go to Login")}
-          </button>
+          <div className="company-jobs-error-buttons">
+            <button className="company-jobs-retry" onClick={handleRetry}>
+              {t("Try Again")}
+            </button>
+            <button 
+              className="company-jobs-login" 
+              onClick={() => navigate("/login")}
+            >
+              {t("Go to Login")}
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="add-job-page">
-      <header className="page-header">
-        <h1 className="page-title">📋 {t("Your Company Jobs")}</h1>
-        <p className="page-subtitle">{t("Manage and track all your job postings in one place")}</p>
-        <p className="company-info">
-          {t("Company ID:")} <strong>{companyId}</strong> | 
+    <div className="company-jobs-page" dir={isRTL ? 'rtl' : 'ltr'}>
+      <header className="company-jobs-header">
+        <h1 className="company-jobs-title">📋 {t("Your Company Jobs")}</h1>
+        <p className="company-jobs-subtitle">{t("Manage and track all your job postings in one place")}</p>
+        <p className="company-jobs-info">
+          {t("Company:")} <strong>{companyName}</strong> | 
           {t("Total Jobs:")} <strong>{jobs.length}</strong>
         </p>
       </header>
 
       {/* Statistics */}
-      <div className="stats-container">
-        <div className="stat-item">
-          <span className="stat-number">{jobs.length}</span>
-          <span className="stat-label">{t("Total Jobs")}</span>
+      <div className="company-jobs-stats">
+        <div className="company-jobs-stat">
+          <span className="company-jobs-stat-number">{jobs.length}</span>
+          <span className="company-jobs-stat-label">{t("Total Jobs")}</span>
         </div>
-        <div className="stat-item">
-          <span className="stat-number">
-            {jobs.filter(job => job.questions?.length > 0).length}
+        <div className="company-jobs-stat">
+          <span className="company-jobs-stat-number">
+            {jobs.filter(job => job.hasQuestions).length}
           </span>
-          <span className="stat-label">{t("With Screening Test")}</span>
+          <span className="company-jobs-stat-label">{t("With Screening Test")}</span>
         </div>
-        <div className="stat-item">
-          <span className="stat-number">
-            {jobs.filter(job => job.image).length}
+        <div className="company-jobs-stat">
+          <span className="company-jobs-stat-number">
+            {jobs.filter(job => job.icon && job.icon !== "https://cdn-icons-png.flaticon.com/512/3067/3067256.png").length}
           </span>
-          <span className="stat-label">{t("With Images")}</span>
+          <span className="company-jobs-stat-label">{t("With Images")}</span>
         </div>
       </div>
 
       {/* Add Job Button */}
-      <div className="add-job-section">
-        <button className="add-job-button" onClick={handleAddClick}>
-          <span className="button-icon">+</span>
-          <div className="button-text">
-            <span className="button-main-text">{t("Add New Job")}</span>
-            <span className="button-sub-text">{t("Create a new job posting with optional screening test")}</span>
+      <div className="company-jobs-add-section">
+        <button className="company-jobs-add-button" onClick={handleAddClick}>
+          <span className="company-jobs-add-icon">+</span>
+          <div className="company-jobs-add-text">
+            <span className="company-jobs-add-main">{t("Add New Job")}</span>
+            <span className="company-jobs-add-sub">{t("Create a new job posting with optional screening test")}</span>
           </div>
         </button>
       </div>
 
       {/* Jobs Grid */}
-      <div className="jobs-container">
-        <h2 className="section-title">{t("Your Job Postings")} ({jobs.length})</h2>
+      <div className="company-jobs-container">
+        <h2 className="company-jobs-section-title">{t("Your Job Postings")} ({jobs.length})</h2>
         
         {jobs.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon">📭</div>
+          <div className="company-jobs-empty">
+            <div className="company-jobs-empty-icon">📭</div>
             <h3>{t("No Jobs Yet")}</h3>
             <p>{t("You haven't created any job postings yet. Start by creating your first job!")}</p>
-            <button className="create-first-job" onClick={handleAddClick}>
+            <button className="company-jobs-empty-button" onClick={handleAddClick}>
               {t("Create Your First Job")}
             </button>
           </div>
         ) : (
-          <div className="jobs-grid">
+          <div className="company-jobs-grid">
             {/* Add Job Card */}
-            <div className="add-card-container" onClick={handleAddClick}>
-              <div className="add-card-content">
-                <div className="add-icon">+</div>
+            <div className="company-jobs-add-card" onClick={handleAddClick}>
+              <div className="company-jobs-add-card-content">
+                <div className="company-jobs-plus-icon">+</div>
                 <h3>{t("Add New Job")}</h3>
                 <p>{t("Create a new job posting with optional screening test")}</p>
               </div>
             </div>
 
             {/* Job Cards */}
-            {jobs.map((job) => (
-              <div 
-                key={job.id} 
-                className="job-card-container"
-                onClick={() => handleViewJobDetails(job.id)}
-              >
-                <JobCard
-                  id={job.id}
-                  icon={job.image || "https://cdn-icons-png.flaticon.com/512/3067/3067256.png"}
-                  title={job.title || "Untitled Job"}
-                  desc={truncateDescription(job.description)}
-                  type={getJobTypeDisplay(job.employmentType)}
-                />
-                
-                {/* Additional Job Info */}
-                <div className="job-extra-info">
-                  <span className="job-location">📍 {job.location || t("Not specified")}</span>
-                  {job.hasQuestions && (
-                    <span className="has-test-badge">🧪 {t("Has Test")}</span>
-                  )}
-                  <span className="job-date">📅 {job.formattedDate}</span>
+            {jobs.map((job) => {
+              if (!job || !job.id) {
+                console.warn("Invalid job data:", job);
+                return null;
+              }
+              
+              return (
+                <div 
+                  key={job.id} 
+                  className="company-jobs-card-wrapper"
+                  onClick={() => handleViewJobDetails(job.id)}
+                >
+                  <JobCard
+                    id={job.id}
+                    icon={job.icon}
+                    title={job.title}
+                    desc={job.desc}
+                    type={job.type}
+                    company={job.company}
+                    location={job.location}
+                    salary={job.salary}
+                    skills={job.skills}
+                    experience={job.experience}
+                    education={job.education}
+                  />
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
