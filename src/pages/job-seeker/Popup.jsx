@@ -13,9 +13,9 @@ const Popup = ({ closePopup }) => {
         onClick={(e) => e.stopPropagation()} // لمنع الإغلاق عند الضغط داخل النافذة
       >
         <button className="close-btn" onClick={closePopup}>
-          ❌
+          X
         </button>
-        <p>✅ تم تحميل الملف بنجاح!</p>
+        <p> تم تحميل الملف بنجاح!</p>
       </div>
     </div>
   );

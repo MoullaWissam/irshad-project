@@ -66,8 +66,8 @@ const EmployeeForm = ({ data, errors, onChange, onFileChange }) => {
             alt="Upload Icon"
             style={{ width: "20px", height: "20px" }}
           />
-          <span style={{ color: "#00b8e7", fontWeight: "600", fontSize: "14px" }}>
-            {data.photo ? `✓ ${data.photo.name}` : t('Upload your photo here')}
+          <span style={{ color: "#000000", fontWeight: "600", fontSize: "14px" }}>
+            {data.photo ? ` 📁  ${data.photo.name}` : t('Upload your photo here')}
           </span>
         </label>
         <input

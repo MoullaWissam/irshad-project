@@ -10,7 +10,6 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
 
   if (!isOpen) return null;
 
-  // تعريف الأسباب المحددة مسبقاً مع النص الذي سيتم إرساله
   const predefinedReasons = [
     { 
       code: "INSUFFICIENT_EXPERIENCE", 
@@ -114,7 +113,7 @@ function RejectionModal({ isOpen, onClose, applicant, onReject }) {
                 <p className="warning-title">{t("Important Notice")}</p>
                 <p className="warning-text">{t("This action will:")}</p>
                 <ul className="action-list">
-                  <li>{t('Change applicant status to "Rejected"')}</li>
+                  <li>{t('Change applicant status to Rejected')}</li>
                   <li><strong>{t("Send a rejection email to the applicant")}</strong></li>
                   <li>{t("Remove them from active candidate lists")}</li>
                   <li>{t("Cancel any scheduled interviews")}</li>

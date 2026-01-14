@@ -11,7 +11,6 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  // جلب بيانات المستخدم من localStorage
   const getUserDataFromStorage = () => {
     try {
       if (userRole === "company") {
@@ -41,7 +40,6 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
 
   const storedData = getUserDataFromStorage();
   
-  // بيانات افتراضية في حالة عدم وجود بيانات في localStorage
   const defaultUserData = {
     jobSeeker: {
       name: "Michael Smith",
@@ -69,13 +67,10 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       // استخدام بيانات الشركة من localStorage
       const companyData = storedData.data;
       
-      // بناء مسار الصورة بشكل صحيح
-      let avatarPath = defaultUserIcon; // القيمة الافتراضية
+      let avatarPath = defaultUserIcon;
       
       if (companyData.companyLogo && companyData.companyLogo.trim() !== "") {
-        // إذا كان المسار يحتوي على uploads/، أضف المسار الأساسي للخادم
         if (companyData.companyLogo.includes("uploads/")) {
-          // تعديل المسار ليكون نسبياً للخادم
           avatarPath = `http://localhost:3000/${companyData.companyLogo}`;
           hasAvatar = true;
         } else {
@@ -93,14 +88,11 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       
       roleDisplayText = t("Company");
     } else {
-      // استخدام بيانات المستخدم العادي من localStorage
       const userData = storedData.data;
       
-      // بناء مسار الصورة بشكل صحيح للمستخدم
-      let avatarPath = defaultUserIcon; // القيمة الافتراضية
+      let avatarPath = defaultUserIcon; 
       
       if (userData.profileImage && userData.profileImage.trim() !== "") {
-        // إذا كان المسار يحتوي على uploads/، أضف المسار الأساسي للخادم
         if (userData.profileImage.includes("uploads/")) {
           avatarPath = `http://localhost:3000/${userData.profileImage}`;
           hasAvatar = true;
@@ -120,7 +112,6 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       roleDisplayText = t("Job Seeker");
     }
   } else {
-    // استخدام البيانات الافتراضية
     user = defaultUserData[userRole] || defaultUserData.jobSeeker;
     roleDisplayText = userRole === "company" ? t("Company") : t("Job Seeker");
   }
@@ -129,7 +120,6 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
     e.stopPropagation();
     console.log("Logging out...");
     
-    // حذف جميع البيانات من localStorage
     localStorage.removeItem("userData");
     localStorage.removeItem("companyData");
     localStorage.removeItem("userRole");
@@ -138,19 +128,16 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("isLoggedIn");
     
-    // توجيه المستخدم إلى الصفحة الرئيسية
     window.location.href = "http://localhost:3001/";
   };
 
   const handleSettings = (e) => {
     e.stopPropagation();
-    // توجه إلى إعدادات الشركة أو الباحث عن عمل باستخدام navigate
     const settingsPath = userRole === "company" ? "/company/settings" : "/settings";
     navigate(settingsPath);
   };
 
   const handleImageError = (e) => {
-    // استبدال الصورة المعطوبة بصورة افتراضية
     e.target.onerror = null; // منع تكرار الحدث
     e.target.src = defaultUserIcon;
     e.target.classList.add("default-avatar");
@@ -158,7 +145,6 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
   };
 
   const handleImageLoad = (e) => {
-    // إذا تم تحميل الصورة بنجاح، تأكد من إزالة كلاس الصورة الافتراضية
     if (user.hasAvatar) {
       e.target.classList.remove("default-avatar");
     }

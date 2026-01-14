@@ -43,7 +43,6 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: #723efe;
   transition: background 0.3s ease;
 }
 
@@ -524,7 +523,6 @@
 /* دعم الشاشات الكبيرة جداً (حجم 25% من الشاشة) */
 @media (min-width: 1200px) {
   .login-card-main {
-    max-width: 350px; /* تصغير (حوالي 25% من 1440px) */
     min-height: 430px; /* تصغير متناسب */
     padding: 28px 22px; /* تصغير */
   }
@@ -952,7 +950,6 @@
 /* دعم الشاشات الكبيرة جداً (حجم 25% من الشاشة) */
 @media (min-width: 1200px) {
   .login-card-main {
-    max-width: 320px; /* تعديل من 350px */
     min-height: 360px; /* تعديل من 430px */
     padding: 20px 16px; /* تعديل من 28px 22px */
   }
@@ -978,7 +975,6 @@
 
 @media (min-width: 1600px) {
   .login-card-main {
-    max-width: 340px; /* تعديل من 380px */
     min-height: 380px; /* تعديل من 460px */
     padding: 22px 18px; /* تعديل من 30px 25px */
   }

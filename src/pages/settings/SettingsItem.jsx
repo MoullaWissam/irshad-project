@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
 
-function SettingsItem({ label, icon, onClick }) {
+function SettingsItem({ label, icon, onClick, userRole, userId, companyId }) {
   const [showPopup, setShowPopup] = useState(false);
   const [showLanguagePopup, setShowLanguagePopup] = useState(false);
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // تحديث اللغة الحالية عند التغيير
     setCurrentLanguage(i18n.language || 'en');
   }, [i18n.language]);
 
   const handleClick = () => {
-    if (label === "Account status" || label === "Delete Account") {
+    if (label === "Account status") {
       setShowPopup(true);
-      setPassword("");
-      setError("");
+    } else if (label === "Delete Account") {
+      setShowConfirmDelete(true);
     } else if (label === "Language") {
       setShowLanguagePopup(true);
     } else if (onClick) {
@@ -27,44 +28,61 @@ function SettingsItem({ label, icon, onClick }) {
     }
   };
 
-  const handlePasswordChange = (e) => {
-    const value = e.target.value;
-    setPassword(value);
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
 
-    if (value.length < 1) {
-      setError("Password is required");
-    } else if (value.length < 6) {
-      setError("Password must be at least 6 characters");
-    } else {
-      setError("");
+    try {
+      let url = "";
+      
+      // تحديد الرابط بناءً على نوع المستخدم
+      if (userRole === "company" && companyId) {
+        url = `http://localhost:3000/company-management/delete/${companyId}`;
+      } else if (userRole === "jobSeeker" && userId) {
+        url = `http://localhost:3000/auth/delete/${userId}`;
+      } else {
+        throw new Error("User ID or Company ID not found");
+      }
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // تم الحذف بنجاح
+        alert(data.message || t("Account has been deleted successfully."));
+        
+        // مسح جميع البيانات من localStorage
+        localStorage.clear();
+        
+        // إعادة التوجيه إلى الصفحة الرئيسية أو صفحة تسجيل الدخول
+        navigate("/");
+        window.location.reload(); // لتحديث حالة التطبيق بالكامل
+      } else {
+        // خطأ من الخادم
+        alert(data.message || t("Failed to delete account. Please try again."));
+      }
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      alert(t("Network error. Please check your connection and try again."));
+    } finally {
+      setIsDeleting(false);
+      setShowConfirmDelete(false);
     }
-  };
-
-  const handleDeleteAccount = () => {
-    if (!password.trim()) {
-      setError("Password is required");
-      return;
-    }
-
-    console.log("Deleting account with password:", password);
-    alert(
-      "Account deletion request has been submitted. You will receive a confirmation email."
-    );
-
-    setShowPopup(false);
-    setPassword("");
-    setError("");
   };
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     setShowLanguagePopup(false);
     
-    // تحديث اتجاه الصفحة بناءً على اللغة
     document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lng;
     
-    // حفظ التفضيل في localStorage
     localStorage.setItem('preferred-language', lng);
   };
 
@@ -108,112 +126,97 @@ function SettingsItem({ label, icon, onClick }) {
       );
     }
 
-    if (label === "Delete Account") {
-      const isPasswordValid = password.length >= 6;
-
-      return (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <h3>{t('Delete Account')}</h3>
-            <p className="warning-text">
-               {t('Warning: This action cannot be undone. All your data will be permanently deleted.')}
-            </p>
-            <p>{t('Please enter your password to confirm account deletion:')}</p>
-
-            <div className="password-input-group">
-              <input
-                type="password"
-                placeholder={t('Enter your password')}
-                className={`password-input ${error ? "input-error" : ""}`}
-                value={password}
-                onChange={handlePasswordChange}
-                autoFocus
-              />
-              {error && <p className="error-message">{error}</p>}
-            </div>
-
-            <div className="popup-actions">
-              <button
-                className={`btn-confirm ${!isPasswordValid ? "btn-disabled" : ""}`}
-                onClick={handleDeleteAccount}
-                disabled={!isPasswordValid}
-              >
-                {t('Delete Account')}
-              </button>
-              <button
-                className="btn-cancel"
-                onClick={() => {
-                  setShowPopup(false);
-                  setPassword("");
-                  setError("");
-                }}
-              >
-                {t('Cancel')}
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return null;
   };
 
- const renderLanguagePopup = () => {
-  if (!showLanguagePopup) return null;
+  const renderConfirmDelete = () => {
+    if (!showConfirmDelete) return null;
 
-  return (
-    <div className="popup-overlay">
-      <div className="popup-content">
-        <h3>{t('Select Language')}</h3>
-        <div className="language-options">
-          <div 
-            className={`language-option ${currentLanguage === 'en' ? 'selected' : ''}`}
-            onClick={() => changeLanguage('en')}
-          >
-            <div className="language-content">
-              <span className="language-flag">🇺🇸</span>
-              <div className="language-info">
-                <span className="language-name">English</span>
-                <span className="language-desc">English language</span>
-              </div>
-            </div>
-            {currentLanguage === 'en' && (
-              <div className="language-check">
-                <div className="check-circle">✓</div>
-              </div>
-            )}
+    return (
+      <div className="popup-overlay">
+        <div className="popup-content">
+          <h3>{t('Delete Account')}</h3>
+          <p className="warning-text">
+            {t('Warning: This action cannot be undone. All your data will be permanently deleted.')}
+          </p>
+          <p>{t('Are you sure you want to delete your account?')}</p>
+
+          <div className="popup-actions">
+            <button
+              className={`btn-confirm ${isDeleting ? "btn-disabled" : ""}`}
+              onClick={handleDeleteAccount}
+              disabled={isDeleting}
+            >
+              {isDeleting ? t('Deleting...') : t('Yes, Delete Account')}
+            </button>
+            <button
+              className="btn-cancel"
+              onClick={() => setShowConfirmDelete(false)}
+              disabled={isDeleting}
+            >
+              {t('Cancel')}
+            </button>
           </div>
-          <div 
-            className={`language-option ${currentLanguage === 'ar' ? 'selected' : ''}`}
-            onClick={() => changeLanguage('ar')}
-          >
-            <div className="language-content">
-              <span className="language-flag">🇸🇦</span>
-              <div className="language-info">
-                <span className="language-name">العربية</span>
-                <span className="language-desc">اللغة العربية</span>
-              </div>
-            </div>
-            {currentLanguage === 'ar' && (
-              <div className="language-check">
-                <div className="check-circle">✓</div>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="popup-actions">
-          <button
-            className="btn-cancel"
-            onClick={() => setShowLanguagePopup(false)}
-          >
-            {t('Cancel')}
-          </button>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
+
+  const renderLanguagePopup = () => {
+    if (!showLanguagePopup) return null;
+
+    return (
+      <div className="popup-overlay">
+        <div className="popup-content">
+          <h3>{t('Select Language')}</h3>
+          <div className="language-options">
+            <div 
+              className={`language-option ${currentLanguage === 'en' ? 'selected' : ''}`}
+              onClick={() => changeLanguage('en')}
+            >
+              <div className="language-content">
+                <span className="language-flag">🇺🇸</span>
+                <div className="language-info">
+                  <span className="language-name">English</span>
+                  <span className="language-desc">English language</span>
+                </div>
+              </div>
+              {currentLanguage === 'en' && (
+                <div className="language-check">
+                  <div className="check-circle">✓</div>
+                </div>
+              )}
+            </div>
+            <div 
+              className={`language-option ${currentLanguage === 'ar' ? 'selected' : ''}`}
+              onClick={() => changeLanguage('ar')}
+            >
+              <div className="language-content">
+                <span className="language-flag">🇸🇦</span>
+                <div className="language-info">
+                  <span className="language-name">العربية</span>
+                  <span className="language-desc">اللغة العربية</span>
+                </div>
+              </div>
+              {currentLanguage === 'ar' && (
+                <div className="language-check">
+                  <div className="check-circle">✓</div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="popup-actions">
+            <button
+              className="btn-cancel"
+              onClick={() => setShowLanguagePopup(false)}
+            >
+              {t('Cancel')}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   if (label === "---") {
     return <hr className="divider" />;
@@ -231,6 +234,7 @@ function SettingsItem({ label, icon, onClick }) {
         )}
       </div>
       {renderPopup()}
+      {renderConfirmDelete()}
       {renderLanguagePopup()}
     </>
   );

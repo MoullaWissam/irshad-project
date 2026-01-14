@@ -16,8 +16,7 @@
 /* الشعار عندما يكون السايدبار مفتوحاً */
 .sidebar-logo-main {
   transition: transform 0.3s ease;
-  flex: 1;
-  height: 28px;
+  height: 40px;
   width: auto;
   max-width: 140px;
   object-fit: contain;

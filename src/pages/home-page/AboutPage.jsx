@@ -1,27 +1,23 @@
-// AboutPage.js - بعد التعديل
-
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { useTranslation } from 'react-i18next'; // 👈 استيراد الخطاف
+import { useTranslation } from 'react-i18next';
 import './AboutPage.css';
 
 function AboutPage() {
-  const { t } = useTranslation(); // 👈 استخدام الخطاف
+  const { t } = useTranslation();
   
   return (
     <div>
       <Navbar />
       <div className="about-page">
         <section className="page-header">
-          {/* العنوان الرئيسي */}
           <h1>{t("About Irshad")}</h1>
           <p className="subtitle">{t("Your AI-driven career companion and recruitment platform")}</p>
         </section>
 
         <div className="content-container">
           <section className="content-section">
-            {/* مهمتنا */}
             <h2>{t("Our Mission")}</h2>
             <p>
               {t("At Irshad, we're revolutionizing the way people find jobs and companies find talent. Our AI-powered platform bridges the gap between skilled professionals and forward-thinking organizations.")}
@@ -32,7 +28,6 @@ function AboutPage() {
           </section>
 
           <section className="content-section">
-            {/* ماذا نقدم */}
             <h2>{t("What We Do")}</h2>
             <ul className="simple-list">
               <li>{t("AI-powered job matching for precise career placement")}</li>
@@ -44,7 +39,6 @@ function AboutPage() {
           </section>
 
           <section className="content-section">
-            {/* قيمنا */}
             <h2>{t("Our Values")}</h2>
             <div className="values-container">
               <div className="value-item">
@@ -67,7 +61,6 @@ function AboutPage() {
           </section>
 
           <section className="content-section">
-            {/* فريقنا */}
             <h2>{t("Our Team")}</h2>
             <p>
               {t("Our team consists of experienced HR professionals, AI experts, and software developers dedicated to creating the best recruitment experience. We combine industry knowledge with cutting-edge technology to deliver exceptional results.")}
@@ -75,7 +68,6 @@ function AboutPage() {
           </section>
 
           <section className="content-section stats-section">
-            {/* تأثيرنا */}
             <h2>{t("Our Impact")}</h2>
             <div className="stats-container">
               <div className="stat-item">

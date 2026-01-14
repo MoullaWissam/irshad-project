@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./UploadResume.css";
-import { useTranslation } from 'react-i18next';
-
-// استيراد المكونات الفرعية
+import { useTranslation } from "react-i18next";
+import exampleImage from "../../assets/images/example.png";
 import TipsSection from "./TipsSection";
 import UploadBox from "./UploadBox";
 import { useNavigate } from "react-router-dom";
@@ -19,21 +18,19 @@ const UploadResume = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  // الحصول على اتجاه النص الحالي
   const currentLanguage = i18n.language;
-  const isRTL = currentLanguage === 'ar';
+  const isRTL = currentLanguage === "ar";
 
-  // ✅ التحقق من localStorage عند تحميل المكون
   useEffect(() => {
-    const hasPreviousUpload = localStorage.getItem('hasUploadedCV');
-    if (hasPreviousUpload === 'true') {
+    const hasPreviousUpload = localStorage.getItem("hasUploadedCV");
+    if (hasPreviousUpload === "true") {
       setHasUploadedBefore(true);
     }
-    
+
     // استرجاع الملف السابق إذا كان موجودًا
-    const savedFile = localStorage.getItem('currentCV');
-    const savedResumeId = localStorage.getItem('resumeId');
-    
+    const savedFile = localStorage.getItem("currentCV");
+    const savedResumeId = localStorage.getItem("resumeId");
+
     if (savedFile) {
       try {
         const parsedFile = JSON.parse(savedFile);
@@ -41,16 +38,15 @@ const UploadResume = () => {
         setScanComplete(true);
       } catch (error) {
         console.error("Error parsing saved file:", error);
-        toast.error(t(" خطأ في تحميل السيرة الذاتية المحفوظة"));
+        toast.error(t(" Error loading saved resume"));
       }
     }
-    
+
     if (savedResumeId) {
       setResumeId(savedResumeId);
     }
   }, [t]);
 
-  // في handleFileUpload خزّن الملف الأصلي
   const handleFileUpload = (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
@@ -59,59 +55,59 @@ const UploadResume = () => {
     const ext = selectedFile.name.split(".").pop().toLowerCase();
 
     if (!allowedExtensions.includes(ext)) {
-      toast.error(t("⚠️ Please upload a valid file (PDF, DOC, DOCX)"));
+      toast.error(t(" Please upload a valid file (PDF, DOC, DOCX)"));
       return;
     }
 
-    // خزّن الملف نفسه في state
     setFile(selectedFile);
     setScanComplete(false);
 
-    localStorage.setItem('hasUploadedCV', 'true');
-    // إذا أردت تخزين بيانات فقط، لا تحفظ الملف نفسه في localStorage لأنه لا يُخزن Blob
-    localStorage.setItem('currentCV', JSON.stringify({
-      name: selectedFile.name,
-      size: selectedFile.size,
-      type: selectedFile.type,
-      lastModified: selectedFile.lastModified
-    }));
+    localStorage.setItem("hasUploadedCV", "true");
+    localStorage.setItem(
+      "currentCV",
+      JSON.stringify({
+        name: selectedFile.name,
+        size: selectedFile.size,
+        type: selectedFile.type,
+        lastModified: selectedFile.lastModified,
+      })
+    );
 
-    toast.success(t("✅ تم رفع الملف بنجاح!"));
+    toast.success(t("The file has been uploaded successfully!"));
   };
 
-  // ✅ دالة لتتبع حالة المسح
   const handleScanStart = () => {
     setIsScanning(true);
   };
 
-  // ✅ دالة تُستدعى عند اكتمال المسح
   const handleScanComplete = () => {
     setScanComplete(true);
     setIsScanning(false);
-    toast.success(t("✅ اكتمل الفحص الدقيق للملف"));
+    toast.success(t("The thorough examination of the file has been completed."));
   };
 
-  // ✅ دالة لحذف الملف الحالي
   const handleDeleteFile = () => {
     setFile(null);
     setResumeId(null);
     setScanComplete(false);
-    localStorage.removeItem('currentCV');
-    localStorage.removeItem('resumeId');
-    toast.info(t("🗑️ تم حذف السيرة الذاتية الحالية"));
+    localStorage.removeItem("currentCV");
+    localStorage.removeItem("resumeId");
+    toast.info(t("Current CV deleted"));
   };
 
   const handleExampleDownload = () => {
     const link = document.createElement("a");
-    link.href = "/example.pdf";
-    link.download = "example.pdf";
+    link.href = exampleImage;  
+    link.download = "example-resume.png";
+
+    document.body.appendChild(link);
     link.click();
-    toast.info(t("📥 جارٍ تحميل المثال..."));
+    document.body.removeChild(link);
   };
 
   const handleSeeResults = async () => {
     if (!file) {
-      toast.error(t("⚠️ Upload your ATS CV to see results"));
+      toast.error(t(" Upload your ATS CV to see results"));
       return;
     }
 
@@ -119,29 +115,26 @@ const UploadResume = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      // تحقق من حجم الملف
       if (file.size > 10 * 1024 * 1024) {
-        toast.error(t("⚠️ File size too large (max 10MB)"));
+        toast.error(t(" File size too large (max 10MB)"));
         return;
       }
 
       console.log("File info:", {
         name: file.name,
         size: file.size,
-        type: file.type
+        type: file.type,
       });
 
       // جرب عدة endpoints
-      const endpoints = [
-        "http://localhost:3000/resumes/upload",
-      ];
+      const endpoints = ["http://localhost:3000/resumes/upload"];
 
       let lastError = null;
-      
+
       for (const endpoint of endpoints) {
         try {
           console.log(`Trying endpoint: ${endpoint}`);
-          
+
           const response = await fetch(endpoint, {
             method: "POST",
             body: formData,
@@ -151,48 +144,48 @@ const UploadResume = () => {
           if (response.ok) {
             const data = await response.json();
             console.log("Success with endpoint:", endpoint, data);
-            
-            // حفظ النتيجة و ID السيرة الذاتية
-            localStorage.setItem('resumeData', JSON.stringify(data));
-            localStorage.setItem('hasUploadedCV', 'true');
-            
-            // إذا كان هناك ID في الاستجابة، حفظه
+
+            localStorage.setItem("resumeData", JSON.stringify(data));
+            localStorage.setItem("hasUploadedCV", "true");
+
             if (data.id || data.resumeId) {
               const newResumeId = data.id || data.resumeId;
               setResumeId(newResumeId);
-              localStorage.setItem('resumeId', newResumeId);
+              localStorage.setItem("resumeId", newResumeId);
             }
-            
-            // إظهار البوب أب أولاً
+
             setShowPopup(true);
-            
-            // الانتقال بعد 3 ثواني
+
             setTimeout(() => {
               setShowPopup(false);
               navigate("/matches");
             }, 3000);
-            
+
             return;
+          }else if (response.status == 422) {
+            console.log("22");   
+            const data = await response.json()                     
+            toast.error(`Uploading failed: ${data.message}`);   
+          }else{
+            const data = await response.json()                     
+            console.log(data.message);
+            
           }
-          
-          lastError = `Endpoint ${endpoint} failed with status ${response.status}`;
-          console.error(lastError);
-          
+          // lastError = `Endpoint ${endpoint} failed with status ${response.status}`;
+          // console.error(response.message);
         } catch (err) {
-          lastError = `Endpoint ${endpoint} error: ${err.message}`;
-          console.error(lastError);
+          console.log("error",err.message);
         }
-        
+
         // إعادة إنشاء FormData لكل محاولة
-        formData.delete('file');
-        formData.append('file', file);
+        formData.delete("file");
+        formData.append("file", file);
       }
 
       throw new Error(`All endpoints failed. Last error: ${lastError}`);
-      
     } catch (error) {
       console.error("Final upload error:", error);
-      toast.error(t(` فشل الرفع: ${error.message}`));
+      toast.error(t(`Uploading failed: ${error.message}`));
     }
   };
 
@@ -204,18 +197,18 @@ const UploadResume = () => {
     }
 
     // إذا لم يكن هناك resumeId، استخدم الافتراضي 21 أو حاول الحصول من localStorage
-    const updateResumeId = localStorage.getItem('userData');
+    const updateResumeId = localStorage.getItem("userData");
     const RID = JSON.parse(updateResumeId);
     console.log("all", RID);
     console.log("s", RID.id);
-    
+
     try {
       const formData = new FormData();
       formData.append("file", file);
 
       // تحقق من حجم الملف
       if (file.size > 10 * 1024 * 1024) {
-        toast.error(t("⚠️ File size too large (max 10MB)"));
+        toast.error(t("File size too large (max 10MB)"));
         return;
       }
 
@@ -230,33 +223,36 @@ const UploadResume = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Update successful:", data);
-        
-        toast.success(t("✅ تم تحديث السيرة الذاتية بنجاح!"));
-        
+
+        toast.success(t(" The CV has been successfully updated!"));
+
         // حفظ الـ ID الجديد إذا كان مختلفاً
         if (data.id && data.id !== updateResumeId) {
           setResumeId(data.id);
-          localStorage.setItem('resumeId', data.id);
+          localStorage.setItem("resumeId", data.id);
         }
-        
+
         // الانتقال إلى صفحة matches فوراً
         setTimeout(() => {
           navigate("/matches");
         }, 1000);
-        
       } else {
         const errorText = await response.text();
         console.error("Update failed:", response.status, errorText);
-        
+        if (response.status === 422) {
+          toast.error(`Uplodaing failed: is not a valid CV `)
+        }
         if (response.status === 404) {
-          toast.error(t(" لم يتم العثور على السيرة الذاتية. حاول رفعها أولاً."));
+          toast.error(
+            t("The CV was not found. Please upload it first.")
+          );
         } else {
-          toast.error(t(` فشل التحديث: ${response.status}`));
+          toast.error(t(`Update failed: ${response.status}`));
         }
       }
     } catch (error) {
       console.error("Update error:", error);
-      toast.error(t(` خطأ في التحديث: ${error.message}`));
+      toast.error(t(`Error updating CV: ${error.message}`));
     }
   };
 
@@ -271,9 +267,9 @@ const UploadResume = () => {
   };
 
   return (
-    <div className="upload-resume-container" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="upload-resume-container" dir={isRTL ? "rtl" : "ltr"}>
       <ToastContainer
-        position={isRTL ? 'bottom-left' : 'bottom-right'}
+        position={isRTL ? "bottom-left" : "bottom-right"}
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -287,21 +283,27 @@ const UploadResume = () => {
       />
 
       <div className="upload-resume-main-header">
-        <h2 
+        <h2
           className="upload-resume-welcome-text"
-          style={{ textAlign: isRTL ? 'right' : 'left' }}
+          style={{ textAlign: isRTL ? "right" : "left" }}
         >
           {hasUploadedBefore ? t("Welcome back!") : t("Welcome!")}
         </h2>
-        <h3 
+        <h3
           className="upload-resume-subtitle"
-          style={{ textAlign: isRTL ? 'right' : 'left' }}
+          style={{ textAlign: isRTL ? "right" : "left" }}
         >
           {file
             ? hasUploadedBefore
-              ? t("You can replace your current CV with a new version, or delete it to start fresh")
-              : t("If you'd like to update your resume, simply upload the new version here")
-            : t("Upload your resume and take the first step toward your career")}
+              ? t(
+                  "You can replace your current CV with a new version, or delete it to start fresh"
+                )
+              : t(
+                  "If you'd like to update your resume, simply upload the new version here"
+                )
+            : t(
+                "Upload your resume and take the first step toward your career"
+              )}
         </h3>
       </div>
 
@@ -311,45 +313,45 @@ const UploadResume = () => {
         </div>
 
         <div className="upload-resume-right-side">
-          <button 
-            className="upload-resume-example-btn" 
+          <button
+            className="upload-resume-example-btn"
             onClick={handleExampleDownload}
-            style={{ float: isRTL ? 'left' : 'right' }}
+            style={{ float: isRTL ? "left" : "right" }}
           >
             {t("Show me an example")}
           </button>
 
-          <UploadBox 
-            onUpload={handleFileUpload} 
-            file={file} 
+          <UploadBox
+            onUpload={handleFileUpload}
+            file={file}
             onScanStart={handleScanStart}
             onScanComplete={handleScanComplete}
           />
 
           <div className="upload-resume-action-buttons">
             {file && scanComplete && !isScanning && (
-              <button 
-                className="upload-resume-see-results-btn" 
+              <button
+                className="upload-resume-see-results-btn"
                 onClick={handleSeeResults}
-                style={{ 
-                  float: isRTL ? 'left' : 'right',
-                  marginRight: isRTL ? '0' : '10px',
-                  marginLeft: isRTL ? '10px' : '0'
+                style={{
+                  float: isRTL ? "left" : "right",
+                  marginRight: isRTL ? "0" : "10px",
+                  marginLeft: isRTL ? "10px" : "0",
                 }}
               >
                 {t("See results")}
               </button>
             )}
 
-            <div 
+            <div
               className="upload-resume-update-delete-container"
-              style={{ 
-                float: isRTL ? 'right' : 'left',
-                flexDirection: isRTL ? 'row-reverse' : 'row'
+              style={{
+                float: isRTL ? "right" : "left",
+                flexDirection: isRTL ? "row-reverse" : "row",
               }}
             >
               {file && (
-                <button 
+                <button
                   className="upload-resume-update-btn"
                   onClick={handleUpdateResume}
                   disabled={isScanning}
@@ -359,7 +361,7 @@ const UploadResume = () => {
               )}
 
               {file && hasUploadedBefore && !isScanning && (
-                <button 
+                <button
                   className="upload-resume-delete-btn"
                   onClick={handleDeleteFile}
                 >
@@ -374,11 +376,11 @@ const UploadResume = () => {
       {showPopup && (
         <div className="upload-resume-popup">
           <div className="upload-resume-popup-content">
-            <h3 style={{ textAlign: isRTL ? 'right' : 'left' }}>
-              {t("✅ تم الرفع بنجاح!")}
+            <h3 style={{ textAlign: isRTL ? "right" : "left" }}>
+              {t("Upload successful!")}
             </h3>
-            <p style={{ textAlign: isRTL ? 'right' : 'left' }}>
-              {t("جارٍ تحليل سيرتك الذاتية...")}
+            <p style={{ textAlign: isRTL ? "right" : "left" }}>
+              {t("Your resume is being analyzed..")}
             </p>
             <div className="upload-resume-spinner"></div>
           </div>

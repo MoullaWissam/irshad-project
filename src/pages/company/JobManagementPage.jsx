@@ -147,12 +147,10 @@ function JobManagementPage() {
     navigate(`/job/${jobId}`);
   };
 
-  // ✅ دالة لإعادة المحاولة
   const handleRetry = () => {
     window.location.reload();
   };
 
-  // ✅ دالة للذهاب إلى صفحة تسجيل الدخول
   const handleLoginRedirect = () => {
     navigate('/login');
   };

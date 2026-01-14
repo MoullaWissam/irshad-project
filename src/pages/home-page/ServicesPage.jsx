@@ -9,7 +9,6 @@ import './ServicesPage.css';
 function ServicesPage() {
   const { t } = useTranslation(); // 👈 استخدام الخطاف
 
-  // استخدام مفاتيح الترجمة في كائن الخدمات
   const services = [
     {
       id: 1,
@@ -48,7 +47,6 @@ function ServicesPage() {
       <Navbar />
       <div className="services-page">
         <section className="page-header">
-          {/* عنوان الصفحة */}
           <h1>{t("Our Services")}</h1>
           <p className="subtitle">{t("Discover how Irshad can help you advance your career or find the perfect talent")}</p>
         </section>
@@ -64,7 +62,6 @@ function ServicesPage() {
             {services.map(service => (
               <div className="service-item" key={service.id}>
                 <div className="service-number">{service.id}</div>
-                {/* استخدام النصوص المترجمة من الكائن */}
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
               </div>
@@ -72,7 +69,6 @@ function ServicesPage() {
           </div>
 
           <section className="cta-section">
-            {/* قسم الدعوة للعمل */}
             <h2>{t("Ready to Get Started?")}</h2>
             <p>{t("Choose the service that fits your needs and begin your journey today")}</p>
             <div className="cta-buttons">

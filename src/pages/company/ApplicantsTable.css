@@ -1,5 +1,5 @@
 /* ApplicantsTable.css */
-.applicants-table-container {
+.at-container {
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -8,7 +8,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 }
 
-.table-controls {
+.at-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,12 +17,12 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-.search-box {
+.at-search-box {
   position: relative;
   width: 350px;
 }
 
-.search-input {
+.at-search-input {
   width: 100%;
   padding: 12px 45px 12px 20px;
   border: 2px solid #e2e8f0;
@@ -33,13 +33,13 @@
   color: #334155;
 }
 
-.search-input:focus {
+.at-search-input:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.search-icon {
+.at-search-icon {
   position: absolute;
   right: 20px;
   top: 50%;
@@ -48,58 +48,58 @@
   font-size: 16px;
 }
 
-.results-count {
+.at-results-count {
   font-size: 14px;
   color: #64748b;
   font-weight: 500;
 }
 
-.count-number {
+.at-count-number {
   font-weight: 600;
   color: #334155;
 }
 
-.no-results {
+.at-no-results {
   padding: 60px 20px;
   text-align: center;
   background: #f8fafc;
 }
 
-.empty-state {
+.at-empty-state {
   max-width: 300px;
   margin: 0 auto;
 }
 
-.empty-icon {
+.at-empty-icon {
   font-size: 48px;
   margin-bottom: 15px;
   opacity: 0.5;
 }
 
-.empty-state h4 {
+.at-empty-state h4 {
   margin: 0 0 10px 0;
   color: #334155;
   font-size: 18px;
 }
 
-.empty-state p {
+.at-empty-state p {
   margin: 0;
   color: #64748b;
   font-size: 14px;
 }
 
-.table-responsive {
+.at-table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.applicants-table {
+.at-table {
   width: 100%;
   border-collapse: collapse;
   min-width: 1000px;
 }
 
-.applicants-table th {
+.at-table th {
   padding: 16px 15px;
   text-align: left;
   font-weight: 600;
@@ -112,31 +112,31 @@
   white-space: nowrap;
 }
 
-.applicants-table td {
+.at-table td {
   padding: 16px 15px;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: top;
   transition: background-color 0.2s;
 }
 
-.applicant-row:hover {
+.at-row:hover {
   background-color: #f8fafc;
 }
 
-.applicant-row:hover td {
+.at-row:hover td {
   background-color: #f8fafc;
 }
 
 /* Ranking Column */
-.cell-ranking {
+.at-cell-ranking {
   width: 120px;
 }
 
-.ranking-cell-content {
+.at-ranking-cell-content {
   cursor: pointer;
 }
 
-.ranking-badge {
+.at-ranking-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -149,71 +149,71 @@
   transition: transform 0.2s;
 }
 
-.ranking-cell-content:hover .ranking-badge {
+.at-ranking-cell-content:hover .at-ranking-badge {
   transform: translateY(-1px);
 }
 
-.ranking-gold {
+.at-ranking-gold {
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
   color: #8b6b00;
   border: 1px solid #e6c200;
 }
 
-.ranking-silver {
+.at-ranking-silver {
   background: linear-gradient(135deg, #c0c0c0 0%, #e0e0e0 100%);
   color: #555;
   border: 1px solid #b0b0b0;
 }
 
-.ranking-bronze {
+.at-ranking-bronze {
   background: linear-gradient(135deg, #cd7f32 0%, #e6a257 100%);
   color: #5c3a00;
   border: 1px solid #b3742b;
 }
 
-.ranking-unknown {
+.at-ranking-unknown {
   background: #f1f5f9;
   color: #64748b;
   border: 1px solid #e2e8f0;
 }
 
-.ranking-icon {
+.at-ranking-icon {
   font-size: 14px;
 }
 
 /* Name Column */
-.cell-name {
+.at-cell-name {
   min-width: 220px;
 }
 
-.name-cell-content.clickable {
+.at-name-cell-content.at-clickable {
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.name-cell-content.clickable:hover {
+.at-name-cell-content.at-clickable:hover {
   opacity: 0.8;
 }
 
-.applicant-name {
+.at-applicant-name {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.applicant-fullname {
+.at-applicant-fullname {
   font-size: 15px;
-  color: #1e293b;
+  color: #ffffff;
   font-weight: 600;
 }
 
-.applicant-meta {
+.at-applicant-meta {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.applicant-experience {
+.at-applicant-experience {
   font-size: 12px;
   color: #64748b;
   background: #f1f5f9;
@@ -221,19 +221,19 @@
   border-radius: 12px;
 }
 
-.applicant-position {
+.at-applicant-position {
   font-size: 12px;
   color: #3b82f6;
   font-weight: 500;
 }
 
-.applicant-contact-info {
+.at-applicant-contact-info {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.applicant-email {
+.at-applicant-email {
   font-size: 13px;
   color: #64748b;
   overflow: hidden;
@@ -243,22 +243,22 @@
 }
 
 /* Skills Column */
-.cell-skills {
+.at-cell-skills {
   min-width: 180px;
 }
 
-.skills-cell-content {
+.at-skills-cell-content {
   cursor: pointer;
 }
 
-.applicant-skills {
+.at-applicant-skills {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
 }
 
-.skill-tag {
+.at-skill-tag {
   display: inline-block;
   padding: 5px 10px;
   background: #e0f2fe;
@@ -270,7 +270,7 @@
   white-space: nowrap;
 }
 
-.skill-more {
+.at-skill-more {
   font-size: 11px;
   color: #64748b;
   background: #f1f5f9;
@@ -281,40 +281,40 @@
   transition: all 0.2s;
 }
 
-.skill-more:hover {
+.at-skill-more:hover {
   background: #e2e8f0;
   color: #475569;
 }
 
-.no-skills {
+.at-no-skills {
   color: #94a3b8;
   font-style: italic;
   font-size: 13px;
 }
 
 /* Date Column */
-.cell-applied {
+.at-cell-applied {
   width: 100px;
 }
 
-.date-cell-content {
+.at-date-cell-content {
   font-size: 13px;
   color: #475569;
   font-weight: 500;
 }
 
 /* Test Score Column */
-.cell-test {
+.at-cell-test {
   width: 100px;
 }
 
-.test-cell-content {
+.at-test-cell-content {
   display: flex;
   align-items: center;
   height: 100%;
 }
 
-.score-badge {
+.at-score-badge {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 20px;
@@ -325,39 +325,39 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.score-high {
+.at-score-high {
   background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
   color: white;
 }
 
-.score-medium {
+.at-score-medium {
   background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
   color: white;
 }
 
-.score-low {
+.at-score-low {
   background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
   color: white;
 }
 
-.score-na {
+.at-score-na {
   color: #94a3b8;
   font-style: italic;
   font-size: 12px;
 }
 
 /* Status Column */
-.cell-status {
+.at-cell-status {
   width: 150px;
 }
 
-.status-cell-content {
+.at-status-cell-content {
   display: flex;
   align-items: center;
   height: 100%;
 }
 
-.interview-status-badge {
+.at-interview-status-badge {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 20px;
@@ -368,46 +368,46 @@
   letter-spacing: 0.3px;
 }
 
-.status-none {
+.at-status-none {
   background: #f1f5f9;
   color: #64748b;
   border: 1px solid #e2e8f0;
 }
 
-.status-sent {
+.at-status-sent {
   background: #dbeafe;
   color: #1d4ed8;
   border: 1px solid #bfdbfe;
 }
 
-.status-scheduled {
+.at-status-scheduled {
   background: #dcfce7;
   color: #166534;
   border: 1px solid #bbf7d0;
 }
 
-.status-rejected {
+.at-status-rejected {
   background: #fee2e2;
   color: #991b1b;
   border: 1px solid #fecaca;
 }
 
 /* Actions Column */
-.cell-actions {
+.at-cell-actions {
   min-width: 220px;
 }
 
-.actions-cell-content {
+.at-actions-cell-content {
   min-width: 220px;
 }
 
-.action-buttons {
+.at-action-buttons {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.btn-action {
+.at-btn-action {
   padding: 8px 12px;
   border: none;
   border-radius: 6px;
@@ -423,60 +423,69 @@
   white-space: nowrap;
 }
 
-.btn-view-details {
+.at-btn-view-details {
   background: #3b82f6;
   color: white;
 }
 
-.btn-view-details:hover {
+.at-btn-view-details:hover {
   background: #2563eb;
 }
 
-.btn-interview-request {
+.at-btn-interview-request {
   background: #10b981;
   color: white;
 }
 
-.btn-interview-request:hover {
+.at-btn-interview-request:hover {
   background: #059669;
 }
 
-.btn-schedule {
+.at-btn-schedule {
   background: #8b5cf6;
   color: white;
 }
 
-.btn-schedule:hover {
+.at-btn-schedule:hover {
   background: #7c3aed;
 }
 
-.btn-reject {
+.at-btn-reject {
   background: #ef4444;
   color: white;
 }
 
-.btn-reject:hover {
+.at-btn-reject:hover {
   background: #dc2626;
 }
 
-.btn-undo {
+.at-btn-accept {
+  background: #10b981;
+  color: white;
+}
+
+.at-btn-accept:hover {
+  background: #059669;
+}
+
+.at-btn-undo {
   background: #64748b;
   color: white;
 }
 
-.btn-undo:hover {
+.at-btn-undo:hover {
   background: #475569;
 }
 
-.scheduled-actions,
-.rejected-actions {
+.at-scheduled-actions,
+.at-rejected-actions {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.interview-date-info,
-.rejection-reason-info {
+.at-interview-date-info,
+.at-rejection-reason-info {
   font-size: 11px;
   color: #64748b;
   padding: 4px 8px;
@@ -485,138 +494,535 @@
   border-left: 3px solid #3b82f6;
 }
 
-.rejection-reason-info {
+.at-rejection-reason-info {
   border-left-color: #ef4444;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .table-responsive {
-    margin: 0 -15px;
-    padding: 0 15px;
-  }
-}
-
-@media (max-width: 768px) {
-  .table-controls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
-  }
-  
-  .search-box {
-    width: 100%;
-  }
-  
-  .applicants-table {
-    font-size: 14px;
-  }
-  
-  .applicants-table th,
-  .applicants-table td {
-    padding: 12px 10px;
-  }
-  
-  .action-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  
-  .btn-action {
-    flex: 1;
-    min-width: 100px;
-    padding: 8px 10px;
-    font-size: 11px;
-  }
-}
-/* إضافة إلى ApplicantsTable.css */
-
-.btn-view-details {
-  background: #3b82f6;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-  margin-bottom: 8px;
-  width: 100%;
-  text-align: center;
-}
-
-.btn-view-details:hover {
-  background: #2563eb;
-}
-
-.table-actions {
+.at-accepted-actions {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* إضافة لزر التراجع في الجدول */
-.rejected-actions .btn-undo {
-  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.rejected-actions .btn-undo:hover {
-  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
-  transform: translateY(-1px);
-}
-
-.rejected-actions .btn-undo::before {
-  content: "↶";
-  font-size: 14px;
-}
-
-.rejection-reason-info {
+.at-acceptance-info {
   font-size: 11px;
-  color: #721c24;
-  background: #f8d7da;
-  padding: 6px 10px;
+  color: #64748b;
+  padding: 4px 8px;
+  background: #f8fafc;
   border-radius: 4px;
-  margin-top: 5px;
-  border-left: 3px solid #dc3545;
+  border-left: 3px solid #10b981;
+}
+
+/* إضافة إلى ApplicantsTable.css */
+.at-btn-view-resume {
+  background: #6b7280;
+  color: white;
+}
+
+.at-btn-view-resume:hover {
+  background: #4b5563;
+}
+
+.at-table-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* تلميحات للعناصر القابلة للنقر */
-.clickable {
+.at-clickable {
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.clickable:hover {
+.at-clickable:hover {
   opacity: 0.8;
 }
 
-.ranking-cell-content,
-.skills-cell-content {
+.at-ranking-cell-content,
+.at-skills-cell-content {
   cursor: pointer;
 }
 
-.ranking-cell-content:hover .ranking-badge {
+.at-ranking-cell-content:hover .at-ranking-badge {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.skill-more:hover {
+.at-skill-more:hover {
   background: #e2e8f0;
   color: #475569;
   transform: scale(1.05);
+}
+
+/* Responsive Design - Tablet and Desktop */
+@media (max-width: 1200px) {
+  .at-table-responsive {
+    margin: 0 -15px;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  .at-controls {
+    padding: 15px 20px;
+  }
+  
+  .at-search-box {
+    width: 300px;
+  }
+  
+  .at-table th,
+  .at-table td {
+    padding: 14px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .at-container {
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  .at-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .at-search-box {
+    width: 100%;
+  }
+  
+  .at-search-input {
+    padding: 10px 40px 10px 15px;
+    font-size: 14px;
+  }
+  
+  .at-results-count {
+    font-size: 13px;
+    text-align: center;
+  }
+  
+  .at-table-responsive {
+    margin: 0 -10px;
+    padding: 0 10px;
+  }
+  
+  .at-table {
+    min-width: 700px;
+    font-size: 13px;
+  }
+  
+  .at-table th {
+    padding: 12px 10px;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+  }
+  
+  .at-table td {
+    padding: 12px 10px;
+  }
+  
+  .at-applicant-fullname {
+    font-size: 14px;
+  }
+  
+  .at-applicant-experience,
+  .at-applicant-position {
+    font-size: 11px;
+  }
+  
+  .at-applicant-email {
+    font-size: 12px;
+    max-width: 150px;
+  }
+  
+  .at-cell-actions {
+    min-width: 180px;
+  }
+  
+  .at-actions-cell-content {
+    min-width: 180px;
+  }
+  
+  .at-table-actions {
+    gap: 6px;
+  }
+  
+  .at-btn-action {
+    padding: 7px 10px;
+    font-size: 11px;
+    gap: 4px;
+  }
+  
+  .at-action-buttons {
+    gap: 6px;
+  }
+  
+  .at-ranking-badge {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  
+  .at-skill-tag {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+  
+  .at-score-badge {
+    padding: 5px 10px;
+    font-size: 11px;
+    min-width: 45px;
+  }
+  
+  .at-interview-status-badge {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+  
+  .at-interview-date-info,
+  .at-rejection-reason-info,
+  .at-acceptance-info {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .at-container {
+    margin-top: 10px;
+    border-radius: 6px;
+  }
+  
+  .at-controls {
+    padding: 12px 15px;
+    gap: 12px;
+  }
+  
+  .at-search-input {
+    padding: 9px 38px 9px 12px;
+    font-size: 13px;
+  }
+  
+  .at-search-icon {
+    right: 12px;
+    font-size: 14px;
+  }
+  
+  .at-empty-state {
+    max-width: 250px;
+  }
+  
+  .at-empty-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+  
+  .at-empty-state h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .at-empty-state p {
+    font-size: 13px;
+  }
+  
+  .at-table-responsive {
+    margin: 0 -8px;
+    padding: 0 8px;
+  }
+  
+  .at-table {
+    min-width: 650px;
+  }
+  
+  .at-table th {
+    padding: 10px 8px;
+    font-size: 11px;
+  }
+  
+  .at-table td {
+    padding: 10px 8px;
+  }
+  
+  .at-applicant-name {
+    gap: 4px;
+  }
+  
+  .at-applicant-meta {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .at-applicant-contact-info {
+    gap: 6px;
+  }
+  
+  .at-applicant-email {
+    max-width: 120px;
+    font-size: 11px;
+  }
+  
+  .at-applicant-skills {
+    gap: 4px;
+  }
+  
+  .at-cell-actions {
+    min-width: 160px;
+  }
+  
+  .at-actions-cell-content {
+    min-width: 160px;
+  }
+  
+  .at-table-actions {
+    gap: 5px;
+  }
+  
+  .at-btn-action {
+    padding: 6px 8px;
+    font-size: 10px;
+    min-height: 32px;
+  }
+  
+  .at-action-buttons {
+    gap: 5px;
+  }
+  
+  .at-action-buttons .at-btn-action {
+    padding: 5px 8px;
+    font-size: 10px;
+    min-height: 30px;
+  }
+  
+  .at-ranking-badge {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  
+  .at-ranking-icon {
+    font-size: 12px;
+  }
+  
+  .at-date-cell-content {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .at-container {
+    border-radius: 4px;
+  }
+  
+  .at-controls {
+    padding: 10px 12px;
+  }
+  
+  .at-search-input {
+    padding: 8px 35px 8px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  
+  .at-search-icon {
+    right: 10px;
+    font-size: 13px;
+  }
+  
+  .at-results-count {
+    font-size: 12px;
+  }
+  
+  .at-table-responsive {
+    margin: 0 -5px;
+    padding: 0 5px;
+  }
+  
+  .at-table {
+    min-width: 600px;
+    font-size: 12px;
+  }
+  
+  .at-table th {
+    padding: 8px 6px;
+    font-size: 10px;
+  }
+  
+  .at-table td {
+    padding: 8px 6px;
+  }
+  
+  .at-applicant-fullname {
+    font-size: 13px;
+  }
+  
+  .at-cell-actions {
+    min-width: 140px;
+  }
+  
+  .at-actions-cell-content {
+    min-width: 140px;
+  }
+  
+  .at-table-actions {
+    gap: 4px;
+  }
+  
+  .at-btn-action {
+    padding: 5px 6px;
+    font-size: 9px;
+    min-height: 30px;
+    gap: 3px;
+  }
+  
+  .at-action-buttons {
+    gap: 4px;
+  }
+  
+  .at-action-buttons .at-btn-action {
+    padding: 4px 6px;
+    font-size: 9px;
+    min-height: 28px;
+  }
+  
+  /* تحسين عرض الأزرار في الأعمدة الضيقة */
+  .at-btn-action {
+    white-space: normal;
+    line-height: 1.2;
+    word-break: break-word;
+    height: auto;
+    min-height: 32px;
+  }
+  
+  .at-clickable:active {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 4px;
+  }
+  
+  .at-ranking-cell-content:active .at-ranking-badge,
+  .at-skills-cell-content:active {
+    transform: scale(0.98);
+  }
+}
+
+@media (max-width: 360px) {
+  .at-controls {
+    padding: 8px 10px;
+  }
+  
+  .at-search-input {
+    padding: 7px 32px 7px 8px;
+    font-size: 11px;
+  }
+  
+  .at-table {
+    min-width: 550px;
+  }
+  
+  .at-applicant-email {
+    max-width: 100px;
+    font-size: 10px;
+  }
+  
+  .at-cell-actions {
+    min-width: 130px;
+  }
+  
+  .at-actions-cell-content {
+    min-width: 130px;
+  }
+  
+  .at-btn-action {
+    padding: 4px 5px;
+    font-size: 8px;
+    min-height: 28px;
+  }
+  
+  .at-action-buttons .at-btn-action {
+    padding: 3px 5px;
+    font-size: 8px;
+    min-height: 26px;
+  }
+}
+
+/* تحسينات للوضع الأفقي على الشاشات الصغيرة */
+@media (max-height: 500px) and (orientation: landscape) {
+  .at-container {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .at-table-responsive {
+    max-height: 60vh;
+  }
+  
+  .at-table th,
+  .at-table td {
+    padding: 8px 10px;
+  }
+}
+
+/* دعم للأجهزة التي تستخدم الوضع المظلم */
+@media (prefers-color-scheme: dark) {
+  .at-container {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+  
+  .at-controls {
+    background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+    border-bottom-color: #475569;
+  }
+  
+  .at-search-input {
+    background: #0f172a;
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+  
+  .at-search-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+  
+  .at-results-count {
+    color: #94a3b8;
+  }
+  
+  .at-count-number {
+    color: #f1f5f9;
+  }
+  
+  .at-no-results {
+    background: #0f172a;
+  }
+  
+  .at-empty-state h4 {
+    color: #f1f5f9;
+  }
+  
+  .at-empty-state p {
+    color: #94a3b8;
+  }
+  
+  .at-table th {
+    background: #334155;
+    color: #f1f5f9;
+    border-bottom-color: #475569;
+  }
+  
+  .at-table td {
+    border-bottom-color: #334155;
+  }
+  
+  .at-row:hover {
+    background-color: #334155;
+  }
+  
+  .at-row:hover td {
+    background-color: #334155;
+  }
 }

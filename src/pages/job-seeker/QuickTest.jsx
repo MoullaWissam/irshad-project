@@ -2,8 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./QuickTest.css";
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next'; // إضافة الترجمة
+import {
+  FiClock, FiCheckCircle, FiAlertCircle, FiChevronLeft,
+  FiChevronRight, FiCheck, FiHelpCircle, FiAlertTriangle,
+  FiPlay, FiSend, FiList, FiTarget, FiBarChart2,
+  FiInfo, FiCalendar, FiMapPin, FiBriefcase,
+  FiUpload, FiCheckSquare, FiArrowRight, FiBookOpen,
+  FiEyeOff, FiRepeat, FiLock, FiUsers
+} from "react-icons/fi";
+import { 
+  MdTimer, MdQuestionAnswer, MdOutlineRateReview,
+  MdOutlineTipsAndUpdates, MdErrorOutline 
+} from "react-icons/md";
+import { 
+  HiOutlineLightBulb, HiOutlineExclamationCircle 
+} from "react-icons/hi";
+import { 
+  FaRegClock, FaRegCheckCircle, FaRegDotCircle,
+  FaRegQuestionCircle, FaBrain
+} from "react-icons/fa";
 
 export default function QuickTest() {
+  const { t } = useTranslation(); 
   const { jobId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,7 +43,7 @@ export default function QuickTest() {
   const [applicationResult, setApplicationResult] = useState(null);
   const [isSubmittingApplication, setIsSubmittingApplication] = useState(false);
   const [questionsLoading, setQuestionsLoading] = useState(false);
-  const [testDuration, setTestDuration] = useState(5); // إضافة حالة جديدة
+  const [testDuration, setTestDuration] = useState(5);
 
   useEffect(() => {
     const answeredAll = questions.length > 0 && 
@@ -44,7 +65,6 @@ export default function QuickTest() {
   }, [testStarted, timeLeft, testCompleted]);
 
   const handleStartTest = async () => {
-    // الخطوة 1: إرسال طلب التوظيف
     setIsSubmittingApplication(true);
     try {
       const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
@@ -63,23 +83,20 @@ export default function QuickTest() {
       const result = await response.json();
       console.log("Application submitted:", result);
       
-      // حفظ نتيجة الطلب
       setApplicationResult(result);
       
-      toast.success("✅ Job application submitted successfully!", {
+      toast.success(t("Application submitted successfully!"), {
         position: "top-right",
         autoClose: 3000,
       });
       
-      // الخطوة 2: تحميل الأسئلة بعد نجاح طلب التوظيف
       await loadQuestions();
       
-      // الخطوة 3: بدء الاختبار
       setTestStarted(true);
       
     } catch (error) {
       console.error("Error submitting application:", error);
-      toast.error(`❌ ${error.message}`, {
+      toast.error(` ${error.message}`, {
         position: "top-right",
         autoClose: 3000,
       });
@@ -90,7 +107,6 @@ export default function QuickTest() {
   };
 
   const loadQuestions = async () => {
-    // تحميل الأسئلة من API
     setQuestionsLoading(true);
     setError(null);
     
@@ -110,10 +126,8 @@ export default function QuickTest() {
       const data = await response.json();
       console.log("Loaded questions and duration:", data);
       
-      // الآن البيانات تأتي على شكل { testDuration, questions }
-      // التحقق من أن البيانات تحتوي على الأسئلة المطلوبة
       if (!data.questions || !Array.isArray(data.questions) || data.questions.length === 0) {
-        throw new Error("No questions available for this test.");
+        throw new Error(t("No questions available for this test."));
       }
       
       const formattedQuestions = data.questions.map(q => ({
@@ -127,22 +141,19 @@ export default function QuickTest() {
       
       setQuestions(formattedQuestions);
       
-      // ضبط مدة الاختبار من الـ API
       const duration = data.testDuration || 5;
       setTestDuration(duration);
-      setTimeLeft(duration * 60); // تحويل الدقائق إلى ثواني
+      setTimeLeft(duration * 60);
       
     } catch (error) {
       console.error("Error loading questions:", error);
       setError(error.message);
       
-      // عرض رسالة toast للمستخدم
-      toast.error(`❌ ${error.message}`, {
+      toast.error(` ${error.message}`, {
         position: "top-right",
         autoClose: 3000,
       });
       
-      // إعادة تعيين الحالة للسماح للمستخدم بالمحاولة مرة أخرى
       setTestStarted(false);
       setQuestionsLoading(false);
       throw error;
@@ -172,7 +183,7 @@ export default function QuickTest() {
 
   const handleSubmitTest = async () => {
     if (!allQuestionsAnswered) {
-      toast.error("Please answer all questions before submitting the test.", {
+      toast.error(t("Please answer all questions before submitting the test."), {
         position: "top-right",
         autoClose: 3000,
       });
@@ -190,7 +201,7 @@ export default function QuickTest() {
       const testData = {
         answers: answersArray,
         completedAt: new Date().toISOString(),
-        duration: testDuration // استخدام testDuration من الـ API
+        duration: testDuration
       };
       
       console.log("Submitting test data:", testData);
@@ -212,7 +223,7 @@ export default function QuickTest() {
       const testResult = await response.json();
       console.log("Test submission result:", testResult);
       
-      toast.success("✅ Test submitted successfully!", {
+      toast.success(t("Test submitted successfully!"), {
         position: "top-right",
         autoClose: 3000,
       });
@@ -223,14 +234,14 @@ export default function QuickTest() {
           jobData: jobData,
           applicationResult: applicationResult,
           testResult: testResult,
-          testDuration: testDuration, // استخدام testDuration من الـ API
+          testDuration: testDuration,
           testSubmitted: true
         }
       });
       
     } catch (error) {
       console.error("Error submitting test:", error);
-      toast.error(`❌ ${error.message}`, {
+      toast.error(` ${error.message}`, {
         position: "top-right",
         autoClose: 3000,
       });
@@ -260,74 +271,184 @@ export default function QuickTest() {
     return (
       <div className="quick-test-container">
         <div className="test-instructions">
-          <h1 className="test-title">Screening Test</h1>
+          <div className="test-header-card">
+            <div className="header-icon">
+              <FaBrain size={32} />
+            </div>
+            <h1 className="test-title">
+              <FiTarget /> {t("Screening Assessment")}
+            </h1>
+            <p className="test-subtitle">{t("Demonstrate your skills and knowledge")}</p>
+          </div>
           
           {jobData && (
             <div className="job-test-info">
-              <h2>{jobData.title}</h2>
-              <p>Company: {jobData.companyName}</p>
+              <div className="job-header">
+                <FiBriefcase className="job-icon" />
+                <div>
+                  <h2>{jobData.title}</h2>
+                  <div className="job-details">
+                    <span><FiUsers /> {jobData.companyName}</span>
+                    {jobData.location && <span><FiMapPin /> {jobData.location}</span>}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
           
           <div className="instructions-card">
-            <h3>Test Instructions</h3>
-            <ul>
-              {/* عرض مدة الاختبار التي سيتم تحميلها من الـ API */}
-              <li>✓ Test duration: {testDuration} minutes</li>
-              <li>✓ Number of questions: Will be loaded from server</li>
-              <li>✓ You must answer all questions to submit the test</li>
-              <li>✓ You cannot go back after time ends</li>
-              <li>✓ Test results will be sent directly to the employer</li>
-              <li>✓ <strong>You will not see your test score</strong></li>
-              <li>✓ <strong>You cannot retake this test</strong></li>
-            </ul>
-            
-            <div className="test-tips">
-              <strong>Important:</strong>
-              <p>Clicking "Start Test" will:</p>
-              <ol>
-                <li>Submit your job application</li>
-                <li>Load test questions and duration from server</li>
-                <li>Start the test timer</li>
-              </ol>
-              <p>This action cannot be undone.</p>
-              
-              {questionsLoading && (
-                <div className="loading-indicator">
-                  <div className="small-spinner"></div>
-                  <p>Loading questions and test duration...</p>
-                </div>
-              )}
-              
-              {error && (
-                <div className="error-alert">
-                  <p>⚠️ {error}</p>
-                  <p>Please try again or contact support.</p>
-                </div>
-              )}
+            <div className="card-header">
+              <MdOutlineTipsAndUpdates className="header-icon" />
+              <h3>{t("Assessment Guidelines")}</h3>
             </div>
+            
+            <div className="instructions-grid">
+              <div className="instruction-item">
+                <div className="instruction-icon time">
+                  <FiClock />
+                </div>
+                <div>
+                  <h4>{t("Time Limit")}</h4>
+                  <p>{t("{{duration}} minutes total duration", { duration: testDuration })}</p>
+                </div>
+              </div>
+              
+              <div className="instruction-item">
+                <div className="instruction-icon questions">
+                  <FaRegQuestionCircle />
+                </div>
+                <div>
+                  <h4>{t("Questions")}</h4>
+                  <p>{t("Loaded from server automatically")}</p>
+                </div>
+              </div>
+              
+              <div className="instruction-item">
+                <div className="instruction-icon completion">
+                  <FiCheckCircle />
+                </div>
+                <div>
+                  <h4>{t("Completion")}</h4>
+                  <p>{t("Answer all questions to submit")}</p>
+                </div>
+              </div>
+              
+              <div className="instruction-item">
+                <div className="instruction-icon no-retake">
+                  <FiLock />
+                </div>
+                <div>
+                  <h4>{t("Single Attempt")}</h4>
+                  <p>{t("One-time attempt only")}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="important-notices">
+              <div className="notice-header">
+                <HiOutlineExclamationCircle className="notice-icon" />
+                <h4>{t("Important Information")}</h4>
+              </div>
+              
+              <div className="notice-item warning">
+                <FiAlertTriangle />
+                <span>{t("You will not see your test score")}</span>
+              </div>
+              
+              <div className="notice-item critical">
+                <FiLock />
+                <span>{t("You cannot retake this assessment")}</span>
+              </div>
+              
+              <div className="notice-item info">
+                <FiInfo />
+                <span>{t("Results are sent directly to the employer")}</span>
+              </div>
+            </div>
+            
+            <div className="process-steps">
+              <h4>
+                <FiPlay className="step-icon" />
+                {t("What happens when you start?")}
+              </h4>
+              <div className="steps">
+                <div className="step">
+                  <span className="step-number">1</span>
+                  <span>{t("Submit your job application")}</span>
+                </div>
+                <FiArrowRight className="step-arrow" />
+                <div className="step">
+                  <span className="step-number">2</span>
+                  <span>{t("Load assessment questions")}</span>
+                </div>
+                <FiArrowRight className="step-arrow" />
+                <div className="step">
+                  <span className="step-number">3</span>
+                  <span>{t("Begin timed assessment")}</span>
+                </div>
+              </div>
+              <p className="step-note">{t("This process cannot be undone")}</p>
+            </div>
+            
+            {questionsLoading && (
+              <div className="loading-indicator">
+                <div className="spinner"></div>
+                <p>
+                  <FiUpload className="spin-icon" />
+                  {t("Loading assessment content...")}
+                </p>
+              </div>
+            )}
+            
+            {error && (
+              <div className="error-alert">
+                <MdErrorOutline className="error-icon" />
+                <div>
+                  <h4>{t("Loading Error")}</h4>
+                  <p>{error}</p>
+                  <p>{t("Please try again or contact support.")}</p>
+                </div>
+              </div>
+            )}
           </div>
           
-          <button 
-            className="start-test-btn" 
-            onClick={handleStartTest}
-            disabled={isSubmittingApplication || questionsLoading}
-          >
-            {isSubmittingApplication ? "Submitting Application..." : 
-             questionsLoading ? "Loading Questions..." : "Start Test"}
-          </button>
-          
-          {error && (
+          <div className="action-buttons">
             <button 
-              className="retry-btn"
-              onClick={() => {
-                setError(null);
-                handleStartTest();
-              }}
+              className="start-test-btn" 
+              onClick={handleStartTest}
+              disabled={isSubmittingApplication || questionsLoading}
             >
-              Retry
+              {isSubmittingApplication ? (
+                <>
+                  <FiUpload className="btn-icon spin" />
+                  {t("Submitting Application...")}
+                </>
+              ) : questionsLoading ? (
+                <>
+                  <FiUpload className="btn-icon spin" />
+                  {t("Loading Assessment...")}
+                </>
+              ) : (
+                <>
+                  <FiPlay className="btn-icon" />
+                  {t("Begin Assessment")}
+                </>
+              )}
             </button>
-          )}
+            
+            {error && (
+              <button 
+                className="retry-btn"
+                onClick={() => {
+                  setError(null);
+                  handleStartTest();
+                }}
+              >
+                <FiRepeat className="btn-icon" />
+                {t("Retry")}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -337,9 +458,20 @@ export default function QuickTest() {
     return (
       <div className="quick-test-container">
         <div className="test-completed-message">
-          <div className="success-icon-large">✓</div>
-          <h2>Test Submitted Successfully!</h2>
-          <p>Your test has been submitted. The results will be reviewed by the employer.</p>
+          <div className="success-animation">
+            <div className="success-checkmark">
+              <div className="check-icon">
+                <FiCheck className="icon" />
+              </div>
+            </div>
+          </div>
+          <h2>
+            <FiCheckCircle className="success-icon" />
+            {t("Assessment Submitted")}
+          </h2>
+          <p className="success-message">
+            {t("Your assessment has been successfully submitted and will be reviewed by the hiring team.")}
+          </p>
           <button 
             className="continue-btn"
             onClick={() => navigate(`/job/${jobId}/application-success`, {
@@ -351,7 +483,8 @@ export default function QuickTest() {
               }
             })}
           >
-            Continue
+            <FiArrowRight className="btn-icon" />
+            {t("Continue to Results")}
           </button>
         </div>
       </div>
@@ -361,36 +494,85 @@ export default function QuickTest() {
   return (
     <div className="quick-test-container">
       <div className="test-header">
-        <div className="test-info">
-          <h1>Screening Test</h1>
-          <div className="timer">
-            <span className="time-label">Time Left:</span>
-            <span className={`time-value ${timeLeft <= 60 ? 'warning' : ''}`}>
-              {formatTime(timeLeft)}
-            </span>
+        <div className="header-content">
+          <div className="test-title-section">
+            <div className="title-icon">
+              <FiTarget />
+            </div>
+            <div>
+              <h1>{t("Screening Assessment")}</h1>
+              <p className="test-subtitle">
+                {t("Question {{current}} of {{total}}", { 
+                  current: currentQuestionIndex + 1, 
+                  total: questions.length 
+                })}
+              </p>
+            </div>
+          </div>
+          
+          <div className="timer-section">
+            <div className="timer-card">
+              <FiClock className="timer-icon" />
+              <div className="timer-content">
+                <span className="time-label">{t("Time Remaining")}</span>
+                <span className={`time-value ${timeLeft <= 60 ? 'warning' : ''}`}>
+                  {formatTime(timeLeft)}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div className="progress-bar">
-          <div 
-            className="progress-fill"
-            style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-          ></div>
-          <span className="progress-text">
-            Question {currentQuestionIndex + 1} of {questions.length}
-          </span>
+        <div className="progress-section">
+          <div className="progress-info">
+            <div className="progress-text">
+              <FiBarChart2 className="progress-icon" />
+              <span>{t("Progress: {{percentage}}%", { 
+                percentage: Math.round(((currentQuestionIndex + 1) / questions.length) * 100) 
+              })}</span>
+            </div>
+            <span className="answered-count">
+              <FiCheckCircle className="answered-icon" />
+              {t("{{answered}}/{{total}} answered", { 
+                answered: Object.keys(answers).length, 
+                total: questions.length 
+              })}
+            </span>
+          </div>
+          <div className="progress-bar">
+            <div 
+              className="progress-fill"
+              style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
+            ></div>
+          </div>
         </div>
       </div>
 
       <div className="question-card">
         <div className="question-header">
-          <span className="question-number">Question {currentQuestionIndex + 1}</span>
-          {answers[currentQuestion?.id] !== undefined && (
-            <span className="answered-indicator">✓ Answered</span>
-          )}
+          <div className="question-meta">
+            <span className="question-tag">
+              <FaRegDotCircle className="tag-icon" />
+              {t("Question {{number}}", { number: currentQuestionIndex + 1 })}
+            </span>
+            {answers[currentQuestion?.id] !== undefined ? (
+              <span className="answered-badge">
+                <FiCheck className="badge-icon" />
+                {t("Answered")}
+              </span>
+            ) : (
+              <span className="unanswered-badge">
+                <FaRegQuestionCircle className="badge-icon" />
+                {t("Unanswered")}
+              </span>
+            )}
+          </div>
+          
+          <h3 className="question-text">
+            <FiHelpCircle className="question-icon" />
+            {currentQuestion?.text}
+          </h3>
         </div>
-        
-        <h3 className="question-text">{currentQuestion?.text}</h3>
         
         <div className="answers-list">
           {currentQuestion?.options.map((option, index) => (
@@ -401,74 +583,138 @@ export default function QuickTest() {
               }`}
               onClick={() => handleAnswerSelect(currentQuestion.id, option.id)}
             >
-              <span className="option-letter">
-                {String.fromCharCode(65 + index)}
-              </span>
-              <span className="option-text">{option.text}</span>
+              <div className="option-selector">
+                <div className={`option-circle ${answers[currentQuestion?.id] === option.id ? 'selected' : ''}`}>
+                  {String.fromCharCode(65 + index)}
+                </div>
+              </div>
+              <div className="option-content">
+                <span className="option-text">{option.text}</span>
+                {answers[currentQuestion?.id] === option.id && (
+                  <FiCheck className="selection-check" />
+                )}
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       <div className="test-navigation">
-        <button
-          className="nav-btn prev-btn"
-          onClick={handlePrevQuestion}
-          disabled={currentQuestionIndex === 0}
-        >
-          Previous
-        </button>
-        
-        <div className="question-dots">
-          {questions.map((_, index) => (
+        <div className="nav-section">
+          <button
+            className="nav-btn prev-btn"
+            onClick={handlePrevQuestion}
+            disabled={currentQuestionIndex === 0}
+          >
+            <FiChevronLeft className="nav-icon" />
+            {t("Previous")}
+          </button>
+          
+          <div className="question-indicators">
+            {questions.map((_, index) => (
+              <button
+                key={index}
+                className={`question-indicator ${
+                  index === currentQuestionIndex ? 'active' : ''
+                } ${answers[questions[index]?.id] !== undefined ? 'answered' : ''}`}
+                onClick={() => setCurrentQuestionIndex(index)}
+                title={t("Question {{number}}", { number: index + 1 })}
+              >
+                {answers[questions[index]?.id] !== undefined ? (
+                  <FiCheck className="indicator-icon" />
+                ) : (
+                  index + 1
+                )}
+              </button>
+            ))}
+          </div>
+          
+          {currentQuestionIndex < questions.length - 1 ? (
             <button
-              key={index}
-              className={`question-dot ${
-                index === currentQuestionIndex ? 'active' : ''
-              } ${answers[questions[index]?.id] !== undefined ? 'answered' : ''}`}
-              onClick={() => setCurrentQuestionIndex(index)}
+              className="nav-btn next-btn"
+              onClick={handleNextQuestion}
+              disabled={answers[currentQuestion?.id] === undefined}
             >
-              {index + 1}
+              {t("Next")}
+              <FiChevronRight className="nav-icon" />
             </button>
-          ))}
+          ) : (
+            <button
+              className="nav-btn submit-btn"
+              onClick={handleSubmitTest}
+              disabled={!allQuestionsAnswered || isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <FiUpload className="btn-icon spin" />
+                  {t("Submitting...")}
+                </>
+              ) : (
+                <>
+                  <FiSend className="btn-icon" />
+                  {t("Submit Assessment")}
+                </>
+              )}
+            </button>
+          )}
         </div>
-        
-        {currentQuestionIndex < questions.length - 1 ? (
-          <button
-            className="nav-btn next-btn"
-            onClick={handleNextQuestion}
-            disabled={answers[currentQuestion?.id] === undefined}
-          >
-            Next
-          </button>
-        ) : (
-          <button
-            className="nav-btn submit-btn"
-            onClick={handleSubmitTest}
-            disabled={!allQuestionsAnswered || isSubmitting}
-          >
-            {isSubmitting ? "Submitting..." : "Submit Test"}
-          </button>
-        )}
       </div>
       
       <div className="test-footer">
-        <div className="answers-status">
-          <p className="hint">
-            💡 Answered: {Object.keys(answers).length} of {questions.length} questions
-          </p>
+        <div className="footer-content">
+          <div className="status-section">
+            <div className="status-item">
+              <FiClock className="status-icon" />
+              <div>
+                <span className="status-label">{t("Duration")}</span>
+                <span className="status-value">{t("{{duration}} minutes", { duration: testDuration })}</span>
+              </div>
+            </div>
+            
+            <div className="status-item">
+              <FiCheckCircle className="status-icon" />
+              <div>
+                <span className="status-label">{t("Answered")}</span>
+                <span className="status-value">{t("{{answered}}/{{total}}", { 
+                  answered: Object.keys(answers).length, 
+                  total: questions.length 
+                })}</span>
+              </div>
+            </div>
+            
+            <div className="status-item">
+              <MdOutlineRateReview className="status-icon" />
+              <div>
+                <span className="status-label">{t("Review Required")}</span>
+                <span className="status-value">{questions.length - Object.keys(answers).length}</span>
+              </div>
+            </div>
+          </div>
+          
           {!allQuestionsAnswered && (
-            <p className="warning-message">
-              ⚠️ Please answer all questions before submitting.
-            </p>
+            <div className="warning-section">
+              <HiOutlineExclamationCircle className="warning-icon" />
+              <div>
+                <h4>{t("Incomplete Assessment")}</h4>
+                <p>{t("Please answer all questions before submitting")}</p>
+              </div>
+            </div>
           )}
-        </div>
-        
-        <div className="test-info-footer">
-          <p>⏱️ Test Duration: {testDuration} minutes</p>
-          <p className="test-warning">
-            ⚠️ Warning: This test can only be taken once. Make sure to review your answers before submitting.
-          </p>
+          
+          <div className="instructions-footer">
+            <div className="instruction-item">
+              <FiAlertTriangle className="instruction-icon" />
+              <span>{t("This assessment can only be taken once")}</span>
+            </div>
+            <div className="instruction-item">
+              <FiEyeOff className="instruction-icon" />
+              <span>{t("You will not see your final score")}</span>
+            </div>
+            <div className="instruction-item">
+              <MdQuestionAnswer className="instruction-icon" />
+              <span>{t("Review all answers before submitting")}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

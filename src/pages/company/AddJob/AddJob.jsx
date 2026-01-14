@@ -81,6 +81,7 @@ export default function AddJob() {
     }
   }, [message]);
 
+
   // التحقق من صحة النموذج
   const validateForm = () => {
     const newErrors = {};
@@ -206,6 +207,7 @@ export default function AddJob() {
     }
   };
 
+
   // إضافة السؤال
   const handleAddQuestion = () => {
     setShowQuestions(true);
@@ -315,6 +317,7 @@ export default function AddJob() {
 
       console.log('✅ Job created successfully with ID:', jobId);
 
+
       // 2. إضافة الأسئلة إذا كانت موجودة
       if (showQuestions) {
         const questions = jobData.questions.filter(q => q.text.trim() !== "");
@@ -422,6 +425,7 @@ export default function AddJob() {
     <div className="ajp-container">
       <h1 className="ajp-page-title">{t("Add new Job application")}</h1>
 
+
       <div className="ajp-form-wrapper">
         {/* LEFT SIDE FORM */}
         <div className="ajp-left-section">
@@ -503,6 +507,7 @@ export default function AddJob() {
             placeholder={t("Enter job location")}
             required
           />
+
 
           {/* Employment Type Selection */}
           <div className="ajp-employment-section">
@@ -593,6 +598,7 @@ export default function AddJob() {
           </div>
         </div>
 
+
         {/* RIGHT SIDE SCREENING TEST */}
         <div className="ajp-right-section">
           <div className="ajp-test-header">
@@ -677,6 +683,7 @@ export default function AddJob() {
                     </div>
                   </div>
                 </div>
+
                 
                 {/* Navigation Controls */}
                 <div className="ajp-slider-controls">
@@ -718,42 +725,42 @@ export default function AddJob() {
                     <input
                       type="radio"
                       name="testDuration"
-                      value="5"
-                      checked={jobData.testDuration === 5}
+                      value="1"
+                      checked={jobData.testDuration === 1}
                       onChange={() => {
-                        console.log("Setting testDuration to 5");
+                        console.log("Setting testDuration to 1");
                         setJobData(prev => ({
                           ...prev,
-                          testDuration: 5
+                          testDuration: 1
                         }));
                       }}
                       className="ajp-time-radio"
                     />
-                    <span className="ajp-time-text">{t("5 minutes")}</span>
+                    <span className="ajp-time-text">{t("1 minutes")}</span>
                   </label>
                   
                   <label className="ajp-time-option">
                     <input
                       type="radio"
                       name="testDuration"
-                      value="7"
-                      checked={jobData.testDuration === 7}
+                      value="2"
+                      checked={jobData.testDuration === 2}
                       onChange={() => {
-                        console.log("Setting testDuration to 7");
+                        console.log("Setting testDuration to 2");
                         setJobData(prev => ({
                           ...prev,
-                          testDuration: 7
+                          testDuration: 2
                         }));
                       }}
                       className="ajp-time-radio"
                     />
-                    <span className="ajp-time-text">{t("7 minutes")}</span>
+                    <span className="ajp-time-text">{t("2 minutes")}</span>
                   </label>
                 </div>
                 
                 {/* Display current value for debugging */}
                 <div className="ajp-debug-info">
-                  <small>{t("Current testDuration:")} {jobData.testDuration} ({t("type:")} {typeof jobData.testDuration})</small>
+                  {/* <small>{t("Current testDuration:")} {jobData.testDuration} ({t("type:")} {typeof jobData.testDuration})</small> */}
                 </div>
               </div>
             </>
@@ -766,6 +773,7 @@ export default function AddJob() {
                 {message.text}
               </div>
             )}
+
 
             <button 
               className="ajp-submit-btn" 

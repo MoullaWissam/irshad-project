@@ -1,6 +1,6 @@
 .services-page {
   padding-top: 100px; /* مسافة للنافبار الثابت */
-  background: #723efe26;
+  background: #00b8e721;
   min-height: 100vh;
   padding-bottom: 40px; /* مسافة للفوتر */
 }
@@ -8,8 +8,6 @@
 .page-header {
   text-align: center;
   padding: 60px 20px;
-  background: white;
-  border-bottom: 1px solid #eaeaea;
   margin-bottom: 40px;
 }
 
@@ -204,4 +202,165 @@
   .cta-section {
     padding: 30px 20px;
   }
+}
+/* إضافة تأثير المرآة للبطاقات */
+.content-section, .value-item, .stat-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.content-section::after, 
+.value-item::after, 
+.stat-item::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.3) 0%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    rgba(255, 255, 255, 0) 100%);
+  transform: scaleY(-1);
+  opacity: 0.7;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* تأثير مرآة أكثر تطوراً للبطاقات الفردية */
+.value-item, .stat-item {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-item:hover, .stat-item:hover {
+  transform: translateY(-5px) perspective(500px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0, 184, 231, 0.1),
+              0 5px 15px rgba(43, 29, 106, 0.1),
+              inset 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* تأثير انعكاس متقدم للبطاقات */
+.value-item:hover::before,
+.stat-item:hover::before {
+  content: '';
+  position: absolute;
+  bottom: -25px;
+  left: 10%;
+  width: 80%;
+  height: 20px;
+  background: linear-gradient(to bottom, 
+    rgba(0, 184, 231, 0.2) 0%, 
+    rgba(0, 184, 231, 0.05) 50%, 
+    transparent 100%);
+  border-radius: 50%;
+  filter: blur(5px);
+  z-index: 0;
+  transform: scaleY(-1) rotateX(180deg);
+  opacity: 0.6;
+}
+
+/* تأثير انعكاس لقسم المحتوى الرئيسي */
+.content-section {
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  position: relative;
+}
+
+.content-section::before {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: 10%;
+  width: 80%;
+  height: 30px;
+  background: linear-gradient(to bottom, 
+    rgba(114, 62, 254, 0.1) 0%, 
+    rgba(114, 62, 254, 0) 100%);
+  border-radius: 50%;
+  filter: blur(8px);
+  z-index: -1;
+  opacity: 0.5;
+}
+
+/* تحسينات للعناصر داخل البطاقات عند التمرير */
+.value-item:hover h3, 
+.value-item:hover p {
+  position: relative;
+  z-index: 2;
+}
+
+/* تأثيرات خاصة للعناوين في البطاقات */
+.content-section h2 {
+  position: relative;
+  display: inline-block;
+}
+
+.content-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, 
+    transparent 0%, 
+    rgba(0, 184, 231, 0.5) 50%, 
+    transparent 100%);
+  box-shadow: 0 0 10px rgba(0, 184, 231, 0.3);
+}
+
+/* تأثيرات للقيم الإحصائية */
+.stat-item h3 {
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 184, 231, 0.2);
+}
+
+.stat-item:hover h3 {
+  color: #2b1d6a;
+  text-shadow: 0 0 10px rgba(0, 184, 231, 0.4),
+               0 0 20px rgba(0, 184, 231, 0.2);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* تحسينات للهواتف المحمولة */
+@media (max-width: 768px) {
+  .content-section, .value-item, .stat-item {
+    transform: none !important;
+  }
+  
+  .value-item:hover, .stat-item:hover {
+    transform: translateY(-3px) !important;
+  }
+  
+  .value-item:hover::before,
+  .stat-item:hover::before,
+  .content-section::before {
+    display: none;
+  }
+  
+  .value-item::after, 
+  .stat-item::after,
+  .content-section::after {
+    height: 10px;
+    bottom: -5px;
+    opacity: 0.5;
+  }
+}
+
+/* تأثير إضافي للقوائم */
+.simple-list li {
+  transition: transform 0.2s ease, padding-left 0.2s ease;
+}
+
+.simple-list li:hover {
+  transform: translateX(5px);
+  padding-left: 35px;
+}
+
+.simple-list li:hover:before {
+  color: #2b1d6a;
+  transform: scale(1.2);
+  transition: transform 0.2s ease, color 0.2s ease;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import SettingsItem from "./SettingsItem";
 
-function SettingsSection({ title, items, onItemClick }) {
+function SettingsSection({ title, items, onItemClick, userRole, userId, companyId }) {
   return (
     <div className="settings-section">
       <h3 className="section-title">{title}</h3>
@@ -12,6 +12,9 @@ function SettingsSection({ title, items, onItemClick }) {
             label={item.label}
             icon={item.icon}
             onClick={() => onItemClick && onItemClick(item.label)}
+            userRole={userRole}
+            userId={userId}
+            companyId={companyId}
           />
         ))}
       </div>

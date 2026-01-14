@@ -1,11 +1,12 @@
-.match-container {
+/* MatchesPage.css - مخصص لصفحة المطابقات */
+.matches-page-container {
   padding: 0 40px 40px;
   max-width: 100%;
   min-height: 100vh;
   background-color: whitesmoke;
 }
 
-.match-container h2 {
+.matches-page-title {
   font-weight: 600;
   font-size: 56px;
   line-height: 1.2;
@@ -15,13 +16,329 @@
   text-align: center;
 }
 
-.match-container h2 span {
+.matches-page-title-span {
   color: #723dff;
 }
 
-.job-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+.matches-page-job-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 20px;
 }
 
+.matches-page-job-grid > * {
+  height: 100%;
+}
+
+.matches-page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  margin: 40px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.matches-page-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #723dff;
+  border-radius: 50%;
+  animation: matches-spin 1.2s linear infinite;
+  margin-bottom: 25px;
+}
+
+@keyframes matches-spin {
+  to { transform: rotate(360deg); }
+}
+
+.matches-page-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  text-align: center;
+  background: linear-gradient(135deg, #fff5f5, #fed7d7);
+  border-radius: 16px;
+  margin: 40px 0;
+  border: 2px solid #fc8181;
+}
+
+.matches-page-error-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+  color: #e53e3e;
+}
+
+.matches-page-retry-btn {
+  background: linear-gradient(135deg, #723dff, #5a2fd8);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(114, 61, 255, 0.3);
+}
+
+.matches-page-retry-btn:hover {
+  background: linear-gradient(135deg, #652cff, #4a25c9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(114, 61, 255, 0.4);
+}
+
+.matches-page-no-jobs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  text-align: center;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border-radius: 16px;
+  margin: 40px 0;
+  border: 2px solid #90cdf4;
+}
+
+.matches-page-no-jobs-icon {
+  font-size: 64px;
+  margin-bottom: 25px;
+  color: #3182ce;
+}
+
+.matches-page-clear-search-btn {
+  background: white;
+  color: #723dff;
+  border: 2px solid #723dff;
+  padding: 12px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+}
+
+.matches-page-clear-search-btn:hover {
+  background: linear-gradient(135deg, #723dff, #5a2fd8);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(114, 61, 255, 0.3);
+}
+
+/* أنميشن لرسالة الخطأ العائمة */
+@keyframes matches-slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Media Queries للتجاوب */
+@media (max-width: 1200px) {
+  .matches-page-job-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+}
+
+@media (max-width: 992px) {
+  .matches-page-title {
+    font-size: 48px;
+    margin-bottom: 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .matches-page-container {
+    padding: 0 25px 35px;
+  }
+  
+  .matches-page-title {
+    font-size: 36px;
+    margin-bottom: 30px;
+    padding-top: 30px;
+  }
+  
+  .matches-page-job-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .matches-page-loading,
+  .matches-page-error,
+  .matches-page-no-jobs {
+    padding: 45px 25px;
+    margin: 35px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .matches-page-container {
+    padding: 0 20px 30px;
+  }
+  
+  .matches-page-title {
+    font-size: 32px;
+    margin-bottom: 25px;
+    padding-top: 25px;
+  }
+  
+  .matches-page-job-grid {
+    gap: 20px;
+  }
+  
+  .matches-page-spinner {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .matches-page-error-icon,
+  .matches-page-no-jobs-icon {
+    font-size: 48px;
+  }
+  
+  .matches-page-retry-btn,
+  .matches-page-clear-search-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .matches-page-container {
+    padding: 0 16px 25px;
+  }
+  
+  .matches-page-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+  }
+  
+  .matches-page-loading,
+  .matches-page-error,
+  .matches-page-no-jobs {
+    padding: 35px 20px;
+    margin: 30px 0;
+    border-radius: 14px;
+  }
+  
+  .matches-page-spinner {
+    width: 45px;
+    height: 45px;
+    border-width: 3px;
+  }
+  
+  .matches-page-error-icon,
+  .matches-page-no-jobs-icon {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 360px) {
+  .matches-page-container {
+    padding: 0 12px 20px;
+  }
+  
+  .matches-page-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+  }
+  
+  .matches-page-retry-btn,
+  .matches-page-clear-search-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+/* تصميم أبسط مع ظل ذهبي فقط */
+.matches-page-job-grid > *:first-child {
+  border: 2px solid #FFD700;
+  position: relative;
+}
+
+.matches-page-job-grid > *:first-child::after {
+  content: "🥇";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0px;
+  background: linear-gradient(90deg, #FFD700, #FFC107, #FFD700);
+  border-radius: 2px;
+     font-size: 1.5em;
+
+}
+
+/* البطاقة الثانية - فضية */
+.matches-page-job-grid > *:nth-child(2) {
+  border: 2px solid #C0C0C0;
+  position: relative;
+}
+
+.matches-page-job-grid > *:nth-child(2)::after {
+  content: "  🥈";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0px;
+  background: linear-gradient(90deg, #C0C0C0, #E8E8E8, #C0C0C0);
+  border-radius: 30px;
+   font-size: 1.5em;
+}
+
+/* البطاقة الثالثة - برونزية */
+.matches-page-job-grid > *:nth-child(3) {
+  border: 2px solid #CD7F32;
+  position: relative;
+}
+
+.matches-page-job-grid > *:nth-child(3)::after {
+  content: "🥉";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0px;
+  background: linear-gradient(90deg, #CD7F32, #D2691E, #CD7F32);
+  border-radius: 2px;
+     font-size: 1.5em;
+
+}
+
+/* تأثير إضافي عند التمرير */
+.matches-page-job-grid > *:first-child:hover,
+.matches-page-job-grid > *:nth-child(2):hover,
+.matches-page-job-grid > *:nth-child(3):hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
+.matches-page-job-grid > *:first-child:hover {
+  box-shadow: 0 0 40px 15px rgba(255, 215, 0, 0.35);
+}
+
+.matches-page-job-grid > *:nth-child(2):hover {
+  box-shadow: 0 0 40px 15px rgba(192, 192, 192, 0.35);
+}
+
+.matches-page-job-grid > *:nth-child(3):hover {
+  box-shadow: 0 0 40px 15px rgba(205, 127, 50, 0.35);
+}

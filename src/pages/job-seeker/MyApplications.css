@@ -14,7 +14,7 @@
   font-style: normal;
   font-size: 56px;
   line-height: 1.2;
-  padding-top: 20px;
+  padding-top: 40px;
   margin: 0 0 60px 0;
   color: #0b2b82;
 }
@@ -103,6 +103,7 @@
 
 /* ========== تحسين التبويبات ========== */
 .my-applications-tabs {
+  font-family: 'Tajawal', sans-serif;
   display: flex;
   gap: 8px;
   margin-bottom: 40px;
@@ -320,17 +321,6 @@
   font-weight: 500;
 }
 
-.my-applications-applied-date::before {
-  content: '📅';
-}
-
-.my-applications-approved-date::before {
-  content: '✅';
-}
-
-.my-applications-rejected-date::before {
-  content: '❌';
-}
 
 /* ========== تحسين الحالة الفارغة ========== */
 .my-applications-empty {

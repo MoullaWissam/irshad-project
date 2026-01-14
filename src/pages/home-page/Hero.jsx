@@ -1,7 +1,7 @@
 // Hero.js - بعد التعديل
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import "./Hero.css";
 import heroImage from "../../assets/images/mainHomeImage.png";
 
@@ -15,7 +15,9 @@ function Hero() {
           {t("Find Your Future with Irshad")}
         </h1>
         <p className="hero-section-description">
-          {t("An AI-driven pathway to professional excellence, connecting talented employees with great companies.")}
+          {t(
+            "An AI-driven pathway to professional excellence, connecting talented employees with great companies."
+          )}
         </p>
         <div className="hero-section-buttons">
           <Link to="/register?userType=employee">

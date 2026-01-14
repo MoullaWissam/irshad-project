@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next'; // إضافة الترجمة
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./InputField.css";
 
 const InputField = ({ label, type, value, onChange, error, placeholder }) => {
+  const { t } = useTranslation(); // استدعاء الترجمة
   const [show, setShow] = useState(false);
   const [showFloating, setShowFloating] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -18,10 +20,13 @@ const InputField = ({ label, type, value, onChange, error, placeholder }) => {
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
+  const translatedLabel = t(label);
+  const translatedPlaceholder = placeholder ? t(placeholder) : placeholder;
+
   return (
     <div className="input-field-container">
       <label className="input-label">
-        {label}
+        {translatedLabel}
       </label>
 
       <div className="input-wrapper">
@@ -32,7 +37,7 @@ const InputField = ({ label, type, value, onChange, error, placeholder }) => {
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={`custom-input ${isFocused ? 'focused' : ''} ${error ? 'error' : ''}`}
-          placeholder={placeholder}
+          placeholder={translatedPlaceholder}
         />
 
         {type === "password" && (
@@ -40,14 +45,14 @@ const InputField = ({ label, type, value, onChange, error, placeholder }) => {
             type="button" 
             className="eyeIcon" 
             onClick={() => setShow(!show)}
-            aria-label={show ? "Hide password" : "Show password"}
+            aria-label={show ? t("Hide password") : t("Show password")}
           >
             {show ? <FaEyeSlash /> : <FaEye />}
           </button>
         )}
 
         {error && showFloating && (
-          <span className="error-floating">{error}</span>
+          <span className="error-floating">{t(error)}</span>
         )}
       </div>
     </div>

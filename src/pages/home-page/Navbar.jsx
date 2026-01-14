@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import "./Navbar.css";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/irshasd-new.png";
 import { FaGlobe } from "react-icons/fa";
 
 function Navbar({ isAuthenticated, logout }) {

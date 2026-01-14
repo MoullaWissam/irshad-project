@@ -86,8 +86,10 @@
 
 /* نقطة الحالة */
 .sidebar-footer-status {
+  font-weight: 600;
+  padding: 2px;
   display: inline-block;
-  font-size: 10px;
+  font-size: 8px;
   border-radius: 6px;
   background-color: rgba(76, 175, 80, 0.2);
   color: #3bd541;

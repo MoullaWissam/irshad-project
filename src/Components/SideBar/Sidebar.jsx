@@ -10,7 +10,6 @@ function Sidebar() {
   const [isMobile, setIsMobile] = useState(false);
   const [userRole, setUserRole] = useState("jobSeeker"); // قيمة افتراضية
 
-  // كشف حجم الشاشة وجلب userRole من localStorage
   useEffect(() => {
     const checkScreenSize = () => {
       const mobile = window.innerWidth <= 768;

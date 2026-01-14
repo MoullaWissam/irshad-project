@@ -1,111 +1,54 @@
 import React from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import "./SuccessPage.css";
-import { useTranslation } from 'react-i18next'; // أضف هذا الاستيراد
+import SettingsSection from "./SettingsSection.jsx";
+import { settingsByRole } from "./settingsConfig.jsx";
+import "./SettingsPage.css";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
-export default function SuccessPage() {
-  const { jobId } = useParams();
+function SettingsPage({ userRole = "jobSeeker" }) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { t } = useTranslation(); // أضف هذا
+  const { t } = useTranslation();
+  const settings = settingsByRole[userRole];
   
-  // استقبال البيانات من location.state
-  const jobData = location.state?.jobData;
-  const applicationResult = location.state?.applicationResult;
-  const testResult = location.state?.testResult;
-  const testCompleted = location.state?.testCompleted || false;
-  
-  // بيانات افتراضية في حالة عدم وجود بيانات
-  const defaultJob = {
-    title: t("Email Marketing"),
-    companyName: t("Innovate Corp")
+  // الحصول على userId أو companyId من localStorage
+  const userId = localStorage.getItem("userId");
+  const companyId = localStorage.getItem("companyId");
+
+  const handleItemClick = (itemLabel) => {
+    if (itemLabel === "Change Password") {
+      navigate("/forgot-password");
+    } else if (itemLabel === "Account Settings") {
+      if (userRole === "company") {
+        // للشركة: التوجه إلى صفحة الملف الشخصي للشركة
+        if (companyId) {
+          navigate(`/company/profile/edit/${companyId}`);
+        } else {
+          navigate("/company/profile");
+        }
+      } else if (userRole === "jobSeeker") {
+        // للمتقدم: التوجه إلى صفحة تحرير الملف الشخصي
+        if (userId) {
+          navigate(`/user/profile/edit/${userId}`);
+        } else {
+          navigate("/user/profile/edit");
+        }
+      }
+    }
   };
-  
-  const defaultApplicationResult = {
-    message: t("You applied for this job successfully"),
-    acceptance_score: 0.008,
-    salary: "350$"
-  };
-  
-  // استخدام البيانات الفعلية أو الافتراضية
-  const job = jobData || defaultJob;
-  const appResult = applicationResult || defaultApplicationResult;
 
   return (
-    <div className="success-container">
-      <div className="success-content">
-        <h1 className="success-title">{t("Application Submitted Successfully!")}</h1>
-
-        <div className="success-icon">
-          <div className="check-circle">✔</div>
-        </div>
-
-        <p className="success-text">
-          {t("Thank you for applying for")} <span>{job.title}</span> {t("position at")} {job.companyName}.
-        </p>
-
-        {testCompleted && (
-          <div className="test-notice">
-            <p>{t("✅ Your screening test has been completed and submitted.")}</p>
-          </div>
-        )}
-
-        {/* عرض تفاصيل النتيجة */}
-        <div className="result-details">
-          <div className="result-card">
-            <h4>{t("Application Status")}</h4>
-            <p className="status-message">{appResult.message}</p>
-            
-            <div className="result-grid">
-              <div className="result-item">
-                <span className="result-label">{t("Acceptance Score:")}</span>
-                <span className="result-value">{appResult.acceptance_score}</span>
-              </div>
-              
-              <div className="result-item">
-                <span className="result-label">{t("Expected Salary:")}</span>
-                <span className="result-value">{appResult.salary}</span>
-              </div>
-              
-              {testCompleted && testResult && (
-                <div className="result-item">
-                  <span className="result-label">{t("Test Status:")}</span>
-                  <span className="result-value">{t("Completed ✓")}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <p className="success-subtext">
-          {t("Your application is under review, and you'll receive an update soon.")}
-        </p>
-
-        <div className="buttons-row">
-          <button 
-            className="primary-btn"
-            onClick={() => navigate("/jobs")}
-          >
-            {t("Browse More Jobs")}
-          </button>
-          
-          <button 
-            className="secondary-btn"
-            onClick={() => navigate("/applications")}
-          >
-            {t("Go to My Applications")}
-          </button>
-        </div>
-
-        <div className="floating-card">
-          <div className="card-icon">
-            <div className="company-avatar-small">
-              {job.companyName ? job.companyName.charAt(0).toUpperCase() : 'C'}
-            </div>
-          </div>
-          <p>{job.title}</p>
-        </div>
-      </div>
+    <div className="settings-page">
+      <h2 className="settings-title">{t('Settings')}</h2>
+      {settings.map((section, index) => (
+        <SettingsSection
+          key={index}
+          title={t(section.title)}
+          items={section.items}
+          onItemClick={handleItemClick}
+        />
+      ))}
     </div>
   );
 }
+
+export default SettingsPage;

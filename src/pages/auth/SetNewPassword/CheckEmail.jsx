@@ -56,7 +56,7 @@ function CheckEmail() {
         
         // الانتقال بعد 2 ثانية للسماح برؤية الرسالة
         setTimeout(() => {
-          navigate("/set-password");
+          navigate("/set-new-password");
         }, 2000);
       } else {
         toast.error(data.message || "Invalid verification code", {

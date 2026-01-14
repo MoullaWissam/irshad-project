@@ -359,7 +359,7 @@ export default function JobDetails() {
         e.stopPropagation();
       }
 
-      console.log("🖱️ Apply button clicked");
+      console.log(" Apply button clicked");
 
       if (checkingApplication) {
         toast.info(t("Checking application status..."), {
@@ -382,7 +382,7 @@ export default function JobDetails() {
       if (hasTest) {
         navigate(`/job/${jobId}/test`, { state: { jobData: job } });
       } else {
-        console.log("📋 Showing confirmation dialog");
+        console.log(" Showing confirmation dialog");
         setShowConfirmation(true);
       }
     },
@@ -400,7 +400,7 @@ export default function JobDetails() {
 
     // منع الإرسال المزدوج باستخدام ref
     if (isSubmittingRef.current) {
-      console.log("🛑 Request already in progress, ignoring duplicate click");
+      console.log(" Request already in progress, ignoring duplicate click");
       toast.info(t("Application is already being submitted..."), {
         position: isRTL ? "top-left" : "top-right",
         autoClose: 2000,
@@ -420,11 +420,10 @@ export default function JobDetails() {
       return;
     }
 
-    // وضع علامة أن الإرسال قيد التقدم
     isSubmittingRef.current = true;
     setIsApplying(true);
 
-    console.log("📤 Sending single application request for job:", jobId);
+    console.log(" Sending single application request for job:", jobId);
 
     try {
       const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
@@ -435,7 +434,7 @@ export default function JobDetails() {
         },
       });
 
-      console.log("📥 Response received, status:", response.status);
+      console.log(" Response received, status:", response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -446,7 +445,7 @@ export default function JobDetails() {
           errorData = { message: errorText };
         }
 
-        console.error("❌ Server error:", errorData);
+        console.error(" Server error:", errorData);
 
         // التحقق من رسائل الخطأ المختلفة
         const errorMessage = errorData.message || errorData.error || "";
@@ -498,7 +497,7 @@ export default function JobDetails() {
         });
       }, 500);
     } catch (error) {
-      console.error("❌ Error submitting application:", error);
+      console.error(" Error submitting application:", error);
 
       // عرض رسالة خطأ مناسبة
       const errorMessage = error.message || "";
@@ -633,7 +632,7 @@ export default function JobDetails() {
   };
 
   const cancelApply = () => {
-    console.log("❌ Application cancelled");
+    console.log(" Application cancelled");
     setShowConfirmation(false);
   };
 
@@ -1043,7 +1042,6 @@ export default function JobDetails() {
         <div
           className="confirmation-modal-overlay"
           onClick={(e) => {
-            // إغلاق النافذة فقط عند النقر على الخلفية
             if (e.target === e.currentTarget) {
               cancelApply();
             }

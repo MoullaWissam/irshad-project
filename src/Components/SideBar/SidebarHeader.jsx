@@ -1,7 +1,7 @@
 import React from "react";
 import "./SidebarHeader.css";
-import whitelogo from "../../assets/icons/whightlogo.svg";
-import arrowlogo from "../../assets/icons/logoicon.svg";
+import whitelogo from "../../assets/images/Irshadlogo_white.png";
+import arrowlogo from "../../assets/images/Irshadlogo_white2.png";
 import toggleIcon from "../../assets/icons/sidebar.svg";
 
 function SidebarHeader({ isCollapsed, onToggle }) {

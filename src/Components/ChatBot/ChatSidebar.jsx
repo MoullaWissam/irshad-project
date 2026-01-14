@@ -11,8 +11,7 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
       id: 1,
       type: 'bot',
       text: t('chatbot.welcome', 'مرحباً! أنا "إرشاد بوت"، مساعدك الذكي في منصة إرشاد. كيف يمكنني مساعدتك اليوم؟'),
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      avatar: 'https://i.ibb.co/XF7Ff3m/ershad-logo.png'
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
   
@@ -36,8 +35,7 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
       id: Date.now(),
       type: 'user',
       text: userMessageText,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      avatar: 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
     setMessages(prev => [...prev, userMsg]);
@@ -61,8 +59,7 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
         id: Date.now() + 1,
         type: 'bot',
         text: botAnswer,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        avatar: 'https://i.ibb.co/XF7Ff3m/ershad-logo.png'
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
 
       setMessages(prev => [...prev, botMsg]);
@@ -72,8 +69,7 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
         id: Date.now() + 2,
         type: 'bot',
         text: 'عذراً، واجهت مشكلة في الاتصال بالسيرفر. تأكد من تشغيل ملف app.py',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        avatar: 'https://i.ibb.co/XF7Ff3m/ershad-logo.png'
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages(prev => [...prev, errorMsg]);
     } finally {
@@ -87,7 +83,7 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
   }));
 
   return (
-    <div className={`chat-sidebar ${isOpen ? 'open' : ''} ${i18n.language === 'ar' ? 'rtl' : 'ltr'}`}>
+    <div className={`chat-sidebar ${isOpen ? 'open' : ''}`} dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
       <div className="chat-sidebar-header">
         <div className="header-content">
           <div className="avatar-container">

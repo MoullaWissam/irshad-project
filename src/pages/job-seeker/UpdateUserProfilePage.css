@@ -1,102 +1,110 @@
-.update-profile-page {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  background: #f8f9fa;
-  min-height: 100vh;
+/* UpdateUserProfilePage.css - تصميم محسن مخصص لهذه الصفحة فقط */
+
+.update-profile-page-container {
+  padding: 15px 15px 15px;
+  max-width: 100%;
+  min-height: 85vh;
+  background-color: #f8f9fa;
 }
 
-.update-profile-header {
-  background: white;
-  padding: 25px 30px;
+/* Header محسن */
+.update-profile-page-header {
+  background: linear-gradient(135deg, #0b2b82 0%, #1a3a9c 100%);
+  padding: 15px 20px;
   border-radius: 12px;
-  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-  margin-bottom: 30px;
-  border-left: 5px solid #4a6bff;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid rgba(114, 61, 255, 0.1);
 }
 
-.update-profile-header h1 {
-  margin: 0 0 10px 0;
-  color: #333;
-  font-size: 28px;
+.update-profile-page-header h1 {
+  margin: 0 0 5px 0;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-.subtitle {
-  color: #666;
+.update-profile-page-subtitle {
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
-  font-size: 16px;
+  font-size: 13px;
 }
 
-/* Form Layout */
-.profile-form {
+/* Form Layout محسن */
+.update-profile-form {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   overflow: hidden;
+  border: 1px solid rgba(114, 61, 255, 0.08);
 }
 
-.form-content {
+.update-profile-form-content {
   display: flex;
-  gap: 30px;
-  padding: 30px;
+  gap: 20px;
+  padding: 20px;
 }
 
 @media (max-width: 1024px) {
-  .form-content {
+  .update-profile-form-content {
     flex-direction: column;
   }
 }
 
-/* Left Column */
-.form-left-column {
-  width: 300px;
+/* Left Column محسن */
+.update-profile-form-left {
+  width: 280px;
   flex-shrink: 0;
 }
 
 @media (max-width: 1024px) {
-  .form-left-column {
+  .update-profile-form-left {
     width: 100%;
   }
 }
 
-/* Profile Image Section */
-.profile-image-section {
-  margin-bottom: 30px;
+/* Profile Image Section محسن */
+.update-profile-image-section {
+  margin-bottom: 20px;
 }
 
-.profile-image-section h3 {
-  margin: 0 0 20px 0;
-  color: #333;
-  font-size: 18px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #f0f0f0;
+.update-profile-image-section h3 {
+  margin: 0 0 15px 0;
+  color: #0b2b82;
+  font-size: 15px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(114, 61, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.image-upload-area {
+.update-profile-image-upload-area {
   text-align: center;
 }
 
-.image-preview {
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 20px;
+.update-profile-image-preview {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 15px;
   border-radius: 50%;
-  border: 3px solid #e0e0e0;
+  border: 3px solid rgba(114, 61, 255, 0.2);
   overflow: hidden;
-  background: #f8f9fa;
+  background: #f8f9ff;
   position: relative;
 }
 
-.preview-image {
+.update-profile-preview-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.no-image {
+.update-profile-no-image {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -106,43 +114,50 @@
   color: #999;
 }
 
-.no-image-icon {
-  font-size: 48px;
-  margin-bottom: 10px;
+.update-profile-no-image-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
 }
 
-.no-image-text {
-  font-size: 14px;
+.update-profile-no-image-text {
+  font-size: 13px;
 }
 
-.image-actions {
+.update-profile-image-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 
-.file-upload-btn {
+.update-profile-file-upload-btn {
   position: relative;
 }
 
-.btn-upload {
+.update-profile-btn-upload {
   display: inline-block;
-  background: #4a6bff;
+  background: #723dff;
   color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 8px 15px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.3s;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-upload:hover {
-  background: #3a5bef;
-  transform: translateY(-2px);
+.update-profile-btn-upload:hover {
+  background: #652cff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(114, 61, 255, 0.3);
 }
 
-.file-input {
+.update-profile-file-input {
   position: absolute;
   width: 0.1px;
   height: 0.1px;
@@ -151,409 +166,529 @@
   z-index: -1;
 }
 
-.btn-remove-image {
-  background: #ff6b6b;
+.update-profile-btn-remove-image {
+  background: rgba(255, 107, 107, 0.95);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 8px 15px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.3s;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-remove-image:hover:not(:disabled) {
+.update-profile-btn-remove-image:hover:not(:disabled) {
   background: #ff5252;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(255, 107, 107, 0.3);
 }
 
-.btn-remove-image:disabled {
+.update-profile-btn-remove-image:disabled {
   background: #ccc;
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-/* Image URL Input */
-.image-url-input {
+/* Image URL Input محسن */
+.update-profile-image-url-input {
   text-align: left;
+  margin-top: 15px;
 }
 
-.image-url-input label {
+.update-profile-image-url-input label {
   display: block;
-  margin-bottom: 8px;
-  color: #555;
+  margin-bottom: 6px;
+  color: #0b2b82;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
 }
 
-.url-input {
+.update-profile-url-input {
   width: 100%;
-  padding: 12px 15px;
-  border: 2px solid #e0e0e0;
+  padding: 10px 12px;
+  border: 1px solid rgba(114, 61, 255, 0.2);
   border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.3s;
+  font-size: 13px;
+  background: #f8f9ff;
+  color: #333;
+  transition: border-color 0.2s ease;
 }
 
-.url-input:focus {
+.update-profile-url-input:focus {
   outline: none;
-  border-color: #4a6bff;
-  box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
+  border-color: #723dff;
+  box-shadow: 0 0 0 2px rgba(114, 61, 255, 0.1);
 }
 
-.url-hint {
+.update-profile-url-hint {
   display: block;
   margin-top: 5px;
   color: #888;
   font-size: 12px;
 }
 
-/* Help Section */
-.form-help-section {
-  background: #f8f9fa;
-  padding: 20px;
+/* Help Section محسن */
+.update-profile-help-section {
+  background: #f8f9ff;
+  padding: 15px;
   border-radius: 8px;
-  border-left: 4px solid #4a6bff;
+  border: 1px solid rgba(114, 61, 255, 0.1);
+  margin-top: 20px;
 }
 
-.form-help-section h4 {
-  margin: 0 0 15px 0;
-  color: #333;
-  font-size: 16px;
+.update-profile-help-section h4 {
+  margin: 0 0 12px 0;
+  color: #0b2b82;
+  font-size: 14px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.help-tips {
+.update-profile-help-tips {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 18px;
 }
 
-.help-tips li {
-  margin-bottom: 8px;
+.update-profile-help-tips li {
+  margin-bottom: 6px;
   color: #555;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
-.help-tips li:last-child {
+.update-profile-help-tips li:last-child {
   margin-bottom: 0;
 }
 
-/* Right Column */
-.form-right-column {
+/* Right Column محسن */
+.update-profile-form-right {
   flex: 1;
   min-width: 0;
 }
 
-.form-section {
-  margin-bottom: 30px;
+.update-profile-form-section {
+  margin-bottom: 20px;
 }
 
-.form-section h3 {
-  margin: 0 0 20px 0;
-  color: #333;
-  font-size: 18px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #f0f0f0;
-}
-
-/* Form Grid */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-@media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Form Group */
-.form-group {
-  position: relative;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.form-group label.required::after {
-  content: " *";
-  color: #ff6b6b;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: all 0.3s;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #4a6bff;
-  box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
-}
-
-.form-input[type="date"] {
-  font-family: inherit;
-}
-
-.input-hint {
-  display: block;
-  margin-top: 5px;
-  color: #888;
-  font-size: 12px;
-}
-
-/* Field Changed Indicator */
-.field-changed {
-  position: absolute;
-  top: 35px;
-  right: 10px;
-  color: #4a6bff;
-  font-size: 14px;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-/* Form Notice */
-.form-notice {
-  background: #fff3cd;
-  border: 1px solid #ffeaa7;
-  border-radius: 8px;
-  padding: 15px 20px;
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  margin-top: 30px;
-}
-
-.notice-icon {
-  font-size: 20px;
-  color: #f39c12;
-}
-
-.notice-content {
-  flex: 1;
-  color: #856404;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.notice-content strong {
-  color: #856404;
-}
-
-/* Form Actions */
-.form-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-  background: #f8f9fa;
-  border-top: 1px solid #e0e0e0;
-}
-
-.actions-left, .actions-right {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-.btn-cancel, .btn-reset, .btn-save {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
+.update-profile-form-section h3 {
+  margin: 0 0 15px 0;
+  color: #0b2b82;
   font-size: 15px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(114, 61, 255, 0.1);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.btn-cancel {
+/* Form Grid محسن - تحسين لعدم التداخل */
+.update-profile-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 15px;
+}
+
+@media (max-width: 768px) {
+  .update-profile-form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+/* Form Group محسن - إصلاح مشكلة التداخل */
+.update-profile-form-group {
+  position: relative;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+}
+
+.update-profile-form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #0b2b82;
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.update-profile-form-group label.required::after {
+  content: " *";
+  color: #ff6b6b;
+}
+
+.update-profile-form-input {
+  width: 100%;
+  padding: 10px 35px 10px 12px;
+  border: 1px solid rgba(114, 61, 255, 0.2);
+  border-radius: 6px;
+  font-size: 13px;
+  background: #f8f9ff;
+  color: #333;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  height: 40px;
+}
+
+.update-profile-form-input:focus {
+  outline: none;
+  border-color: #723dff;
+  box-shadow: 0 0 0 2px rgba(114, 61, 255, 0.1);
+}
+
+.update-profile-form-input[type="date"] {
+  font-family: inherit;
+}
+
+.update-profile-input-hint {
+  display: block;
+  margin-top: 5px;
+  color: #888;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+/* Field Changed Indicator محسن - إصلاح الموقع */
+.update-profile-field-changed {
+  position: absolute;
+  right: 12px;
+  top: 28px;
+  color: #723dff;
+  font-size: 12px;
+  animation: updateProfilePulse 2s infinite;
+  background: rgba(114, 61, 255, 0.1);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+@keyframes updateProfilePulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Form Notice محسن */
+.update-profile-form-notice {
+  background: #fff4e6;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  border-radius: 8px;
+  padding: 12px 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.update-profile-notice-icon {
+  font-size: 16px;
+  color: #ff6b00;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.update-profile-notice-content {
+  flex: 1;
+  color: #995200;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.update-profile-notice-content strong {
+  color: #995200;
+}
+
+/* Form Actions محسن */
+.update-profile-form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #f8f9ff;
+  border-top: 1px solid rgba(114, 61, 255, 0.1);
+}
+
+.update-profile-actions-left, .update-profile-actions-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.update-profile-btn-cancel, .update-profile-btn-reset, .update-profile-btn-save {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.update-profile-btn-cancel {
   background: #6c757d;
   color: white;
 }
 
-.btn-cancel:hover:not(:disabled) {
+.update-profile-btn-cancel:hover:not(:disabled) {
   background: #5a6268;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(108, 117, 125, 0.3);
 }
 
-.btn-reset {
+.update-profile-btn-reset {
   background: #ffc107;
   color: #212529;
 }
 
-.btn-reset:hover:not(:disabled) {
+.update-profile-btn-reset:hover:not(:disabled) {
   background: #e0a800;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(255, 193, 7, 0.3);
 }
 
-.btn-reset:disabled {
+.update-profile-btn-reset:disabled {
   background: #e9ecef;
   color: #adb5bd;
   cursor: not-allowed;
 }
 
-.btn-save {
-  background: #28a745;
+.update-profile-btn-save {
+  background: #723dff;
   color: white;
   position: relative;
 }
 
-.btn-save:hover:not(:disabled) {
-  background: #218838;
-  transform: translateY(-2px);
+.update-profile-btn-save:hover:not(:disabled) {
+  background: #652cff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(114, 61, 255, 0.3);
 }
 
-.btn-save:disabled {
+.update-profile-btn-save:disabled {
   background: #e9ecef;
   color: #adb5bd;
   cursor: not-allowed;
 }
 
-.save-badge {
+.update-profile-save-badge {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -6px;
+  right: -6px;
   background: #ff6b6b;
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: bounce 1s infinite;
+  animation: updateProfileBounce 1s infinite;
 }
 
-@keyframes bounce {
+@keyframes updateProfileBounce {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
 }
 
-/* Spinner */
-.spinner-small {
-  width: 16px;
-  height: 16px;
+/* Spinner محسن */
+.update-profile-spinner-small {
+  width: 14px;
+  height: 14px;
   border: 2px solid rgba(255,255,255,0.3);
   border-top: 2px solid white;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: updateProfileSpin 1s linear infinite;
   display: inline-block;
 }
 
-@keyframes spin {
+@keyframes updateProfileSpin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Form Footer */
-.form-footer {
-  margin-top: 30px;
-  padding: 20px;
+/* Form Footer محسن */
+.update-profile-form-footer {
+  margin-top: 20px;
+  padding: 15px;
   background: white;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid rgba(114, 61, 255, 0.08);
 }
 
-.footer-note {
+.update-profile-footer-note {
   color: #666;
-  margin: 0 0 10px 0;
-  font-size: 14px;
+  margin: 0 0 8px 0;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.footer-help {
+.update-profile-footer-help {
   color: #888;
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.help-link {
-  color: #4a6bff;
+.update-profile-help-link {
+  color: #723dff;
   text-decoration: none;
   font-weight: 500;
 }
 
-.help-link:hover {
+.update-profile-help-link:hover {
   text-decoration: underline;
 }
 
-/* Loading State */
-.loading-container {
+/* Loading State محسن */
+.update-profile-loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 300px;
   text-align: center;
+  background: white;
+  border-radius: 12px;
+  padding: 40px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #4a6bff;
+.update-profile-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #723dff;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+  animation: updateProfileSpin 1.2s linear infinite;
+  margin-bottom: 15px;
 }
 
-/* Responsive Design */
+.update-profile-loading-container p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Responsive Design محسن */
 @media (max-width: 768px) {
-  .update-profile-page {
+  .update-profile-page-container {
+    padding: 0 10px 10px;
+  }
+  
+  .update-profile-form-content {
+    padding: 15px;
+    gap: 15px;
+  }
+  
+  .update-profile-form-actions {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
     padding: 15px;
   }
   
-  .form-content {
-    padding: 20px;
+  .update-profile-actions-left, .update-profile-actions-right {
+    justify-content: center;
+    flex-wrap: wrap;
   }
   
-  .form-actions {
+  .update-profile-form-footer {
+    padding: 12px;
+  }
+  
+  .update-profile-footer-note, .update-profile-footer-help {
     flex-direction: column;
-    gap: 15px;
-    align-items: stretch;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .update-profile-page-header {
+    padding: 12px 15px;
   }
   
-  .actions-left, .actions-right {
+  .update-profile-page-header h1 {
+    font-size: 18px;
+  }
+  
+  .update-profile-image-preview {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .update-profile-btn-cancel, .update-profile-btn-reset, .update-profile-btn-save {
+    padding: 8px 15px;
+    font-size: 12px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .update-profile-form {
+    border-radius: 10px;
+  }
+  
+  .update-profile-form-content {
+    padding: 12px;
+  }
+  
+  .update-profile-form-grid {
+    gap: 12px;
+  }
+  
+  .update-profile-form-actions {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .update-profile-actions-left, .update-profile-actions-right {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .update-profile-btn-cancel, .update-profile-btn-reset, .update-profile-btn-save {
+    width: 100%;
     justify-content: center;
   }
   
-  .form-footer {
-    padding: 15px;
+  .update-profile-image-actions {
+    flex-direction: column;
+    align-items: center;
   }
   
-  .footer-note, .footer-help {
-    flex-direction: column;
-    gap: 5px;
+  .update-profile-btn-upload, .update-profile-btn-remove-image {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
   }
 }

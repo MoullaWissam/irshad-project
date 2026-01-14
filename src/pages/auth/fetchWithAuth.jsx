@@ -12,7 +12,6 @@ export const fetchWithAuth = async (url, options = {}) => {
     },
   });
 
-  // ⭐ التعامل مع انتهاء التوكن
   if (response.status === 401) {
     let data = {};
     try {

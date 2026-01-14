@@ -92,7 +92,6 @@
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
   border-width: 6px;
   border-style: solid;
   border-color: #2b1d6a transparent transparent transparent;
@@ -849,8 +848,8 @@
 }
 
 .floating-icon-canvas {
-  width: 100%;
-  height: 100%;
+  width: 70%;
+  height: 70%;
   border-radius: 50%;
   overflow: hidden;
   background: linear-gradient(135deg, rgba(114, 61, 255, 0.1) 0%, rgba(0, 184, 231, 0.1) 100%);
@@ -871,17 +870,14 @@
 }
 
 .floating-icon-canvas canvas {
-  width: 100% !important;
-  height: 100% !important;
+
   outline: none;
 }
 
 .floating-icon-tooltip {
   position: absolute;
   bottom: 90px;
-  right: 50%;
-  transform: translateX(50%);
-  background: linear-gradient(135deg, #2b1d6a 0%, #723dff 100%);
+  background: linear-gradient(135deg, #723dff 0%, #723dff 100%);
   color: white;
   padding: 8px 15px;
   border-radius: 12px;
@@ -898,20 +894,16 @@
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
   border-width: 6px;
   border-style: solid;
-  border-color: #2b1d6a transparent transparent transparent;
 }
 
 @keyframes tooltipFadeIn {
   from {
     opacity: 0;
-    transform: translateX(50%) translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateX(50%) translateY(0);
   }
 }
 
@@ -998,16 +990,6 @@
   animation: flyToSidebarRTL 0.8s forwards;
 }
 
-[dir="rtl"] .floating-icon-tooltip {
-  right: auto;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-[dir="rtl"] .floating-icon-tooltip::after {
-  left: 50%;
-  transform: translateX(-50%);
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -1126,8 +1108,7 @@
 }
 
 .floating-icon-canvas {
-  width: 100%;
-  height: 100%;
+
   border-radius: 50%;
   overflow: hidden;
   background: linear-gradient(135deg, 
@@ -1160,9 +1141,7 @@
 .floating-icon-tooltip {
   position: absolute;
   bottom: 110px;
-  right: 50%;
-  transform: translateX(50%);
-  background: linear-gradient(135deg, #2b1d6a 0%, #723dff 100%);
+  background: linear-gradient(135deg, #723dff 0%, #723dff 100%);
   color: white;
   padding: 10px 18px;
   border-radius: 16px;
@@ -1180,22 +1159,12 @@
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
   border-width: 8px;
   border-style: solid;
   border-color: #2b1d6a transparent transparent transparent;
 }
 
-@keyframes tooltipFadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(50%) translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(50%) translateY(0);
-  }
-}
+
 
 .animation-overlay {
   position: fixed;
@@ -1286,16 +1255,8 @@
   animation: flyToSidebarRTL 0.8s forwards;
 }
 
-[dir="rtl"] .floating-icon-tooltip {
-  right: auto;
-  left: 50%;
-  transform: translateX(-50%);
-}
 
-[dir="rtl"] .floating-icon-tooltip::after {
-  left: 50%;
-  transform: translateX(-50%);
-}
+
 
 /* تحسينات للأيقونة عند الفتح والإغلاق */
 .floating-icon-container.hidden {
@@ -1442,4 +1403,339 @@
 .chat-icon {
   padding: 0; 
   background: white; /* أو أي لون خلفية يناسب شعار المساعد */
+}
+/* ===== تحسينات للهواتف المحمولة ===== */
+@media (max-width: 768px) {
+  .chat-sidebar {
+    width: 100%;
+    right: -100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  
+  .chat-sidebar.open {
+    right: 0;
+  }
+  
+  /* تحسين الأيقونة العائمة */
+  .floating-icon-container {
+    bottom: 20px;
+    right: 20px;
+    width: 70px;
+    height: 70px;
+  }
+  
+  /* تحسين الرأس */
+  .chat-sidebar-header {
+    padding: 15px 20px;
+    min-height: 120px;
+  }
+  
+  .avatar-container {
+    width: 100px;
+    height: 120px;
+    margin-top: -5px;
+  }
+  
+  .header-info h3 {
+    font-size: 18px;
+  }
+  
+  .header-info p {
+    font-size: 12px;
+  }
+  
+  /* تحسين منطقة الرسائل */
+  .chat-messages-container {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  
+  .chat-messages {
+    padding: 15px;
+    gap: 12px;
+  }
+  
+  .message-bubble {
+    max-width: 85%;
+    padding: 12px 16px;
+  }
+  
+  .message-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .message-time {
+    font-size: 11px;
+  }
+  
+  /* تحسين حقل الإدخال */
+  .chat-sidebar-input {
+    padding: 15px;
+    position: sticky;
+    bottom: 0;
+    background: white;
+  }
+  
+  .chat-sidebar-input input {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+  
+  .chat-send-btn {
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* إخفاء التلميح على الهواتف */
+  .floating-icon-tooltip {
+    display: none;
+  }
+  
+  /* تحسين تأثير الأنيميشن للهواتف */
+  @keyframes flyToSidebar {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-100px, -50px) scale(0.3);
+      opacity: 0;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  /* تحسينات للشاشات الصغيرة جدًا */
+  .floating-icon-container {
+    bottom: 15px;
+    right: 15px;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .chat-sidebar-header {
+    padding: 12px 15px;
+    min-height: 110px;
+  }
+  
+  .avatar-container {
+    width: 90px;
+    height: 110px;
+  }
+  
+  .header-content {
+    gap: 10px;
+  }
+  
+  .header-info h3 {
+    font-size: 16px;
+  }
+  
+  .header-info p {
+    font-size: 11px;
+  }
+  
+  .close-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+  
+  .chat-messages {
+    padding: 12px 10px;
+  }
+  
+  .message-bubble {
+    max-width: 90%;
+    padding: 10px 14px;
+    border-radius: 18px;
+  }
+  
+  .message-text {
+    font-size: 13px;
+  }
+  
+  .typing-indicator {
+    padding: 10px 14px;
+  }
+  
+  .typing-dot {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .chat-sidebar-input {
+    padding: 12px;
+  }
+  
+  .chat-sidebar-input input {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  
+  .chat-send-btn {
+    width: 44px;
+    height: 44px;
+  }
+  
+  /* تحسين شريط التمرير */
+  .chat-messages-container::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* تحسينات إضافية للشاشات الصغيرة جدًا */
+  .floating-icon-container {
+    bottom: 10px;
+    right: 10px;
+    width: 55px;
+    height: 55px;
+  }
+  
+  .chat-sidebar-header {
+    min-height: 100px;
+    padding: 10px 12px;
+  }
+  
+  .avatar-container {
+    width: 80px;
+    height: 100px;
+  }
+  
+  .header-info h3 {
+    font-size: 15px;
+  }
+  
+  .header-info p {
+    font-size: 10px;
+  }
+  
+  .message-avatar {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .message-bubble {
+    max-width: 92%;
+  }
+  
+  .chat-sidebar-input input {
+    font-size: 12px;
+  }
+}
+
+/* دعم safe-area للشاشات ذات الشقوق */
+@supports (padding: max(0px)) {
+  .chat-sidebar-input {
+    padding-bottom: max(15px, env(safe-area-inset-bottom));
+  }
+  
+  .floating-icon-container {
+    bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* تحسينات للوضع الأفقي على الهواتف */
+@media (max-height: 500px) and (orientation: landscape) {
+  .chat-sidebar-header {
+    min-height: 90px;
+    padding: 10px 15px;
+  }
+  
+  .avatar-container {
+    width: 70px;
+    height: 90px;
+  }
+  
+  .chat-messages {
+    padding: 10px;
+  }
+  
+  .chat-sidebar-input {
+    padding: 10px 15px;
+  }
+  
+  .floating-icon-container {
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* تحسينات للـ RTL على الهواتف */
+[dir="rtl"] .floating-icon-container {
+  left: 20px;
+  right: auto;
+}
+
+[dir="rtl"] .chat-sidebar {
+  left: -100%;
+}
+
+[dir="rtl"] .chat-sidebar.open {
+  left: 0;
+}
+
+@media (max-width: 480px) {
+  [dir="rtl"] .floating-icon-container {
+    left: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  [dir="rtl"] .floating-icon-container {
+    left: 10px;
+  }
+}
+
+/* تحسينات للتفاعل مع اللمس */
+@media (hover: none) and (pointer: coarse) {
+  .chat-icon:hover,
+  .close-btn:hover,
+  .chat-send-btn:hover,
+  .floating-icon-container:hover .floating-icon-canvas {
+    transform: none !important;
+  }
+  
+  .chat-send-btn:active {
+    transform: scale(0.95) !important;
+  }
+  
+  .message-bubble {
+    min-height: 44px; /* الحد الأدنى لمساحة اللمس */
+  }
+  
+  .chat-sidebar-input input {
+    font-size: 16px; /* منع التكبير في iOS */
+  }
+}
+
+/* تحسينات للأجهزة التي تدعم اللمس */
+.touch-device .message-bubble {
+  cursor: default;
+}
+
+/* تحسينات للعرض على الشاشات الصغيرة */
+@media (max-width: 320px) {
+  .chat-sidebar-header {
+    flex-wrap: wrap;
+  }
+  
+  .header-content {
+    width: 100%;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  [dir="rtl"] .close-btn {
+    right: auto;
+    left: 10px;
+  }
 }

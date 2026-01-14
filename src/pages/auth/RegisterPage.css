@@ -45,6 +45,7 @@
   flex: 1;
   margin-right: 30px;
   padding-right: 20px;
+  margin-left: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -100,7 +101,7 @@
   height: 50px; /* تصغير الأزرار */
   border-radius: 12px;
   border: none;
-  background: #00b8e7;
+  background: #6200ea;
   color: white;
   font-weight: 700;
   font-size: 15px; /* تصغير الخط */
@@ -124,12 +125,11 @@
 /* الزر النشط */
 .buttons button.active {
   padding: 18px; /* تصغير padding */
-  background: #6200ea;
-  box-shadow: 0 4px 8px rgba(98, 0, 234, 0.2);
+  background: #00b8e7;
   color: white;
   box-shadow: 
-    0 0 15px rgba(114, 62, 254, 0.6), 
-    0 0 30px rgba(114, 62, 254, 0.4),
+    0 0 15px rgba(62, 225, 254, 0.6), 
+    0 0 30px rgba(62, 235, 254, 0.4),
     inset 0 0 10px rgba(255, 255, 255, 0.2);}
 
 /* زر التسجيل للشاشات الكبيرة */
@@ -267,7 +267,6 @@ h4.info-text {
   line-height: 100%;
   color: #ffffff;
   margin: 4px 0 2px 0; /* تقليل المسافات */
-  text-align: left;
 }
 
 /* رسالة الخطأ العائمة */

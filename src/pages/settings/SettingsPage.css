@@ -324,7 +324,6 @@
   padding: 10px;
   background-color: #f1f8e9;
   border-radius: 8px;
-  border-left: 4px solid #3bd541;
 }
 
 /* Responsive Design */
@@ -772,7 +771,6 @@
   padding: 10px;
   background-color: #f1f8e9;
   border-radius: 8px;
-  border-left: 4px solid #3bd541;
 }
 
 /* Responsive Design */
@@ -801,7 +799,7 @@
   }
   
   .settings-page {
-    padding: 30px 20px 20px; /* تعديل الحشوة للشاشات الصغيرة */
+    padding: 30px 20px 20px; 
     margin: 10px;
   }
 }
