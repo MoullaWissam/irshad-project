@@ -14,7 +14,7 @@ function ForgotPassword() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:3000/auth/forget-password", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/auth/forget-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

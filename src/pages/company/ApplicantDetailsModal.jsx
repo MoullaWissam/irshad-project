@@ -31,7 +31,7 @@ function ApplicantDetailsModal({
       console.log("Fetching resume URL for:", applicant);
       
       const response = await fetch(
-        `http://localhost:3000/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
+        `https://irshad-ovo6.onrender.com/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
         {
           credentials: "include"
         }
@@ -50,7 +50,7 @@ function ApplicantDetailsModal({
         if (data.path.startsWith('http')) {
           fullUrl = data.path;
         } else {
-          fullUrl = `http://localhost:3000${data.path}`;
+          fullUrl = `https://irshad-ovo6.onrender.com${data.path}`;
         }
         setResumeUrl(fullUrl);
         console.log("Full resume URL:", fullUrl);

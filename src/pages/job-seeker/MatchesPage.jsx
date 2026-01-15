@@ -19,7 +19,7 @@ function MatchesPage() {
     const fetchJobs = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/auth/recommended-jobs",
+          "https://irshad-ovo6.onrender.com/auth/recommended-jobs",
           {
             method: "GET",
             credentials: "include",
@@ -52,9 +52,9 @@ function MatchesPage() {
             icon: job.image
               ? job.image.startsWith("http")
                 ? job.image
-                : `http://localhost:3000/${job.image}`
+                : `https://irshad-ovo6.onrender.com/${job.image}`
               : job.company?.companyLogo
-              ? `http://localhost:3000/${job.company.companyLogo}`
+              ? `https://irshad-ovo6.onrender.com/${job.company.companyLogo}`
               : "https://cdn-icons-png.flaticon.com/512/3067/3067256.png",
             company: String(job.company?.companyName || t("Unknown Company")),
             location: String(job.location || t("Location not specified")),

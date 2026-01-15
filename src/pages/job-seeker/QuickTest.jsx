@@ -67,7 +67,7 @@ export default function QuickTest() {
   const handleStartTest = async () => {
     setIsSubmittingApplication(true);
     try {
-      const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/jobapply/${jobId}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -111,7 +111,7 @@ export default function QuickTest() {
     setError(null);
     
     try {
-      const response = await fetch(`http://localhost:3000/jobs/${jobId}/shuffled-questions`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/jobs/${jobId}/shuffled-questions`, {
         method: "GET",
         credentials: "include"
       });
@@ -206,7 +206,7 @@ export default function QuickTest() {
       
       console.log("Submitting test data:", testData);
       
-      const response = await fetch(`http://localhost:3000/jobapply/${jobId}/test/submit`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/jobapply/${jobId}/test/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -64,7 +64,7 @@
 //           throw new Error("Company ID not found");
 //         }
 
-//         const response = await fetch(`http://localhost:3000/company-management/profile/${targetId}`, {
+//         const response = await fetch(`https://irshad-ovo6.onrender.com/company-management/profile/${targetId}`, {
 //           credentials: "include"
 //         });
         
@@ -138,9 +138,9 @@
 //     if (!path) return "/default-logo.png";
 //     if (path.startsWith('http')) return path;
 //     if (path.startsWith('uploads/')) {
-//       return `http://localhost:3000/${path}`;
+//       return `https://irshad-ovo6.onrender.com/${path}`;
 //     }
-//     return `http://localhost:3000/uploads/company-logos/${path}`;
+//     return `https://irshad-ovo6.onrender.com/uploads/company-logos/${path}`;
 //   };
 
 //   const handleInputChange = (e) => {
@@ -237,7 +237,7 @@
 //         formDataToSend.append('companyLogo', "");
 //       }
       
-//       const response = await fetch(`http://localhost:3000/company-management/update/${targetId}`, {
+//       const response = await fetch(`https://irshad-ovo6.onrender.com/company-management/update/${targetId}`, {
 //         method: 'PUT',
 //         body: formDataToSend,
 //         credentials: 'include'
@@ -716,7 +716,7 @@ function UpdateCompanyProfilePage() {
 
         // التحقق من صحة التوكن مع الخادم (اختياري)
         try {
-          const verifyResponse = await fetch('http://localhost:3000/auth/verify-token', {
+          const verifyResponse = await fetch('https://irshad-ovo6.onrender.com/auth/verify-token', {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -735,7 +735,7 @@ function UpdateCompanyProfilePage() {
           console.log("Token verification optional, continuing...");
         }
 
-        const response = await fetch(`http://localhost:3000/company-management/profile/${targetId}`, {
+        const response = await fetch(`https://irshad-ovo6.onrender.com/company-management/profile/${targetId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -849,9 +849,9 @@ function UpdateCompanyProfilePage() {
     if (!path) return "/default-logo.png";
     if (path.startsWith('http')) return path;
     if (path.startsWith('uploads/')) {
-      return `http://localhost:3000/${path}`;
+      return `https://irshad-ovo6.onrender.com/${path}`;
     }
-    return `http://localhost:3000/uploads/company-logos/${path}`;
+    return `https://irshad-ovo6.onrender.com/uploads/company-logos/${path}`;
   };
 
   const handleInputChange = (e) => {
@@ -965,7 +965,7 @@ function UpdateCompanyProfilePage() {
       }
       
       // إرسال الطلب مع التوكن في الهيدر
-      const response = await fetch(`http://localhost:3000/company-management/update/${targetId}`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/company-management/update/${targetId}`, {
         method: 'PUT',
         body: formDataToSend,
         headers: {

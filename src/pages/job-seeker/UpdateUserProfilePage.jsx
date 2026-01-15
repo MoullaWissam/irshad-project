@@ -68,7 +68,7 @@ function UpdateUserProfilePage() {
 
         console.log("Fetching user data for update, userId:", targetId);
         
-        const response = await fetch(`http://localhost:3000/auth/profile/${targetId}`, {
+        const response = await fetch(`https://irshad-ovo6.onrender.com/auth/profile/${targetId}`, {
           credentials: "include"
         });
         
@@ -156,9 +156,9 @@ function UpdateUserProfilePage() {
     if (!path) return "/default-avatar.png";
     if (path.startsWith('http')) return path;
     if (path.startsWith('uploads/')) {
-      return `http://localhost:3000/${path}`;
+      return `https://irshad-ovo6.onrender.com/${path}`;
     }
-    return `http://localhost:3000/uploads/profile/${path}`;
+    return `https://irshad-ovo6.onrender.com/uploads/profile/${path}`;
   };
 
   const handleInputChange = (e) => {
@@ -249,7 +249,7 @@ function UpdateUserProfilePage() {
       
       console.log("Sending form data with file:", selectedFile ? "Yes" : "No");
       
-      const response = await fetch(`http://localhost:3000/auth/update/${targetId}`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/auth/update/${targetId}`, {
         method: 'PUT',
         body: formDataToSend,
         credentials: 'include'

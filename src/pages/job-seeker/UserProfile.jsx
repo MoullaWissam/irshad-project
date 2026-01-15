@@ -72,7 +72,7 @@ function UserProfilePage() {
 
   const fetchUserFromAPI = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/profile", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/auth/profile", {
         credentials: "include",
       });
 
@@ -106,7 +106,7 @@ function UserProfilePage() {
   const getFullProfileImageUrl = (path) => {
     if (!path) return "/default-avatar.png";
     if (path.startsWith("http")) return path;
-    return `http://localhost:3000/${path.replace(/\\/g, "/")}`;
+    return `https://irshad-ovo6.onrender.com/${path.replace(/\\/g, "/")}`;
   };
 
   const handleEditProfile = () => {

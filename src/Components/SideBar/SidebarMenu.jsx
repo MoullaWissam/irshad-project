@@ -42,7 +42,7 @@ function SidebarMenu({ isCollapsed, userRole = "jobSeeker", onItemClick }) {
       console.log("Fetching jobs for company ID:", companyId);
       
       const response = await fetch(
-        `http://localhost:3000/company-management/${companyId}/jobs`,
+        `https://irshad-ovo6.onrender.com/company-management/${companyId}/jobs`,
         {
           headers: {
             'Content-Type': 'application/json'

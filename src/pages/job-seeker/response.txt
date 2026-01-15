@@ -155,7 +155,7 @@
         ],
         "location": "Damasucs",
         "employmentType": "on-site",
-        "image": "http://localhost:3000/uploads/images/1759582407059-209408064.png",
+        "image": "https://irshad-ovo6.onrender.com/uploads/images/1759582407059-209408064.png",
         "embedding": null,
         "createdAt": "2025-10-04T02:53:27.086Z"
     },

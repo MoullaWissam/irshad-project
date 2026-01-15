@@ -58,7 +58,7 @@ export default function JobDetails() {
       try {
         setLoading(true);
 
-        const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
+        const response = await fetch(`https://irshad-ovo6.onrender.com/jobs/${jobId}`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -284,7 +284,7 @@ export default function JobDetails() {
         // محاولة التحقق من التقديمات السابقة
         try {
           const response = await fetch(
-            `http://localhost:3000/jobapply/${jobId}/check`,
+            `https://irshad-ovo6.onrender.com/jobapply/${jobId}/check`,
             {
               method: "GET",
               credentials: "include",
@@ -322,7 +322,7 @@ export default function JobDetails() {
     const checkAppliedAlternative = async () => {
       try {
         // جلب سجل التقديمات للمستخدم
-        const response = await fetch(`http://localhost:3000/myapplications`, {
+        const response = await fetch(`https://irshad-ovo6.onrender.com/myapplications`, {
           method: "GET",
           credentials: "include",
         });
@@ -426,7 +426,7 @@ export default function JobDetails() {
     console.log(" Sending single application request for job:", jobId);
 
     try {
-      const response = await fetch(`http://localhost:3000/jobapply/${jobId}`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/jobapply/${jobId}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -586,7 +586,7 @@ export default function JobDetails() {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
-      const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/jobs/${jobId}`, {
         method: "DELETE",
         credentials: "include",
         headers: headers,

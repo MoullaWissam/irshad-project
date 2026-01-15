@@ -68,7 +68,7 @@ function CompanyProfilePage() {
       }
 
       const response = await fetch(
-        `http://localhost:3000/company-management/profile/${targetId}`,
+        `https://irshad-ovo6.onrender.com/company-management/profile/${targetId}`,
         {
           credentials: "include",
         }
@@ -90,9 +90,9 @@ function CompanyProfilePage() {
     if (!path) return "/default-logo.png";
     if (path.startsWith("http")) return path;
     if (path.startsWith("uploads/")) {
-      return `http://localhost:3000/${path}`;
+      return `https://irshad-ovo6.onrender.com/${path}`;
     }
-    return `http://localhost:3000/uploads/company-logos/${path}`;
+    return `https://irshad-ovo6.onrender.com/uploads/company-logos/${path}`;
   };
 
   const handleEditProfile = () => {

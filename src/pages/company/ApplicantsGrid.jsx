@@ -77,7 +77,7 @@ function ApplicantsGrid() {
         // 2. جلب المتقدمين للوظيفة
         console.log("Fetching applicants for job:", jobId);
         const response = await fetch(
-          `http://localhost:3000/company-management/company/job/${jobId}/applicants`,
+          `https://irshad-ovo6.onrender.com/company-management/company/job/${jobId}/applicants`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -210,7 +210,7 @@ function ApplicantsGrid() {
 
       // إرسال طلب جدولة المقابلة
       const response = await fetch(
-        `http://localhost:3000/interview/${selectedApplicant.jobId}/applicants/${selectedApplicant.applicationId}/interview`,
+        `https://irshad-ovo6.onrender.com/interview/${selectedApplicant.jobId}/applicants/${selectedApplicant.applicationId}/interview`,
         {
           method: "POST",
           headers: {
@@ -285,7 +285,7 @@ function ApplicantsGrid() {
 
       // إرسال طلب الرفض مع حقل feedback فقط
       const response = await fetch(
-        `http://localhost:3000/company-management/${selectedApplicant.jobId}/rejectuser/${selectedApplicant.userId}`,
+        `https://irshad-ovo6.onrender.com/company-management/${selectedApplicant.jobId}/rejectuser/${selectedApplicant.userId}`,
         {
           method: "POST",
           headers: {
@@ -348,7 +348,7 @@ function ApplicantsGrid() {
 
           // إرسال طلب القبول
           const response = await fetch(
-            `http://localhost:3000/company-management/acceptuser/${applicant.userId}/${jobId}`,
+            `https://irshad-ovo6.onrender.com/company-management/acceptuser/${applicant.userId}/${jobId}`,
             {
               method: "POST",
               headers: {
@@ -419,7 +419,7 @@ function ApplicantsGrid() {
 
         // استخدام الرابط الصحيح
         const response = await fetch(
-          `http://localhost:3000/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
+          `https://irshad-ovo6.onrender.com/company-management/job-apply/${applicant.applicationId}/resume/${applicant.userId}/path`,
           {
             credentials: "include",
           }

@@ -22,7 +22,7 @@ function VerfiyEmail() {
     const code = inputsRef.current.map((input) => input.value).join("");
 
     try {
-      const response = await fetch("http://localhost:3000/auth/verify-email", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/auth/verify-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,7 @@ function VerfiyEmail() {
 
   const handleResendOTP = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/resend-email-otp", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/auth/resend-email-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

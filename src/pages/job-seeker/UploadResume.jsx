@@ -127,7 +127,7 @@ const UploadResume = () => {
       });
 
       // جرب عدة endpoints
-      const endpoints = ["http://localhost:3000/resumes/upload"];
+      const endpoints = ["https://irshad-ovo6.onrender.com/resumes/upload"];
 
       let lastError = null;
 
@@ -214,7 +214,7 @@ const UploadResume = () => {
 
       console.log(`Updating resume with ID: ${updateResumeId}`);
 
-      const response = await fetch(`http://localhost:3000/resumes/update`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/resumes/update`, {
         method: "PUT",
         body: formData,
         credentials: "include",

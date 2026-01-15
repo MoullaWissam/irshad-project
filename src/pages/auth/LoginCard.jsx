@@ -61,7 +61,7 @@ const LoginCard = () => {
     setIsLoading(true);
 
     try {
-      const endpoint = "http://localhost:3000/auth/login";
+      const endpoint = "https://irshad-ovo6.onrender.com/auth/login";
 
       const requestBody = {
         email: form.email,

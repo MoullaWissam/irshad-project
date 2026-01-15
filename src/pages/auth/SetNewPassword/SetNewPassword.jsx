@@ -28,7 +28,7 @@ function SetNewPassword() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/update-password", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/auth/update-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

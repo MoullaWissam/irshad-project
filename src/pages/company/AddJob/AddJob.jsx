@@ -285,7 +285,7 @@ export default function AddJob() {
       }
 
       // إرسال طلب إنشاء الوظيفة - مع الكوكيز
-      const createJobResponse = await fetch(`http://localhost:3000/jobs/${companyId}`, {
+      const createJobResponse = await fetch(`https://irshad-ovo6.onrender.com/jobs/${companyId}`, {
         method: 'POST',
         credentials: 'include',
         body: jobFormData,
@@ -349,7 +349,7 @@ export default function AddJob() {
           console.log('Test duration being sent:', jobData.testDuration);
 
           // إرسال طلب إضافة السؤال
-          const addQuestionResponse = await fetch(`http://localhost:3000/jobs/${jobId}/questions`, {
+          const addQuestionResponse = await fetch(`https://irshad-ovo6.onrender.com/jobs/${jobId}/questions`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -71,7 +71,7 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       
       if (companyData.companyLogo && companyData.companyLogo.trim() !== "") {
         if (companyData.companyLogo.includes("uploads/")) {
-          avatarPath = `http://localhost:3000/${companyData.companyLogo}`;
+          avatarPath = `https://irshad-ovo6.onrender.com/${companyData.companyLogo}`;
           hasAvatar = true;
         } else {
           avatarPath = companyData.companyLogo;
@@ -94,7 +94,7 @@ function SidebarFooter({ isCollapsed, userRole = "jobSeeker", onClickInside }) {
       
       if (userData.profileImage && userData.profileImage.trim() !== "") {
         if (userData.profileImage.includes("uploads/")) {
-          avatarPath = `http://localhost:3000/${userData.profileImage}`;
+          avatarPath = `https://irshad-ovo6.onrender.com/${userData.profileImage}`;
           hasAvatar = true;
         } else {
           avatarPath = userData.profileImage;

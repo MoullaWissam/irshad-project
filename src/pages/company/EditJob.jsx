@@ -36,7 +36,7 @@ function EditJob() {
     const fetchJobDetails = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
+        const response = await fetch(`https://irshad-ovo6.onrender.com/jobs/${jobId}`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -146,7 +146,7 @@ function EditJob() {
         formDataToSend.append("img", imageFile);
       }
 
-      const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/jobs/${jobId}`, {
         method: "PUT",
         body: formDataToSend,
         credentials: "include",
@@ -187,7 +187,7 @@ function EditJob() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/jobs/${jobId}`, {
+      const response = await fetch(`https://irshad-ovo6.onrender.com/jobs/${jobId}`, {
         method: "DELETE",
         credentials: "include",
       });

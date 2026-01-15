@@ -70,7 +70,7 @@ function AddJobPage() {
       console.log(`Fetching jobs for company ID: ${id} with token: ${token.substring(0, 20)}...`);
       
       const response = await fetch(
-        `http://localhost:3000/company-management/${id}/jobs`,
+        `https://irshad-ovo6.onrender.com/company-management/${id}/jobs`,
         {
           method: "GET",
           headers: {

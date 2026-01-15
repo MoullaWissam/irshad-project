@@ -22,7 +22,7 @@ function JobsPage() {
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/jobs", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/jobs", {
         credentials: "include"
       });
       
@@ -94,7 +94,7 @@ function JobsPage() {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3000/jobs/search?title=${encodeURIComponent(searchTerm)}`,
+        `https://irshad-ovo6.onrender.com/jobs/search?title=${encodeURIComponent(searchTerm)}`,
         { credentials: "include" }
       );
       

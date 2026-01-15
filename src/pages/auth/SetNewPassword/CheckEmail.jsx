@@ -34,7 +34,7 @@ function CheckEmail() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/verify-otp-password", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/auth/verify-otp-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function CheckEmail() {
 
   const handleResendCode = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/resend-password-otp", {
+      const response = await fetch("https://irshad-ovo6.onrender.com/auth/resend-password-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -36,9 +36,9 @@ function SettingsItem({ label, icon, onClick, userRole, userId, companyId }) {
       
       // تحديد الرابط بناءً على نوع المستخدم
       if (userRole === "company" && companyId) {
-        url = `http://localhost:3000/company-management/delete/${companyId}`;
+        url = `https://irshad-ovo6.onrender.com/company-management/delete/${companyId}`;
       } else if (userRole === "jobSeeker" && userId) {
-        url = `http://localhost:3000/auth/delete/${userId}`;
+        url = `https://irshad-ovo6.onrender.com/auth/delete/${userId}`;
       } else {
         throw new Error("User ID or Company ID not found");
       }

@@ -51,13 +51,13 @@ const MyApplications = () => {
   const fetchApplicationStats = async () => {
     try {
       const [pendingRes, acceptedRes, rejectedRes] = await Promise.allSettled([
-        fetch("http://localhost:3000/auth/my-applications/pending", {
+        fetch("https://irshad-ovo6.onrender.com/auth/my-applications/pending", {
           credentials: "include",
         }),
-        fetch("http://localhost:3000/auth/my-applications/accepted", {
+        fetch("https://irshad-ovo6.onrender.com/auth/my-applications/accepted", {
           credentials: "include",
         }),
-        fetch("http://localhost:3000/auth/my-applications/rejected", {
+        fetch("https://irshad-ovo6.onrender.com/auth/my-applications/rejected", {
           credentials: "include",
         }),
       ]);
@@ -84,7 +84,7 @@ const MyApplications = () => {
       console.log(apiStatus);
       
       const response = await fetch(
-        `http://localhost:3000/auth/my-applications/${apiStatus}`,
+        `https://irshad-ovo6.onrender.com/auth/my-applications/${apiStatus}`,
         { credentials: "include" }
       );
 

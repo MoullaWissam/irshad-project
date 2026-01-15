@@ -35,7 +35,7 @@ function JobManagementPage() {
 
         // جلب الوظائف من الـ API
         const response = await fetch(
-          `http://localhost:3000/company-management/${companyId}/jobs`,
+          `https://irshad-ovo6.onrender.com/company-management/${companyId}/jobs`,
           {
             method: "GET",
             credentials: "include",

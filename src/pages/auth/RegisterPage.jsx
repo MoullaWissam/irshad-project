@@ -116,7 +116,7 @@ const RegisterPage = () => {
     let url = "";
 
     if (activeForm === "employee") {
-      url = "http://localhost:3000/auth/register";
+      url = "https://irshad-ovo6.onrender.com/auth/register";
 
       formData.append("firstName", employeeData.firstName);
       formData.append("lastName", employeeData.lastName);
@@ -128,7 +128,7 @@ const RegisterPage = () => {
         formData.append("profileImage", employeeData.photo);
       }
     } else {
-      url = "http://localhost:3000/company-management/company-register";
+      url = "https://irshad-ovo6.onrender.com/company-management/company-register";
 
       formData.append("companyName", companyData.companyName);
       formData.append("email", companyData.email);
