@@ -25,57 +25,51 @@ const ChatSidebar = forwardRef(({ isOpen, onClose }, ref) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
+ const handleSendMessage = async (e) => {
+  e.preventDefault();
+  if (!inputValue.trim()) return;
 
-    const userMessageText = inputValue;
+  const userMsg = {
+    id: Date.now(),
+    type: 'user',
+    text: inputValue,
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  };
 
-    const userMsg = {
-      id: Date.now(),
-      type: 'user',
-      text: userMessageText,
+  setMessages(prev => [...prev, userMsg]);
+  setInputValue('');
+  setIsTyping(true);
+
+  try {
+    const response = await fetch(`${API_URL}/get`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ msg: userMsg.text })
+    });
+
+    const botAnswer = response.ok ? await response.text() : "تعذر الوصول للسيرفر.";
+
+    const botMsg = {
+      id: Date.now() + 1,
+      type: 'bot',
+      text: botAnswer,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    setMessages(prev => [...prev, userMsg]);
-    setInputValue('');
-    setIsTyping(true);
+    setMessages(prev => [...prev, botMsg]);
+  } catch (error) {
+    console.error("Backend fetch error:", error);
+    setMessages(prev => [...prev, {
+      id: Date.now() + 2,
+      type: 'bot',
+      text: 'تعذر الوصول للسيرفر.',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }]);
+  } finally {
+    setIsTyping(false);
+  }
+};
 
-    try {
-      const response = await fetch(`${API_URL}/get`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ msg: userMessageText }),
-      });
-
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      const botAnswer = await response.text();
-
-      const botMsg = {
-        id: Date.now() + 1,
-        type: 'bot',
-        text: botAnswer,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-
-      setMessages(prev => [...prev, botMsg]);
-    } catch (error) {
-      console.error("Error connecting to Flask:", error);
-      const errorMsg = {
-        id: Date.now() + 2,
-        type: 'bot',
-        text: 'عذراً، واجهت مشكلة في الاتصال بالسيرفر. تأكد من تشغيل ملف app.py',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages(prev => [...prev, errorMsg]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
 
   useImperativeHandle(ref, () => ({
     getMessages: () => messages,
